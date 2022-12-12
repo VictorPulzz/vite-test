@@ -1,6 +1,5 @@
 import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
 import { Icon } from '@ui/components/common/Icon';
-import { Text, TextVariant } from '@ui/components/common/Text';
 import React from 'react';
 
 import { store } from '~/store';
@@ -14,14 +13,12 @@ export const MainPage: React.FC = () => {
 
   return (
     <div className="p-5">
-      <Text variant={TextVariant.H1} tag="h1">
-        Main page
-      </Text>
+      <h1 className="text-h1">Main page</h1>
       <hr />
       <section className="m-5">
-        <Text className="mb-5">
+        <p className="mb-5">
           Logged in via <b>{userEmail}</b>
-        </Text>
+        </p>
         <Button
           variant={ButtonVariant.PRIMARY}
           label="Sign out"
@@ -32,21 +29,17 @@ export const MainPage: React.FC = () => {
       </section>
       <hr />
       <section className="m-5">
-        <Text variant={TextVariant.H2} tag="h2">
-          Image usage:
-        </Text>
+        <h2 className="text-h2">Image usage:</h2>
         <div className="bg-primary w-32 h-32 flex flex-center p-5 rounded-md">
           <img src={logo} alt="Logo" />
         </div>
       </section>
       <hr />
       <section className="m-5">
-        <Text variant={TextVariant.H2} tag="h2">
-          Icons usage:
-        </Text>
-        <Text className="my-2">
+        <h2 className="text-h2">Icons usage:</h2>
+        <p className="my-2">
           ❗Icon inherits <code>`color`</code> from its parents.
-        </Text>
+        </p>
         <div>
           <Icon name="example" size={50} className="text-accent" />
         </div>
@@ -56,9 +49,7 @@ export const MainPage: React.FC = () => {
       </section>
       <hr />
       <section className="m-5">
-        <Text variant={TextVariant.H2} tag="h2">
-          Current redux state:
-        </Text>
+        <h2 className="text-h2">Current redux state:</h2>
         <pre className="bg-primary p-5 text-white rounded-md mt-2 leading-6">
           {JSON.stringify(store.getState(), null, 2)}
         </pre>

@@ -3,7 +3,6 @@ import { createMigrate, createTransform, persistReducer } from 'redux-persist';
 import { MigrationManifest } from 'redux-persist/es/types';
 import storage from 'redux-persist/lib/storage';
 
-import { rtkQuery } from '~/services/rtkQuery';
 import { resetStore } from '~/store/modules/app';
 import { userReducer } from '~/store/modules/user';
 
@@ -39,7 +38,6 @@ const rootPersistConfig = {
 
 const appReducer = combineReducers({
   user: userReducer,
-  [rtkQuery.reducerPath]: rtkQuery.reducer,
 });
 
 const reducer: typeof appReducer = (state, action) => {

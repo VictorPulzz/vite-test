@@ -2,7 +2,6 @@ import { UserAuth } from '@appello/common/lib/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { UserProfileModel } from '~/models/user';
-import { userApi } from '~/services/rtkQuery/user';
 import { resetStore } from '~/store/modules/app';
 
 import { UserState } from './types';
@@ -22,15 +21,6 @@ const userSlice = createSlice({
     setUser(state, action: PayloadAction<Nullable<UserProfileModel>>) {
       state.profile = action.payload;
     },
-  },
-  extraReducers(builder) {
-    builder.addMatcher(userApi.endpoints.signIn.matchFulfilled, (state, { payload }) => {
-      state.profile = payload.user;
-      state.auth = {
-        refresh: payload.refresh,
-        access: payload.access,
-      };
-    });
   },
 });
 

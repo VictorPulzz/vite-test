@@ -25,10 +25,13 @@ steps:
 - name: Build Development
   image: node:16
   commands:
+  - git submodule update --init --recursive
+  - git submodule update --remote
   - npm install --quiet
   - npm run build
   environment:
-    GOOGLE_MAPS_KEY: ''
+    API_URL: 'https://appello-internal-back-dev.appelloproject.xyz/graphql'
+    APP_TITLE: 'SB2 (dev)'
   when:
     branch: dev
     event:
@@ -39,11 +42,11 @@ steps:
   image: samepagelabs/awscli:latest
   environment:
     AWS_ACCESS_KEY_ID:
-      from_secret: 
+      from_secret:
     AWS_SECRET_ACCESS_KEY:
-      from_secret: 
+      from_secret:
     S3_URL: s3://
-    CDN_DISTRIBUTION_ID: 
+    CDN_DISTRIBUTION_ID:
   commands:
   - aws s3 rm $S3_URL/previous --recursive
   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
@@ -59,10 +62,13 @@ steps:
 - name: Build Staging
   image: node:16
   commands:
+  - git submodule update --init --recursive
+  - git submodule update --remote
   - npm install --quiet
   - npm run build
   environment:
-    GOOGLE_MAPS_KEY: ''
+    API_URL: 'https://appello-internal-back-dev.appelloproject.xyz/graphql'
+    APP_TITLE: 'SB2 (stage)'
   when:
     branch: stage
     event:
@@ -73,11 +79,11 @@ steps:
   image: samepagelabs/awscli:latest
   environment:
     AWS_ACCESS_KEY_ID:
-      from_secret: 
+      from_secret:
     AWS_SECRET_ACCESS_KEY:
-      from_secret: 
+      from_secret:
     S3_URL: s3://
-    CDN_DISTRIBUTION_ID: 
+    CDN_DISTRIBUTION_ID:
   commands:
   - aws s3 rm $S3_URL/previous --recursive
   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
@@ -107,11 +113,11 @@ steps:
 #   image: samepagelabs/awscli:latest
 #   environment:
 #     AWS_ACCESS_KEY_ID:
-#       from_secret: 
+#       from_secret:
 #     AWS_SECRET_ACCESS_KEY:
-#       from_secret: 
+#       from_secret:
 #     S3_URL: s3://
-#     CDN_DISTRIBUTION_ID: 
+#     CDN_DISTRIBUTION_ID:
 #   commands:
 #   - aws s3 rm $S3_URL/previous --recursive
 #   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
