@@ -1,0 +1,6 @@
+fragment AuthorizedUser on UserType {
+  email
+  firstName
+  lastName
+  phone
+}

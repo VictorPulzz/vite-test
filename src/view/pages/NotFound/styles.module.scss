@@ -1,0 +1,13 @@
+.container {
+  background-color: hsl(var(--primary-color));
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 3.12rem;
+}
+
+.logo {
+  width: 5.43rem;
+  height: 1.68rem;
+}

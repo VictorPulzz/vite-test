@@ -1,19 +1,20 @@
 import { getErrorData } from '@appello/common/lib/services/rtkQuery';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
-import * as yup from 'yup';
+import { z } from 'zod';
 
-import { formErrors } from '~/constants/form';
-import { useSignInMutation } from '~/services/rtkQuery/user';
+import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { useAppDispatch } from '~/store/hooks';
 import { setAuth, setUser } from '~/store/modules/user';
-import { processApiError } from '~/utils/processApiError';
+import { passwordValidation } from '~/utils/validations';
 
-interface SignInFormValues {
-  email: string;
-  password: string;
-}
+const formSchema = z.object({
+  email: z.string().email().min(1),
+  password: passwordValidation(),
+});
+
+type SignInFormValues = z.infer<typeof formSchema>;
 
 interface UseSignInFormReturn {
   form: UseFormReturn<SignInFormValues>;
@@ -25,21 +26,13 @@ const defaultValues: SignInFormValues = {
   password: '',
 };
 
-const validation = yupResolver(
-  yup.object({
-    email: yup.string().email(formErrors.INVALID_EMAIL).required(formErrors.REQUIRED),
-    password: yup.string().required(formErrors.REQUIRED),
-  }),
-);
-
 export function useSignInForm(): UseSignInFormReturn {
   const dispatch = useAppDispatch();
-  const [signIn] = useSignInMutation();
 
   const form = useForm<SignInFormValues>({
     defaultValues,
     mode: 'onChange',
-    resolver: validation,
+    resolver: zodResolver(formSchema),
   });
 
   const handleSubmit = useCallback(
@@ -52,22 +45,20 @@ export function useSignInForm(): UseSignInFormReturn {
       // end
 
       try {
-        const data = await signIn({
-          email: values.email,
-          password: values.password,
-        }).unwrap();
+        // eslint-disable-next-line
+        console.log(values);
 
-        dispatch(setUser(data.user));
-        dispatch(setAuth({ access: data.access, refresh: data.refresh }));
+        // dispatch(setUser(data.user));
+        // dispatch(setAuth({ access: data.access, refresh: data.refresh }));
       } catch (e) {
-        processApiError<SignInFormValues>({
+        processGqlErrorResponse<SignInFormValues>({
           errors: getErrorData(e),
           fields: ['email', 'password'],
-          setFieldError: (name, message) => form.setError(name, { message }),
+          setFormError: form.setError,
         });
       }
     },
-    [dispatch, form, signIn],
+    [dispatch, form],
   );
 
   return useMemo(
