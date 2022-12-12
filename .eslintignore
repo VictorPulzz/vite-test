@@ -1,0 +1,7 @@
+/.git
+/.vscode
+/.idea
+node_modules
+webpack-config
+postcss.config.js
+jest.config.js

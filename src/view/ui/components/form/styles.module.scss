@@ -1,0 +1,74 @@
+.form {
+  display: flex;
+  flex-direction: column;
+
+  &__inline-fields {
+    @apply gap-4;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &__field {
+    width: 100%;
+  }
+
+  &__field-row {
+    & ~ & {
+      margin-top: 10px;
+    }
+  }
+
+  &__field-row &__field-row {
+    margin-top: 0;
+  }
+
+  &__label {
+    @apply text-p4 text-gray-1;
+    display: flex;
+    margin-bottom: 2px;
+  }
+
+  &__input {
+    @apply text-p4;
+    padding-inline: 1.26rem;
+    border: 1px solid hsl(var(--gray-5-color));
+    border-radius: 0.4rem;
+    width: 100%;
+
+    transition: background-color 0.2s, border-color 0.2s;
+
+    &[readonly] {
+      cursor: pointer;
+    }
+
+    &[disabled] {
+      background-color: hsl(var(--gray-7-color));
+      cursor: not-allowed;
+    }
+
+    &--size-medium {
+      height: 2.8rem;
+    }
+
+    &--size-large {
+      height: 3.6rem;
+    }
+
+    &--error {
+      border-color: hsl(var(--red-color));
+    }
+
+    &:focus {
+      border-color: hsl(var(--gray-3-color));
+    }
+
+    &::placeholder {
+      color: hsl(var(--gray-3-color));
+    }
+  }
+
+  &__error {
+    @apply text-p4 text-red;
+    margin-top: 3px;
+  }
+}

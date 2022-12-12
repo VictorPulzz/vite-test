@@ -1,0 +1,149 @@
+kind: pipeline
+name: Appello Internal web-front-end
+
+definitions:
+  environment: &environment
+    image: yaroappello/mobile-ci:latest
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: aws_access_key_id
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: aws_secret_access_key
+      SLACK_CHANNEL_ID: C049W82EZ1V
+      SLACK_API_TOKEN:
+        from_secret: slack_token
+  slack_commands1: &error_slack_message_commands
+    commands:
+      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "❌ Appello Internal web-front-end app build/deployment failed!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
+  slack_commands2: &success_slack_message_commands
+    commands:
+      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "✅ Appello Internal web-front-end app build/deployment succeeded!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
+
+
+steps:
+# Dev
+- name: Build Development
+  image: node:16
+  commands:
+  - npm install --quiet
+  - npm run build
+  environment:
+    GOOGLE_MAPS_KEY: ''
+  when:
+    branch: dev
+    event:
+    - push
+    - pull_request
+
+- name: Deploy Development to S3 & Invalidate CloudFront Cache
+  image: samepagelabs/awscli:latest
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: 
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: 
+    S3_URL: s3://
+    CDN_DISTRIBUTION_ID: 
+  commands:
+  - aws s3 rm $S3_URL/previous --recursive
+  - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
+  - aws s3 sync ./build $S3_URL/latest
+  - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"
+  when:
+    branch: dev
+    event:
+    - push
+    # - pull_request
+
+# Staging
+- name: Build Staging
+  image: node:16
+  commands:
+  - npm install --quiet
+  - npm run build
+  environment:
+    GOOGLE_MAPS_KEY: ''
+  when:
+    branch: stage
+    event:
+    - push
+    - pull_request
+
+- name: Deploy Staging to S3 & Invalidate CloudFront Cache
+  image: samepagelabs/awscli:latest
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: 
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: 
+    S3_URL: s3://
+    CDN_DISTRIBUTION_ID: 
+  commands:
+  - aws s3 rm $S3_URL/previous --recursive
+  - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
+  - aws s3 sync ./build $S3_URL/latest
+  - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"
+  when:
+    branch: stage
+    event:
+    - push
+    # - pull_request
+
+# # Production (Keep commented out before deploying on produciton)
+# - name: Build Production
+#   image: node:16
+#   commands:
+#   - npm install --quiet
+#   - npm run build
+#   environment:
+#     GOOGLE_MAPS_KEY: ''
+#   when:
+#     branch: master
+#     event:
+#     - push
+#     - pull_request
+
+# - name: Deploy Production to S3 & Invalidate CloudFront Cache
+#   image: samepagelabs/awscli:latest
+#   environment:
+#     AWS_ACCESS_KEY_ID:
+#       from_secret: 
+#     AWS_SECRET_ACCESS_KEY:
+#       from_secret: 
+#     S3_URL: s3://
+#     CDN_DISTRIBUTION_ID: 
+#   commands:
+#   - aws s3 rm $S3_URL/previous --recursive
+#   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
+#   - aws s3 sync ./build $S3_URL/latest
+#   - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"
+#   when:
+#     branch: master
+#     event:
+#     - push
+#     # - pull_request
+
+# Slack notifications
+- name: Notify Slack about success
+  <<: [*environment, *success_slack_message_commands]
+  when:
+      branch:
+      - dev
+      - stage
+      - master
+      status:
+      - success
+
+- name: Notify Slack about failure
+  <<: [*environment, *error_slack_message_commands]
+  when:
+      branch:
+      - dev
+      - stage
+      - master
+      status:
+      - failure
+
+# Pull Docker secrets
+image_pull_secrets:
+- dockerconfigjson

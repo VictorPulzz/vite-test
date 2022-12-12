@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import './reset.scss';
+@import './fonts.scss';
+
+:root {
+  --accent-color: 209 78% 48%;
+  --primary-color: 230 29% 20%;
+  --white-color: 0 0% 100%;
+
+  --black-1-color: 180 3% 6%;
+  --black-2-color: 220 8% 17%;
+
+  --gray-1-color: 240 3% 45%;
+  --gray-2-color: 240 6% 60%;
+  --gray-3-color: 240 11% 75%;
+  --gray-4-color: 240 21% 86%;
+  --gray-5-color: 207 28% 92%;
+  --gray-6-color: 240 19% 94%;
+  --gray-7-color: 240 29% 97%;
+
+  --red-color: 0 84% 61%;
+  --green-color: 145 63% 42%;
+
+  --h1-font-size: 2.26rem;
+  --h1-line-height: 3.2rem;
+
+  --h2-font-size: 1.93rem;
+  --h2-line-height: 2.8rem;
+
+  --h3-font-size: 1.66rem;
+  --h3-line-height: 2.4rem;
+
+  --h4-font-size: 1.33rem;
+  --h4-line-height: 2.13rem;
+
+  --p1-font-size: 1rem;
+  --p1-line-height: 1.6rem;
+
+  --p2-font-size: 0.93rem;
+  --p2-line-height: 1.53rem;
+
+  --p3-font-size: 0.86rem;
+  --p3-line-height: 1.53rem;
+
+  --p4-font-size: 0.8rem;
+  --p4-line-height: 1.46rem;
+
+  --c1-font-size: 0.73rem;
+  --c1-line-height: 1.26rem;
+
+  --c2-font-size: 0.66rem;
+  --c2-line-height: 1.06rem;
+}
+
+html {
+  font-size: 15px;
+}
+
+body {
+  width: 100%;
+  min-width: 1180px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  color: hsl(var(--black-1-color));
+}
+
+@layer utilities {
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .absolute-y-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+@layer components {
+  .dropdown {
+    &__menu {
+      @apply bg-white border border-solid border-gray-5 shadow-4 rounded-md py-1;
+    }
+
+    &__option {
+      padding: 0.8rem 1rem;
+      cursor: pointer;
+      word-break: break-word;
+    }
+
+    &__option-hover {
+      @apply bg-gray-6;
+    }
+
+    &__option-label {
+      @apply text-c1 font-semibold;
+    }
+  }
+}
