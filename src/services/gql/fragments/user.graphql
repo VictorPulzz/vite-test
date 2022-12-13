@@ -1,6 +1,5 @@
-fragment AuthorizedUser on UserType {
+fragment AuthorizedUser on EmployeeType {
   email
   firstName
   lastName
-  phone
 }
