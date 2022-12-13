@@ -3,8 +3,10 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { MainPage } from '~/view/pages/Main';
+import { DocumentsPage } from '~/view/pages/Documents';
+import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
+import { ProjectsPage } from '~/view/pages/Projects';
 import { SignInPage } from '~/view/pages/SignIn';
 
 const authRoutes: RouteObject[] = [
@@ -17,7 +19,15 @@ const authRoutes: RouteObject[] = [
 const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.HOME,
-    element: <MainPage />,
+    element: <HomePage />,
+  },
+  {
+    path: ROUTES.DOCUMENTS,
+    element: <DocumentsPage />,
+  },
+  {
+    path: ROUTES.PROJECTS,
+    element: <ProjectsPage />,
   },
 ];
 
