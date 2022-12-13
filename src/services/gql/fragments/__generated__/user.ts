@@ -3,18 +3,16 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 
 import { gql } from '@apollo/client';
 export type AuthorizedUserFragment = {
-  __typename?: 'UserType';
+  __typename?: 'EmployeeType';
   email: string;
-  firstName: string;
-  lastName: string;
-  phone?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
 };
 
 export const AuthorizedUserFragmentDoc = gql`
-  fragment AuthorizedUser on UserType {
+  fragment AuthorizedUser on EmployeeType {
     email
     firstName
     lastName
-    phone
   }
 `;

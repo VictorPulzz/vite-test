@@ -1,6 +1,6 @@
 mutation RefreshTokens($input: RefreshTokenInput!) {
-    tokens: refreshToken(data: $input) {
-        access: accessToken
-        refresh: refreshToken
-    }
+  tokens: tokenRefresh(data: $input) {
+    access: accessToken
+    refresh: refreshToken
+  }
 }

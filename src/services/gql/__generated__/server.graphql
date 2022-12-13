@@ -3,392 +3,58 @@ schema {
   mutation: Mutation
 }
 
-input ActiveInput {
-  id: Int!
-  isActive: Boolean!
-}
-
-type BookingByEmployeeType {
-  appointments: [BookingType!]!
-  doctor: EmployeeShotType!
-}
-
-input BookingFilter {
-  clinicId: Int = null
-  date: Date = null
-  status: BookingStatus = null
-  statusExclude: BookingStatus = null
-}
-
-input BookingInput {
-  clientTreatment: ClientTreatmentInput = null
-  clinicId: Int = null
-  comment: String = null
-  date: Date!
-  doctorId: Int = null
-  durationId: Int = null
-  id: Int = null
-  status: BookingStatus! = pending
-  time: Time!
-}
-
-enum BookingOrder {
-  client
-  clinic
-  date
-  practitioner
-  time
-}
-
-input BookingOrderFieldInput {
-  direction: OrderDirectionChoice!
-  field: BookingOrder!
-}
-
-enum BookingStatus {
-  canceled
-  confirmed
-  consulting
-  finished
-  pending
-  ready
-  reminder_confirmed
-  reminder_sent
-  waiting
-}
-
-input BookingStatusInput {
-  id: Int!
-  status: BookingStatus!
-}
-
-type BookingType {
-  clientTreatment: ClientTreatmentType!
-  clinic: WarehouseViewType!
-  comment: String
-  date: Date!
-  doctor: EmployeeShotType
-  duration: DurationType!
-  id: Int!
-  status: BookingStatus!
-  time: Time!
-}
-
-type BookingTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [BookingType!]!
-}
-
-type CategoryType {
+type DepartmentType {
   id: Int!
   name: String!
-}
-
-input ClientFilter {
-  age: IntMatchingFilter = null
-  gender: GenderType = null
-  isActive: Boolean = null
-}
-
-input ClientInput {
-  address: String = null
-  allergies: String = null
-  dateOfBirth: Date!
-  gender: GenderType = null
-  id: Int = null
-  isNew: Boolean! = true
-  medications: String = null
-  occupation: String = null
-  preferredPractitioners: [Int!] = null
-  problems: String = null
-  user: UserInput!
-  zipcode: String!
-}
-
-enum ClientOrder {
-  date_of_birth
-  email
-  full_name
-  id
-  phone
-  status
-}
-
-input ClientOrderFieldInput {
-  direction: OrderDirectionChoice!
-  field: ClientOrder!
-}
-
-input ClientTreatmentInput {
-  clientId: Int = null
-  confirmedNotPregnant: Boolean = null
-  discussedBruising: Boolean = null
-  discussedLongevity: Boolean = null
-  id: Int = null
-  totalBill: Float = null
-  treatmentId: Int = null
-}
-
-type ClientTreatmentType {
-  client: ClientType!
-  confirmedNotPregnant: Boolean
-  discussedBruising: Boolean
-  discussedLongevity: Boolean
-  id: Int!
-  totalBill: Float
-  treatment: TreatmentShotType!
-}
-
-type ClientType {
-  address: String
-  allergies: String
-  dateOfBirth: Date
-  gender: GenderType
-  id: Int!
-  isNew: Boolean!
-  medications: String
-  occupation: String
-  preferredPractitioners: [EmployeeShotType!]!
-  problems: String
-  user: UserType!
-  zipcode: String
-}
-
-type ClientTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [ClientType!]!
-}
-
-type ColorType {
-  hex: String!
-  id: Int!
-  name: String!
-}
-
-input ConsumablesInput {
-  defaultQty: Boolean = true
-  id: Int = null
-  name: String = null
-  productId: Int = null
-  qty: Int = null
-  requireInput: Boolean = true
-  variations: [Int!]!
-}
-
-type ConsumablesType {
-  defaultQty: Boolean
-  id: Int!
-  name: String
-  product: ProductDetailType
-  qty: Int
-  requireInput: Boolean
-  variations: [VariationType!]!
-}
-
-enum CorrespondenceStatus {
-  sent
-  waiting
-}
-
-enum CorrespondenceType {
-  email
-  sms
-}
-
-"""
-Date (isoformat)
-"""
-scalar Date
-
-input DateMatchingFilter {
-  eq: Date = null
-  gt: Date = null
-  lt: Date = null
-}
-
-"""
-Date with time (isoformat)
-"""
-scalar DateTime
-
-enum DayChoice {
-  friday
-  monday
-  saturday
-  sunday
-  thursday
-  tuesday
-  wednesday
-}
-
-type DurationType {
-  id: Int!
-  name: String!
-  value: Int
-}
-
-input EmployeeFilter {
-  groupId: [Int!] = null
-  isActive: Boolean = null
-}
-
-type EmployeeGroupType {
-  id: Int!
-  name: String
 }
 
 input EmployeeInput {
-  accountNumber: String = null
-  bankAccountName: String = null
-  billingAddress: String = null
-  bsb: String = null
-  groupId: Int!
-  id: Int = null
-  notificationSettings: NotificationSettingsInput = null
-  permissions: PermissionsInput = null
-  user: UserInput!
-}
-
-enum EmployeeOrder {
-  email
-  full_name
-  group
-  phone
-  status
-}
-
-input EmployeeOrderFieldInput {
-  direction: OrderDirectionChoice!
-  field: EmployeeOrder!
-}
-
-type EmployeeShotType {
-  accountNumber: String
-  bankAccountName: String
-  billingAddress: String
-  bsb: String
-  group: EmployeeGroupType!
-  id: Int!
-  user: UserType!
+  awsUsername: String = null
+  bitbucketId: String = null
+  department: IDInput = null
+  email: String = null
+  firstName: String = null
+  gitlabUserId: String = null
+  gitlabUsername: String = null
+  isActive: Boolean = null
+  isDeveloper: Boolean = null
+  isGitAdmin: Boolean = null
+  isSlackAdmin: Boolean = null
+  isSuperuser: Boolean = null
+  lastName: String = null
+  notes: String = null
+  passwordToken: String = null
+  slackUserId: String = null
 }
 
 type EmployeeType {
-  accountNumber: String
-  bankAccountName: String
-  billingAddress: String
-  bsb: String
-  group: EmployeeGroupType!
-  id: Int!
-  notificationSettings: NotificationSettingsType!
-  permissions: PermissionsType!
-  user: UserType!
-}
-
-type EmployeeTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [EmployeeType!]!
-}
-
-type ForgotPassword {
+  awsUsername: String
+  bitbucketId: String
+  department: DepartmentType
   email: String!
-  message: String!
-}
-
-input ForgotPasswordInput {
-  email: String!
-}
-
-input FormFilter {
-  templateId: Int = null
-  workflowId: Int = null
-}
-
-input FormInput {
-  id: Int = null
-  isActive: Boolean = true
-  items: [FormItemInput!] = null
-  name: String!
-}
-
-type FormItemDetailType {
-  choices: [String!]
-  id: Int!
-  order: Int
-  type: FormItemType!
-  value: String!
-}
-
-input FormItemInput {
-  choices: [String!] = null
-  id: Int = null
-  order: Int = null
-  type: FormItemType!
-  value: String!
-}
-
-enum FormItemType {
-  credit_card
-  dermal
-  multiple_choice
-  paragraph
-  signature
-  single_choice
-  title
-}
-
-type FormType {
-  id: Int!
+  firstName: String
+  fullName: String!
+  gitlabUserId: String
+  gitlabUsername: String
+  id: String!
   isActive: Boolean
-  items: [FormItemDetailType!]
-  name: String!
-  template: String
+  isDeveloper: Boolean
+  isGitAdmin: Boolean
+  isSlackAdmin: Boolean
+  isSuperuser: Boolean
+  lastName: String
+  notes: String
+  passwordToken: String
+  slackUserId: String
 }
 
-type FormTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [FormType!]!
+enum GitPlatformEnum {
+  BITBUCKET
+  GITLAB
 }
 
-enum GenderType {
-  female
-  male
-}
-
-type ImageType {
-  fileName: String!
-  size: Int!
-  url: String!
-}
-
-input IntMatchingFilter {
-  eq: Int = null
-  gt: Int = null
-  lt: Int = null
-}
-
-type Login {
-  accessToken: String!
-  refreshToken: String!
-  user: UserType!
-}
-
-type Login2FA {
-  message: String!
-  setup2FA: Setup2FA
-}
-
-input Login2FAInput {
-  code: String!
-  email: String!
-  password: String!
+input IDInput {
+  id: Int!
 }
 
 input LoginInput {
@@ -396,717 +62,114 @@ input LoginInput {
   password: String!
 }
 
-type Message {
-  message: String!
-}
-
-input MessageFilter {
-  clientId: Int = null
-  date: DateMatchingFilter = null
-}
-
-input MessageInput {
-  clientId: Int!
-  text: String!
-}
-
-input MessageStatusInput {
-  id: Int!
-  status: CorrespondenceStatus!
+type LoginSuccessType {
+  accessToken: String!
+  refreshToken: String!
+  user: EmployeeType!
 }
 
 type MessageType {
-  client: ClientType!
-  createdAt: DateTime!
-  employee: EmployeeShotType
-  id: Int!
-  status: CorrespondenceStatus!
-  text: String!
-  to: String!
-  type: CorrespondenceType!
-}
-
-type MessageTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [MessageType!]!
+  message: String!
 }
 
 type Mutation {
-  bookingChangeStatus(data: BookingStatusInput!): BookingType!
-  bookingCreateUpdate(data: BookingInput!): BookingType!
-  clientChangeStatus(data: ActiveInput!): ClientType!
-  clientCreateUpdate(data: ClientInput!): ClientType!
-  employeeChangeStatus(data: ActiveInput!): EmployeeType!
-  employeeCreateUpdate(data: EmployeeInput!): EmployeeType!
-  forgotPassword(data: ForgotPasswordInput!): ForgotPassword!
-  formCreateUpdate(data: FormInput!): FormType!
-  login(data: LoginInput!): Login2FA!
-  login2fa(data: Login2FAInput!): Login!
-  messageChangeStatus(data: MessageStatusInput!): MessageType!
-  messageSend(data: MessageInput!): MessageType!
-  productCreateUpdate(data: ProductInput!): ProductDetailType!
-  refreshToken(data: RefreshTokenInput!): Login!
-  resetPassword(data: ResetPasswordInput!): Message!
-  sendBackupCodes(data: SendBackupCodesInput!): Register!
-  supplierCreateUpdate(data: SupplierInput!): SupplierType!
-  treatmentCreateUpdate(data: TreatmentInput!): TreatmentDetailType!
-  warehouseChangeStatus(data: ActiveInput!): WarehouseViewType!
-  warehouseCreateUpdate(data: WarehouseInput!): WarehouseViewType!
-  workflowCreateUpdate(data: WorkflowInput!): WorkflowType!
+  """
+  Employee deletion
+  """
+  employeeDelete: MessageType!
+  """
+  Employee updating
+  """
+  employeeUpdate(data: EmployeeInput!): EmployeeType!
+  """
+  Login
+  """
+  login(data: LoginInput!): LoginSuccessType!
+  """
+  Project creation or updating by id
+  """
+  project(data: ProjectInput!): ProjectType!
+  """
+  Project deletion
+  """
+  projectDelete(data: IDInput!): MessageType!
+  """
+  Employee creation
+  """
+  signup(data: LoginInput!): MessageType!
+  """
+  Refreshing of tokens
+  """
+  tokenRefresh(data: RefreshTokenInput!): LoginSuccessType!
 }
 
-input NotificationSettingsInput {
-  appointmentCancellations: Boolean = true
-  newAppointments: Boolean! = true
-  newBooking: Boolean! = true
-  newClient: Boolean! = true
-  newInventory: Boolean! = true
-  newInvoices: Boolean! = true
-  newOrdersArrived: Boolean! = true
-  newOrdersCreated: Boolean! = true
-  outStock: Boolean! = true
-  userId: Int = null
-}
-
-type NotificationSettingsType {
-  appointmentCancellations: Boolean
-  newAppointments: Boolean!
-  newBooking: Boolean!
-  newClient: Boolean!
-  newInventory: Boolean!
-  newInvoices: Boolean!
-  newOrdersArrived: Boolean!
-  newOrdersCreated: Boolean!
-  outStock: Boolean!
-  userId: Int
-}
-
-enum OrderDirectionChoice {
-  asc
-  desc
-}
-
-input PaginationInput {
-  limit: Int = 10
-  offset: Int = 0
-}
-
-input PermissionsInput {
-  addAppointments: Boolean! = true
-  addClients: Boolean! = true
-  addClinics: Boolean! = true
-  addForms: Boolean! = true
-  addProducts: Boolean! = true
-  addSuppliers: Boolean! = true
-  addTreatments: Boolean! = true
-  addUsers: Boolean! = true
-  addWorkflows: Boolean! = true
-  cancelAppointments: Boolean! = true
-  confirmBooking: Boolean! = true
-  createOrders: Boolean! = true
-  editAppointments: Boolean! = true
-  editClients: Boolean! = true
-  editRosters: Boolean! = true
-  performInventory: Boolean! = true
-  userId: Int = null
-  viewAnalytics: Boolean! = true
-  viewAppointmentsOtherPractitioners: Boolean! = true
-  viewClients: Boolean! = true
-  viewClientsCorrespondence: Boolean = true
-  viewClientsDocuments: Boolean! = true
-  viewClientsInvoices: Boolean! = true
-  viewClientsTreatment: Boolean! = true
-  viewClinics: Boolean! = true
-  viewForms: Boolean! = true
-  viewInventory: Boolean! = true
-  viewItems: Boolean! = true
-  viewMissing: Boolean! = true
-  viewOrders: Boolean = true
-  viewProducts: Boolean! = true
-  viewRosters: Boolean! = true
-  viewSuppliers: Boolean! = true
-  viewTreatments: Boolean! = true
-  viewUsers: Boolean! = true
-  viewWorkflows: Boolean! = true
-}
-
-type PermissionsType {
-  addAppointments: Boolean!
-  addClients: Boolean!
-  addClinics: Boolean!
-  addForms: Boolean!
-  addProducts: Boolean!
-  addSuppliers: Boolean!
-  addTreatments: Boolean!
-  addUsers: Boolean!
-  addWorkflows: Boolean!
-  cancelAppointments: Boolean!
-  confirmBooking: Boolean!
-  createOrders: Boolean!
-  editAppointments: Boolean!
-  editClients: Boolean!
-  editRosters: Boolean!
-  performInventory: Boolean!
-  userId: Int
-  viewAnalytics: Boolean!
-  viewAppointmentsOtherPractitioners: Boolean!
-  viewClients: Boolean!
-  viewClientsCorrespondence: Boolean
-  viewClientsDocuments: Boolean!
-  viewClientsInvoices: Boolean!
-  viewClientsTreatment: Boolean!
-  viewClinics: Boolean!
-  viewForms: Boolean!
-  viewInventory: Boolean!
-  viewItems: Boolean!
-  viewMissing: Boolean!
-  viewOrders: Boolean
-  viewProducts: Boolean!
-  viewRosters: Boolean!
-  viewSuppliers: Boolean!
-  viewTreatments: Boolean!
-  viewUsers: Boolean!
-  viewWorkflows: Boolean!
-}
-
-enum PriceType {
-  female
-  male
-  neutral
-}
-
-type ProductDetailType {
-  availableClinics: [WarehouseViewType!]!
-  category: CategoryType
-  code: String
-  costPrice: Float!
-  id: Int!
-  image: ImageType
-  isActive: Boolean
-  name: String!
-  orderedPacks: Boolean
-  orderingInstructions: String
-  retailPrice: Float!
-  scaledPricing: [ScaledPricingType!]!
-  stockTrackedBy: ProductTrackedType!
-  supplier: SupplierType
-  supplierCode: String
-  tax: Float
-  unitMeasure: UnitMeasureType
-}
-
-input ProductFilter {
-  categoryId: Int = null
-  isActive: Boolean = null
-  supplierId: Int = null
-}
-
-input ProductInput {
-  availableClinics: [Int!] = null
-  categoryId: Int = null
-  code: String = null
-  costPrice: Float!
+input ProjectInput {
+  awsLogsSlug: String = null
+  gitGroupId: String = null
+  gitPlatform: GitPlatformEnum = null
+  gitSlug: String = null
+  gitUrl: String = null
   id: Int = null
-  image: Upload = null
-  isActive: Boolean = true
-  name: String!
-  orderedPacks: Boolean = true
-  orderingInstructions: String = null
-  retailPrice: Float!
-  scaledPricing: [ScaledPricingInput!] = null
-  stockTrackedBy: ProductTrackedType!
-  supplierCode: String = null
-  supplierId: Int!
-  tax: Float = null
-  unitMeasureId: Int = null
+  name: String = null
+  slackBuildsChannelId: String = null
+  slackBuildsChannelUrl: String = null
+  slackChannelId: String = null
+  slackChannelUrl: String = null
+  slackErrorsChannelId: String = null
+  slackErrorsChannelUrl: String = null
+  status: StatusEnum = null
 }
 
-enum ProductOrder {
-  code
-  cost_price
-  is_active
-  name
-  retail_price
-  supplier_name
-}
-
-input ProductOrderFieldInput {
-  direction: OrderDirectionChoice!
-  field: ProductOrder!
-}
-
-type ProductShotType {
-  code: String
-  costPrice: Float!
+type ProjectType {
+  awsLogsSlug: String
+  createdBy: EmployeeType!
+  gitGroupId: String
+  gitPlatform: GitPlatformEnum
+  gitSlug: String
+  gitUrl: String
   id: Int!
-  image: ImageType
-  isActive: Boolean
-  name: String!
-  orderedPacks: Boolean
-  orderingInstructions: String
-  retailPrice: Float!
-  stockTrackedBy: ProductTrackedType!
-  supplierCode: String
-  tax: Float
-}
-
-enum ProductTrackedType {
-  individual
-  shared
-}
-
-type ProductType {
-  category: CategoryType
-  code: String
-  costPrice: Float!
-  id: Int!
-  image: ImageType
-  isActive: Boolean
-  name: String!
-  orderedPacks: Boolean
-  orderingInstructions: String
-  retailPrice: Float!
-  stockTrackedBy: ProductTrackedType!
-  supplier: SupplierType!
-  supplierCode: String
-  tax: Float
-  total: Int
-}
-
-type ProductTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [ProductType!]!
+  name: String
+  slackBuildsChannelId: String
+  slackBuildsChannelUrl: String
+  slackChannelId: String
+  slackChannelUrl: String
+  slackErrorsChannelId: String
+  slackErrorsChannelUrl: String
+  status: StatusEnum
 }
 
 type Query {
-  appointmentByEmployee(filters: BookingFilter = null): [BookingByEmployeeType!]!
-  appointmentList(
-    filters: BookingFilter = null
-    ordering: [BookingOrderFieldInput!] = null
-    pagination: PaginationInput!
-  ): BookingTypePagination!
-  categoryList: [CategoryType!]!
-  clientDetails(clientId: Int!): ClientType!
-  clientList(
-    filters: ClientFilter = null
-    ordering: [ClientOrderFieldInput!] = null
-    pagination: PaginationInput!
-    search: String = null
-  ): ClientTypePagination!
-  colorList: [ColorType!]!
-  durationList: [DurationType!]!
-  employeeDetails(employeeId: Int!): EmployeeType!
-  employeeGroupsList: [EmployeeGroupType!]!
-  employeeList(
-    filters: EmployeeFilter = null
-    ordering: [EmployeeOrderFieldInput!] = null
-    pagination: PaginationInput!
-    search: String = null
-  ): EmployeeTypePagination!
-  formList(
-    filters: FormFilter = null
-    pagination: PaginationInput!
-    search: String = null
-  ): FormTypePagination!
-  me: UserType!
-  messageList(
-    filters: MessageFilter = null
-    pagination: PaginationInput!
-    search: String = null
-  ): MessageTypePagination!
-  productDetails(productId: Int!): ProductDetailType!
-  productList(
-    filters: ProductFilter = null
-    ordering: [ProductOrderFieldInput!] = null
-    pagination: PaginationInput!
-    search: String = null
-  ): ProductTypePagination!
-  stockItemList(
-    filters: ProductFilter = null
-    ordering: [ProductOrderFieldInput!] = null
-    pagination: PaginationInput!
-    search: String = null
-  ): StockItemTypePagination!
-  supplierList(pagination: PaginationInput!, search: String = null): SupplierTypePagination!
-  treatmentDetails(treatmentId: Int!): TreatmentDetailType!
-  treatmentList(
-    filters: TreatmentFilter = null
-    pagination: PaginationInput!
-    search: String = null
-  ): TreatmentTypePagination!
-  unitMeasureList: [DurationType!]!
-  warehouseDetails(warehouseId: Int!): WarehouseViewType!
-  warehouseList(
-    filters: WarehouseFilter = null
-    ordering: [WarehouseOrderFieldInput!] = null
-    pagination: PaginationInput!
-    search: String = null
-  ): WarehouseViewTypePagination!
-  workflowList(pagination: PaginationInput!, search: String = null): WorkflowTypePagination!
+  """
+  Getting list of employees' roles
+  """
+  departmentsList: [DepartmentType!]!
+  """
+  Getting list of employees
+  """
+  employeesList: [EmployeeType!]!
+  """
+  Getting authenticated user
+  """
+  me: EmployeeType!
+  """
+  Getting project by id
+  """
+  project(data: IDInput!): ProjectType!
+  """
+  Getting list of projects
+  """
+  projectsList: [ProjectType!]!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
 }
 
-type Register {
-  message: String!
-}
-
-input ResetPasswordInput {
-  password: String!
-  token: String!
-}
-
-input ScaledPricingInput {
-  fromValue: Int!
-  id: Int = null
-  price: Float!
-  toValue: Int!
-}
-
-type ScaledPricingType {
-  fromValue: Int!
-  id: Int
-  price: Float!
-  toValue: Int!
-}
-
-input SendBackupCodesInput {
-  codes: [String!]!
-  email: String!
-}
-
-type Setup2FA {
-  backupCodes: [String!]!
-  qrCode: String!
-}
-
-type StockItemType {
-  category: CategoryType
-  code: String
-  costPrice: Float!
-  id: Int!
-  image: ImageType
-  isActive: Boolean
-  name: String!
-  orderedPacks: Boolean
-  orderingInstructions: String
-  retailPrice: Float!
-  stockTrackedBy: ProductTrackedType!
-  stocks: [StockRemnants!]
-  supplier: SupplierType!
-  supplierCode: String
-  tax: Float
-  total: Int
-}
-
-type StockItemTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [StockItemType!]!
-}
-
-type StockRemnants {
-  qty: Int!
-  warehouse: WarehouseViewType!
-}
-
-input SupplierInput {
-  email: String!
-  id: Int = null
-  name: String!
-  phone: String = null
-}
-
-type SupplierType {
-  email: String!
-  id: Int!
-  name: String!
-  phone: String
-  products: [ProductShotType!]!
-  productsCount: Int!
-}
-
-type SupplierTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [SupplierType!]!
-}
-
-"""
-Time (isoformat)
-"""
-scalar Time
-
-enum TitleChoice {
-  dr
-  miss
-  mr
-  mrs
-  ms
-  professor
-  sc
-}
-
-type TreatmentDetailType {
-  aftercare: Boolean
-  aftercareContent: String
-  aftercareReminder: Boolean
-  category: CategoryType
-  clinicalGuidelines: String
-  clinicalScript: Boolean
-  consentInterval: Int
-  consumables: [ConsumablesType!]
-  defaultVariation: VariationType
-  defaultVariationName: String!
-  fullDescription: String
-  id: Int!
-  image: ImageType
-  isActive: Boolean
-  moreInformation: String
-  name: String!
-  photoInterval: Int
-  preTreatmentContent: String
-  retreatmentReminderTemplate: String
-  sendingProductsAftercare: Boolean
-  shortDescription: String
-  unit: UnitMeasureType
-  variations: [VariationType!]!
-}
-
-input TreatmentFilter {
-  categoryId: Int = null
-}
-
-input TreatmentInput {
-  aftercare: Boolean = true
-  aftercareContent: String = null
-  aftercareReminder: Boolean = true
-  categoryId: Int = null
-  clinicalGuidelines: String = null
-  clinicalScript: Boolean = true
-  consentInterval: Int = null
-  consumables: [ConsumablesInput!] = null
-  defaultVariationId: Int = null
-  defaultVariationName: String!
-  fullDescription: String = null
-  id: Int = null
-  image: Upload = null
-  isActive: Boolean = true
-  moreInformation: String = null
-  name: String!
-  photoInterval: Int = null
-  preTreatmentContent: String = null
-  retreatmentReminderTemplate: String = null
-  sendingProductsAftercare: Boolean = false
-  shortDescription: String = null
-  unitId: Int = null
-  variations: [VariationInput!] = null
-}
-
-type TreatmentShotType {
-  category: CategoryType!
-  id: Int!
-  name: String!
-  variationsCount: Int!
-}
-
-type TreatmentType {
-  aftercare: Boolean
-  aftercareContent: String
-  aftercareReminder: Boolean
-  category: CategoryType!
-  clinicalGuidelines: String
-  clinicalScript: Boolean
-  consentInterval: Int
-  defaultVariationName: String!
-  fullDescription: String
-  id: Int!
-  image: ImageType
-  isActive: Boolean
-  moreInformation: String
-  name: String!
-  photoInterval: Int
-  preTreatmentContent: String
-  retreatmentReminderTemplate: String
-  sendingProductsAftercare: Boolean
-  shortDescription: String
-  variationsCount: Int
-}
-
-type TreatmentTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [TreatmentType!]!
-}
-
-type UnitMeasureType {
-  id: Int!
-  name: String!
-}
-
-scalar Upload
-
-input UserInput {
-  email: String!
-  firstName: String!
-  isActive: Boolean = true
-  lastName: String!
-  password: String = null
-  phone: String!
-  photo: Upload = null
-  title: TitleChoice = null
-}
-
-type UserType {
-  email: String!
-  firstName: String!
-  fullName: String!
-  isActive: Boolean!
-  lastName: String!
-  middleName: String
-  notificationSettings: NotificationSettingsType
-  permissions: PermissionsType
-  phone: String
-  photo: ImageType
-  title: TitleChoice
-}
-
-input VariationInput {
-  colourId: Int = null
-  defaultDurationId: Int = null
-  id: Int = null
-  isActive: Boolean = true
-  name: String!
-  prices: [VariationPriceInput!] = null
-}
-
-input VariationPriceInput {
-  cost: Float!
-  price: Float!
-  tax: Float!
-  type: PriceType!
-}
-
-type VariationPriceType {
-  cost: Float!
-  price: Float!
-  tax: Float!
-  type: PriceType!
-}
-
-type VariationType {
-  colour: ColorType
-  defaultDuration: DurationType!
-  id: Int!
-  isActive: Boolean
-  name: String!
-  prices: [VariationPriceType!]
-}
-
-input WarehouseFilter {
-  isActive: Boolean = null
-  type: WarehouseType = null
-}
-
-input WarehouseInput {
-  address: String = null
-  id: Int = null
-  isActive: Boolean! = true
-  name: String!
-  type: WarehouseType!
-  workHours: [WorkHourInput!] = null
-}
-
-enum WarehouseOrder {
-  address
-  is_active
-  name
-  type
-  work_hours
-}
-
-input WarehouseOrderFieldInput {
-  direction: OrderDirectionChoice!
-  field: WarehouseOrder!
-}
-
-enum WarehouseType {
-  clinic
-  warehouse
-}
-
-type WarehouseViewType {
-  address: String
-  id: Int!
-  isActive: Boolean!
-  name: String!
-  type: WarehouseType!
-  workHours: [WorkHourType!]
-}
-
-type WarehouseViewTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [WarehouseViewType!]!
-}
-
-input WorkHourInput {
-  day: DayChoice!
-  fromTime: Time = null
-  toTime: Time = null
-  work: Boolean = true
-}
-
-type WorkHourType {
-  day: DayChoice!
-  fromTime: Time
-  toTime: Time
-  work: Boolean!
-}
-
-input WorkflowFormInput {
-  consent: Boolean = false
-  default: Boolean = false
-  formId: Int!
-  order: Int = null
-}
-
-type WorkflowFormType {
-  consent: Boolean
-  default: Boolean
-  form: FormType
-  order: Int
-}
-
-input WorkflowInput {
-  attachedForms: [WorkflowFormInput!] = null
-  attachedTreatments: [Int!] = null
-  completeById: Int = null
-  id: Int = null
-  name: String!
-}
-
-type WorkflowType {
-  attachedForms: [WorkflowFormType!]!
-  attachedTreatments: [TreatmentShotType!]!
-  completeBy: EmployeeShotType!
-  id: Int!
-  name: String!
-}
-
-type WorkflowTypePagination {
-  count: Int!
-  limit: Int!
-  offset: Int!
-  results: [WorkflowType!]!
+enum StatusEnum {
+  DESIGN
+  FINISHED
+  IN_PROGRESS
+  ON_HOLD
+  STOPPED
+  SUPPORT
 }
