@@ -1,0 +1,18 @@
+.aside {
+  @apply flex-center;
+
+  width: 32rem;
+  background-color: hsl(var(--primary-color));
+  background-image: url('~/view/assets/images/aside-bg-pattern.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &__logo {
+    width: 7.8rem;
+    height: 2.43rem;
+  }
+}
+
+.children {
+  width: 24rem;
+}

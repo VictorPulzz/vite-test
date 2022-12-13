@@ -1,24 +1,34 @@
 import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
+import { TextLink } from '@ui/components/common/TextLink';
 import { PasswordField } from '@ui/components/form/PasswordField';
 import { TextField } from '@ui/components/form/TextField';
 import { InputSize } from '@ui/components/form/TextInput';
 import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { ROUTES } from '~/constants/routes';
+import { AuthLayout } from '~/view/layouts/AuthLayout';
 
 import { useSignInForm } from './hooks/useSignInForm';
 
 export const SignInPage: FC = () => {
-  const { form, handleSubmit } = useSignInForm();
+  const navigate = useNavigate();
+  // TODO change onSubmitSuccessful navigate route
+  const { form, handleSubmit } = useSignInForm({
+    onSubmitSuccessful: () => navigate(ROUTES.HOME),
+  });
 
   return (
-    <div className="flex-1 flex-center">
-      <form onSubmit={handleSubmit} className="w-[500px]">
-        <h1 className="mb-4">Log in</h1>
+    <AuthLayout>
+      <form onSubmit={handleSubmit}>
+        <h1 className="text-h2 mb-4 text-center">Log in</h1>
         <TextField
           name="email"
           control={form.control}
           label="Email"
           size={InputSize.LARGE}
           placeholder="Enter email"
+          autoFocus
         />
         <PasswordField
           name="password"
@@ -27,15 +37,21 @@ export const SignInPage: FC = () => {
           size={InputSize.LARGE}
           placeholder="Enter password"
         />
+        <TextLink
+          // to={ROUTES.FORGOT_PASSWORD}
+          className="text-p2 mt-2 underline text-gray-1"
+        >
+          Forgot password?
+        </TextLink>
         <Button
-          type="submit"
+          label="Log in"
           variant={ButtonVariant.PRIMARY}
           size={ButtonSize.LARGE}
-          label="Sign in"
+          type="submit"
           isLoading={form.formState.isSubmitting}
           className="mt-7"
         />
       </form>
-    </div>
+    </AuthLayout>
   );
 };
