@@ -1,5 +1,4 @@
 import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
-import { TextLink } from '@ui/components/common/TextLink';
 import { PasswordField } from '@ui/components/form/PasswordField';
 import { TextField } from '@ui/components/form/TextField';
 import { InputSize } from '@ui/components/form/TextInput';
@@ -13,7 +12,7 @@ import { useSignInForm } from './hooks/useSignInForm';
 
 export const SignInPage: FC = () => {
   const navigate = useNavigate();
-  // TODO change onSubmitSuccessful navigate route
+
   const { form, handleSubmit } = useSignInForm({
     onSubmitSuccessful: () => navigate(ROUTES.HOME),
   });
@@ -37,12 +36,6 @@ export const SignInPage: FC = () => {
           size={InputSize.LARGE}
           placeholder="Enter password"
         />
-        <TextLink
-          // to={ROUTES.FORGOT_PASSWORD}
-          className="text-p2 mt-2 underline text-gray-1"
-        >
-          Forgot password?
-        </TextLink>
         <Button
           label="Log in"
           variant={ButtonVariant.PRIMARY}

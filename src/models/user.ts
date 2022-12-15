@@ -1,4 +1,4 @@
 export interface UserProfileModel {
-  id: number;
+  id: string;
   email: string;
 }

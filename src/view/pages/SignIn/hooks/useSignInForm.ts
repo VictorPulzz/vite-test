@@ -6,11 +6,11 @@ import * as yup from 'yup';
 import { formErrors } from '~/constants/form';
 import { LoginInput } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
+import { useAppDispatch } from '~/store/hooks';
+import { setAuth, setUser } from '~/store/modules/user';
 
-// import { useAppDispatch } from '~/store/hooks';
-// import { setCredentials, setSetup2FA } from '~/store/modules/twoFactorAuth';
 // import { passwordValidation } from '~/utils/validations';
-// import { useSignInMutation } from '../__generated__/schema';
+import { useSignInMutation } from '../__generated__/schema';
 
 interface UseSignInFormReturn {
   form: UseFormReturn<LoginInput>;
@@ -28,11 +28,12 @@ const defaultValues: LoginInput = {
 
 const validation = yup.object({
   email: yup.string().email(formErrors.INVALID_EMAIL).required(formErrors.REQUIRED),
+  // TODO add pasword validation
   // password: passwordValidation(),
 });
 
 export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSignInFormReturn {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
   const form = useForm<LoginInput>({
     defaultValues,
@@ -40,25 +41,33 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
     resolver: yupResolver(validation),
   });
 
-  // const [signIn] = useSignInMutation();
+  const [signIn] = useSignInMutation();
 
   const handleSubmit = useCallback(
     async (values: LoginInput) => {
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useSignInForm.ts:47 ~ values', values);
       try {
-        // const { data } = await signIn({
-        //   variables: {
-        //     input: values,
-        //   },
-        // });
-        // if (!data) {
-        //   throw new Error('No data');
-        // }
-        // dispatch(setCredentials(values));
-        // if (data.login.setup2FA) {
-        //   dispatch(setSetup2FA(data.login.setup2FA));
-        // }
+        const { data } = await signIn({
+          variables: {
+            data: values,
+          },
+        });
+        if (!data) {
+          throw new Error('No data');
+        }
+
+        const {
+          user: { id, email },
+          accessToken,
+          refreshToken,
+        } = data.login;
+
+        dispatch(
+          setUser({
+            id,
+            email,
+          }),
+        );
+        dispatch(setAuth({ access: accessToken, refresh: refreshToken }));
         onSubmitSuccessful();
       } catch (e) {
         processGqlErrorResponse<LoginInput>(e, {
@@ -67,7 +76,7 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
         });
       }
     },
-    [form, onSubmitSuccessful],
+    [dispatch, form, onSubmitSuccessful, signIn],
   );
 
   return useMemo(
