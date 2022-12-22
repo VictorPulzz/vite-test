@@ -42,11 +42,11 @@ steps:
   image: samepagelabs/awscli:latest
   environment:
     AWS_ACCESS_KEY_ID:
-      from_secret:
+      from_secret: aws_access_key_id
     AWS_SECRET_ACCESS_KEY:
-      from_secret:
-    S3_URL: s3://
-    CDN_DISTRIBUTION_ID:
+      from_secret: aws_secret_access_key
+    S3_URL: s3://startbutton2-front-dev
+    CDN_DISTRIBUTION_ID: E1YW5364Z9AQIB
   commands:
   - aws s3 rm $S3_URL/previous --recursive
   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
@@ -79,9 +79,9 @@ steps:
   image: samepagelabs/awscli:latest
   environment:
     AWS_ACCESS_KEY_ID:
-      from_secret:
+      from_secret: aws_access_key_id
     AWS_SECRET_ACCESS_KEY:
-      from_secret:
+      from_secret: aws_secret_access_key
     S3_URL: s3://
     CDN_DISTRIBUTION_ID:
   commands:
