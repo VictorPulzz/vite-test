@@ -195,6 +195,11 @@ export enum StatusEnum {
   SUPPORT = 'SUPPORT',
 }
 
+export enum OrderDirectionChoice {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
 export interface PossibleTypesResultData {
   possibleTypes: {
     [key: string]: string[];

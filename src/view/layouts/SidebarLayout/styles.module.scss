@@ -1,0 +1,20 @@
+.sidebar {
+  @apply bg-primary;
+  width: 17.4rem;
+  padding: 1.64rem 0;
+}
+
+.nav {
+  &__link {
+    @apply text-c1 text-white/40;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    line-height: 0.875rem;
+    padding: 0.706rem 0.844rem;
+    position: relative;
+    &--active {
+      @apply bg-white/5 text-white rounded;
+    }
+  }
+}

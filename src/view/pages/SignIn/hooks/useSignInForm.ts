@@ -1,64 +1,82 @@
-import { getErrorData } from '@appello/common/lib/services/rtkQuery';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
-import { z } from 'zod';
+import * as yup from 'yup';
 
+import { formErrors } from '~/constants/form';
+import { LoginInput } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { useAppDispatch } from '~/store/hooks';
 import { setAuth, setUser } from '~/store/modules/user';
-import { passwordValidation } from '~/utils/validations';
 
-const formSchema = z.object({
-  email: z.string().email().min(1),
-  password: passwordValidation(),
-});
-
-type SignInFormValues = z.infer<typeof formSchema>;
+// import { passwordValidation } from '~/utils/validations';
+import { useSignInMutation } from '../__generated__/schema';
 
 interface UseSignInFormReturn {
-  form: UseFormReturn<SignInFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<SignInFormValues>>;
+  form: UseFormReturn<LoginInput>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<LoginInput>>;
 }
 
-const defaultValues: SignInFormValues = {
+interface UseSignInFormProps {
+  onSubmitSuccessful: () => void;
+}
+
+const defaultValues: LoginInput = {
   email: '',
   password: '',
 };
 
-export function useSignInForm(): UseSignInFormReturn {
+const validation = yup.object({
+  email: yup.string().email(formErrors.INVALID_EMAIL).required(formErrors.REQUIRED),
+  // TODO add pasword validation
+  // password: passwordValidation(),
+});
+
+export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSignInFormReturn {
   const dispatch = useAppDispatch();
 
-  const form = useForm<SignInFormValues>({
+  const form = useForm<LoginInput>({
     defaultValues,
     mode: 'onChange',
-    resolver: zodResolver(formSchema),
+    resolver: yupResolver(validation),
   });
 
+  const [signIn] = useSignInMutation();
+
   const handleSubmit = useCallback(
-    async (values: SignInFormValues) => {
-      // todo: remove this block when backend will be ready
-      // start
-      dispatch(setUser({ id: 0, email: 'some@email.com' }));
-      dispatch(setAuth({ access: 'token here', refresh: 'token here' }));
-      return;
-      // end
-
+    async (values: LoginInput) => {
       try {
-        // eslint-disable-next-line
-        console.log(values);
+        const { data } = await signIn({
+          variables: {
+            data: values,
+          },
+        });
+        if (!data) {
+          throw new Error('No data');
+        }
 
-        // dispatch(setUser(data.user));
-        // dispatch(setAuth({ access: data.access, refresh: data.refresh }));
+        const {
+          user: { id, email },
+          accessToken,
+          refreshToken,
+        } = data.login;
+
+        dispatch(
+          setUser({
+            id,
+            email,
+          }),
+        );
+        dispatch(setAuth({ access: accessToken, refresh: refreshToken }));
+        onSubmitSuccessful();
       } catch (e) {
-        processGqlErrorResponse<SignInFormValues>({
-          errors: getErrorData(e),
+        processGqlErrorResponse<LoginInput>(e, {
           fields: ['email', 'password'],
-          setFormError: form.setError,
+          setFieldError: (name, message) => form.setError(name, { message }),
         });
       }
     },
-    [dispatch, form],
+    [dispatch, form, onSubmitSuccessful, signIn],
   );
 
   return useMemo(

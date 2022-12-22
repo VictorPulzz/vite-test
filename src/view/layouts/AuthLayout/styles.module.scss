@@ -1,0 +1,14 @@
+.aside {
+  @apply flex-center;
+  width: 32rem;
+  background-color: hsl(var(--primary-color));
+
+  &__logo {
+    width: 10.25rem;
+    height: 3.375rem;
+  }
+}
+
+.children {
+  width: 24rem;
+}
