@@ -1,19 +1,24 @@
 // import { useSwitchValue } from '@appello/common/lib/hooks';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { EmptyState } from '@ui/components/common/EmptyState';
 import { SearchInput } from '@ui/components/common/SearchInput';
-// import { EmptyState } from '@ui/components/common/EmptyState';
-// import { Table } from '@ui/components/common/Table';
-// import { TableLoader } from '@ui/components/common/TableLoader';
-import React, { FC } from 'react';
+import { Table } from '@ui/components/common/Table';
+import { TableLoader } from '@ui/components/common/TableLoader';
+import React, { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { Sorting } from '~/types';
+import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 // import { PAGE_SIZE } from '~/constants/pagination';
 // import { ROUTES } from '~/constants/routes';
 // import { ClientFilter, ClientOrder } from '~/services/gql/__generated__/globalTypes';
-// import { Sorting } from '~/types';
 // import { isNil } from '~/utils/isNil';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SelectField } from '~/view/ui/components/form/SelectField';
+
+import { useFetchProjectsQuery } from './__generated__/schema';
+import { PROJECTS_TABLE_COLUMNS } from './consts';
 
 // import { useFetchClientsQuery } from './__generated__/schema';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
@@ -22,7 +27,8 @@ import { SelectField } from '~/view/ui/components/form/SelectField';
 export const ProjectsPage: FC = () => {
   const { control } = useForm();
   // const [searchValue, setSearchValue] = useState('');
-  // const [sorting, setSorting] = useState<Sorting<ClientOrder>>([]);
+  // TODO remove any
+  const [sorting, setSorting] = useState<Sorting<any>>([]);
   // const [filter, setFilter] = useState<Nullable<ClientFilter>>(null);
 
   // const filtersCount = useMemo(() => {
@@ -35,37 +41,9 @@ export const ProjectsPage: FC = () => {
   //   off: closeFilterModal,
   // } = useSwitchValue(false);
 
-  // const { data, loading, fetchMore } = useFetchClientsQuery({
-  //   variables: {
-  //     pagination: {
-  //       limit: PAGE_SIZE,
-  //       offset: 0,
-  //     },
-  //     ordering: sorting,
-  //     search: searchValue,
-  //     filters: filter,
-  //   },
-  //   fetchPolicy: 'cache-and-network',
-  // });
+  const { data, loading, fetchMore } = useFetchProjectsQuery();
 
-  const statusOptions = [
-    {
-      label: 'Design',
-      value: 1,
-    },
-    {
-      label: 'In dev',
-      value: 2,
-    },
-    {
-      label: 'On hold',
-      value: 3,
-    },
-    {
-      label: 'Complete',
-      value: 4,
-    },
-  ];
+  const statusOptions = enumToSelectOptions(StatusEnum);
 
   return (
     <SidebarLayout contentClassName="p-6">
@@ -97,22 +75,22 @@ export const ProjectsPage: FC = () => {
           // placeholder="Select status..."
         />
       </div>
-      {/* {loading && <TableLoader className="mt-10" />}
-      {data && data.clientList.results.length === 0 && (
+      {loading && <TableLoader className="mt-10" />}
+      {data && data.projectsList.length === 0 && (
         <EmptyState iconName="users" label="No clients here yet" />
       )}
-      {!loading && data && data.clientList.results.length > 0 && (
+      {!loading && data && data.projectsList.length > 0 && (
         <Table
           className="mt-6"
-          data={data.clientList.results}
-          columns={CLIENTS_TABLE_COLUMNS}
+          data={data.projectsList}
+          columns={PROJECTS_TABLE_COLUMNS}
           sorting={sorting}
           setSorting={setSorting}
           fetchMore={fetchMore}
-          totalCount={data.clientList.count}
+          totalCount={data.projectsList.length}
         />
       )}
-      <ClientsFilterModal
+      {/* <ClientsFilterModal
         isOpen={isFilterModalOpen}
         close={closeFilterModal}
         filter={filter}
