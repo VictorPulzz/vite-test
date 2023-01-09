@@ -4,6 +4,7 @@
 
 @import './reset.scss';
 @import './fonts.scss';
+@import '../ui/styles/index.scss';
 
 @function pxToRem($value) {
   $remValue: ($value / 16) + rem;
