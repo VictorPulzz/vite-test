@@ -1,20 +1,20 @@
 // import { useSwitchValue } from '@appello/common/lib/hooks';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { EmptyState } from '@ui/components/common/EmptyState';
-import { SearchInput } from '@ui/components/common/SearchInput';
 import { Table } from '@ui/components/common/Table';
 import { TableLoader } from '@ui/components/common/TableLoader';
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { Sorting } from '~/types';
+// import { Sorting } from '~/types';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 // import { PAGE_SIZE } from '~/constants/pagination';
 // import { ROUTES } from '~/constants/routes';
 // import { ClientFilter, ClientOrder } from '~/services/gql/__generated__/globalTypes';
 // import { isNil } from '~/utils/isNil';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
+import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
 import { useFetchProjectsQuery } from './__generated__/schema';
@@ -28,7 +28,7 @@ export const ProjectsPage: FC = () => {
   const { control } = useForm();
   // const [searchValue, setSearchValue] = useState('');
   // TODO remove any
-  const [sorting, setSorting] = useState<Sorting<any>>([]);
+  // const [sorting, setSorting] = useState<Sorting<any>>([]);
   // const [filter, setFilter] = useState<Nullable<ClientFilter>>(null);
 
   // const filtersCount = useMemo(() => {
@@ -84,8 +84,8 @@ export const ProjectsPage: FC = () => {
           className="mt-6"
           data={data.projectsList}
           columns={PROJECTS_TABLE_COLUMNS}
-          sorting={sorting}
-          setSorting={setSorting}
+          // sorting={sorting}
+          // setSorting={setSorting}
           fetchMore={fetchMore}
           totalCount={data.projectsList.length}
         />

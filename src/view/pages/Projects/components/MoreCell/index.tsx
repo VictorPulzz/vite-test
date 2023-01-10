@@ -1,9 +1,10 @@
 // import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
-import { Icon } from '@ui/components/common/Icon';
 import React, { FC } from 'react';
 import { toast } from 'react-hot-toast';
+
+import { Icon } from '~/view/ui/components/common/Icon';
 
 // import { useChangeClientStatusMutation } from '~/view/pages/ClientsList/__generated__/schema';
 // import { ProjectResultType } from '../../types';
@@ -40,12 +41,12 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
   const options: DropdownItem[] = [
     {
       label: 'Edit project',
-      icon: 'edit',
+      iconBefore: <Icon name="edit" size={16} />,
       onSelect: () => toast('edit project'),
     },
     {
       label: 'Change status',
-      icon: 'connection',
+      iconBefore: <Icon name="connection" size={16} />,
       items: [
         {
           label: 'Design',
