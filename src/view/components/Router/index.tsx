@@ -38,6 +38,10 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.EDIT_PROJECT,
     element: <CreateOrUpdateProjectPage />,
   },
+  {
+    path: ROUTES.EMPLOYEES,
+    element: <ProjectsPage />,
+  },
 ];
 
 export const Router: FC = () => {

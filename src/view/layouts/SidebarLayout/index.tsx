@@ -29,6 +29,11 @@ const navItems = [
     icon: 'projects',
     link: ROUTES.PROJECTS,
   },
+  {
+    title: 'Emloyees',
+    icon: 'emloyees',
+    link: ROUTES.EMPLOYEES,
+  },
 ];
 
 export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
