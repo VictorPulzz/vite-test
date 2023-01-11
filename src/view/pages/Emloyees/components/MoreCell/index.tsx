@@ -11,6 +11,7 @@ import { Icon } from '~/view/ui/components/common/Icon';
 // TODO need to fix this cell
 // TODO remove any
 export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
+  // TODO remove console.log
   // eslint-disable-next-line no-console
   console.log('🚀 ~ file: index.tsx:13 ~ row', row);
   // const { user } = row.original;

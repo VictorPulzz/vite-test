@@ -34,7 +34,7 @@ export enum EmloyeesPageFilterEnum {
 const emloyeesTestData = [
   {
     fullName: 'Jhon Snow',
-    photo: 'https://picsum.photos/26/26?random=1',
+    photo: null,
     department: 'Frontend',
     email: 'snow@com',
     isActive: true,

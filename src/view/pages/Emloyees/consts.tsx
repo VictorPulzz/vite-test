@@ -9,6 +9,7 @@ import React from 'react';
 // import { ROUTES } from '~/constants/routes';
 // import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
+import { Avatar } from '~/view/components/Avatar';
 
 import { MoreCell } from './components/MoreCell';
 // import { ClientResultType } from './types';
@@ -26,11 +27,7 @@ export const EMPLOYEES_TABLE_COLUMNS = [
     }) => {
       return (
         <div className="flex gap-3 items-center">
-          <img
-            src={photo || photoPlaceholder}
-            alt={photo}
-            className="w-7 h-7 rounded-full object-cover"
-          />
+          <Avatar uri={photo || photoPlaceholder} size={26} />
           <TextLink to="" className="underline">
             {fullName}
           </TextLink>
