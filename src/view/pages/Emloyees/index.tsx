@@ -6,7 +6,6 @@ import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
 // import { Sorting } from '~/types';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 // import { PAGE_SIZE } from '~/constants/pagination';
@@ -17,14 +16,53 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
-import { useFetchProjectsQuery } from './__generated__/schema';
-import { PROJECTS_TABLE_COLUMNS } from './consts';
+// import { useFetchEmloyeesQuery } from './__generated__/schema';
+import { EMPLOYEES_TABLE_COLUMNS } from './consts';
 
 // import { useFetchClientsQuery } from './__generated__/schema';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
 // import { CLIENTS_TABLE_COLUMNS } from './consts';
 
-export const ProjectsPage: FC = () => {
+export enum EmloyeesPageFilterEnum {
+  FRONT_END = 'FRONTEND',
+  BACK_END = 'BACKEND',
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+// TODO remove test data later
+const emloyeesTestData = [
+  {
+    fullName: 'Jhon Snow',
+    photo: null,
+    department: 'Frontend',
+    email: 'snow@com',
+    isActive: true,
+  },
+  {
+    fullName: 'Adam Grey',
+    photo: 'https://picsum.photos/26/26?random=2',
+    department: 'Backend',
+    email: 'grey@com',
+    isActive: false,
+  },
+  {
+    fullName: 'Bob Black',
+    photo: 'https://picsum.photos/26/26?random=3',
+    department: 'Backend',
+    email: 'black@com',
+    isActive: true,
+  },
+  {
+    fullName: 'Jack Green',
+    photo: 'https://picsum.photos/26/26?random=4',
+    department: 'Backend',
+    email: 'green@com',
+    isActive: false,
+  },
+];
+
+export const EmloyeesPage: FC = () => {
   const { control } = useForm();
   // const [searchValue, setSearchValue] = useState('');
   // TODO remove any
@@ -41,63 +79,63 @@ export const ProjectsPage: FC = () => {
   //   off: closeFilterModal,
   // } = useSwitchValue(false);
 
-  const { data, loading, fetchMore } = useFetchProjectsQuery();
+  // const { data, loading, fetchMore } = useFetchEmloyeesQuery();
 
-  const statusOptions = enumToSelectOptions(StatusEnum);
+  const employessFilterOptions = enumToSelectOptions(EmloyeesPageFilterEnum);
+
+  // TODO remove test data later
+  const data = {
+    loading: false,
+    employeesList: emloyeesTestData,
+  };
 
   return (
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-h4">Projects</h1>
+          <h1 className="text-h4">Emloyees</h1>
           <p className="text-c1 text-gray-2">
-            {(data && data.projectsList.length) ?? 0} projects in total
+            {(data && data.employeesList.length) ?? 0} emloyees in total
           </p>
         </div>
         <Button
-          label="New project"
+          label="Add emloyee"
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          // to={ROUTES.ADD_CLIENT}
+          // to={ROUTES.ADD_EMPLOYEE}
         />
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput
           // onChange={setSearchValue}
           onChange={() => null}
-          placeholder="Search projects"
+          placeholder="Search emloyees"
           className="flex-1"
         />
         <SelectField
           className="w-40"
           name="group"
-          options={statusOptions}
+          options={employessFilterOptions}
           control={control}
           // placeholder="Select status..."
         />
       </div>
-      {loading && <TableLoader className="mt-10" />}
-      {data && data.projectsList.length === 0 && (
-        <EmptyState iconName="projects" label="No projects here yet" />
+      {data.loading && <TableLoader className="mt-10" />}
+      {data && data.employeesList.length === 0 && (
+        <EmptyState iconName="emloyees" label="No emloyees here yet" />
       )}
-      {!loading && data && data.projectsList.length > 0 && (
+      {!data.loading && data && data.employeesList.length > 0 && (
         <Table
           className="mt-6"
-          data={data.projectsList}
-          columns={PROJECTS_TABLE_COLUMNS}
+          data={data.employeesList}
+          columns={EMPLOYEES_TABLE_COLUMNS}
           // sorting={sorting}
           // setSorting={setSorting}
-          fetchMore={fetchMore}
-          totalCount={data.projectsList.length}
+          // fetchMore={fetchMore}
+          totalCount={data.employeesList.length}
         />
       )}
-      {/* <ClientsFilterModal
-        isOpen={isFilterModalOpen}
-        close={closeFilterModal}
-        filter={filter}
-        setFilter={setFilter}
-      /> */}
     </SidebarLayout>
   );
 };

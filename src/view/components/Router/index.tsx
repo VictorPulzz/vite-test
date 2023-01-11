@@ -5,6 +5,7 @@ import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
 import { CreateOrUpdateProjectPage } from '~/view/pages/CreateProject';
 import { DocumentsPage } from '~/view/pages/Documents';
+import { EmloyeesPage } from '~/view/pages/Emloyees';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectsPage } from '~/view/pages/Projects';
@@ -37,6 +38,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.EDIT_PROJECT,
     element: <CreateOrUpdateProjectPage />,
+  },
+  {
+    path: ROUTES.EMPLOYEES,
+    element: <EmloyeesPage />,
   },
 ];
 

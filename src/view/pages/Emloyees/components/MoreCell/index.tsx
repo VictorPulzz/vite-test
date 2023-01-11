@@ -11,6 +11,7 @@ import { Icon } from '~/view/ui/components/common/Icon';
 // TODO need to fix this cell
 // TODO remove any
 export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
+  // TODO remove console.log
   // eslint-disable-next-line no-console
   console.log('🚀 ~ file: index.tsx:13 ~ row', row);
   // const { user } = row.original;
@@ -40,7 +41,7 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
 
   const options: DropdownItem[] = [
     {
-      label: 'Edit project',
+      label: 'Edit employee',
       iconBefore: <Icon name="edit" size={16} />,
       onSelect: () => toast('edit project'),
     },
@@ -49,37 +50,13 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
       iconBefore: <Icon name="connection" size={16} />,
       items: [
         {
-          label: 'Design',
+          label: 'Active',
           // onSelect: () => setActiveStatus(true),
           onSelect: () => null,
           // iconAfter: user.isActive && <Icon name="check" className="text-green" size={18} />,
         },
         {
-          label: 'Finished',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'In progress',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'On hold',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'Stopped',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'Support',
+          label: 'Inactive',
           // onSelect: () => setActiveStatus(false),
           onSelect: () => null,
           // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
