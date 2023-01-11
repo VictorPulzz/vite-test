@@ -1,4 +1,3 @@
-// import { faker } from '@faker-js/faker';
 import { createColumnHelper } from '@tanstack/react-table';
 // import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { TextLink } from '@ui/components/common/TextLink';
@@ -12,7 +11,6 @@ import { MoreCell } from './components/MoreCell';
 // import { ROUTES } from '~/constants/routes';
 // import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 // import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
-// import { MoreCell } from './components/MoreCell';
 // import { ClientResultType } from './types';
 
 const columnHelper = createColumnHelper<any>();
