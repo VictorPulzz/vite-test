@@ -29,11 +29,11 @@ export const PROJECTS_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('name', {
+  columnHelper.accessor('pm', {
     // id: ClientOrder.EMAIL,
     header: 'PM',
   }),
-  columnHelper.accessor('name', {
+  columnHelper.accessor('status', {
     // id: ClientOrder.EMAIL,
     header: 'Status',
   }),

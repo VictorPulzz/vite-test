@@ -72,7 +72,7 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
       } catch (e) {
         processGqlErrorResponse<LoginInput>(e, {
           fields: ['email', 'password'],
-          setFieldError: (name, message) => form.setError(name, { message }),
+          setFormError: form.setError,
         });
       }
     },

@@ -2,8 +2,10 @@
 import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
-import { toast } from 'react-hot-toast';
+import { generatePath } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '~/constants/routes';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 // import { useChangeClientStatusMutation } from '~/view/pages/ClientsList/__generated__/schema';
@@ -11,6 +13,7 @@ import { Icon } from '~/view/ui/components/common/Icon';
 // TODO need to fix this cell
 // TODO remove any
 export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
+  const navigate = useNavigate();
   // eslint-disable-next-line no-console
   console.log('🚀 ~ file: index.tsx:13 ~ row', row);
   // const { user } = row.original;
@@ -42,7 +45,7 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
     {
       label: 'Edit project',
       iconBefore: <Icon name="edit" size={16} />,
-      onSelect: () => toast('edit project'),
+      onSelect: () => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: row.original.id })),
     },
     {
       label: 'Change status',
