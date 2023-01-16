@@ -6,10 +6,10 @@ import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+// import { PAGE_SIZE } from '~/constants/pagination';
+import { ROUTES } from '~/constants/routes';
 // import { Sorting } from '~/types';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-// import { PAGE_SIZE } from '~/constants/pagination';
-// import { ROUTES } from '~/constants/routes';
 // import { ClientFilter, ClientOrder } from '~/services/gql/__generated__/globalTypes';
 // import { isNil } from '~/utils/isNil';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -33,6 +33,7 @@ export enum EmloyeesPageFilterEnum {
 // TODO remove test data later
 const emloyeesTestData = [
   {
+    id: 1,
     fullName: 'Jhon Snow',
     photo: null,
     department: 'Frontend',
@@ -40,6 +41,7 @@ const emloyeesTestData = [
     isActive: true,
   },
   {
+    id: 2,
     fullName: 'Adam Grey',
     photo: 'https://picsum.photos/26/26?random=2',
     department: 'Backend',
@@ -47,6 +49,7 @@ const emloyeesTestData = [
     isActive: false,
   },
   {
+    id: 3,
     fullName: 'Bob Black',
     photo: 'https://picsum.photos/26/26?random=3',
     department: 'Backend',
@@ -54,6 +57,7 @@ const emloyeesTestData = [
     isActive: true,
   },
   {
+    id: 4,
     fullName: 'Jack Green',
     photo: 'https://picsum.photos/26/26?random=4',
     department: 'Backend',
@@ -103,7 +107,7 @@ export const EmloyeesPage: FC = () => {
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          // to={ROUTES.ADD_EMPLOYEE}
+          to={ROUTES.ADD_EMPLOYEE}
         />
       </div>
       <div className="mt-5 flex gap-3">

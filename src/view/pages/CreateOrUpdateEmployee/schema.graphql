@@ -1,0 +1,32 @@
+# TODO change $input type when backend will be ready
+mutation CreateOrUpdateEmployee($input: ProjectInput!) {
+  employee(data: $input) {
+    id
+    firstName
+    lastName
+    photo
+    address
+    department
+    email
+    role
+    contractType
+    birthDate
+    isActive
+  }
+}
+# TODO change $data type when backend will be ready
+query FetchEmployee($data: IDInput!) {
+  employee(data: $data) {
+    id
+    firstName
+    lastName
+    photo
+    address
+    department
+    email
+    role
+    contractType
+    birthDate
+    isActive
+  }
+}

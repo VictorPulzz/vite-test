@@ -3,7 +3,8 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { CreateOrUpdateProjectPage } from '~/view/pages/CreateProject';
+import { CreateOrUpdateEmployeePage } from '~/view/pages/CreateOrUpdateEmployee';
+import { CreateOrUpdateProjectPage } from '~/view/pages/CreateOrUpdateProject';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { EmloyeesPage } from '~/view/pages/Emloyees';
 import { HomePage } from '~/view/pages/Home';
@@ -42,6 +43,14 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.EMPLOYEES,
     element: <EmloyeesPage />,
+  },
+  {
+    path: ROUTES.ADD_EMPLOYEE,
+    element: <CreateOrUpdateEmployeePage />,
+  },
+  {
+    path: ROUTES.EDIT_EMPLOYEE,
+    element: <CreateOrUpdateEmployeePage />,
   },
 ];
 
