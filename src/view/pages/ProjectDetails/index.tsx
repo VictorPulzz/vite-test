@@ -1,81 +1,103 @@
-import { DateField } from '@ui/components/form/DateField';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { SelectField } from '@ui/components/form/SelectField';
-import { TextField } from '@ui/components/form/TextField';
-import React, { FC } from 'react';
-import { ExtractRouteParams } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
+import React, { FC, useCallback, useState } from 'react';
 
-import { ROUTES } from '~/constants/routes';
+import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
+import { TextLink } from '~/view/ui/components/common/TextLink';
 
+import { PROJECT_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
-  const navigate = useNavigate();
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
-  const projectId = params.id ? Number(params.id) : undefined;
+  const [activeTabId, setActiveTabId] = useState<number>(1);
 
-  const { form } = useProjectForm({
-    onSubmitSuccessful: () => navigate(-1),
-    // todo: deal with projectId can't be undefined wneh backend will be ready
-    prefilledData: { id: projectId ?? 0 },
-    id: projectId,
-  });
+  const handleActiveTabChange = useCallback((index: number) => setActiveTabId(index), []);
 
   return (
     <SidebarLayout>
-      <DetailLayout
-        title="Project details"
-        contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
-      >
-        <>
-          <section className={styles['section']}>
-            <h2 className={styles['section__heading']}>Project info</h2>
-            <InlineFields>
-              <TextField name="name" control={form.control} label="Name" required />
-              <TextField name="clientName" control={form.control} label="Client name" />
-            </InlineFields>
-            <InlineFields>
-              <SelectField name="phase" options={[]} control={form.control} label="Phase" />
-              <SelectField name="status" options={[]} control={form.control} label="Status" />
-            </InlineFields>
-            <TextField name="designLink" control={form.control} label="Design link" />
-            <InlineFields>
-              <InlineFields>
-                <DateField name="startDate" control={form.control} label="Start date" />
-                <DateField name="endDate" control={form.control} label="End date" />
-              </InlineFields>
-              <TextField name="hoursEstimated" control={form.control} label="Hours estimated" />
-            </InlineFields>
-            <SelectField name="pm" options={[]} control={form.control} label="Project manager" />
-            <SelectField name="designer" options={[]} control={form.control} label="Designer" />
-            <SelectField name="qa" options={[]} control={form.control} label="Quality assurance" />
-            <SelectField
-              name="frontDev"
-              options={[]}
-              control={form.control}
-              label="Frontend developer"
+      <DetailLayout title="Project details">
+        <div className="flex gap-5 p-6">
+          <div className="shadow-4 bg-white rounded-md p-7 w-[382px]">
+            <div className={styles['section']}>
+              <h2 className="mb-3 text-p1 font-bold">Project info</h2>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Name</span>
+                  <span className="text-p3 text-blue leading-none">Swop</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Phase</span>
+                  <span className="text-p3 text-blue leading-none">Development</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Status</span>
+                  <span className="text-p3 text-primary leading-none">Pre-release</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Estimated dates</span>
+                  <span className="text-p3 text-primary leading-none">
+                    2 Mar 2020 - 25 Dec 2022
+                  </span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Estimated hours</span>
+                  <span className="text-p3 text-primary leading-none">1047</span>
+                </div>
+                <div className="flex flex-col gap-[2px] break-words">
+                  <span className="text-c1 text-gray-2">Design link</span>
+                  <TextLink
+                    external
+                    to="https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0"
+                    className="text-p3 text-blue leading-none"
+                  >
+                    https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0
+                  </TextLink>
+                </div>
+              </div>
+            </div>
+            <div className={styles['section']}>
+              <h2 className="mb-3 text-p1 font-bold">Client details</h2>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Name</span>
+                  <span className="text-p3 leading-none">Brendan</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Phone number</span>
+                  <span className="text-p3 leading-none">0347265937</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Notes</span>
+                  <span className="text-p3 leading-none">Some useful notes here</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Client team</span>
+                  <div className="flex justify-between">
+                    <span className="text-p3 leading-none">Taylor (Manager)</span>
+                    <span className="text-p3 leading-none">+61726485996</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="shadow-4 bg-white rounded-md flex-auto p7">
+            <Tabs
+              activeTabId={activeTabId}
+              tabs={PROJECT_DETAILS_TABS}
+              onChange={handleActiveTabChange}
+              className="border-b-[1px] border-solid text-gray-6 pt-7 px-7 "
             />
-            <SelectField
-              name="backDev"
-              options={[]}
-              control={form.control}
-              label="Backend developer"
-            />
-            <TextField name="notes" control={form.control} label="Notes" />
-          </section>
-          <section className={styles['section']}>
-            <h2 className={styles['section__heading']}>Repositories</h2>
-            <p>TBD</p>
-          </section>
-          <section className={styles['section']}>
-            <h2 className={styles['section__heading']}>Credentials</h2>
-            <p>TBD</p>
-          </section>
-        </>
+            <div className="p-6">
+              {activeTabId === 1 && <span>Participants</span>}
+              {activeTabId === 2 && <span>Docs</span>}
+              {activeTabId === 3 && <span>Credentials</span>}
+              {activeTabId === 4 && <span>Estimations</span>}
+              {activeTabId === 5 && <span>Notes</span>}
+              {activeTabId === 6 && <span>History</span>}
+              {activeTabId === 7 && <span>Repositories</span>}
+            </div>
+          </div>
+        </div>
       </DetailLayout>
     </SidebarLayout>
   );
