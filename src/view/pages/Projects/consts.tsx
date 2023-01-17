@@ -3,6 +3,9 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { TextLink } from '@ui/components/common/TextLink';
 // import { format } from 'date-fns';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
+
+import { ROUTES } from '~/constants/routes';
 
 import { MoreCell } from './components/MoreCell';
 
@@ -20,9 +23,10 @@ export const PROJECTS_TABLE_COLUMNS = [
     // id: ClientOrder.FULL_NAME,
     header: 'Project name',
     cell: props => {
+      const { id } = props.row.original;
       return (
         <div className="flex gap-3 items-center">
-          <TextLink to="" className="underline">
+          <TextLink to={generatePath(ROUTES.PROJECT_DETAILS, { id })} className="underline">
             {props.getValue()}
           </TextLink>
         </div>
