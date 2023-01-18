@@ -9,6 +9,7 @@ import { DocumentsPage } from '~/view/pages/Documents';
 import { EmloyeesPage } from '~/view/pages/Emloyees';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
+import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { SignInPage } from '~/view/pages/SignIn';
 
@@ -39,6 +40,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.EDIT_PROJECT,
     element: <CreateOrUpdateProjectPage />,
+  },
+  {
+    path: ROUTES.PROJECT_DETAILS,
+    element: <ProjectDetailsPage />,
   },
   {
     path: ROUTES.EMPLOYEES,

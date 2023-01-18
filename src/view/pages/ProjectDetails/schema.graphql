@@ -1,0 +1,6 @@
+query FetchProjectDetails($data: IDInput!) {
+  project(data: $data) {
+    id
+    name
+  }
+}
