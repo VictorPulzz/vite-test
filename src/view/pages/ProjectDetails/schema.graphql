@@ -1,10 +1,4 @@
-mutation CreateOrUpdateProject($input: ProjectInput!) {
-  project(data: $input) {
-    id
-  }
-}
-
-query FetchProject($data: IDInput!) {
+query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
