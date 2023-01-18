@@ -31,7 +31,7 @@ export const ProjectDetailsPage: FC = () => {
           <span>LOADING</span>
         ) : (
           <div className="flex gap-5 p-6">
-            <div className="shadow-4 bg-white rounded-md p-7 w-[382px]">
+            <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
               <div className={styles['section']}>
                 <h2 className="mb-3 text-p1 font-bold">Project info</h2>
                 <div className="flex flex-col gap-3">
