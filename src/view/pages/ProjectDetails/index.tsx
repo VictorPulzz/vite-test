@@ -85,9 +85,9 @@ export const ProjectDetailsPage: FC = () => {
               activeTabId={activeTabId}
               tabs={PROJECT_DETAILS_TABS}
               onChange={handleActiveTabChange}
-              className="border-b-[1px] border-solid text-gray-6 pt-7 px-7 "
-            />
-            <div className="p-6">
+              tabsClassName="border-b-[1px] border-solid text-gray-6 pt-7 px-7"
+              tabsPanelClassName="p-6"
+            >
               {activeTabId === 1 && <span>Participants</span>}
               {activeTabId === 2 && <span>Docs</span>}
               {activeTabId === 3 && <span>Credentials</span>}
@@ -95,7 +95,7 @@ export const ProjectDetailsPage: FC = () => {
               {activeTabId === 5 && <span>Notes</span>}
               {activeTabId === 6 && <span>History</span>}
               {activeTabId === 7 && <span>Repositories</span>}
-            </div>
+            </Tabs>
           </div>
         </div>
       </DetailLayout>
