@@ -3,10 +3,10 @@ import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { TextLink } from '@ui/components/common/TextLink';
 // import { format } from 'date-fns';
 import React from 'react';
+import { generatePath } from 'react-router-dom';
 
-// import { generatePath } from 'react-router-dom';
 // import { DATE_FORMAT } from '~/constants/dates';
-// import { ROUTES } from '~/constants/routes';
+import { ROUTES } from '~/constants/routes';
 // import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
@@ -22,13 +22,13 @@ export const EMPLOYEES_TABLE_COLUMNS = [
     header: 'Name',
     cell: ({
       row: {
-        original: { photo, fullName },
+        original: { photo, fullName, id },
       },
     }) => {
       return (
         <div className="flex gap-3 items-center">
           <Avatar uri={photo || photoPlaceholder} size={26} />
-          <TextLink to="" className="underline">
+          <TextLink to={generatePath(ROUTES.EMPLOYEE_DETAILS, { id })} className="underline">
             {fullName}
           </TextLink>
         </div>

@@ -7,6 +7,7 @@ import { CreateOrUpdateEmployeePage } from '~/view/pages/CreateOrUpdateEmployee'
 import { CreateOrUpdateProjectPage } from '~/view/pages/CreateOrUpdateProject';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { EmloyeesPage } from '~/view/pages/Emloyees';
+import { EmployeeDetailsPage } from '~/view/pages/EmployeeDetails';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
@@ -56,6 +57,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.EDIT_EMPLOYEE,
     element: <CreateOrUpdateEmployeePage />,
+  },
+  {
+    path: ROUTES.EMPLOYEE_DETAILS,
+    element: <EmployeeDetailsPage />,
   },
 ];
 

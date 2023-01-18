@@ -8,6 +8,7 @@ export const ROUTES = {
 
   ADD_EMPLOYEE: '/emloyees/add',
   EDIT_EMPLOYEE: '/emloyees/:id/edit',
+  EMPLOYEE_DETAILS: '/emloyees/:id',
 
   DOCUMENTS: '/documents',
   PROJECTS: '/projects',
