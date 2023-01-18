@@ -48,7 +48,7 @@ export const ProjectDetailsPage: FC = () => {
                   <TextLink
                     external
                     to="https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0"
-                    className="text-p3 text-blue leading-none"
+                    className="text-p3 text-blue leading-none hover:underline"
                   >
                     https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0
                   </TextLink>
