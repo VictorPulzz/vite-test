@@ -1,0 +1,7 @@
+# TODO change $input type when backend will be ready
+query FetchEmployeeDetails($data: IDInput!) {
+  employee(data: $data) {
+    id
+    fullName
+  }
+}

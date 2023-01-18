@@ -30,7 +30,7 @@ export enum EmloyeesPageFilterEnum {
   INACTIVE = 'INACTIVE',
 }
 
-// TODO remove test data later
+// TODO remove emloyeesTestData when backend will be ready
 const emloyeesTestData = [
   {
     id: 1,

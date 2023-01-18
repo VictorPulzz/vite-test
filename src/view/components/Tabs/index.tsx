@@ -45,7 +45,7 @@ export const Tabs: React.FC<Props> = memo(
                 type="button"
                 key={id}
                 id={String(id)}
-                className="py-2 px-4"
+                className="p-4"
                 disabled={id === activeTabId}
                 onClick={() => onChange(id)}
               >
