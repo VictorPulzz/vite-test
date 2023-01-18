@@ -1,0 +1,20 @@
+query FetchEmloyees {
+  employeesList {
+    firstName
+    lastName
+    fullName
+    email
+    isActive
+    # photo
+    # address
+    # department {
+    #   id
+    #   name
+    # }
+
+    # role
+    # contractType
+    # birthDate
+    # status
+  }
+}

@@ -13,4 +13,5 @@ export const ROUTES = {
   DOCUMENTS: '/documents',
   PROJECTS: '/projects',
   EMPLOYEES: '/emloyees',
+  REPOSITORIES: '/repositories',
 };

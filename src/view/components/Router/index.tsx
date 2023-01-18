@@ -12,6 +12,7 @@ import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
+import { RepositoriesPage } from '~/view/pages/Repositories';
 import { SignInPage } from '~/view/pages/SignIn';
 
 const authRoutes: RouteObject[] = [
@@ -61,6 +62,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.EMPLOYEE_DETAILS,
     element: <EmployeeDetailsPage />,
+  },
+  {
+    path: ROUTES.REPOSITORIES,
+    element: <RepositoriesPage />,
   },
 ];
 
