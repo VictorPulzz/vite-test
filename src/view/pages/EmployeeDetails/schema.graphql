@@ -1,6 +1,7 @@
-query FetchProjectDetails($data: IDInput!) {
-  project(data: $data) {
+# TODO change $input type when backend will be ready
+query FetchEmployeeDetails($data: IDInput!) {
+  employee(data: $data) {
     id
-    name
+    fullName
   }
 }

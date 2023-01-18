@@ -1,7 +1,7 @@
 export const PROJECT_DETAILS_TABS = [
   {
     id: 1,
-    label: 'Participants',
+    label: 'Projects',
   },
   {
     id: 2,
@@ -9,12 +9,13 @@ export const PROJECT_DETAILS_TABS = [
   },
   {
     id: 3,
-    label: 'Credentials',
+    label: 'Roles',
   },
   {
     id: 4,
-    label: 'Estimations',
+    label: 'Credentials',
   },
+
   {
     id: 5,
     label: 'Notes',
@@ -22,9 +23,5 @@ export const PROJECT_DETAILS_TABS = [
   {
     id: 6,
     label: 'History',
-  },
-  {
-    id: 7,
-    label: 'Repositories',
   },
 ];
