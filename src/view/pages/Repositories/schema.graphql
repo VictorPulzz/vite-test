@@ -1,0 +1,6 @@
+# TODO fix fields when backend will be ready
+query FetchRepositories {
+  repositoriesList {
+    id
+  }
+}

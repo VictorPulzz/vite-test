@@ -1,4 +1,4 @@
-# TODO change $input type when backend will be ready
+# TODO fix fields when backend will be ready
 mutation CreateOrUpdateEmployee($input: ProjectInput!) {
   employee(data: $input) {
     id
@@ -14,7 +14,7 @@ mutation CreateOrUpdateEmployee($input: ProjectInput!) {
     isActive
   }
 }
-# TODO change $data type when backend will be ready
+# TODO fix fields when backend will be ready
 query FetchEmployee($data: IDInput!) {
   employee(data: $data) {
     id

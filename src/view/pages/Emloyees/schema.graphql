@@ -1,3 +1,4 @@
+# TODO fix fields when backend will be ready
 query FetchEmloyees {
   employeesList {
     firstName
