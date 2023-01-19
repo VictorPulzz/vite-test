@@ -1,20 +1,6 @@
-query FetchEmloyees {
-  employeesList {
-    firstName
-    lastName
-    fullName
-    email
-    isActive
-    # photo
-    # address
-    # department {
-    #   id
-    #   name
-    # }
-
-    # role
-    # contractType
-    # birthDate
-    # status
+# TODO fix fields when backend will be ready
+query FetchRepositories {
+  repositoriesList {
+    id
   }
 }

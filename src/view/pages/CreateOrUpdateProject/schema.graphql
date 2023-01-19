@@ -1,9 +1,10 @@
+# TODO fix fields when backend will be ready
 mutation CreateOrUpdateProject($input: ProjectInput!) {
   project(data: $input) {
     id
   }
 }
-
+# TODO fix fields when backend will be ready
 query FetchProject($data: IDInput!) {
   project(data: $data) {
     id

@@ -15,10 +15,10 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
-// import { useFetchEmloyeesQuery } from './__generated__/schema';
+// import { FetchRepositories } from './__generated__/schema';
 import { REPOSITORIES_TABLE_COLUMNS } from './consts';
 
-// import { useFetchClientsQuery } from './__generated__/schema';
+// import { useFetchRepositoriesQuery } from './__generated__/schema';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
 // import { CLIENTS_TABLE_COLUMNS } from './consts';
 
@@ -64,7 +64,7 @@ export const RepositoriesPage: FC = () => {
   //   off: closeFilterModal,
   // } = useSwitchValue(false);
 
-  // const { data, loading, fetchMore } = useFetchEmloyeesQuery();
+  // const { data, loading, fetchMore } = useFetchRepositoriesQuery();
 
   const repositoriesFilterOptions = enumToSelectOptions(ProjectPlatfrom);
 
