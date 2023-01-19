@@ -67,6 +67,14 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.REPOSITORIES,
     element: <RepositoriesPage />,
   },
+  {
+    path: ROUTES.SETTINGS,
+    element: <RepositoriesPage />,
+  },
+  {
+    path: ROUTES.SETTINGS_SECURITY,
+    element: <RepositoriesPage />,
+  },
 ];
 
 export const Router: FC = () => {
