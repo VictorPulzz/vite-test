@@ -5,52 +5,67 @@ import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-// import { DATE_FORMAT } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
-// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
-import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
-import { Avatar } from '~/view/components/Avatar';
 
+// import { DATE_FORMAT } from '~/constants/dates';
+// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 import { MoreCell } from './components/MoreCell';
 // import { ClientResultType } from './types';
 
+export enum ProjectPlatfrom {
+  WEB = 'WEB',
+  MOBILE = 'MOBILE',
+}
+
 const columnHelper = createColumnHelper<any>();
 
-export const EMPLOYEES_TABLE_COLUMNS = [
-  columnHelper.accessor('fullName', {
-    // id: ClientOrder.FULL_NAME,
+export const REPOSITORIES_TABLE_COLUMNS = [
+  columnHelper.accessor('repositoryName', {
+    // id: ClientOrder.EMAIL,
     header: 'Name',
-    cell: ({
-      row: {
-        original: { photo, fullName, id },
-      },
-    }) => {
+  }),
+  columnHelper.accessor('projectName', {
+    // id: ClientOrder.EMAIL,
+    header: 'Project',
+    cell: props => {
+      const { id } = props.row.original;
       return (
-        <div className="flex gap-3 items-center">
-          <Avatar uri={photo || photoPlaceholder} size={26} />
-          <TextLink to={generatePath(ROUTES.EMPLOYEE_DETAILS, { id })} className="underline">
-            {fullName}
-          </TextLink>
-        </div>
+        <TextLink to={generatePath(ROUTES.PROJECT_DETAILS, { id })} className="underline">
+          {props.getValue()}
+        </TextLink>
       );
     },
   }),
-  columnHelper.accessor('department', {
-    // id: ClientOrder.EMAIL,
-    header: 'Department',
+  columnHelper.accessor('gitUrl', {
+    // id: ClientOrder.FULL_NAME,
+    header: 'Git url',
+    cell: props => {
+      return (
+        <TextLink external to={props.getValue()} className="underline">
+          {props.getValue()}
+        </TextLink>
+      );
+    },
   }),
-  columnHelper.accessor('email', {
+  columnHelper.accessor('createdAt', {
     // id: ClientOrder.EMAIL,
-    header: 'Email',
+    header: 'Created at',
   }),
   columnHelper.accessor('isActive', {
     // id: ClientOrder.STATUS,
-    header: 'Status',
-    cell: props => {
-      const isActive = props.getValue();
+    header: 'Platfrom',
+    cell: ({
+      row: {
+        original: { platform },
+      },
+    }) => {
       return (
-        <Badge color={isActive ? BadgeColor.GREEN : BadgeColor.GRAY}>
-          {isActive ? 'Active' : 'Inactive'}
+        <Badge
+          color={
+            platform.toUpperCase() === ProjectPlatfrom.WEB ? BadgeColor.GREEN : BadgeColor.GRAY
+          }
+        >
+          {platform}
         </Badge>
       );
     },

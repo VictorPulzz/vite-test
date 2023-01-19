@@ -7,7 +7,6 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 // import { PAGE_SIZE } from '~/constants/pagination';
-import { ROUTES } from '~/constants/routes';
 // import { Sorting } from '~/types';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 // import { ClientFilter, ClientOrder } from '~/services/gql/__generated__/globalTypes';
@@ -17,52 +16,34 @@ import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
 // import { useFetchEmloyeesQuery } from './__generated__/schema';
-import { EMPLOYEES_TABLE_COLUMNS } from './consts';
+import { REPOSITORIES_TABLE_COLUMNS } from './consts';
 
 // import { useFetchClientsQuery } from './__generated__/schema';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
 // import { CLIENTS_TABLE_COLUMNS } from './consts';
 
-export enum EmloyeesPageFilterEnum {
-  FRONT_END = 'FRONTEND',
-  BACK_END = 'BACKEND',
-  ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
+export enum ProjectPlatfrom {
+  WEB = 'WEB',
+  MOBILE = 'MOBILE',
 }
 
-// TODO remove emloyeesTestData when backend will be ready
-const emloyeesTestData = [
-  {
-    id: 1,
-    fullName: 'Jhon Snow',
-    photo: null,
-    department: 'Frontend',
-    email: 'snow@com',
-    isActive: true,
-  },
+// TODO remove repositoriesTestData when backend will be ready
+const repositoriesTestData = [
   {
     id: 2,
-    fullName: 'Adam Grey',
-    photo: 'https://picsum.photos/26/26?random=2',
-    department: 'Backend',
-    email: 'grey@com',
-    isActive: false,
-  },
-  {
-    id: 3,
-    fullName: 'Bob Black',
-    photo: 'https://picsum.photos/26/26?random=3',
-    department: 'Backend',
-    email: 'black@com',
-    isActive: true,
+    repositoryName: 'Pic-up-web-frontend',
+    projectName: 'PicUp',
+    gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
+    createdAt: '28/10/2022',
+    platform: 'Web',
   },
   {
     id: 4,
-    fullName: 'Jack Green',
-    photo: 'https://picsum.photos/26/26?random=4',
-    department: 'Backend',
-    email: 'green@com',
-    isActive: false,
+    repositoryName: 'Pic-up-customer-mobile',
+    projectName: 'PicUp',
+    gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',
+    createdAt: '29/10/2022',
+    platform: 'Mobile',
   },
 ];
 
@@ -85,59 +66,59 @@ export const RepositoriesPage: FC = () => {
 
   // const { data, loading, fetchMore } = useFetchEmloyeesQuery();
 
-  const employessFilterOptions = enumToSelectOptions(EmloyeesPageFilterEnum);
+  const repositoriesFilterOptions = enumToSelectOptions(ProjectPlatfrom);
 
   // TODO remove test data later
   const data = {
     loading: false,
-    employeesList: emloyeesTestData,
+    repositoriesList: repositoriesTestData,
   };
 
   return (
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-h4">Emloyees</h1>
+          <h1 className="text-h4">Repositories</h1>
           <p className="text-c1 text-gray-2">
-            {(data && data.employeesList.length) ?? 0} emloyees in total
+            {(data && data.repositoriesList.length) ?? 0} repositories in total
           </p>
         </div>
         <Button
-          label="Add emloyee"
+          label="Add repository"
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          to={ROUTES.ADD_EMPLOYEE}
+          // to={ROUTES.ADD_EMPLOYEE}
         />
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput
           // onChange={setSearchValue}
           onChange={() => null}
-          placeholder="Search emloyees"
+          placeholder="Search repository"
           className="flex-1"
         />
         <SelectField
           className="w-40"
           name="group"
-          options={employessFilterOptions}
+          options={repositoriesFilterOptions}
           control={control}
           // placeholder="Select status..."
         />
       </div>
       {data.loading && <TableLoader className="mt-10" />}
-      {data && data.employeesList.length === 0 && (
-        <EmptyState iconName="emloyees" label="No emloyees here yet" />
+      {data && data.repositoriesList.length === 0 && (
+        <EmptyState iconName="repositories" label="No repositories here yet" />
       )}
-      {!data.loading && data && data.employeesList.length > 0 && (
+      {!data.loading && data && data.repositoriesList.length > 0 && (
         <Table
           className="mt-6"
-          data={data.employeesList}
-          columns={EMPLOYEES_TABLE_COLUMNS}
+          data={data.repositoriesList}
+          columns={REPOSITORIES_TABLE_COLUMNS}
           // sorting={sorting}
           // setSorting={setSorting}
           // fetchMore={fetchMore}
-          totalCount={data.employeesList.length}
+          totalCount={data.repositoriesList.length}
         />
       )}
     </SidebarLayout>
