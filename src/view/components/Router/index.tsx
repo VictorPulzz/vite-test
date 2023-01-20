@@ -14,6 +14,7 @@ import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
+import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
 
 const authRoutes: RouteObject[] = [
@@ -74,7 +75,7 @@ const protectedRoutes: RouteObject[] = [
   },
   {
     path: ROUTES.SETTINGS_SECURITY,
-    element: <SettingsGeneralPage />,
+    element: <SettingsSecurityPage />,
   },
 ];
 

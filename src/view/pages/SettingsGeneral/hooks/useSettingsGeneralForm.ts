@@ -52,6 +52,7 @@ const defaultValues: SettingsGeneralFormValues = {
   address: '',
 };
 
+// TODO fix hook when backend will be ready
 export const useSettingsGeneralForm = ({
   settingsData,
 }: UseSettingsGeneralFormProps): UseSettingsGeneralFormReturn => {
