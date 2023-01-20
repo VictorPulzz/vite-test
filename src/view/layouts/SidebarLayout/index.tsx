@@ -1,12 +1,11 @@
-import { Icon } from '@ui/components/common/Icon';
 import clsx from 'clsx';
-import React, { FC, ReactNode } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { FC, ReactNode, useMemo } from 'react';
 
 import { ROUTES } from '~/constants/routes';
+import { useUserProfile } from '~/store/hooks';
 import logo from '~/view/assets/images/logo.svg';
-
-import styles from './styles.module.scss';
+import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
+import { Sidebar } from '~/view/ui/components/common/Sidebar';
 
 interface Props {
   children: ReactNode;
@@ -39,35 +38,39 @@ const navItems = [
     icon: 'repositories',
     link: ROUTES.REPOSITORIES,
   },
+  {
+    title: 'Settings',
+    icon: 'settings',
+    link: ROUTES.SETTINGS,
+    items: [
+      {
+        title: 'General',
+        link: ROUTES.SETTINGS,
+      },
+      {
+        title: 'Security',
+        link: ROUTES.SETTINGS_SECURITY,
+      },
+    ],
+  },
 ];
 
 export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
+  const profile = useUserProfile();
+  // TODO change fullName and photo field later
+  const user = useMemo(
+    () => ({
+      fullName: profile.email,
+      photo: photoPlaceholder,
+      email: profile.email,
+      photoPlaceholder,
+    }),
+    [profile],
+  );
+
   return (
     <div className="flex flex-1">
-      <div className={styles['sidebar']}>
-        <div className="flex justify-between px-5">
-          <Link to={ROUTES.HOME}>
-            <img src={logo} alt="Logo" className="w-[4.9rem] h-[1.6rem]" />
-          </Link>
-        </div>
-        <nav className="mt-6">
-          <ul>
-            {navItems.map(item => (
-              <li key={item.link} className="px-3 py-2">
-                <NavLink
-                  to={item.link}
-                  className={({ isActive }) =>
-                    clsx(styles['nav__link'], { [styles['nav__link--active']]: isActive })
-                  }
-                >
-                  <Icon name={item.icon} size="1.125rem" className="mr-3" />
-                  {item.title}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
+      <Sidebar items={navItems} logo={logo} user={user} />
       <div className={clsx('flex flex-1 flex-col', contentClassName)}>{children}</div>
     </div>
   );

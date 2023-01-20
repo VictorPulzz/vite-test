@@ -13,6 +13,8 @@ import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
+import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
+import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
 
 const authRoutes: RouteObject[] = [
@@ -66,6 +68,14 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.REPOSITORIES,
     element: <RepositoriesPage />,
+  },
+  {
+    path: ROUTES.SETTINGS,
+    element: <SettingsGeneralPage />,
+  },
+  {
+    path: ROUTES.SETTINGS_SECURITY,
+    element: <SettingsSecurityPage />,
   },
 ];
 

@@ -1,0 +1,25 @@
+mutation ProfileUpdate($data: ProfileInput!) {
+  profileUpdate(data: $data) {
+    photo {
+      url
+      fileName
+      size
+    }
+    firstName
+    lastName
+    phone
+  }
+}
+
+query Me {
+  me {
+    id
+    firstName
+    email
+    lastName
+    # phone
+    # photo {
+    #   url
+    # }
+  }
+}

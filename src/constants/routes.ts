@@ -14,4 +14,6 @@ export const ROUTES = {
   PROJECTS: '/projects',
   EMPLOYEES: '/emloyees',
   REPOSITORIES: '/repositories',
+  SETTINGS: '/settings',
+  SETTINGS_SECURITY: '/settings/security',
 };

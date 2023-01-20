@@ -8,4 +8,7 @@ export const formErrors = {
     'Password should contain latin letters and at least one uppercase letter, one lowercase letter and one number',
   SHOULD_BE_IN_PAST: 'Date should be in the past',
   MAX_IMAGE_SIZE: 'Image size should be less than 500kb',
+  SHOULD_BE_MOBILE: 'Should be a mobile phone number',
+  SHOULD_BE_NUMBER: 'Should be a number',
+  INVALID_ZIP_CODE: 'Invalid zip code',
 };
