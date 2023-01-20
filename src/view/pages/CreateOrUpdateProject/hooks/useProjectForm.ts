@@ -11,54 +11,23 @@ import {
 
 const formSchema = z.object({
   name: z.string(),
-  clientName: z.string(),
-  phase: z.string(),
   status: z.string(),
+  estimatedStartDate: z.date().nullable(),
+  estimatedEndDate: z.date().nullable(),
   designLink: z.string(),
-  hoursEstimated: z.number(),
-  startDate: z.date().nullable(),
-  endDate: z.date().nullable(),
-  pm: z
-    .object({
-      firstName: z.string(),
-      lastName: z.string(),
-      photo: z.union([z.string(), z.instanceof(File)]).nullable(),
-      isActive: z.boolean(),
-    })
-    .array(),
-  qa: z
-    .object({
-      firstName: z.string(),
-      lastName: z.string(),
-      photo: z.union([z.string(), z.instanceof(File)]).nullable(),
-      isActive: z.boolean(),
-    })
-    .array(),
-  frontDev: z
-    .object({
-      firstName: z.string(),
-      lastName: z.string(),
-      photo: z.union([z.string(), z.instanceof(File)]).nullable(),
-      isActive: z.boolean(),
-    })
-    .array(),
-  backDev: z
-    .object({
-      firstName: z.string(),
-      lastName: z.string(),
-      photo: z.union([z.string(), z.instanceof(File)]).nullable(),
-      isActive: z.boolean(),
-    })
-    .array(),
-  designer: z
-    .object({
-      firstName: z.string(),
-      lastName: z.string(),
-      photo: z.union([z.string(), z.instanceof(File)]).nullable(),
-      isActive: z.boolean(),
-    })
-    .array(),
   notes: z.string(),
+  clientName: z.string(),
+  clientPhone: z.string(),
+  clientEmail: z.string(),
+  clientNotes: z.string(),
+  clientTeamMembers: z
+    .object({
+      name: z.string(),
+      position: z.string(),
+      email: z.string(),
+      phone: z.string(),
+    })
+    .array(),
 });
 
 type ProjectFormValues = z.infer<typeof formSchema>;
@@ -76,19 +45,16 @@ interface UseClientFormProps {
 
 const defaultValues: ProjectFormValues = {
   name: '',
-  clientName: '',
-  phase: '',
   status: '',
+  estimatedStartDate: null,
+  estimatedEndDate: null,
   designLink: '',
-  hoursEstimated: 0,
-  startDate: null,
-  endDate: null,
-  pm: [],
-  qa: [],
-  frontDev: [],
-  backDev: [],
-  designer: [],
   notes: '',
+  clientName: '',
+  clientPhone: '',
+  clientEmail: '',
+  clientNotes: '',
+  clientTeamMembers: [{ name: '', position: '', email: '', phone: '' }],
 };
 
 export function useProjectForm({
@@ -106,24 +72,24 @@ export function useProjectForm({
     if (prefilledData) {
       form.reset({
         name: prefilledData.name ?? '',
-        /!* clientName: prefilledData.clientName ?? '',
-        phase: prefilledData.phase ?? '',
         status: prefilledData.status ?? '',
+        estimatedStartDate: prefilledData.estimatedStartDate ?? null,
+        estimatedEndDate: prefilledData.estimatedEndDate ?? null,
         designLink: prefilledData.designLink ?? '',
-        hoursEstimated: prefilledData.hoursEstimated ?? 0,
-        startDate: prefilledData.startDate ?? null,
-        endDate: prefilledData.endDate ?? null,
-        pm: prefilledData.pm ?? [],
-        qa: prefilledData.qa ?? [],
-        frontDev: prefilledData.frontDev ?? [],
-        backDev: prefilledData.backDev ?? [],
-        notes: prefilledData.notes ?? '', *!/
-      });
+        notes: prefilledData.notes ?? '',
+        clientName: prefilledData.clientName ?? '',
+        clientPhone: prefilledData.clientPhone ?? '',
+        clientEmail: prefilledData.clientEmail ?? '',
+        clientNotes: prefilledData.clientNotes ?? '',
+        clientTeamMembers: prefilledData.clientTeamMembers ?? [],
+  });
     }
   }, [form, prefilledData]); */
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
+      // eslint-disable-next-line no-console
+      console.log('🚀 ~ file: useProjectForm.ts:138 ~ values', values);
       try {
         await createOrUpdateProject({
           variables: {
