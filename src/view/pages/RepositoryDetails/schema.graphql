@@ -13,3 +13,11 @@ query FetchRepositoryParticipants($data: IDInput!) {
     name
   }
 }
+
+# TODO fix fields when backend will be ready
+mutation AddRepositoryParticipant($input: ProjectInput!) {
+  repositoryParticipant(data: $input) {
+    user
+    accessLevel
+  }
+}

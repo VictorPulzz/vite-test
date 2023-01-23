@@ -34,14 +34,14 @@ export function useAddParticipantForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [addParticipant] = useAddParticipantMutation();
+  // const [addRepositoryParticipant] = useAddRepositoryParticipantMutation();
 
   const handleSubmit = useCallback(
     async (values: AddParticipantFormValues) => {
       try {
         // eslint-disable-next-line no-console
         console.log('🚀 ~ file: useProjectForm.ts:138 ~ values', values);
-        // await addParticipant({
+        // await addRepositoryParticipant({
         //   variables: {
         //     input: {
         //       user: values.user,
