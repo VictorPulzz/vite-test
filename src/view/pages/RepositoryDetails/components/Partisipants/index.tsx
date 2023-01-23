@@ -1,27 +1,40 @@
 import React, { FC } from 'react';
 
-// TODO remove repositoriesTestData when backend will be ready
-// const repositoriesTestData = [
-//   {
-//     projectId: 2,
-//     repositoryId: 1,
-//     repositoryName: 'Pic-up-web-frontend',
-//     projectName: 'PicUp',
-//     gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
-//     createdAt: '28/10/2022',
-//     platform: 'Web',
-//   },
-//   {
-//     projectId: 4,
-//     repositoryId: 2,
-//     repositoryName: 'Pic-up-customer-mobile',
-//     projectName: 'PicUp',
-//     gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',
-//     createdAt: '29/10/2022',
-//     platform: 'Mobile',
-//   },
-// ];
+import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
+import { Avatar } from '~/view/components/Avatar';
+import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+
+// TODO remove participantTestData when backend will be ready
+const participantTestData = {
+  id: 1,
+  fullName: 'Barbara Williams',
+  photo: 'https://picsum.photos/36/36?random',
+  position: 'Admin',
+};
 
 export const Participants: FC = () => {
-  return <div>PArticipants</div>;
+  // TODO remove participantsTestData when backend will be ready
+  const participantsTestData = new Array(12).fill(participantTestData);
+
+  return (
+    <>
+      <div className="w-3/4 grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
+        {participantsTestData.map((participant, index) => (
+          <div key={`${participant.id + index}`} className="flex gap-[10px] items-center">
+            <Avatar uri={`${participant.photo}=${index}` || photoPlaceholder} size={36} />
+            <div className="flex flex-col gap-[3px]">
+              <span className="text-p3 text-black">{participant.fullName}</span>
+              <span className="text-c1 text-black leading-none">{participant.position}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Button
+        variant={ButtonVariant.SECONDARY}
+        label="Add participant"
+        className="mt-10 w-[136px]"
+        onClick={() => null}
+      />
+    </>
+  );
 };

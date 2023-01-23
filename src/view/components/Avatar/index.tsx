@@ -9,7 +9,7 @@ interface Props {
 
 export const Avatar: React.FC<Props> = ({ uri, size = 34 }) => {
   return (
-    <div>
+    <div className="flex-shrink-0">
       {uri ? (
         <img
           src={uri}
