@@ -22,6 +22,7 @@ import { REPOSITORIES_TABLE_COLUMNS } from './consts';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
 // import { CLIENTS_TABLE_COLUMNS } from './consts';
 
+// TODO remove repositoriesTestData when backend will be ready
 export enum ProjectPlatfrom {
   WEB = 'WEB',
   MOBILE = 'MOBILE',

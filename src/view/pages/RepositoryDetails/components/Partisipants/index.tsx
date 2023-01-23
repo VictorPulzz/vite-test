@@ -1,9 +1,12 @@
+import { useSwitchValue } from '@appello/common/lib/hooks';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+
+import { AddParticipantModal } from '../AddParticipantModal';
 
 // TODO remove participantTestData when backend will be ready
 const participantTestData = {
@@ -14,6 +17,11 @@ const participantTestData = {
 };
 
 export const Participants: FC = () => {
+  const {
+    value: isAddParticipantModalOpen,
+    on: openAddParticipantModal,
+    off: closeAddParticipantModal,
+  } = useSwitchValue(false);
   // TODO remove participantsTestData when backend will be ready
   const participantsTestData = new Array(12).fill(participantTestData);
 
@@ -51,10 +59,11 @@ export const Participants: FC = () => {
             variant={ButtonVariant.SECONDARY}
             label="Add participant"
             className="mt-10 w-[136px]"
-            onClick={() => null}
+            onClick={openAddParticipantModal}
           />
         </>
       )}
+      <AddParticipantModal isOpen={isAddParticipantModalOpen} close={closeAddParticipantModal} />
     </div>
   );
 };
