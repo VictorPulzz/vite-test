@@ -9,9 +9,15 @@ import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
 
-// TODO remove participantTestData when backend will be ready
-const participantTestData = {
-  id: 0,
+// TODO remove participantTestData and Participant when backend will be ready
+interface Participant {
+  id: string;
+  fullName: string;
+  photo: string;
+  position: string;
+}
+const participantTestData: Participant = {
+  id: '0',
   fullName: 'Barbara Williams',
   photo: 'https://picsum.photos/36/36?random',
   position: 'Admin',
@@ -55,7 +61,7 @@ export const Participants: FC = () => {
                     <span className="text-c1 text-gray-1 leading-none">{participant.position}</span>
                   </div>
                 </div>
-                <ParticipantMenu id={`${participant.id + index}`} />
+                <ParticipantMenu participant={participant} />
               </div>
             ))}
           </div>
