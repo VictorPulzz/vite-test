@@ -1,17 +1,51 @@
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
+import { ProjectPlatfrom } from '../Repositories/consts';
+import { Participants } from './components/Partisipants';
 // import { useFetchProjectDetailsQuery } from './__generated__/schema';
-import { PROJECT_DETAILS_TABS } from './consts';
+import { REPOSITORY_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
 
+// TODO remove repositoriesTestData when backend will be ready
+const repositoriesTestData = [
+  {
+    projectId: 2,
+    repositoryId: 1,
+    repositoryName: 'Pic-up-web-frontend',
+    projectName: 'PicUp',
+    gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
+    gitTerraformUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
+    createdAt: '28/10/2022',
+    platform: 'Web',
+  },
+  {
+    projectId: 4,
+    repositoryId: 2,
+    repositoryName: 'Pic-up-customer-mobile',
+    projectName: 'PicUp',
+    gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',
+    gitTerraformUrl: null,
+    createdAt: '29/10/2022',
+    platform: 'Mobile',
+  },
+];
+
 export const RepositoryDetailsPage: FC = () => {
-  // const params = useParams();
-  // const repositoryId = params.id ? Number(params.id) : 0;
+  const params = useParams();
+  const repositoryId = params.id ? Number(params.id) : 0;
+
+  // TODO remove employeeById when backend will be ready
+  const repositoryById = useMemo(
+    () => repositoriesTestData.find(repository => repository.repositoryId === repositoryId),
+    [repositoryId],
+  );
 
   // const { data, loading } = useFetchProjectDetailsQuery({
   //   variables: {
@@ -28,70 +62,68 @@ export const RepositoryDetailsPage: FC = () => {
 
   return (
     <SidebarLayout>
-      <DetailLayout title="Project details">
+      <DetailLayout title="Repository details">
         {loading ? (
           <span>LOADING</span>
         ) : (
           <div className="flex gap-5 p-6">
             <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
               <div className={styles['section']}>
-                <h2 className="mb-3 text-p1 font-bold">Project info</h2>
+                <h2 className="mb-3 text-p1 font-bold">Info</h2>
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Name</span>
-                    <span className="text-p3 text-blue leading-none">Development</span>
-                  </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Phase</span>
-                    <span className="text-p3 text-blue leading-none">Development</span>
-                  </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Status</span>
-                    <span className="text-p3 text-primary leading-none">Pre-release</span>
-                  </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Estimated dates</span>
-                    <span className="text-p3 text-primary leading-none">
-                      2 Mar 2020 - 25 Dec 2022
+                    <span className="text-p3 text-blue leading-none">
+                      {repositoryById?.repositoryName}
                     </span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Estimated hours</span>
-                    <span className="text-p3 text-primary leading-none">1047</span>
+                    <span className="text-c1 text-gray-2">Project</span>
+                    <span className="text-p3 text-blue leading-none">
+                      {repositoryById?.projectName}
+                    </span>
                   </div>
-                  <div className="flex flex-col gap-[2px] break-words">
-                    <span className="text-c1 text-gray-2">Design link</span>
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Git url</span>
                     <TextLink
                       external
-                      to="https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0"
+                      to={repositoryById?.gitUrl}
                       className="text-p3 text-blue leading-none hover:underline"
                     >
-                      https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0
+                      {repositoryById?.gitUrl}
                     </TextLink>
                   </div>
-                </div>
-              </div>
-              <div className={styles['section']}>
-                <h2 className="mb-3 text-p1 font-bold">Client details</h2>
-                <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Name</span>
-                    <span className="text-p3 leading-none">Brendan</span>
+                    <span className="text-c1 text-gray-2">Created at</span>
+                    <span className="text-p3 text-primary leading-none">
+                      {repositoryById?.createdAt}
+                    </span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Phone number</span>
-                    <span className="text-p3 leading-none">0347265937</span>
+                    <span className="text-c1 text-gray-2">Git Terraform url</span>
+                    {repositoryById?.gitTerraformUrl ? (
+                      <TextLink
+                        external
+                        to={repositoryById?.gitTerraformUrl}
+                        className="text-p3 text-blue leading-none hover:underline"
+                      >
+                        {repositoryById?.gitTerraformUrl ?? '-'}
+                      </TextLink>
+                    ) : (
+                      <span className="text-p3 text-primary leading-none">-</span>
+                    )}
                   </div>
                   <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Notes</span>
-                    <span className="text-p3 leading-none">Some useful notes here</span>
-                  </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Client team</span>
-                    <div className="flex justify-between">
-                      <span className="text-p3 leading-none">Taylor (Manager)</span>
-                      <span className="text-p3 leading-none">+61726485996</span>
-                    </div>
+                    <span className="text-c1 text-gray-2">Platform</span>
+                    <Badge
+                      color={
+                        repositoryById?.platform.toUpperCase() === ProjectPlatfrom.WEB
+                          ? BadgeColor.GREEN
+                          : BadgeColor.GRAY
+                      }
+                    >
+                      {repositoryById?.platform}
+                    </Badge>
                   </div>
                 </div>
               </div>
@@ -99,18 +131,12 @@ export const RepositoryDetailsPage: FC = () => {
             <div className="shadow-4 bg-white rounded-md flex-auto p7">
               <Tabs
                 activeTabId={activeTabId}
-                tabs={PROJECT_DETAILS_TABS}
+                tabs={REPOSITORY_DETAILS_TABS}
                 onChange={handleActiveTabChange}
                 tabsClassName="border-b-[1px] border-solid text-gray-6 pt-7 px-7"
                 tabsPanelClassName="p-6"
               >
-                {activeTabId === 1 && <span>Participants</span>}
-                {activeTabId === 2 && <span>Docs</span>}
-                {activeTabId === 3 && <span>Credentials</span>}
-                {activeTabId === 4 && <span>Estimations</span>}
-                {activeTabId === 5 && <span>Notes</span>}
-                {activeTabId === 6 && <span>History</span>}
-                {activeTabId === 7 && <span>Repositories</span>}
+                {activeTabId === 1 && <Participants />}
               </Tabs>
             </div>
           </div>

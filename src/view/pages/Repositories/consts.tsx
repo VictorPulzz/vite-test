@@ -12,6 +12,7 @@ import { ROUTES } from '~/constants/routes';
 import { MoreCell } from './components/MoreCell';
 // import { ClientResultType } from './types';
 
+// TODO move ProjectPlatfrom to common models later
 export enum ProjectPlatfrom {
   WEB = 'WEB',
   MOBILE = 'MOBILE',
@@ -23,14 +24,28 @@ export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('repositoryName', {
     // id: ClientOrder.EMAIL,
     header: 'Name',
+    cell: props => {
+      const { repositoryId } = props.row.original;
+      return (
+        <TextLink
+          to={generatePath(ROUTES.REPOSITORY_DETAILS, { id: repositoryId })}
+          className="underline"
+        >
+          {props.getValue()}
+        </TextLink>
+      );
+    },
   }),
   columnHelper.accessor('projectName', {
     // id: ClientOrder.EMAIL,
     header: 'Project',
     cell: props => {
-      const { id } = props.row.original;
+      const { projectId } = props.row.original;
       return (
-        <TextLink to={generatePath(ROUTES.PROJECT_DETAILS, { id })} className="underline">
+        <TextLink
+          to={generatePath(ROUTES.PROJECT_DETAILS, { id: projectId })}
+          className="underline"
+        >
           {props.getValue()}
         </TextLink>
       );

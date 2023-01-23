@@ -15,7 +15,7 @@ export const ROUTES = {
   DOCUMENTS: '/documents',
 
   REPOSITORIES: '/repositories',
-  REPOSITORIES_DETAILS: '/repositories/:id',
+  REPOSITORY_DETAILS: '/repositories/:id',
 
   SETTINGS: '/settings',
   SETTINGS_SECURITY: '/settings/security',

@@ -30,7 +30,8 @@ export enum ProjectPlatfrom {
 // TODO remove repositoriesTestData when backend will be ready
 const repositoriesTestData = [
   {
-    id: 2,
+    projectId: 2,
+    repositoryId: 1,
     repositoryName: 'Pic-up-web-frontend',
     projectName: 'PicUp',
     gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
@@ -38,7 +39,8 @@ const repositoriesTestData = [
     platform: 'Web',
   },
   {
-    id: 4,
+    projectId: 4,
+    repositoryId: 2,
     repositoryName: 'Pic-up-customer-mobile',
     projectName: 'PicUp',
     gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',

@@ -71,7 +71,7 @@ const protectedRoutes: RouteObject[] = [
     element: <RepositoriesPage />,
   },
   {
-    path: ROUTES.REPOSITORIES_DETAILS,
+    path: ROUTES.REPOSITORY_DETAILS,
     element: <RepositoryDetailsPage />,
   },
   {
