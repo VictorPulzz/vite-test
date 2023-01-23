@@ -6,11 +6,12 @@ import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
-import { AddParticipantModal } from '../AddParticipantModal';
+import { AddParticipantModal } from './components/AddParticipantModal';
+import { ParticipantMenu } from './components/ParticipantMenu';
 
 // TODO remove participantTestData when backend will be ready
 const participantTestData = {
-  id: 1,
+  id: 0,
   fullName: 'Barbara Williams',
   photo: 'https://picsum.photos/36/36?random',
   position: 'Admin',
@@ -46,12 +47,15 @@ export const Participants: FC = () => {
         <>
           <div className="w-3/4 grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
             {participantsTestData.map((participant, index) => (
-              <div key={`${participant.id + index}`} className="flex gap-[10px] items-center">
-                <Avatar uri={`${participant.photo}=${index}` || photoPlaceholder} size={36} />
-                <div className="flex flex-col gap-[3px]">
-                  <span className="text-p3 text-black">{participant.fullName}</span>
-                  <span className="text-c1 text-black leading-none">{participant.position}</span>
+              <div key={`${participant.id + index}`} className="flex items-center gap-[20px]">
+                <div className="flex gap-[10px] items-center">
+                  <Avatar uri={`${participant.photo}=${index}` || photoPlaceholder} size={36} />
+                  <div className="flex flex-col gap-[3px]">
+                    <span className="text-p3 text-black">{participant.fullName}</span>
+                    <span className="text-c1 text-gray-1 leading-none">{participant.position}</span>
+                  </div>
                 </div>
+                <ParticipantMenu id={`${participant.id + index}`} />
               </div>
             ))}
           </div>

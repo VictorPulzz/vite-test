@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
-import { useAddParticipantForm } from '../../hooks/useAddParticipantForm';
+import { useAddParticipantForm } from '../../../../hooks/useAddParticipantForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
