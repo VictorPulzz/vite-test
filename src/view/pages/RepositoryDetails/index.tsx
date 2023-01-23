@@ -9,7 +9,7 @@ import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { ProjectPlatfrom } from '../Repositories/consts';
 import { Participants } from './components/Partisipants';
-// import { useFetchProjectDetailsQuery } from './__generated__/schema';
+// import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
 import { REPOSITORY_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
 
@@ -47,7 +47,7 @@ export const RepositoryDetailsPage: FC = () => {
     [repositoryId],
   );
 
-  // const { data, loading } = useFetchProjectDetailsQuery({
+  // const { data, loading } = useFetchRepositoryDetailsQuery({
   //   variables: {
   //     data: { id: repositoryId },
   //   },

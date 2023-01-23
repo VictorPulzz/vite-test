@@ -1,5 +1,14 @@
-query FetchProjectDetails($data: IDInput!) {
-  project(data: $data) {
+# TODO fix fields when backend will be ready
+query FetchRepositoryDetails($data: IDInput!) {
+  repository(data: $data) {
+    id
+    name
+  }
+}
+
+# TODO fix fields when backend will be ready
+query FetchRepositoryParticipants($data: IDInput!) {
+  repositoryParticipants(data: $data) {
     id
     name
   }
