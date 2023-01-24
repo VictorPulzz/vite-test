@@ -14,7 +14,7 @@ import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
-import { useEmployeeForm } from './hooks/useEmployeeForm';
+import { useUserForm } from './hooks/useUserForm';
 import styles from './styles.module.scss';
 
 export enum Departments {
@@ -22,25 +22,25 @@ export enum Departments {
   BACK_END = 'BACKEND',
 }
 
-export const CreateOrUpdateEmployeePage: FC = () => {
+export const CreateOrUpdateUserPage: FC = () => {
   const navigate = useNavigate();
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
-  const projectId = params.id ? Number(params.id) : undefined;
-  const isEditMode = !!projectId;
+  const userId = params.id ? Number(params.id) : undefined;
+  const isEditMode = !!userId;
 
   /* Todo: add edit mode when backend will be ready
-  const { employee, loading} = useFetchEmployeeQuery({
+  const { user, loading} = useFetchUserQuery({
     variables: {
       id: isEditMode ? projectId : 0,
     },
     skip: !isEditMode,
   }); */
 
-  const { form, handleSubmit } = useEmployeeForm({
+  const { form, handleSubmit } = useUserForm({
     onSubmitSuccessful: () => navigate(-1),
     // todo: deal with projectId can't be undefined wneh backend will be ready
     // prefilledData: { id: projectId ?? 0 },
-    id: projectId,
+    id: userId,
   });
 
   const departmentsOptions = enumToSelectOptions(Departments);
@@ -48,12 +48,12 @@ export const CreateOrUpdateEmployeePage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isEditMode ? 'Edit employee' : 'Add employee'}
+        title={isEditMode ? 'Edit user' : 'Add user'}
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label={isEditMode ? 'Save employee' : 'Create employee'}
+            label={isEditMode ? 'Save user' : 'Create user'}
             className="w-36"
             onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}
@@ -61,7 +61,7 @@ export const CreateOrUpdateEmployeePage: FC = () => {
         }
       >
         <section className={styles['section']}>
-          <h2 className={styles['section__heading']}>Employee info</h2>
+          <h2 className={styles['section__heading']}>User info</h2>
           <PhotoField name="photo" control={form.control} label="Photo" />
           <InlineFields>
             <TextField name="firstName" control={form.control} label="First name" />

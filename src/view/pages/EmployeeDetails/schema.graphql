@@ -1,7 +1,0 @@
-# TODO fix fields when backend will be ready
-query FetchEmployeeDetails($data: IDInput!) {
-  employee(data: $data) {
-    id
-    fullName
-  }
-}

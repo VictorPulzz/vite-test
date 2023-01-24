@@ -3,11 +3,9 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { CreateOrUpdateEmployeePage } from '~/view/pages/CreateOrUpdateEmployee';
 import { CreateOrUpdateProjectPage } from '~/view/pages/CreateOrUpdateProject';
+import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { DocumentsPage } from '~/view/pages/Documents';
-import { EmloyeesPage } from '~/view/pages/Emloyees';
-import { EmployeeDetailsPage } from '~/view/pages/EmployeeDetails';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
@@ -17,6 +15,8 @@ import { RepositoryDetailsPage } from '~/view/pages/RepositoryDetails';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
+import { UserDetailsPage } from '~/view/pages/UserDetails';
+import { UsersPage } from '~/view/pages/Users';
 
 const authRoutes: RouteObject[] = [
   {
@@ -51,20 +51,20 @@ const protectedRoutes: RouteObject[] = [
     element: <ProjectDetailsPage />,
   },
   {
-    path: ROUTES.EMPLOYEES,
-    element: <EmloyeesPage />,
+    path: ROUTES.USERS,
+    element: <UsersPage />,
   },
   {
-    path: ROUTES.ADD_EMPLOYEE,
-    element: <CreateOrUpdateEmployeePage />,
+    path: ROUTES.ADD_USER,
+    element: <CreateOrUpdateUserPage />,
   },
   {
-    path: ROUTES.EDIT_EMPLOYEE,
-    element: <CreateOrUpdateEmployeePage />,
+    path: ROUTES.EDIT_USER,
+    element: <CreateOrUpdateUserPage />,
   },
   {
-    path: ROUTES.EMPLOYEE_DETAILS,
-    element: <EmployeeDetailsPage />,
+    path: ROUTES.USER_DETAILS,
+    element: <UserDetailsPage />,
   },
   {
     path: ROUTES.REPOSITORIES,

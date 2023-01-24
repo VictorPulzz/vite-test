@@ -7,10 +7,10 @@ export const ROUTES = {
   EDIT_PROJECT: '/projects/:id/edit',
   PROJECT_DETAILS: '/projects/:id',
 
-  EMPLOYEES: '/emloyees',
-  ADD_EMPLOYEE: '/emloyees/add',
-  EDIT_EMPLOYEE: '/emloyees/:id/edit',
-  EMPLOYEE_DETAILS: '/emloyees/:id',
+  USERS: '/users',
+  ADD_USER: '/users/add',
+  EDIT_USER: '/users/:id/edit',
+  USER_DETAILS: '/users/:id',
 
   DOCUMENTS: '/documents',
 

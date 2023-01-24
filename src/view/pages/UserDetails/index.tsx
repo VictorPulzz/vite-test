@@ -10,8 +10,8 @@ import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { PROJECT_DETAILS_TABS } from './consts';
 
-// TODO remove emloyeesTestData when backend will be ready
-const emloyeesTestData = [
+// TODO remove usersTestData when backend will be ready
+const usersTestData = [
   {
     id: 1,
     fullName: 'Jhon Snow',
@@ -62,19 +62,16 @@ const emloyeesTestData = [
   },
 ];
 
-export const EmployeeDetailsPage: FC = () => {
+export const UserDetailsPage: FC = () => {
   const params = useParams();
-  const employeeId = params.id ? Number(params.id) : 0;
+  const userId = params.id ? Number(params.id) : 0;
 
   // TODO remove employeeById when backend will be ready
-  const employeeById = useMemo(
-    () => emloyeesTestData.find(emloyee => emloyee.id === employeeId),
-    [employeeId],
-  );
+  const userById = useMemo(() => usersTestData.find(user => user.id === userId), [userId]);
 
-  // const { data, loading } = useFetchEmployeeDetailsQuery({
+  // const { data, loading } = useFetchUserDetailsQuery({
   //   variables: {
-  //     data: { id: employeeId },
+  //     data: { id: userById },
   //   },
   // });
 
@@ -87,61 +84,59 @@ export const EmployeeDetailsPage: FC = () => {
 
   return (
     <SidebarLayout>
-      <DetailLayout title="Employee details">
+      <DetailLayout title="User details">
         {loading ? (
           <span>LOADING</span>
         ) : (
           <div className="flex gap-5 p-6">
             <div className="flex flex-col gap-5">
               <div className="flex items-center gap-3 shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
-                <Avatar uri={employeeById?.photo || photoPlaceholder} size={50} />
+                <Avatar uri={userById?.photo || photoPlaceholder} size={50} />
                 <div className="flex flex-col gap-2">
-                  <h2 className="text-p1 font-bold leading-none">{employeeById?.fullName}</h2>
-                  <span className="text-p4 text-gray-2">ID {employeeById?.id}</span>
+                  <h2 className="text-p1 font-bold leading-none">{userById?.fullName}</h2>
+                  <span className="text-p4 text-gray-2">ID {userById?.id}</span>
                 </div>
               </div>
               <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px] flex-auto">
                 <div>
-                  <h2 className="mb-3 text-p1 font-bold">Employee info</h2>
+                  <h2 className="mb-3 text-p1 font-bold">User info</h2>
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Mobile</span>
                       <span className="text-p3 text-blue leading-none">
-                        {employeeById?.phoneNumber}
+                        {userById?.phoneNumber}
                       </span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Email</span>
-                      <span className="text-p3 text-blue leading-none">{employeeById?.email}</span>
+                      <span className="text-p3 text-blue leading-none">{userById?.email}</span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Department</span>
                       <span className="text-p3 text-primary leading-none">
-                        {employeeById?.department}
+                        {userById?.department}
                       </span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Date of Birth</span>
                       <span className="text-p3 text-primary leading-none">
-                        {employeeById?.dateOfBirth}
+                        {userById?.dateOfBirth}
                       </span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Address</span>
-                      <span className="text-p3 text-primary leading-none">
-                        {employeeById?.address}
-                      </span>
+                      <span className="text-p3 text-primary leading-none">{userById?.address}</span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Contract type</span>
                       <span className="text-p3 text-primary leading-none">
-                        {employeeById?.contractType}
+                        {userById?.contractType}
                       </span>
                     </div>
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Status</span>
-                      <Badge color={employeeById?.isActive ? BadgeColor.GREEN : BadgeColor.GRAY}>
-                        {employeeById?.isActive ? 'Active' : 'Inactive'}
+                      <Badge color={userById?.isActive ? BadgeColor.GREEN : BadgeColor.GRAY}>
+                        {userById?.isActive ? 'Active' : 'Inactive'}
                       </Badge>
                     </div>
                   </div>

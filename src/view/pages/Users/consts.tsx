@@ -28,7 +28,7 @@ export const EMPLOYEES_TABLE_COLUMNS = [
       return (
         <div className="flex gap-3 items-center">
           <Avatar uri={photo || photoPlaceholder} size={26} />
-          <TextLink to={generatePath(ROUTES.EMPLOYEE_DETAILS, { id })} className="underline">
+          <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
             {fullName}
           </TextLink>
         </div>
