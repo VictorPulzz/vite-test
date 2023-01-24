@@ -1,6 +1,23 @@
+# TODO fix fields when backend will be ready
 query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
+  }
+}
+
+# TODO fix fields when backend will be ready
+query FetchProjectParticipants($data: IDInput!) {
+  projectParticipants(data: $data) {
+    id
+    name
+  }
+}
+
+# TODO fix fields when backend will be ready
+mutation AddProjectParticipant($input: ProjectInput!) {
+  projectParticipant(data: $input) {
+    user
+    accessLevel
   }
 }
