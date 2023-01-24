@@ -8,6 +8,7 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
+import { Participants } from './components/Participants';
 import { PROJECT_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
 
@@ -110,7 +111,7 @@ export const ProjectDetailsPage: FC = () => {
                   tabsClassName="border-b-[1px] border-solid text-gray-6 pt-7 px-7"
                   tabsPanelClassName="p-6"
                 >
-                  {activeTabId === 1 && <span>Participants</span>}
+                  {activeTabId === 1 && <Participants />}
                   {activeTabId === 2 && <span>Docs</span>}
                   {activeTabId === 3 && <span>Credentials</span>}
                   {activeTabId === 4 && <span>Estimations</span>}
