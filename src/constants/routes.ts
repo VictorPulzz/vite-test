@@ -17,6 +17,8 @@ export const ROUTES = {
   REPOSITORIES: '/repositories',
   REPOSITORY_DETAILS: '/repositories/:id',
 
+  ROLES_AND_PERMISSIONS: '/roles-and-permissions',
+
   SETTINGS: '/settings',
   SETTINGS_SECURITY: '/settings/security',
 };
