@@ -44,9 +44,9 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
 
   const options: DropdownItem[] = [
     {
-      label: 'Edit employee',
+      label: 'Edit user',
       iconBefore: <Icon name="edit" size={16} />,
-      onSelect: () => navigate(generatePath(ROUTES.EDIT_EMPLOYEE, { id: row.original.id })),
+      onSelect: () => navigate(generatePath(ROUTES.EDIT_USER, { id: row.original.id })),
     },
     {
       label: 'Change status',

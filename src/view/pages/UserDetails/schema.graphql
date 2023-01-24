@@ -1,0 +1,7 @@
+# TODO fix fields when backend will be ready
+query FetchUserDetails($data: IDInput!) {
+  user(data: $data) {
+    id
+    fullName
+  }
+}

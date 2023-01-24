@@ -16,22 +16,23 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
-// import { useFetchEmloyeesQuery } from './__generated__/schema';
+// import { useFetchUsersQuery } from './__generated__/schema';
 import { EMPLOYEES_TABLE_COLUMNS } from './consts';
 
 // import { useFetchClientsQuery } from './__generated__/schema';
 // import { ClientsFilterModal } from './components/ClientsFilterModal';
 // import { CLIENTS_TABLE_COLUMNS } from './consts';
 
-export enum EmloyeesPageFilterEnum {
+// TODO remove usersTestData when backend will be ready
+export enum UsersPageFilterEnum {
   FRONT_END = 'FRONTEND',
   BACK_END = 'BACKEND',
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
 
-// TODO remove emloyeesTestData when backend will be ready
-const emloyeesTestData = [
+// TODO remove usersTestData when backend will be ready
+const usersTestData = [
   {
     id: 1,
     fullName: 'Jhon Snow',
@@ -66,7 +67,7 @@ const emloyeesTestData = [
   },
 ];
 
-export const EmloyeesPage: FC = () => {
+export const UsersPage: FC = () => {
   const { control } = useForm();
   // const [searchValue, setSearchValue] = useState('');
   // TODO remove any
@@ -83,51 +84,45 @@ export const EmloyeesPage: FC = () => {
   //   off: closeFilterModal,
   // } = useSwitchValue(false);
 
-  // const { data, loading, fetchMore } = useFetchEmloyeesQuery();
+  // const { data, loading, fetchMore } = useFetchUsersQuery();
 
-  const employessFilterOptions = enumToSelectOptions(EmloyeesPageFilterEnum);
+  const usersFilterOptions = enumToSelectOptions(UsersPageFilterEnum);
 
-  // TODO remove test data later
+  // TODO remove usersTestData later
   const data = {
     loading: false,
-    employeesList: emloyeesTestData,
+    employeesList: usersTestData,
   };
 
   return (
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-h4">Emloyees</h1>
+          <h1 className="text-h4">Users</h1>
           <p className="text-c1 text-gray-2">
-            {(data && data.employeesList.length) ?? 0} emloyees in total
+            {(data && data.employeesList.length) ?? 0} users in total
           </p>
         </div>
         <Button
-          label="Add emloyee"
+          label="Add user"
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          to={ROUTES.ADD_EMPLOYEE}
+          to={ROUTES.ADD_USER}
         />
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput
           // onChange={setSearchValue}
           onChange={() => null}
-          placeholder="Search emloyees"
+          placeholder="Search users"
           className="flex-1"
         />
-        <SelectField
-          className="w-40"
-          name="group"
-          options={employessFilterOptions}
-          control={control}
-          // placeholder="Select status..."
-        />
+        <SelectField className="w-40" name="group" options={usersFilterOptions} control={control} />
       </div>
       {data.loading && <TableLoader className="mt-10" />}
       {data && data.employeesList.length === 0 && (
-        <EmptyState iconName="emloyees" label="No emloyees here yet" />
+        <EmptyState iconName="users" label="No users here yet" />
       )}
       {!data.loading && data && data.employeesList.length > 0 && (
         <Table

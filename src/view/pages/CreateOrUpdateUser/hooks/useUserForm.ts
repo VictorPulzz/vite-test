@@ -32,20 +32,20 @@ const formSchema = z.object({
   isActive: z.boolean(),
 });
 
-type EmployeeFormValues = z.infer<typeof formSchema>;
+type UserFormValues = z.infer<typeof formSchema>;
 
-interface UseEmployeeFormReturn {
-  form: UseFormReturn<EmployeeFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<EmployeeFormValues>>;
+interface UseUserFormReturn {
+  form: UseFormReturn<UserFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<UserFormValues>>;
 }
 
-interface UseEmployeeFormProps {
+interface UseUserFormProps {
   onSubmitSuccessful?: () => void;
   // prefilledData?: FetchEmployeeQuery['employee'];
   id?: number;
 }
 
-const defaultValues: EmployeeFormValues = {
+const defaultValues: UserFormValues = {
   firstName: '',
   lastName: '',
   photo: null,
@@ -58,16 +58,13 @@ const defaultValues: EmployeeFormValues = {
   isActive: false,
 };
 
-export function useEmployeeForm({
-  onSubmitSuccessful,
-  id,
-}: UseEmployeeFormProps): UseEmployeeFormReturn {
-  const form = useForm<EmployeeFormValues>({
+export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUserFormReturn {
+  const form = useForm<UserFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [createOrUpdateEmployee] = useCreateOrUpdateEmployeeMutation();
+  // const [createOrUpdateUser] = useCreateOrUpdateUserMutation();
 
   // useEffect(() => {
   //   if (prefilledData) {
@@ -87,14 +84,14 @@ export function useEmployeeForm({
   // }, [form]);
 
   const handleSubmit = useCallback(
-    async (values: EmployeeFormValues) => {
+    async (values: UserFormValues) => {
       // TODO remove concole.log
       // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useEmployeeForm.ts:83 ~ values', values);
+      console.log('🚀 ~ file: useUserForm.ts:88 ~ values', values);
       // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useEmployeeForm.ts:57 ~ id', id);
+      console.log('🚀 ~ file: useUserForm.ts:88 ~ values', id);
       try {
-        // await createOrUpdateEmployee({
+        // await createOrUpdateUser({
         //   variables: {
         //     input: {
         //       id,
@@ -104,7 +101,7 @@ export function useEmployeeForm({
         // });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<EmployeeFormValues>(e, {
+        processGqlErrorResponse<UserFormValues>(e, {
           fields: [
             'firstName',
             'lastName',

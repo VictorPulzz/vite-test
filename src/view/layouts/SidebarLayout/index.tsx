@@ -29,9 +29,9 @@ const navItems = [
     link: ROUTES.PROJECTS,
   },
   {
-    title: 'Emloyees',
-    icon: 'emloyees',
-    link: ROUTES.EMPLOYEES,
+    title: 'Users',
+    icon: 'users',
+    link: ROUTES.USERS,
   },
   {
     title: 'Repositories',
