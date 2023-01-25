@@ -6,73 +6,37 @@ import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { ExtractRouteParams } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-import { DetailLayout } from '~/view/layouts/DetailLayout';
-import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
+import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
+import { SectionNumber } from '../../consts';
+import { useUpdateProjectForm } from '../../hooks/useUpdateProjectForm';
 import styles from './styles.module.scss';
 
-export enum ProjectPhase {
-  SIGNED = 'Signed',
-  DESIGN = 'Design',
-  DEVELOPMENT = 'Development',
-  SUPPORT = 'Support',
-  FINISHED = 'Finished',
-  ARCHIVED = 'Archived',
+interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
+  sectionNumber: number;
 }
 
-// TODO remove  phaseOptions later
-// const phaseOptions = [
-//   {
-//     label: ProjectPhase.SIGNED,
-//     value: ProjectPhase.SIGNED,
-//   },
-//   {
-//     label: ProjectPhase.DESIGN,
-//     value: ProjectPhase.DESIGN,
-//   },
-//   {
-//     label: ProjectPhase.DEVELOPMENT,
-//     value: ProjectPhase.DEVELOPMENT,
-//   },
-//   {
-//     label: ProjectPhase.SUPPORT,
-//     value: ProjectPhase.SUPPORT,
-//   },
-//   {
-//     label: ProjectPhase.FINISHED,
-//     value: ProjectPhase.FINISHED,
-//   },
-//   {
-//     label: ProjectPhase.ARCHIVED,
-//     value: ProjectPhase.ARCHIVED,
-//   },
-// ];
-
-export const CreateOrUpdateProjectPage: FC = () => {
-  const navigate = useNavigate();
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
+export const UpdateProjectModal: FC<Props> = ({ isOpen, close, sectionNumber }) => {
+  const params = useParams<ExtractRouteParams<typeof ROUTES.PROJECT_DETAILS, string>>();
   const projectId = params.id ? Number(params.id) : undefined;
-  const isEditMode = !!projectId;
 
-  /* Todo: add edit mode when backend will be ready
-  const { data: clientDetails, loading: isClientDetailsLoading } = useFetchClientQuery({
-    variables: {
-      id: isEditMode ? projectId : 0,
-    },
-    skip: !isEditMode,
-  }); */
+  // TODO add edit mode when backend will be ready
+  // const { data, loading} = useFetchProjectQuery({
+  //   variables: {
+  //     id: projectId,
+  //   },
+  //  });
 
   const {
     form: { control, formState },
     handleSubmit,
-  } = useProjectForm({
-    onSubmitSuccessful: () => navigate(-1),
-    // todo: deal with projectId can't be undefined wneh backend will be ready
+  } = useUpdateProjectForm({
+    onSubmitSuccessful: () => null,
+    // TODO set prefilledData from useFetchProjectQuery when backend will be ready
     prefilledData: { id: projectId ?? 0 },
     id: projectId,
   });
@@ -85,46 +49,36 @@ export const CreateOrUpdateProjectPage: FC = () => {
   const clientTeamMemberFields = { name: '', position: '', email: '', phone: '' };
 
   return (
-    <SidebarLayout>
-      <DetailLayout
-        title={isEditMode ? 'Edit project' : 'Add project'}
-        contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
-        rightHeaderElement={
-          <Button
-            variant={ButtonVariant.PRIMARY}
-            label={isEditMode ? 'Save project' : 'Create project'}
-            className="w-36"
-            onClick={handleSubmit}
-            isLoading={formState.isSubmitting}
-          />
-        }
-      >
+    <Modal withCloseButton isOpen={isOpen} close={close} contentClassName="w-1/2">
+      {sectionNumber === SectionNumber.PROJECT_INFO && (
+        <section>
+          <h2 className={styles['section__heading']}>Project info</h2>
+          <InlineFields>
+            <TextField name="name" control={control} label="Name" required />
+            <SelectField name="status" options={[]} control={control} label="Status" />
+          </InlineFields>
+          <InlineFields>
+            <InlineFields>
+              <DateField
+                name="estimatedStartDate"
+                control={control}
+                label="Estimated start date"
+                required
+              />
+              <DateField
+                name="estimatedEndDate"
+                control={control}
+                label="Estimated end date"
+                required
+              />
+            </InlineFields>
+            <TextField name="designLink" control={control} label="Design link" />
+          </InlineFields>
+          <TextAreaField name="notes" control={control} label="Notes" />
+        </section>
+      )}
+      {sectionNumber === SectionNumber.CLIENT_DETAILS && (
         <>
-          <section className={styles['section']}>
-            <h2 className={styles['section__heading']}>Project info</h2>
-            <InlineFields>
-              <TextField name="name" control={control} label="Name" required />
-              <SelectField name="status" options={[]} control={control} label="Status" />
-            </InlineFields>
-            <InlineFields>
-              <InlineFields>
-                <DateField
-                  name="estimatedStartDate"
-                  control={control}
-                  label="Estimated start date"
-                  required
-                />
-                <DateField
-                  name="estimatedEndDate"
-                  control={control}
-                  label="Estimated end date"
-                  required
-                />
-              </InlineFields>
-              <TextField name="designLink" control={control} label="Design link" />
-            </InlineFields>
-            <TextAreaField name="notes" control={control} label="Notes" />
-          </section>
           <section className={styles['section']}>
             <h2 className={styles['section__heading']}>Client info</h2>
             <InlineFields>
@@ -174,12 +128,19 @@ export const CreateOrUpdateProjectPage: FC = () => {
             <Button
               variant={ButtonVariant.SECONDARY}
               label="+ Add team member"
-              className="mt-6 w-1/2"
+              className="w-1/2 mt-6"
               onClick={() => append(clientTeamMemberFields)}
             />
           </section>
         </>
-      </DetailLayout>
-    </SidebarLayout>
+      )}
+      <Button
+        variant={ButtonVariant.PRIMARY}
+        label="Save"
+        className="w-1/2 mt-6"
+        onClick={handleSubmit}
+        isLoading={formState.isSubmitting}
+      />
+    </Modal>
   );
 };

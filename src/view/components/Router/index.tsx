@@ -3,8 +3,8 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { CreateOrUpdateProjectPage } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
+import { CreateProjectPage } from '~/view/pages/CreateProject';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
@@ -41,11 +41,7 @@ const protectedRoutes: RouteObject[] = [
   },
   {
     path: ROUTES.ADD_PROJECT,
-    element: <CreateOrUpdateProjectPage />,
-  },
-  {
-    path: ROUTES.EDIT_PROJECT,
-    element: <CreateOrUpdateProjectPage />,
+    element: <CreateProjectPage />,
   },
   {
     path: ROUTES.PROJECT_DETAILS,

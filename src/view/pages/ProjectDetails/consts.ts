@@ -29,3 +29,8 @@ export const PROJECT_DETAILS_TABS = [
     label: 'History',
   },
 ];
+
+export enum SectionNumber {
+  PROJECT_INFO = 1,
+  CLIENT_DETAILS = 2,
+}

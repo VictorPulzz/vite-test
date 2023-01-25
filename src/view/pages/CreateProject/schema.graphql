@@ -1,5 +1,5 @@
 # TODO fix fields when backend will be ready
-mutation CreateOrUpdateProject($input: ProjectInput!) {
+mutation CreateProject($input: ProjectInput!) {
   project(data: $input) {
     id
   }

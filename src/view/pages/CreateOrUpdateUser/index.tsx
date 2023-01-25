@@ -24,7 +24,7 @@ export enum Departments {
 
 export const CreateOrUpdateUserPage: FC = () => {
   const navigate = useNavigate();
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
+  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_USER, string>>();
   const userId = params.id ? Number(params.id) : undefined;
   const isEditMode = !!userId;
 

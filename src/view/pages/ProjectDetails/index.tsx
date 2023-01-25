@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC, useCallback, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -5,15 +6,23 @@ import { ProgressBarWithSteps } from '~/view/components/ProgressBarWithSteps';
 import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
+import { Icon } from '~/view/ui/components/common/Icon';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
 import { Participants } from './components/Participants';
 import { Repositories } from './components/Repositories';
-import { PROJECT_DETAILS_TABS } from './consts';
+import { UpdateProjectModal } from './components/UpdateProjectModal';
+import { PROJECT_DETAILS_TABS, SectionNumber } from './consts';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
+  const {
+    value: isUpdateProjectModalOpen,
+    on: openUpdateProjectModal,
+    off: closeUpdateProjectModal,
+  } = useSwitchValue(false);
+
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
@@ -24,8 +33,17 @@ export const ProjectDetailsPage: FC = () => {
   });
 
   const [activeTabId, setActiveTabId] = useState<number>(1);
+  const [sectionNumber, setSectionNumber] = useState<number>(0);
 
   const handleActiveTabChange = useCallback((index: number) => setActiveTabId(index), []);
+
+  const handleEditProjectButton = useCallback(
+    (sectionNumber: number) => {
+      setSectionNumber(sectionNumber);
+      openUpdateProjectModal();
+    },
+    [openUpdateProjectModal],
+  );
 
   // TODO remove test progressBar data
   const currentStep = 3;
@@ -43,7 +61,16 @@ export const ProjectDetailsPage: FC = () => {
             <div className="flex gap-5">
               <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
                 <div className={styles['section']}>
-                  <h2 className="mb-3 text-p1 font-bold">Project info</h2>
+                  <div className="flex gap-2 mb-3 ">
+                    <h2 className="text-p1 font-bold">Project info</h2>
+                    <button
+                      type="button"
+                      className="hover:opacity-70"
+                      onClick={() => handleEditProjectButton(SectionNumber.PROJECT_INFO)}
+                    >
+                      <Icon name="pencil" size={14} className="text-blue " />
+                    </button>
+                  </div>
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Name</span>
@@ -80,7 +107,16 @@ export const ProjectDetailsPage: FC = () => {
                   </div>
                 </div>
                 <div className={styles['section']}>
-                  <h2 className="mb-3 text-p1 font-bold">Client details</h2>
+                  <div className="flex gap-2 mb-3 ">
+                    <h2 className="text-p1 font-bold">Client details</h2>
+                    <button
+                      type="button"
+                      className="hover:opacity-70"
+                      onClick={() => handleEditProjectButton(SectionNumber.CLIENT_DETAILS)}
+                    >
+                      <Icon name="pencil" size={14} className="text-blue " />
+                    </button>
+                  </div>
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Name</span>
@@ -122,6 +158,11 @@ export const ProjectDetailsPage: FC = () => {
                 </Tabs>
               </div>
             </div>
+            <UpdateProjectModal
+              isOpen={isUpdateProjectModalOpen}
+              close={closeUpdateProjectModal}
+              sectionNumber={sectionNumber}
+            />
           </div>
         )}
       </DetailLayout>
