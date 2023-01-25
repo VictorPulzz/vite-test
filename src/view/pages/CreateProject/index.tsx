@@ -5,25 +5,24 @@ import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import { ExtractRouteParams } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { ROUTES } from '~/constants/routes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
+import { useCreateProjectForm } from '~/view/pages/CreateProject/hooks/useCreateProjectForm';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
 import styles from './styles.module.scss';
 
-export enum ProjectPhase {
-  SIGNED = 'Signed',
-  DESIGN = 'Design',
-  DEVELOPMENT = 'Development',
-  SUPPORT = 'Support',
-  FINISHED = 'Finished',
-  ARCHIVED = 'Archived',
-}
+// TODO remove  phaseOptions later
+// export enum ProjectPhase {
+//   SIGNED = 'Signed',
+//   DESIGN = 'Design',
+//   DEVELOPMENT = 'Development',
+//   SUPPORT = 'Support',
+//   FINISHED = 'Finished',
+//   ARCHIVED = 'Archived',
+// }
 
 // TODO remove  phaseOptions later
 // const phaseOptions = [
@@ -53,28 +52,14 @@ export enum ProjectPhase {
 //   },
 // ];
 
-export const CreateOrUpdateProjectPage: FC = () => {
+export const CreateProjectPage: FC = () => {
   const navigate = useNavigate();
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
-  const projectId = params.id ? Number(params.id) : undefined;
-  const isEditMode = !!projectId;
-
-  /* Todo: add edit mode when backend will be ready
-  const { data: clientDetails, loading: isClientDetailsLoading } = useFetchClientQuery({
-    variables: {
-      id: isEditMode ? projectId : 0,
-    },
-    skip: !isEditMode,
-  }); */
 
   const {
     form: { control, formState },
     handleSubmit,
-  } = useProjectForm({
+  } = useCreateProjectForm({
     onSubmitSuccessful: () => navigate(-1),
-    // todo: deal with projectId can't be undefined wneh backend will be ready
-    prefilledData: { id: projectId ?? 0 },
-    id: projectId,
   });
 
   const { fields, append, remove } = useFieldArray({
@@ -87,12 +72,12 @@ export const CreateOrUpdateProjectPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isEditMode ? 'Edit project' : 'Add project'}
+        title="Add project"
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label={isEditMode ? 'Save project' : 'Create project'}
+            label="Create project"
             className="w-36"
             onClick={handleSubmit}
             isLoading={formState.isSubmitting}

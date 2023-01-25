@@ -21,7 +21,7 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 }
 
 export const UpdateProjectModal: FC<Props> = ({ isOpen, close, sectionNumber }) => {
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
+  const params = useParams<ExtractRouteParams<typeof ROUTES.PROJECT_DETAILS, string>>();
   const projectId = params.id ? Number(params.id) : undefined;
 
   // TODO add edit mode when backend will be ready

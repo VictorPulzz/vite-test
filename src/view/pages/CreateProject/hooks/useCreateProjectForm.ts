@@ -6,8 +6,8 @@ import { z } from 'zod';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import {
   FetchProjectQuery,
-  useCreateOrUpdateProjectMutation,
-} from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
+  useCreateProjectMutation,
+} from '~/view/pages/CreateProject/__generated__/schema';
 
 const formSchema = z.object({
   name: z.string(),
@@ -30,20 +30,20 @@ const formSchema = z.object({
     .array(),
 });
 
-type ProjectFormValues = z.infer<typeof formSchema>;
+type CreateProjectFormValues = z.infer<typeof formSchema>;
 
-interface UseProjectFormReturn {
-  form: UseFormReturn<ProjectFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<ProjectFormValues>>;
+interface UseCreateProjectFormReturn {
+  form: UseFormReturn<CreateProjectFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<CreateProjectFormValues>>;
 }
 
-interface UseClientFormProps {
+interface UseCreateProjectFormProps {
   onSubmitSuccessful?: () => void;
   prefilledData?: FetchProjectQuery['project'];
   id?: number;
 }
 
-const defaultValues: ProjectFormValues = {
+const defaultValues: CreateProjectFormValues = {
   name: '',
   status: '',
   estimatedStartDate: null,
@@ -57,41 +57,21 @@ const defaultValues: ProjectFormValues = {
   clientTeamMembers: [{ name: '', position: '', email: '', phone: '' }],
 };
 
-export function useProjectForm({
+export function useCreateProjectForm({
   onSubmitSuccessful,
   id,
-}: UseClientFormProps): UseProjectFormReturn {
-  const form = useForm<ProjectFormValues>({
+}: UseCreateProjectFormProps): UseCreateProjectFormReturn {
+  const form = useForm<CreateProjectFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  const [createOrUpdateProject] = useCreateOrUpdateProjectMutation();
-
-  /* useEffect(() => {
-    if (prefilledData) {
-      form.reset({
-        name: prefilledData.name ?? '',
-        status: prefilledData.status ?? '',
-        estimatedStartDate: prefilledData.estimatedStartDate ?? null,
-        estimatedEndDate: prefilledData.estimatedEndDate ?? null,
-        designLink: prefilledData.designLink ?? '',
-        notes: prefilledData.notes ?? '',
-        clientName: prefilledData.clientName ?? '',
-        clientPhone: prefilledData.clientPhone ?? '',
-        clientEmail: prefilledData.clientEmail ?? '',
-        clientNotes: prefilledData.clientNotes ?? '',
-        clientTeamMembers: prefilledData.clientTeamMembers ?? [],
-  });
-    }
-  }, [form, prefilledData]); */
+  const [createProject] = useCreateProjectMutation();
 
   const handleSubmit = useCallback(
-    async (values: ProjectFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useProjectForm.ts:138 ~ values', values);
+    async (values: CreateProjectFormValues) => {
       try {
-        await createOrUpdateProject({
+        await createProject({
           variables: {
             input: {
               id,
@@ -101,13 +81,13 @@ export function useProjectForm({
         });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<ProjectFormValues>(e, {
+        processGqlErrorResponse<CreateProjectFormValues>(e, {
           fields: ['name'],
           setFormError: form.setError,
         });
       }
     },
-    [createOrUpdateProject, form.setError, id, onSubmitSuccessful],
+    [createProject, form.setError, id, onSubmitSuccessful],
   );
 
   return useMemo(
