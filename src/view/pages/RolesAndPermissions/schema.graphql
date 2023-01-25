@@ -1,6 +1,13 @@
 # TODO fix fields when backend will be ready
-query FetchRepositories {
-  repositoriesList {
+query FetchRolesAndPermissions {
+  rolesAndPermissions {
+    id
+  }
+}
+
+# TODO fix fields when backend will be ready
+query UpdateRolesAndPermissions($data: IDInput!) {
+  rolesAndPermissions(data: $data) {
     id
   }
 }
