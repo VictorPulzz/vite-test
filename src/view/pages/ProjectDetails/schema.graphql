@@ -3,6 +3,23 @@ query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
+    status
+    estimatedStartDate
+    estimatedEndDate
+    designLink
+    notes
+    clientName
+    clientPhone
+    clientEmail
+    clientNotes
+    clientTeamMembers
+  }
+}
+
+# TODO fix fields when backend will be ready
+mutation UpdateProject($input: ProjectInput!) {
+  project(data: $input) {
+    id
   }
 }
 
