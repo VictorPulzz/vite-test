@@ -21,3 +21,18 @@ mutation AddProjectParticipant($input: ProjectInput!) {
     accessLevel
   }
 }
+
+# TODO fix fields when backend will be ready
+query FetchProjectRepositories($data: IDInput!) {
+  repositories(data: $data) {
+    id
+    name
+  }
+}
+
+# TODO fix fields when backend will be ready
+mutation RequestNewRepository($input: ProjectInput!) {
+  repository(data: $input) {
+    id
+  }
+}

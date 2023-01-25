@@ -1,16 +1,10 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { TextLink } from '@ui/components/common/TextLink';
-// import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-
-// import { DATE_FORMAT } from '~/constants/dates';
-// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
-import { MoreCell } from './components/MoreCell';
-// import { ClientResultType } from './types';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 // TODO move ProjectPlatfrom to common models later
 export enum ProjectPlatfrom {
@@ -31,32 +25,6 @@ export const REPOSITORIES_TABLE_COLUMNS = [
           to={generatePath(ROUTES.REPOSITORY_DETAILS, { id: repositoryId })}
           className="underline"
         >
-          {props.getValue()}
-        </TextLink>
-      );
-    },
-  }),
-  columnHelper.accessor('projectName', {
-    // id: ClientOrder.EMAIL,
-    header: 'Project',
-    cell: props => {
-      const { projectId } = props.row.original;
-      return (
-        <TextLink
-          to={generatePath(ROUTES.PROJECT_DETAILS, { id: projectId })}
-          className="underline"
-        >
-          {props.getValue()}
-        </TextLink>
-      );
-    },
-  }),
-  columnHelper.accessor('gitUrl', {
-    // id: ClientOrder.FULL_NAME,
-    header: 'Git url',
-    cell: props => {
-      return (
-        <TextLink external to={props.getValue()} className="underline">
           {props.getValue()}
         </TextLink>
       );
@@ -83,13 +51,6 @@ export const REPOSITORIES_TABLE_COLUMNS = [
           {platform}
         </Badge>
       );
-    },
-  }),
-  columnHelper.group({
-    id: 'more',
-    cell: MoreCell,
-    meta: {
-      className: 'w-0',
     },
   }),
 ];

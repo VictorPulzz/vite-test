@@ -5,8 +5,9 @@ export const PROJECT_DETAILS_TABS = [
   },
   {
     id: 2,
-    label: 'Docs',
+    label: 'Repositories',
   },
+
   {
     id: 3,
     label: 'Credentials',
@@ -17,14 +18,14 @@ export const PROJECT_DETAILS_TABS = [
   },
   {
     id: 5,
-    label: 'Notes',
+    label: 'Docs',
   },
   {
     id: 6,
-    label: 'History',
+    label: 'Notes',
   },
   {
     id: 7,
-    label: 'Repositories',
+    label: 'History',
   },
 ];

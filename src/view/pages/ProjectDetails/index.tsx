@@ -9,6 +9,7 @@ import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
 import { Participants } from './components/Participants';
+import { Repositories } from './components/Repositories';
 import { PROJECT_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
 
@@ -112,12 +113,12 @@ export const ProjectDetailsPage: FC = () => {
                   tabsPanelClassName="p-6"
                 >
                   {activeTabId === 1 && <Participants />}
-                  {activeTabId === 2 && <span>Docs</span>}
+                  {activeTabId === 2 && <Repositories />}
                   {activeTabId === 3 && <span>Credentials</span>}
                   {activeTabId === 4 && <span>Estimations</span>}
-                  {activeTabId === 5 && <span>Notes</span>}
-                  {activeTabId === 6 && <span>History</span>}
-                  {activeTabId === 7 && <span>Repositories</span>}
+                  {activeTabId === 5 && <span>Docs</span>}
+                  {activeTabId === 6 && <span>Notes</span>}
+                  {activeTabId === 7 && <span>History</span>}
                 </Tabs>
               </div>
             </div>
