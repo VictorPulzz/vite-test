@@ -6,7 +6,7 @@ import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
-import { AddRepositoryModal } from './components/AddRepositoryModal';
+import { RequestNewRepositoryModal } from './components/RequestNewRepositoryModal';
 import { REPOSITORIES_TABLE_COLUMNS } from './consts';
 
 // TODO remove repositoriesTestData when backend will be ready
@@ -33,9 +33,9 @@ const repositoriesTestData = [
 
 export const Repositories: FC = () => {
   const {
-    value: isAddRepositoryModalOpen,
-    on: openAddRepositoryModal,
-    off: closeAddRepositoryModal,
+    value: isRequestNewRepositoryOpen,
+    on: openRequestNewRepositoryModal,
+    off: closeRequestNewRepositoryModal,
   } = useSwitchValue(false);
   // TODO remove participantsTestData when backend will be ready
   //   const participantsTestData = new Array(9).fill(participantTestData);
@@ -70,9 +70,12 @@ export const Repositories: FC = () => {
         variant={ButtonVariant.SECONDARY}
         label="Request new repo"
         className={`mt-3 w-[136px] ${!data.repositoriesList.length && 'mx-auto'}`}
-        onClick={openAddRepositoryModal}
+        onClick={openRequestNewRepositoryModal}
       />
-      <AddRepositoryModal isOpen={isAddRepositoryModalOpen} close={closeAddRepositoryModal} />
+      <RequestNewRepositoryModal
+        isOpen={isRequestNewRepositoryOpen}
+        close={closeRequestNewRepositoryModal}
+      />
     </>
   );
 };

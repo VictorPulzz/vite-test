@@ -10,26 +10,26 @@ const formSchema = z.object({
   type: z.string(),
 });
 
-type AddRepositoryFormValues = z.infer<typeof formSchema>;
+type RequestNewRepositoryFormValues = z.infer<typeof formSchema>;
 
-interface UseAddRepositoryFormReturn {
-  form: UseFormReturn<AddRepositoryFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<AddRepositoryFormValues>>;
+interface UseRequestNewRepositoryFormReturn {
+  form: UseFormReturn<RequestNewRepositoryFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<RequestNewRepositoryFormValues>>;
 }
 
-interface UseAddRepositoryFormProps {
+interface UseRequestNewRepositoryFormProps {
   onSubmitSuccessful?: () => void;
 }
 
-const defaultValues: AddRepositoryFormValues = {
+const defaultValues: RequestNewRepositoryFormValues = {
   platform: '',
   type: '',
 };
 
-export function useAddRepositoryForm({
+export function useRequestNewRepositoryForm({
   onSubmitSuccessful,
-}: UseAddRepositoryFormProps): UseAddRepositoryFormReturn {
-  const form = useForm<AddRepositoryFormValues>({
+}: UseRequestNewRepositoryFormProps): UseRequestNewRepositoryFormReturn {
+  const form = useForm<RequestNewRepositoryFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -38,7 +38,7 @@ export function useAddRepositoryForm({
 
   const handleSubmit = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async (values: AddRepositoryFormValues) => {
+    async (values: RequestNewRepositoryFormValues) => {
       try {
         // await requestNewRepository({
         //   variables: {
@@ -50,7 +50,7 @@ export function useAddRepositoryForm({
         // });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<AddRepositoryFormValues>(e, {
+        processGqlErrorResponse<RequestNewRepositoryFormValues>(e, {
           fields: ['platform', 'type'],
           setFormError: form.setError,
         });

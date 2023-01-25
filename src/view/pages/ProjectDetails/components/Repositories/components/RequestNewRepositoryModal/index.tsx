@@ -4,13 +4,13 @@ import React, { FC } from 'react';
 import toast from 'react-hot-toast';
 
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useAddRepositoryForm } from '~/view/pages/ProjectDetails/hooks/useAddRepositoryForm';
+import { useRequestNewRepositoryForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewRepositoryForm';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
 // TODO move ProjectPlatfrom and RepositoryType later
-export enum ProjectPlatfrom {
+export enum ProjectPlatform {
   WEB = 'WEB',
   MOBILE = 'MOBILE',
 }
@@ -19,8 +19,8 @@ export enum RepositoryType {
   BACK_END = 'BACKEND',
 }
 
-export const AddRepositoryModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit } = useAddRepositoryForm({
+export const RequestNewRepositoryModal: FC<Props> = ({ isOpen, close }) => {
+  const { form, handleSubmit } = useRequestNewRepositoryForm({
     onSubmitSuccessful: () => {
       toast.success(
         `Your request for ${form.getValues().platform.toLowerCase()} ${form
@@ -31,7 +31,7 @@ export const AddRepositoryModal: FC<Props> = ({ isOpen, close }) => {
     },
   });
 
-  const projectPlatfromOptions = enumToSelectOptions(ProjectPlatfrom);
+  const projectPlatformOptions = enumToSelectOptions(ProjectPlatform);
   const repositoryTypeOptions = enumToSelectOptions(RepositoryType);
 
   return (
@@ -45,7 +45,7 @@ export const AddRepositoryModal: FC<Props> = ({ isOpen, close }) => {
       <div className="flex flex-col items-center">
         <SelectField
           name="platform"
-          options={projectPlatfromOptions}
+          options={projectPlatformOptions}
           control={form.control}
           label="Platform"
         />
