@@ -4,10 +4,7 @@ import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import {
-  FetchProjectQuery,
-  useCreateProjectMutation,
-} from '~/view/pages/CreateProject/__generated__/schema';
+import { useCreateProjectMutation } from '~/view/pages/CreateProject/__generated__/schema';
 
 const formSchema = z.object({
   name: z.string(),
@@ -39,8 +36,6 @@ interface UseCreateProjectFormReturn {
 
 interface UseCreateProjectFormProps {
   onSubmitSuccessful?: () => void;
-  prefilledData?: FetchProjectQuery['project'];
-  id?: number;
 }
 
 const defaultValues: CreateProjectFormValues = {
@@ -59,7 +54,6 @@ const defaultValues: CreateProjectFormValues = {
 
 export function useCreateProjectForm({
   onSubmitSuccessful,
-  id,
 }: UseCreateProjectFormProps): UseCreateProjectFormReturn {
   const form = useForm<CreateProjectFormValues>({
     defaultValues,
@@ -74,7 +68,6 @@ export function useCreateProjectForm({
         await createProject({
           variables: {
             input: {
-              id,
               name: values.name,
             },
           },
@@ -87,7 +80,7 @@ export function useCreateProjectForm({
         });
       }
     },
-    [createProject, form.setError, id, onSubmitSuccessful],
+    [createProject, form.setError, onSubmitSuccessful],
   );
 
   return useMemo(
