@@ -120,12 +120,6 @@ export const UserDetailsPage: FC = () => {
                   </div>
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Mobile</span>
-                      <span className="text-p3 text-blue leading-none">
-                        {userById?.phoneNumber}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Email</span>
                       <span className="text-p3 text-blue leading-none">{userById?.email}</span>
                     </div>
