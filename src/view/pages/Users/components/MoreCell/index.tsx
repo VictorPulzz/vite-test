@@ -2,9 +2,7 @@
 import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
-import { generatePath, useNavigate } from 'react-router-dom';
 
-import { ROUTES } from '~/constants/routes';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 // import { useChangeClientStatusMutation } from '~/view/pages/ClientsList/__generated__/schema';
@@ -13,7 +11,6 @@ import { Icon } from '~/view/ui/components/common/Icon';
 // TODO need to fix this cell
 // TODO remove any
 export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
-  const navigate = useNavigate();
   // TODO remove console.log
   // eslint-disable-next-line no-console
   console.log('🚀 ~ file: index.tsx:13 ~ row', row);
@@ -43,11 +40,6 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
   // );
 
   const options: DropdownItem[] = [
-    {
-      label: 'Edit user',
-      iconBefore: <Icon name="edit" size={16} />,
-      onSelect: () => navigate(generatePath(ROUTES.EDIT_USER, { id: row.original.id })),
-    },
     {
       label: 'Change status',
       iconBefore: <Icon name="connection" size={16} />,

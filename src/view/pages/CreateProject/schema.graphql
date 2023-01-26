@@ -4,10 +4,3 @@ mutation CreateProject($input: ProjectInput!) {
     id
   }
 }
-# TODO fix fields when backend will be ready
-query FetchProject($data: IDInput!) {
-  project(data: $data) {
-    id
-    name
-  }
-}

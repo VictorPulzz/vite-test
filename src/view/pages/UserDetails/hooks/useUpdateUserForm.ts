@@ -32,20 +32,21 @@ const formSchema = z.object({
   isActive: z.boolean(),
 });
 
-type UserFormValues = z.infer<typeof formSchema>;
+type UpdateUserFormValues = z.infer<typeof formSchema>;
 
-interface UseUserFormReturn {
-  form: UseFormReturn<UserFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<UserFormValues>>;
+interface UseUpdateUserFormReturn {
+  form: UseFormReturn<UpdateUserFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<UpdateUserFormValues>>;
 }
 
-interface UseUserFormProps {
+interface UseUpdateUserFormProps {
   onSubmitSuccessful?: () => void;
-  // prefilledData?: FetchEmployeeQuery['employee'];
+  // prefilledData?: FetchUserDetails['user'];
   id?: number;
 }
 
-const defaultValues: UserFormValues = {
+// TODO remove when backend will be ready
+const defaultValues: UpdateUserFormValues = {
   firstName: '',
   lastName: '',
   photo: null,
@@ -58,40 +59,42 @@ const defaultValues: UserFormValues = {
   isActive: false,
 };
 
-export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUserFormReturn {
-  const form = useForm<UserFormValues>({
+export function useUpdateUserForm({
+  onSubmitSuccessful,
+  id,
+}: UseUpdateUserFormProps): UseUpdateUserFormReturn {
+  // TODO set this defaultValues when backend will be ready
+  // const defaultValues: UpdateUserFormValues = useMemo(() => {
+  //   return {
+  //     firstName: prefilledData.firstName ?? '',
+  //     lastName: prefilledData.lastName ?? '',
+  //     photo: prefilledData.photo ?? '',
+  //     address: prefilledData.address ?? '',
+  //     department: prefilledData.department ?? '',
+  //     email: prefilledData.email ?? '',
+  //     role: prefilledData.role ?? '',
+  //     contractType: prefilledData.contractType ?? '',
+  //     birthDate: prefilledData.birthDate ?? '',
+  //     isActive: prefilledData.isActive ?? '',
+  //   };
+  // }, []);
+
+  const form = useForm<UpdateUserFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [createOrUpdateUser] = useCreateOrUpdateUserMutation();
-
-  // useEffect(() => {
-  //   if (prefilledData) {
-  //     form.reset({
-  //       firstName: prefilledData.firstName ?? '',
-  //       lastName: prefilledData.lastName ?? '',
-  //       photo: prefilledData.photo ?? '',
-  //       address: prefilledData.address ?? '',
-  //       department: prefilledData.department ?? '',
-  //       email: prefilledData.email ?? '',
-  //       role: prefilledData.role ?? '',
-  //       contractType: prefilledData.contractType ?? '',
-  //       birthDate: prefilledData.birthDate ?? '',
-  //       isActive: prefilledData.isActive ?? '',
-  //     });
-  //   }
-  // }, [form]);
+  // const [updateUser] = useUpdateUserMutation();
 
   const handleSubmit = useCallback(
-    async (values: UserFormValues) => {
+    async (values: UpdateUserFormValues) => {
       // TODO remove concole.log
       // eslint-disable-next-line no-console
       console.log('🚀 ~ file: useUserForm.ts:88 ~ values', values);
       // eslint-disable-next-line no-console
       console.log('🚀 ~ file: useUserForm.ts:88 ~ values', id);
       try {
-        // await createOrUpdateUser({
+        // await updateUser({
         //   variables: {
         //     input: {
         //       id,
@@ -101,7 +104,7 @@ export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUs
         // });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<UserFormValues>(e, {
+        processGqlErrorResponse<UpdateUserFormValues>(e, {
           fields: [
             'firstName',
             'lastName',

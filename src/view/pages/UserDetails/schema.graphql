@@ -2,6 +2,32 @@
 query FetchUserDetails($data: IDInput!) {
   user(data: $data) {
     id
-    fullName
+    firstName
+    lastName
+    photo
+    address
+    department
+    email
+    role
+    contractType
+    birthDate
+    isActive
+  }
+}
+
+# TODO fix fields when backend will be ready
+mutation UpdateUser($input: ProjectInput!) {
+  user(data: $input) {
+    id
+    firstName
+    lastName
+    photo
+    address
+    department
+    email
+    role
+    contractType
+    birthDate
+    isActive
   }
 }
