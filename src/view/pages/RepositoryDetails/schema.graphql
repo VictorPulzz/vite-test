@@ -7,6 +7,13 @@ query FetchRepositoryDetails($data: IDInput!) {
 }
 
 # TODO fix fields when backend will be ready
+mutation UpdateRepository($input: ProjectInput!) {
+  repository(data: $input) {
+    id
+  }
+}
+
+# TODO fix fields when backend will be ready
 query FetchRepositoryParticipants($data: IDInput!) {
   repositoryParticipants(data: $data) {
     id

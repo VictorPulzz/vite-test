@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -5,10 +6,12 @@ import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { Icon } from '~/view/ui/components/common/Icon';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { ProjectPlatfrom } from '../Repositories/consts';
 import { Participants } from './components/Partisipants';
+import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';
 // import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
 import { REPOSITORY_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
@@ -38,6 +41,12 @@ const repositoriesTestData = [
 ];
 
 export const RepositoryDetailsPage: FC = () => {
+  const {
+    value: isUpdateRepositoryModalOpen,
+    on: openUpdateRepositoryModal,
+    off: closeUpdateRepositoryModal,
+  } = useSwitchValue(false);
+
   const params = useParams();
   const repositoryId = params.id ? Number(params.id) : 0;
 
@@ -69,7 +78,16 @@ export const RepositoryDetailsPage: FC = () => {
           <div className="flex gap-5 p-6">
             <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
               <div className={styles['section']}>
-                <h2 className="mb-3 text-p1 font-bold">Info</h2>
+                <div className="flex gap-2 mb-3 ">
+                  <h2 className="text-p1 font-bold">Info</h2>
+                  <button
+                    type="button"
+                    className="hover:opacity-70"
+                    onClick={openUpdateRepositoryModal}
+                  >
+                    <Icon name="pencil" size={14} className="text-blue " />
+                  </button>
+                </div>
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Name</span>
@@ -139,6 +157,10 @@ export const RepositoryDetailsPage: FC = () => {
                 {activeTabId === 1 && <Participants />}
               </Tabs>
             </div>
+            <UpdateRepositoryModal
+              isOpen={isUpdateRepositoryModalOpen}
+              close={closeUpdateRepositoryModal}
+            />
           </div>
         )}
       </DetailLayout>
