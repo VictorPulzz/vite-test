@@ -22,7 +22,6 @@ const formSchema = z.object({
   address: z.string(),
   department: z.string(),
   email: z.string().email(formErrors.INVALID_EMAIL),
-  role: z.string(),
   contractType: z.string(),
   birthDate: z
     .date()
@@ -53,7 +52,6 @@ const defaultValues: UpdateUserFormValues = {
   address: '',
   department: '',
   email: '',
-  role: '',
   contractType: '',
   birthDate: null,
   isActive: false,
@@ -112,7 +110,6 @@ export function useUpdateUserForm({
             'address',
             'department',
             'email',
-            'role',
             'contractType',
             'birthDate',
           ],

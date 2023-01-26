@@ -62,19 +62,13 @@ export const UpdateUserModal: FC<Props> = ({ isOpen, close }) => {
         <InlineFields>
           <TextField name="address" control={form.control} label="Address" />
           <SelectField
-            name="role"
-            options={departmentsOptions}
-            control={form.control}
-            label="Role"
-          />
-        </InlineFields>
-        <InlineFields>
-          <SelectField
             name="contractType"
             options={departmentsOptions}
             control={form.control}
             label="Contract type"
           />
+        </InlineFields>
+        <InlineFields>
           <DateField name="birthDate" control={form.control} label="Birth date" />
           <Checkbox label="Active" {...form.register('isActive')} className="mt-4" />
         </InlineFields>
