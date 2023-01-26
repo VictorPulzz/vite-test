@@ -6,6 +6,7 @@ import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { ROUTES } from '~/constants/routes';
 // import { PAGE_SIZE } from '~/constants/pagination';
 // import { Sorting } from '~/types';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
@@ -91,7 +92,7 @@ export const RepositoriesPage: FC = () => {
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          // to={ROUTES.ADD_EMPLOYEE}
+          to={ROUTES.ADD_REPOSITORY}
         />
       </div>
       <div className="mt-5 flex gap-3">

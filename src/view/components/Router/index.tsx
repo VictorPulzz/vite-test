@@ -4,6 +4,7 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
 import { CreateProjectPage } from '~/view/pages/CreateProject';
+import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { CreateUserPage } from '~/view/pages/CreateUser';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { HomePage } from '~/view/pages/Home';
@@ -62,6 +63,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.REPOSITORIES,
     element: <RepositoriesPage />,
+  },
+  {
+    path: ROUTES.ADD_REPOSITORY,
+    element: <CreateRepositoryPage />,
   },
   {
     path: ROUTES.REPOSITORY_DETAILS,

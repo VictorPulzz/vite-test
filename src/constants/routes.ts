@@ -13,6 +13,7 @@ export const ROUTES = {
   DOCUMENTS: '/documents',
 
   REPOSITORIES: '/repositories',
+  ADD_REPOSITORY: '/repositories/add',
   REPOSITORY_DETAILS: '/repositories/:id',
 
   ROLES_AND_PERMISSIONS: '/roles-and-permissions',
