@@ -1,9 +1,8 @@
-import { yupResolver } from '@hookform/resolvers/yup';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
-import * as yup from 'yup';
+import { z } from 'zod';
 
-import { formErrors } from '~/constants/form';
 import { LoginInput } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { useAppDispatch } from '~/store/hooks';
@@ -12,25 +11,28 @@ import { setAuth, setUser } from '~/store/modules/user';
 // import { passwordValidation } from '~/utils/validations';
 import { useSignInMutation } from '../__generated__/schema';
 
+const formSchema = z.object({
+  email: z.string().email().min(1),
+  // TODO add passwordValidation
+  // password: passwordValidation,
+  password: z.string(),
+});
+
+type SignInFormValues = z.infer<typeof formSchema>;
+
 interface UseSignInFormReturn {
-  form: UseFormReturn<LoginInput>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<LoginInput>>;
+  form: UseFormReturn<SignInFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<SignInFormValues>>;
 }
 
 interface UseSignInFormProps {
   onSubmitSuccessful: () => void;
 }
 
-const defaultValues: LoginInput = {
+const defaultValues: SignInFormValues = {
   email: '',
   password: '',
 };
-
-const validation = yup.object({
-  email: yup.string().email(formErrors.INVALID_EMAIL).required(formErrors.REQUIRED),
-  // TODO add pasword validation
-  // password: passwordValidation(),
-});
 
 export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSignInFormReturn {
   const dispatch = useAppDispatch();
@@ -38,7 +40,7 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
   const form = useForm<LoginInput>({
     defaultValues,
     mode: 'onChange',
-    resolver: yupResolver(validation),
+    resolver: zodResolver(formSchema),
   });
 
   const [signIn] = useSignInMutation();
@@ -54,13 +56,11 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
         if (!data) {
           throw new Error('No data');
         }
-
         const {
           user: { id, email },
           accessToken,
           refreshToken,
         } = data.login;
-
         dispatch(
           setUser({
             id,
