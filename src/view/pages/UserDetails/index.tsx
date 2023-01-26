@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -7,7 +8,9 @@ import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { Icon } from '~/view/ui/components/common/Icon';
 
+import { UpdateUserModal } from './components/UpdateUserModal';
 import { PROJECT_DETAILS_TABS } from './consts';
 
 // TODO remove usersTestData when backend will be ready
@@ -63,6 +66,12 @@ const usersTestData = [
 ];
 
 export const UserDetailsPage: FC = () => {
+  const {
+    value: isUpdateUserModalOpen,
+    on: openUpdateUserModal,
+    off: closeUpdateUserModal,
+  } = useSwitchValue(false);
+
   const params = useParams();
   const userId = params.id ? Number(params.id) : 0;
 
@@ -99,7 +108,16 @@ export const UserDetailsPage: FC = () => {
               </div>
               <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px] flex-auto">
                 <div>
-                  <h2 className="mb-3 text-p1 font-bold">User info</h2>
+                  <div className="flex gap-2 mb-3 ">
+                    <h2 className="text-p1 font-bold">User info</h2>
+                    <button
+                      type="button"
+                      className="hover:opacity-70"
+                      onClick={openUpdateUserModal}
+                    >
+                      <Icon name="pencil" size={14} className="text-blue " />
+                    </button>
+                  </div>
                   <div className="flex flex-col gap-3">
                     <div className="flex flex-col gap-[2px]">
                       <span className="text-c1 text-gray-2">Mobile</span>
@@ -159,6 +177,7 @@ export const UserDetailsPage: FC = () => {
                 {activeTabId === 6 && <span>History</span>}
               </Tabs>
             </div>
+            <UpdateUserModal isOpen={isUpdateUserModalOpen} close={closeUpdateUserModal} />
           </div>
         )}
       </DetailLayout>
