@@ -32,20 +32,18 @@ const formSchema = z.object({
   isActive: z.boolean(),
 });
 
-type UserFormValues = z.infer<typeof formSchema>;
+type CreateUserFormValues = z.infer<typeof formSchema>;
 
-interface UseUserFormReturn {
-  form: UseFormReturn<UserFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<UserFormValues>>;
+interface UseCreateUserFormReturn {
+  form: UseFormReturn<CreateUserFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<CreateUserFormValues>>;
 }
 
-interface UseUserFormProps {
+interface UseCreateUserFormProps {
   onSubmitSuccessful?: () => void;
-  // prefilledData?: FetchEmployeeQuery['employee'];
-  id?: number;
 }
 
-const defaultValues: UserFormValues = {
+const defaultValues: CreateUserFormValues = {
   firstName: '',
   lastName: '',
   photo: null,
@@ -58,40 +56,23 @@ const defaultValues: UserFormValues = {
   isActive: false,
 };
 
-export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUserFormReturn {
-  const form = useForm<UserFormValues>({
+export function useCreateUserForm({
+  onSubmitSuccessful,
+}: UseCreateUserFormProps): UseCreateUserFormReturn {
+  const form = useForm<CreateUserFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [createOrUpdateUser] = useCreateOrUpdateUserMutation();
-
-  // useEffect(() => {
-  //   if (prefilledData) {
-  //     form.reset({
-  //       firstName: prefilledData.firstName ?? '',
-  //       lastName: prefilledData.lastName ?? '',
-  //       photo: prefilledData.photo ?? '',
-  //       address: prefilledData.address ?? '',
-  //       department: prefilledData.department ?? '',
-  //       email: prefilledData.email ?? '',
-  //       role: prefilledData.role ?? '',
-  //       contractType: prefilledData.contractType ?? '',
-  //       birthDate: prefilledData.birthDate ?? '',
-  //       isActive: prefilledData.isActive ?? '',
-  //     });
-  //   }
-  // }, [form]);
+  // const [createUser] = useCreateUserMutation();
 
   const handleSubmit = useCallback(
-    async (values: UserFormValues) => {
+    async (values: CreateUserFormValues) => {
       // TODO remove concole.log
       // eslint-disable-next-line no-console
       console.log('🚀 ~ file: useUserForm.ts:88 ~ values', values);
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useUserForm.ts:88 ~ values', id);
       try {
-        // await createOrUpdateUser({
+        // await createUser({
         //   variables: {
         //     input: {
         //       id,
@@ -101,7 +82,7 @@ export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUs
         // });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<UserFormValues>(e, {
+        processGqlErrorResponse<CreateUserFormValues>(e, {
           fields: [
             'firstName',
             'lastName',
@@ -117,7 +98,7 @@ export function useUserForm({ onSubmitSuccessful, id }: UseUserFormProps): UseUs
         });
       }
     },
-    [form.setError, id, onSubmitSuccessful],
+    [form.setError, onSubmitSuccessful],
   );
 
   return useMemo(

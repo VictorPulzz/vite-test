@@ -8,7 +8,6 @@ export const ROUTES = {
 
   USERS: '/users',
   ADD_USER: '/users/add',
-  EDIT_USER: '/users/:id/edit',
   USER_DETAILS: '/users/:id',
 
   DOCUMENTS: '/documents',

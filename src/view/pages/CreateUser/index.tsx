@@ -3,10 +3,8 @@ import { InlineFields } from '@ui/components/form/InlineFields';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
-import { ExtractRouteParams } from 'react-router';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import { ROUTES } from '~/constants/routes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -14,7 +12,7 @@ import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
-import { useUserForm } from './hooks/useUserForm';
+import { useCreateUserForm } from './hooks/useCreateUserForm';
 import styles from './styles.module.scss';
 
 export enum Departments {
@@ -22,25 +20,11 @@ export enum Departments {
   BACK_END = 'BACKEND',
 }
 
-export const CreateOrUpdateUserPage: FC = () => {
+export const CreateUserPage: FC = () => {
   const navigate = useNavigate();
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_USER, string>>();
-  const userId = params.id ? Number(params.id) : undefined;
-  const isEditMode = !!userId;
 
-  /* Todo: add edit mode when backend will be ready
-  const { user, loading} = useFetchUserQuery({
-    variables: {
-      id: isEditMode ? projectId : 0,
-    },
-    skip: !isEditMode,
-  }); */
-
-  const { form, handleSubmit } = useUserForm({
+  const { form, handleSubmit } = useCreateUserForm({
     onSubmitSuccessful: () => navigate(-1),
-    // todo: deal with projectId can't be undefined wneh backend will be ready
-    // prefilledData: { id: projectId ?? 0 },
-    id: userId,
   });
 
   const departmentsOptions = enumToSelectOptions(Departments);
@@ -48,12 +32,12 @@ export const CreateOrUpdateUserPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isEditMode ? 'Edit user' : 'Add user'}
+        title="Add user"
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label={isEditMode ? 'Save user' : 'Create user'}
+            label="Create user"
             className="w-36"
             onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}

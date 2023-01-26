@@ -24,7 +24,7 @@ export enum Departments {
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
 export const UpdateUserModal: FC<Props> = ({ isOpen, close }) => {
-  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_USER, string>>();
+  const params = useParams<ExtractRouteParams<typeof ROUTES.USER_DETAILS, string>>();
   const userId = params.id ? Number(params.id) : undefined;
 
   // const { data, loading } = useFetchUserDetailsQuery({

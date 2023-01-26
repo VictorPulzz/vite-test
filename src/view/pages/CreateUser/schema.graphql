@@ -1,0 +1,16 @@
+# TODO fix fields when backend will be ready
+mutation CreateUser($input: ProjectInput!) {
+  user(data: $input) {
+    id
+    firstName
+    lastName
+    photo
+    address
+    department
+    email
+    role
+    contractType
+    birthDate
+    isActive
+  }
+}
