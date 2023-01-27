@@ -10,22 +10,24 @@ export type FetchUsersQuery = {
   __typename?: 'Query';
   usersList: Array<{
     __typename?: 'UserType';
-    firstName?: string | null;
-    lastName?: string | null;
+    id: string;
     fullName: string;
     email: string;
     isActive?: boolean | null;
+    department?: { __typename?: 'DepartmentType'; name: string } | null;
   }>;
 };
 
 export const FetchUsersDocument = gql`
   query FetchUsers {
     usersList {
-      firstName
-      lastName
+      id
       fullName
       email
       isActive
+      department {
+        name
+      }
     }
   }
 `;

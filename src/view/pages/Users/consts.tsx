@@ -1,24 +1,22 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { TextLink } from '@ui/components/common/TextLink';
-// import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-// import { DATE_FORMAT } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
-// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 
 import { MoreCell } from './components/MoreCell';
-// import { ClientResultType } from './types';
+// import { UserResultType } from './types';
 
+// TODO add UserResultType
 const columnHelper = createColumnHelper<any>();
 
-export const EMPLOYEES_TABLE_COLUMNS = [
+export const USERS_TABLE_COLUMNS = [
   columnHelper.accessor('fullName', {
-    // id: ClientOrder.FULL_NAME,
+    id: 'fullName',
     header: 'Name',
     cell: ({
       row: {
@@ -35,16 +33,16 @@ export const EMPLOYEES_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('department', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor(row => row.department.name, {
+    id: 'department',
     header: 'Department',
   }),
   columnHelper.accessor('email', {
-    // id: ClientOrder.EMAIL,
+    id: 'email',
     header: 'Email',
   }),
   columnHelper.accessor('isActive', {
-    // id: ClientOrder.STATUS,
+    id: 'isActive',
     header: 'Status',
     cell: props => {
       const isActive = props.getValue();
