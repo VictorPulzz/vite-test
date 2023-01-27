@@ -4,12 +4,12 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type FetchEmloyeesQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type FetchUsersQueryVariables = Types.Exact<{ [key: string]: never }>;
 
-export type FetchEmloyeesQuery = {
+export type FetchUsersQuery = {
   __typename?: 'Query';
-  employeesList: Array<{
-    __typename?: 'EmployeeType';
+  usersList: Array<{
+    __typename?: 'UserType';
     firstName?: string | null;
     lastName?: string | null;
     fullName: string;
@@ -18,9 +18,9 @@ export type FetchEmloyeesQuery = {
   }>;
 };
 
-export const FetchEmloyeesDocument = gql`
-  query FetchEmloyees {
-    employeesList {
+export const FetchUsersDocument = gql`
+  query FetchUsers {
+    usersList {
       firstName
       lastName
       fullName
@@ -31,41 +31,35 @@ export const FetchEmloyeesDocument = gql`
 `;
 
 /**
- * __useFetchEmloyeesQuery__
+ * __useFetchUsersQuery__
  *
- * To run a query within a React component, call `useFetchEmloyeesQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchEmloyeesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFetchUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFetchEmloyeesQuery({
+ * const { data, loading, error } = useFetchUsersQuery({
  *   variables: {
  *   },
  * });
  */
-export function useFetchEmloyeesQuery(
-  baseOptions?: Apollo.QueryHookOptions<FetchEmloyeesQuery, FetchEmloyeesQueryVariables>,
+export function useFetchUsersQuery(
+  baseOptions?: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchEmloyeesQuery, FetchEmloyeesQueryVariables>(
-    FetchEmloyeesDocument,
+  return Apollo.useQuery<FetchUsersQuery, FetchUsersQueryVariables>(FetchUsersDocument, options);
+}
+export function useFetchUsersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchUsersQuery, FetchUsersQueryVariables>(
+    FetchUsersDocument,
     options,
   );
 }
-export function useFetchEmloyeesLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FetchEmloyeesQuery, FetchEmloyeesQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchEmloyeesQuery, FetchEmloyeesQueryVariables>(
-    FetchEmloyeesDocument,
-    options,
-  );
-}
-export type FetchEmloyeesQueryHookResult = ReturnType<typeof useFetchEmloyeesQuery>;
-export type FetchEmloyeesLazyQueryHookResult = ReturnType<typeof useFetchEmloyeesLazyQuery>;
-export type FetchEmloyeesQueryResult = Apollo.QueryResult<
-  FetchEmloyeesQuery,
-  FetchEmloyeesQueryVariables
->;
+export type FetchUsersQueryHookResult = ReturnType<typeof useFetchUsersQuery>;
+export type FetchUsersLazyQueryHookResult = ReturnType<typeof useFetchUsersLazyQuery>;
+export type FetchUsersQueryResult = Apollo.QueryResult<FetchUsersQuery, FetchUsersQueryVariables>;

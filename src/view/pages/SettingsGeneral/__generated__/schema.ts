@@ -9,7 +9,7 @@ export type MeQueryVariables = Types.Exact<{ [key: string]: never }>;
 export type MeQuery = {
   __typename?: 'Query';
   me: {
-    __typename?: 'EmployeeType';
+    __typename?: 'UserType';
     id: string;
     firstName?: string | null;
     email: string;

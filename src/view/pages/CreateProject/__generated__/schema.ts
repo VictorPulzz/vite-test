@@ -13,15 +13,6 @@ export type CreateProjectMutation = {
   project: { __typename?: 'ProjectType'; id: number };
 };
 
-export type FetchProjectQueryVariables = Types.Exact<{
-  data: Types.IdInput;
-}>;
-
-export type FetchProjectQuery = {
-  __typename?: 'Query';
-  project: { __typename?: 'ProjectType'; id: number; name?: string | null };
-};
-
 export const CreateProjectDocument = gql`
   mutation CreateProject($input: ProjectInput!) {
     project(data: $input) {
@@ -65,53 +56,4 @@ export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMut
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<
   CreateProjectMutation,
   CreateProjectMutationVariables
->;
-export const FetchProjectDocument = gql`
-  query FetchProject($data: IDInput!) {
-    project(data: $data) {
-      id
-      name
-    }
-  }
-`;
-
-/**
- * __useFetchProjectQuery__
- *
- * To run a query within a React component, call `useFetchProjectQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchProjectQuery({
- *   variables: {
- *      data: // value for 'data'
- *   },
- * });
- */
-export function useFetchProjectQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchProjectQuery, FetchProjectQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchProjectQuery, FetchProjectQueryVariables>(
-    FetchProjectDocument,
-    options,
-  );
-}
-export function useFetchProjectLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FetchProjectQuery, FetchProjectQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchProjectQuery, FetchProjectQueryVariables>(
-    FetchProjectDocument,
-    options,
-  );
-}
-export type FetchProjectQueryHookResult = ReturnType<typeof useFetchProjectQuery>;
-export type FetchProjectLazyQueryHookResult = ReturnType<typeof useFetchProjectLazyQuery>;
-export type FetchProjectQueryResult = Apollo.QueryResult<
-  FetchProjectQuery,
-  FetchProjectQueryVariables
 >;

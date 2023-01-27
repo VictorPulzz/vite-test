@@ -14,7 +14,7 @@ export type SignInMutation = {
     __typename?: 'LoginSuccessType';
     accessToken: string;
     refreshToken: string;
-    user: { __typename?: 'EmployeeType'; id: string; email: string };
+    user: { __typename?: 'UserType'; id: string; email: string };
   };
 };
 

@@ -11,53 +11,19 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  Date: string;
+  Upload: File;
 };
+
+export enum ContractChoice {
+  FULL_TIME = 'full_time',
+  PART_TIME = 'part_time',
+}
 
 export type DepartmentType = {
   __typename: 'DepartmentType';
   id: Scalars['Int'];
   name: Scalars['String'];
-};
-
-export type EmployeeInput = {
-  awsUsername?: InputMaybe<Scalars['String']>;
-  bitbucketId?: InputMaybe<Scalars['String']>;
-  department?: InputMaybe<IdInput>;
-  email?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  gitlabUserId?: InputMaybe<Scalars['String']>;
-  gitlabUsername?: InputMaybe<Scalars['String']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  isDeveloper?: InputMaybe<Scalars['Boolean']>;
-  isGitAdmin?: InputMaybe<Scalars['Boolean']>;
-  isSlackAdmin?: InputMaybe<Scalars['Boolean']>;
-  isSuperuser?: InputMaybe<Scalars['Boolean']>;
-  lastName?: InputMaybe<Scalars['String']>;
-  notes?: InputMaybe<Scalars['String']>;
-  passwordToken?: InputMaybe<Scalars['String']>;
-  slackUserId?: InputMaybe<Scalars['String']>;
-};
-
-export type EmployeeType = {
-  __typename: 'EmployeeType';
-  awsUsername?: Maybe<Scalars['String']>;
-  bitbucketId?: Maybe<Scalars['String']>;
-  department?: Maybe<DepartmentType>;
-  email: Scalars['String'];
-  firstName?: Maybe<Scalars['String']>;
-  fullName: Scalars['String'];
-  gitlabUserId?: Maybe<Scalars['String']>;
-  gitlabUsername?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  isActive?: Maybe<Scalars['Boolean']>;
-  isDeveloper?: Maybe<Scalars['Boolean']>;
-  isGitAdmin?: Maybe<Scalars['Boolean']>;
-  isSlackAdmin?: Maybe<Scalars['Boolean']>;
-  isSuperuser?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
-  notes?: Maybe<Scalars['String']>;
-  passwordToken?: Maybe<Scalars['String']>;
-  slackUserId?: Maybe<Scalars['String']>;
 };
 
 export enum GitPlatformEnum {
@@ -69,6 +35,13 @@ export type IdInput = {
   id: Scalars['Int'];
 };
 
+export type ImageType = {
+  __typename: 'ImageType';
+  fileName: Scalars['String'];
+  size: Scalars['Int'];
+  url: Scalars['String'];
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -78,7 +51,7 @@ export type LoginSuccessType = {
   __typename: 'LoginSuccessType';
   accessToken: Scalars['String'];
   refreshToken: Scalars['String'];
-  user: EmployeeType;
+  user: UserType;
 };
 
 export type MessageType = {
@@ -88,24 +61,22 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
-  /** Employee deletion */
-  employeeDelete: MessageType;
-  /** Employee updating */
-  employeeUpdate: EmployeeType;
   /** Login */
   login: LoginSuccessType;
   /** Project creation or updating by id */
   project: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
-  /** Employee creation */
+  /** User creation */
   signup: MessageType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
-};
-
-export type MutationEmployeeUpdateArgs = {
-  data: EmployeeInput;
+  /** User deletion */
+  userDelete: MessageType;
+  /** Add user note */
+  userNote: NoteType;
+  /** User updating */
+  userUpdate: UserType;
 };
 
 export type MutationLoginArgs = {
@@ -128,6 +99,27 @@ export type MutationTokenRefreshArgs = {
   data: RefreshTokenInput;
 };
 
+export type MutationUserNoteArgs = {
+  data: NoteInput;
+};
+
+export type MutationUserUpdateArgs = {
+  data: UserInput;
+};
+
+export type NoteInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  text: Scalars['String'];
+  userId: Scalars['Int'];
+};
+
+export type NoteType = {
+  __typename: 'NoteType';
+  createdBy?: Maybe<UserType>;
+  id: Scalars['Int'];
+  text: Scalars['String'];
+};
+
 export type ProjectInput = {
   awsLogsSlug?: InputMaybe<Scalars['String']>;
   gitGroupId?: InputMaybe<Scalars['String']>;
@@ -148,7 +140,7 @@ export type ProjectInput = {
 export type ProjectType = {
   __typename: 'ProjectType';
   awsLogsSlug?: Maybe<Scalars['String']>;
-  createdBy: EmployeeType;
+  createdBy?: Maybe<UserType>;
   gitGroupId?: Maybe<Scalars['String']>;
   gitPlatform?: Maybe<GitPlatformEnum>;
   gitSlug?: Maybe<Scalars['String']>;
@@ -166,16 +158,18 @@ export type ProjectType = {
 
 export type Query = {
   __typename: 'Query';
-  /** Getting list of employees' roles */
+  /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
-  /** Getting list of employees */
-  employeesList: Array<EmployeeType>;
   /** Getting authenticated user */
-  me: EmployeeType;
+  me: UserType;
   /** Getting project by id */
   project: ProjectType;
   /** Getting list of projects */
   projectsList: Array<ProjectType>;
+  /** Getting list of users' roles */
+  rolesList: Array<RoleType>;
+  /** Getting list of users */
+  usersList: Array<UserType>;
 };
 
 export type QueryProjectArgs = {
@@ -186,6 +180,12 @@ export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
 };
 
+export type RoleType = {
+  __typename: 'RoleType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
 export enum StatusEnum {
   DESIGN = 'DESIGN',
   FINISHED = 'FINISHED',
@@ -194,6 +194,38 @@ export enum StatusEnum {
   STOPPED = 'STOPPED',
   SUPPORT = 'SUPPORT',
 }
+
+export type UserInput = {
+  address?: InputMaybe<Scalars['String']>;
+  birthDate?: InputMaybe<Scalars['Date']>;
+  contractType?: InputMaybe<ContractChoice>;
+  department?: InputMaybe<IdInput>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  isSuperuser?: InputMaybe<Scalars['Boolean']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  photo?: InputMaybe<Scalars['Upload']>;
+  role?: InputMaybe<IdInput>;
+};
+
+export type UserType = {
+  __typename: 'UserType';
+  address?: Maybe<Scalars['String']>;
+  birthDate?: Maybe<Scalars['Date']>;
+  contractType?: Maybe<ContractChoice>;
+  department?: Maybe<DepartmentType>;
+  email: Scalars['String'];
+  firstName?: Maybe<Scalars['String']>;
+  fullName: Scalars['String'];
+  id: Scalars['String'];
+  isActive?: Maybe<Scalars['Boolean']>;
+  isSuperuser?: Maybe<Scalars['Boolean']>;
+  lastName?: Maybe<Scalars['String']>;
+  notes?: Maybe<Array<NoteType>>;
+  photo?: Maybe<ImageType>;
+  role?: Maybe<RoleType>;
+};
 
 export interface PossibleTypesResultData {
   possibleTypes: {
