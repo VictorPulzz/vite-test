@@ -1,16 +1,3 @@
-mutation ProfileUpdate($data: ProfileInput!) {
-  profileUpdate(data: $data) {
-    photo {
-      url
-      fileName
-      size
-    }
-    firstName
-    lastName
-    phone
-  }
-}
-
 query Me {
   me {
     id
@@ -23,3 +10,16 @@ query Me {
     # }
   }
 }
+
+# mutation ProfileUpdate($data: ProfileInput!) {
+#   profileUpdate(data: $data) {
+#     photo {
+#       url
+#       fileName
+#       size
+#     }
+#     firstName
+#     lastName
+#     phone
+#   }
+# }

@@ -10,7 +10,12 @@ export type FetchProjectDetailsQueryVariables = Types.Exact<{
 
 export type FetchProjectDetailsQuery = {
   __typename?: 'Query';
-  project: { __typename?: 'ProjectType'; id: number; name?: string | null };
+  project: {
+    __typename?: 'ProjectType';
+    id: number;
+    name?: string | null;
+    status?: Types.StatusEnum | null;
+  };
 };
 
 export const FetchProjectDetailsDocument = gql`
@@ -18,6 +23,7 @@ export const FetchProjectDetailsDocument = gql`
     project(data: $data) {
       id
       name
+      status
     }
   }
 `;

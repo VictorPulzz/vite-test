@@ -1,55 +1,55 @@
-# TODO fix fields when backend will be ready
+# # TODO fix fields when backend will be ready
 query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
     status
-    estimatedStartDate
-    estimatedEndDate
-    designLink
-    notes
-    clientName
-    clientPhone
-    clientEmail
-    clientNotes
-    clientTeamMembers
+    # estimatedStartDate
+    # estimatedEndDate
+    # designLink
+    # notes
+    # clientName
+    # clientPhone
+    # clientEmail
+    # clientNotes
+    # clientTeamMembers
   }
 }
 
 # TODO fix fields when backend will be ready
-mutation UpdateProject($input: ProjectInput!) {
-  project(data: $input) {
-    id
-  }
-}
+# mutation UpdateProject($input: ProjectInput!) {
+#   project(data: $input) {
+#     id
+#   }
+# }
 
 # TODO fix fields when backend will be ready
-query FetchProjectParticipants($data: IDInput!) {
-  projectParticipants(data: $data) {
-    id
-    name
-  }
-}
+# query FetchProjectParticipants($data: IDInput!) {
+#   projectParticipants(data: $data) {
+#     id
+#     name
+#   }
+# }
 
 # TODO fix fields when backend will be ready
-mutation AddProjectParticipant($input: ProjectInput!) {
-  projectParticipant(data: $input) {
-    user
-    accessLevel
-  }
-}
+# mutation AddProjectParticipant($input: ProjectInput!) {
+#   projectParticipant(data: $input) {
+#     user
+#     accessLevel
+#   }
+# }
 
 # TODO fix fields when backend will be ready
-query FetchProjectRepositories($data: IDInput!) {
-  repositories(data: $data) {
-    id
-    name
-  }
-}
+# query FetchProjectRepositories($data: IDInput!) {
+#   repositories(data: $data) {
+#     id
+#     name
+#   }
+# }
 
 # TODO fix fields when backend will be ready
-mutation RequestNewRepository($input: ProjectInput!) {
-  repository(data: $input) {
-    id
-  }
-}
+# mutation RequestNewRepository($input: ProjectInput!) {
+#   repository(data: $input) {
+#     id
+#   }
+# }

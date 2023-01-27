@@ -3,49 +3,19 @@ schema {
   mutation: Mutation
 }
 
+enum ContractChoice {
+  full_time
+  part_time
+}
+
+"""
+Date (isoformat)
+"""
+scalar Date
+
 type DepartmentType {
   id: Int!
   name: String!
-}
-
-input EmployeeInput {
-  awsUsername: String = null
-  bitbucketId: String = null
-  department: IDInput = null
-  email: String = null
-  firstName: String = null
-  gitlabUserId: String = null
-  gitlabUsername: String = null
-  isActive: Boolean = null
-  isDeveloper: Boolean = null
-  isGitAdmin: Boolean = null
-  isSlackAdmin: Boolean = null
-  isSuperuser: Boolean = null
-  lastName: String = null
-  notes: String = null
-  passwordToken: String = null
-  slackUserId: String = null
-}
-
-type EmployeeType {
-  awsUsername: String
-  bitbucketId: String
-  department: DepartmentType
-  email: String!
-  firstName: String
-  fullName: String!
-  gitlabUserId: String
-  gitlabUsername: String
-  id: String!
-  isActive: Boolean
-  isDeveloper: Boolean
-  isGitAdmin: Boolean
-  isSlackAdmin: Boolean
-  isSuperuser: Boolean
-  lastName: String
-  notes: String
-  passwordToken: String
-  slackUserId: String
 }
 
 enum GitPlatformEnum {
@@ -57,6 +27,12 @@ input IDInput {
   id: Int!
 }
 
+type ImageType {
+  fileName: String!
+  size: Int!
+  url: String!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -65,7 +41,7 @@ input LoginInput {
 type LoginSuccessType {
   accessToken: String!
   refreshToken: String!
-  user: EmployeeType!
+  user: UserType!
 }
 
 type MessageType {
@@ -73,14 +49,6 @@ type MessageType {
 }
 
 type Mutation {
-  """
-  Employee deletion
-  """
-  employeeDelete: MessageType!
-  """
-  Employee updating
-  """
-  employeeUpdate(data: EmployeeInput!): EmployeeType!
   """
   Login
   """
@@ -94,13 +62,37 @@ type Mutation {
   """
   projectDelete(data: IDInput!): MessageType!
   """
-  Employee creation
+  User creation
   """
   signup(data: LoginInput!): MessageType!
   """
   Refreshing of tokens
   """
   tokenRefresh(data: RefreshTokenInput!): LoginSuccessType!
+  """
+  User deletion
+  """
+  userDelete: MessageType!
+  """
+  Add user note
+  """
+  userNote(data: NoteInput!): NoteType!
+  """
+  User updating
+  """
+  userUpdate(data: UserInput!): UserType!
+}
+
+input NoteInput {
+  id: Int = null
+  text: String!
+  userId: Int!
+}
+
+type NoteType {
+  createdBy: UserType
+  id: Int!
+  text: String!
 }
 
 input ProjectInput {
@@ -122,7 +114,7 @@ input ProjectInput {
 
 type ProjectType {
   awsLogsSlug: String
-  createdBy: EmployeeType!
+  createdBy: UserType
   gitGroupId: String
   gitPlatform: GitPlatformEnum
   gitSlug: String
@@ -140,17 +132,13 @@ type ProjectType {
 
 type Query {
   """
-  Getting list of employees' roles
+  Getting list of users' departments
   """
   departmentsList: [DepartmentType!]!
   """
-  Getting list of employees
-  """
-  employeesList: [EmployeeType!]!
-  """
   Getting authenticated user
   """
-  me: EmployeeType!
+  me: UserType!
   """
   Getting project by id
   """
@@ -159,10 +147,23 @@ type Query {
   Getting list of projects
   """
   projectsList: [ProjectType!]!
+  """
+  Getting list of users' roles
+  """
+  rolesList: [RoleType!]!
+  """
+  Getting list of users
+  """
+  usersList: [UserType!]!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+type RoleType {
+  id: Int!
+  name: String!
 }
 
 enum StatusEnum {
@@ -172,4 +173,37 @@ enum StatusEnum {
   ON_HOLD
   STOPPED
   SUPPORT
+}
+
+scalar Upload
+
+input UserInput {
+  address: String = null
+  birthDate: Date = null
+  contractType: ContractChoice = null
+  department: IDInput = null
+  email: String = null
+  firstName: String = null
+  isActive: Boolean = null
+  isSuperuser: Boolean = null
+  lastName: String = null
+  photo: Upload
+  role: IDInput = null
+}
+
+type UserType {
+  address: String
+  birthDate: Date
+  contractType: ContractChoice
+  department: DepartmentType
+  email: String!
+  firstName: String
+  fullName: String!
+  id: String!
+  isActive: Boolean
+  isSuperuser: Boolean
+  lastName: String
+  notes: [NoteType!]
+  photo: ImageType
+  role: RoleType
 }

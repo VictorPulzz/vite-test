@@ -1,6 +1,0 @@
-# // TODO change mutation type when backend will be ready
-mutation PasswordChange($data: ChangePasswordInput!) {
-  passwordChange(data: $data) {
-    message
-  }
-}

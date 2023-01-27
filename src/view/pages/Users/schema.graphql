@@ -1,21 +1,11 @@
-# TODO fix fields when backend will be ready
 query FetchUsers {
-  employeesList {
-    firstName
-    lastName
+  usersList {
+    id
     fullName
     email
     isActive
-    # photo
-    # address
-    # department {
-    #   id
-    #   name
-    # }
-
-    # role
-    # contractType
-    # birthDate
-    # status
+    department {
+      name
+    }
   }
 }
