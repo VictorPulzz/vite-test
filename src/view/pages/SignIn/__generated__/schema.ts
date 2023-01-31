@@ -14,7 +14,13 @@ export type SignInMutation = {
     __typename?: 'LoginSuccessType';
     accessToken: string;
     refreshToken: string;
-    user: { __typename?: 'UserType'; id: string; email: string };
+    user: {
+      __typename?: 'UserType';
+      id?: string | null;
+      email: string;
+      fullName: string;
+      photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
+    };
   };
 };
 
@@ -26,6 +32,12 @@ export const SignInDocument = gql`
       user {
         id
         email
+        fullName
+        photo {
+          fileName
+          size
+          url
+        }
       }
     }
   }

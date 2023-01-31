@@ -56,15 +56,13 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
         if (!data) {
           throw new Error('No data');
         }
-        const {
-          user: { id, email },
-          accessToken,
-          refreshToken,
-        } = data.login;
+        const { user, accessToken, refreshToken } = data.login;
         dispatch(
           setUser({
-            id,
-            email,
+            id: String(user.id),
+            email: user.email,
+            fullName: user.fullName,
+            photo: user.photo,
           }),
         );
         dispatch(setAuth({ access: accessToken, refresh: refreshToken }));

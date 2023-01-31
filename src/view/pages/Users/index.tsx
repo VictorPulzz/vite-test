@@ -5,11 +5,14 @@ import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
+import { PAGE_SIZE } from '~/constants/pagination';
 import { ROUTES } from '~/constants/routes';
+import { UserFilter } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { SelectField } from '~/view/ui/components/form/SelectField';
+import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUsersQuery } from './__generated__/schema';
 import { USERS_TABLE_COLUMNS } from './consts';
@@ -24,17 +27,21 @@ export enum UsersPageFilterEnum {
 
 export const UsersPage: FC = () => {
   const { control } = useForm();
-  // TODO fix when backend will be ready
-  // const [searchValue, setSearchValue] = useState('');
 
-  // const [sorting, setSorting] = useState<Sorting<any>>([]);
-  // const [filter, setFilter] = useState<Nullable<ClientFilter>>(null);
+  const { searchValue, setSearchValue, offset, setOffset, filter } =
+    useListQueryParams<UserFilter>();
 
-  // const filtersCount = useMemo(() => {
-  //   return Object.values(filter || {}).filter(value => !isNil(value)).length;
-  // }, [filter]);
-
-  const { data, loading } = useFetchUsersQuery();
+  const { data, loading } = useFetchUsersQuery({
+    variables: {
+      pagination: {
+        limit: PAGE_SIZE,
+        offset,
+      },
+      search: searchValue,
+      filters: filter,
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
   const usersFilterOptions = enumToSelectOptions(UsersPageFilterEnum);
 
@@ -44,7 +51,7 @@ export const UsersPage: FC = () => {
         <div>
           <h1 className="text-h4">Users</h1>
           <p className="text-c1 text-gray-2">
-            {(data && data.usersList.length) ?? 0} users in total
+            {(data && data.usersList.results.length) ?? 0} users in total
           </p>
         </div>
         <Button
@@ -56,27 +63,20 @@ export const UsersPage: FC = () => {
         />
       </div>
       <div className="mt-5 flex gap-3">
-        <SearchInput
-          // onChange={setSearchValue}
-          onChange={() => null}
-          placeholder="Search users"
-          className="flex-1"
-        />
+        <SearchInput onChange={setSearchValue} placeholder="Search users" className="flex-1" />
         <SelectField className="w-40" name="group" options={usersFilterOptions} control={control} />
       </div>
       {loading && <TableLoader className="mt-10" />}
-      {data && data.usersList.length === 0 && (
+      {data && data.usersList.results.length === 0 && (
         <EmptyState iconName="users" label="No users here yet" />
       )}
-      {!loading && data && data.usersList.length > 0 && (
+      {!loading && data && data.usersList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.usersList}
+          data={data.usersList.results}
           columns={USERS_TABLE_COLUMNS}
-          // sorting={sorting}
-          // setSorting={setSorting}
-          // fetchMore={fetchMore}
-          totalCount={data.usersList.length}
+          setOffset={setOffset}
+          offset={offset}
         />
       )}
     </SidebarLayout>

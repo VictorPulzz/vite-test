@@ -15,6 +15,11 @@ export type Scalars = {
   Upload: File;
 };
 
+export type ActiveInput = {
+  id: Scalars['Int'];
+  isActive: Scalars['Boolean'];
+};
+
 export enum ContractChoice {
   FULL_TIME = 'full_time',
   PART_TIME = 'part_time',
@@ -24,6 +29,16 @@ export type DepartmentType = {
   __typename: 'DepartmentType';
   id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type ForgotPasswordInput = {
+  email: Scalars['String'];
+};
+
+export type ForgotPasswordType = {
+  __typename: 'ForgotPasswordType';
+  email: Scalars['String'];
+  message: Scalars['String'];
 };
 
 export enum GitPlatformEnum {
@@ -61,26 +76,40 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  forgotPassword: ForgotPasswordType;
   /** Login */
   login: LoginSuccessType;
+  /** User updating himself */
+  meUpdate: ProfileType;
   /** Project creation or updating by id */
   project: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
+  resetPassword: MessageType;
   /** User creation */
   signup: MessageType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
+  /** Change user status */
+  userChangeStatus: UserType;
+  /** User create or updating */
+  userCreateUpdate: UserType;
   /** User deletion */
   userDelete: MessageType;
   /** Add user note */
   userNote: NoteType;
-  /** User updating */
-  userUpdate: UserType;
+};
+
+export type MutationForgotPasswordArgs = {
+  data: ForgotPasswordInput;
 };
 
 export type MutationLoginArgs = {
   data: LoginInput;
+};
+
+export type MutationMeUpdateArgs = {
+  data: ProfileInput;
 };
 
 export type MutationProjectArgs = {
@@ -91,6 +120,10 @@ export type MutationProjectDeleteArgs = {
   data: IdInput;
 };
 
+export type MutationResetPasswordArgs = {
+  data: ResetPasswordInput;
+};
+
 export type MutationSignupArgs = {
   data: LoginInput;
 };
@@ -99,12 +132,16 @@ export type MutationTokenRefreshArgs = {
   data: RefreshTokenInput;
 };
 
-export type MutationUserNoteArgs = {
-  data: NoteInput;
+export type MutationUserChangeStatusArgs = {
+  data: ActiveInput;
 };
 
-export type MutationUserUpdateArgs = {
+export type MutationUserCreateUpdateArgs = {
   data: UserInput;
+};
+
+export type MutationUserNoteArgs = {
+  data: NoteInput;
 };
 
 export type NoteInput = {
@@ -115,9 +152,35 @@ export type NoteInput = {
 
 export type NoteType = {
   __typename: 'NoteType';
-  createdBy?: Maybe<UserType>;
+  createdBy?: Maybe<ProfileType>;
   id: Scalars['Int'];
   text: Scalars['String'];
+};
+
+export type PaginationInput = {
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+};
+
+export type ProfileInput = {
+  address?: InputMaybe<Scalars['String']>;
+  birthDate?: InputMaybe<Scalars['Date']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
+  photo?: InputMaybe<Scalars['Upload']>;
+};
+
+export type ProfileType = {
+  __typename: 'ProfileType';
+  address?: Maybe<Scalars['String']>;
+  birthDate?: Maybe<Scalars['Date']>;
+  email: Scalars['String'];
+  firstName?: Maybe<Scalars['String']>;
+  fullName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  photo?: Maybe<ImageType>;
 };
 
 export type ProjectInput = {
@@ -161,23 +224,40 @@ export type Query = {
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
   /** Getting authenticated user */
-  me: UserType;
+  me: ProfileType;
   /** Getting project by id */
   project: ProjectType;
   /** Getting list of projects */
   projectsList: Array<ProjectType>;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
+  /** Getting user by id */
+  userDetails: UserType;
   /** Getting list of users */
-  usersList: Array<UserType>;
+  usersList: UserTypePagination;
 };
 
 export type QueryProjectArgs = {
   data: IdInput;
 };
 
+export type QueryUserDetailsArgs = {
+  data: IdInput;
+};
+
+export type QueryUsersListArgs = {
+  filters?: InputMaybe<UserFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
+};
+
 export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
+};
+
+export type ResetPasswordInput = {
+  password: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export type RoleType = {
@@ -195,18 +275,26 @@ export enum StatusEnum {
   SUPPORT = 'SUPPORT',
 }
 
+export type UserFilter = {
+  departmentId?: InputMaybe<Array<Scalars['Int']>>;
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  roleId?: InputMaybe<Array<Scalars['Int']>>;
+};
+
 export type UserInput = {
   address?: InputMaybe<Scalars['String']>;
   birthDate?: InputMaybe<Scalars['Date']>;
   contractType?: InputMaybe<ContractChoice>;
-  department?: InputMaybe<IdInput>;
+  departmentId?: InputMaybe<Scalars['Int']>;
   email?: InputMaybe<Scalars['String']>;
   firstName?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   isSuperuser?: InputMaybe<Scalars['Boolean']>;
   lastName?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
   photo?: InputMaybe<Scalars['Upload']>;
-  role?: InputMaybe<IdInput>;
+  roleId?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserType = {
@@ -218,13 +306,22 @@ export type UserType = {
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
   fullName: Scalars['String'];
-  id: Scalars['String'];
+  id?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
   isSuperuser?: Maybe<Scalars['Boolean']>;
   lastName?: Maybe<Scalars['String']>;
   notes?: Maybe<Array<NoteType>>;
+  phone?: Maybe<Scalars['String']>;
   photo?: Maybe<ImageType>;
   role?: Maybe<RoleType>;
+};
+
+export type UserTypePagination = {
+  __typename: 'UserTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<UserType>;
 };
 
 export interface PossibleTypesResultData {

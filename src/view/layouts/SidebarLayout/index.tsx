@@ -62,13 +62,12 @@ const navItems = [
 
 export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
   const profile = useUserProfile();
-  // TODO change fullName and photo field later
+
   const user = useMemo(
     () => ({
-      fullName: profile.email,
-      photo: photoPlaceholder,
+      fullName: profile.fullName,
+      photo: profile.photo?.url || photoPlaceholder,
       email: profile.email,
-      photoPlaceholder,
     }),
     [profile],
   );

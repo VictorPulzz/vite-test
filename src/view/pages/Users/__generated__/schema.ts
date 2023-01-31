@@ -4,29 +4,42 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type FetchUsersQueryVariables = Types.Exact<{ [key: string]: never }>;
+export type FetchUsersQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.UserFilter>;
+  pagination: Types.PaginationInput;
+  search?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
 
 export type FetchUsersQuery = {
   __typename?: 'Query';
-  usersList: Array<{
-    __typename?: 'UserType';
-    id: string;
-    fullName: string;
-    email: string;
-    isActive?: boolean | null;
-    department?: { __typename?: 'DepartmentType'; name: string } | null;
-  }>;
+  usersList: {
+    __typename?: 'UserTypePagination';
+    results: Array<{
+      __typename?: 'UserType';
+      id?: string | null;
+      fullName: string;
+      email: string;
+      isActive?: boolean | null;
+      photo?: { __typename?: 'ImageType'; url: string } | null;
+      department?: { __typename?: 'DepartmentType'; name: string } | null;
+    }>;
+  };
 };
 
 export const FetchUsersDocument = gql`
-  query FetchUsers {
-    usersList {
-      id
-      fullName
-      email
-      isActive
-      department {
-        name
+  query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+    usersList(filters: $filters, pagination: $pagination, search: $search) {
+      results {
+        id
+        fullName
+        photo {
+          url
+        }
+        email
+        isActive
+        department {
+          name
+        }
       }
     }
   }
@@ -44,11 +57,14 @@ export const FetchUsersDocument = gql`
  * @example
  * const { data, loading, error } = useFetchUsersQuery({
  *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      search: // value for 'search'
  *   },
  * });
  */
 export function useFetchUsersQuery(
-  baseOptions?: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
+  baseOptions: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchUsersQuery, FetchUsersQueryVariables>(FetchUsersDocument, options);

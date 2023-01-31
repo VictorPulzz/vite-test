@@ -63,12 +63,23 @@ export const SettingsGeneralPage: React.FC = () => {
           label="Email"
           size={InputSize.LARGE}
         />
-        <TextField name="phone" control={form.control} label="Phone" size={InputSize.LARGE} />
+        <TextField
+          name="phone"
+          control={form.control}
+          label="Phone"
+          size={InputSize.LARGE}
+          required
+        />
       </InlineFields>
       <InlineFields>
-        <TextField name="address" control={form.control} label="Address" size={InputSize.LARGE} />
+        <TextField
+          name="address"
+          control={form.control}
+          label="Address"
+          size={InputSize.LARGE}
+          required
+        />
       </InlineFields>
-
       <div className="mt-7 pt-7 border-t border-solid border-t-gray-6">
         <Button
           onClick={openLogoutModal}

@@ -1,11 +1,16 @@
-query FetchUsers {
-  usersList {
-    id
-    fullName
-    email
-    isActive
-    department {
-      name
+query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+  usersList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      id
+      fullName
+      photo {
+        url
+      }
+      email
+      isActive
+      department {
+        name
+      }
     }
   }
 }

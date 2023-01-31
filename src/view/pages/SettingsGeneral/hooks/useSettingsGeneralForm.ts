@@ -1,15 +1,21 @@
+import { isString } from '@appello/common/lib/utils/string/isString';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
 import { parsePhoneNumber } from 'libphonenumber-js';
+import { useEffect } from 'react';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
+import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
+import { useUserProfile } from '~/store/hooks';
+import { setUser } from '~/store/modules/user';
 import { phoneNumberValidation } from '~/utils/validations';
 import {
+  MeDocument,
   MeQuery,
-  // useProfileUpdateMutation,
+  useProfileUpdateMutation,
 } from '~/view/pages/SettingsGeneral/__generated__/schema';
 
 const formSchema = z.object({
@@ -52,48 +58,56 @@ const defaultValues: SettingsGeneralFormValues = {
   address: '',
 };
 
-// TODO fix hook when backend will be ready
 export const useSettingsGeneralForm = ({
   settingsData,
 }: UseSettingsGeneralFormProps): UseSettingsGeneralFormReturn => {
+  const dispatch = useDispatch();
+  const profile = useUserProfile();
+
   const form = useForm<SettingsGeneralFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
 
-  // const [updateProfile] = useProfileUpdateMutation();
+  const [updateProfile] = useProfileUpdateMutation();
 
-  // useEffect(() => {
-  //   if (settingsData) {
-  //     form.reset({
-  //       photo: settingsData.photo?.url,
-  //       phone: settingsData?.phone || '',
-  //       lastName: settingsData.lastName,
-  //       firstName: settingsData.firstName,
-  //       email: settingsData.email,
-  //     });
-  //   }
-  // }, [form, settingsData]);
+  useEffect(() => {
+    if (settingsData) {
+      form.reset({
+        photo: settingsData.photo?.url,
+        phone: settingsData?.phone || '',
+        lastName: settingsData.lastName ?? '',
+        firstName: settingsData.firstName ?? '',
+        email: settingsData.email,
+        address: settingsData.address ?? '',
+      });
+    }
+  }, [form, settingsData]);
 
   const handleSubmit = useCallback(
     async (values: SettingsGeneralFormValues) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useSettingsGeneralForm.ts:80 ~ values', values);
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useSettingsGeneralForm.ts:58 ~ settingsData', settingsData);
-        // await updateProfile({
-        //   variables: {
-        //     data: {
-        //       lastName: values.lastName,
-        //       firstName: values.firstName,
-        //       phone: values.phone,
-        //       photo: !isString(values.photo) ? values.photo : undefined,
-        //     },
-        //   },
-        //   refetchQueries: [MeDocument],
-        // });
+        const { data } = await updateProfile({
+          variables: {
+            data: {
+              photo: !isString(values.photo) ? values.photo : undefined,
+              phone: values.phone,
+              firstName: values.firstName,
+              lastName: values.lastName,
+              address: values.address,
+            },
+          },
+          refetchQueries: [MeDocument],
+        });
+        dispatch(
+          setUser({
+            id: profile.id,
+            email: data?.meUpdate.email ?? '',
+            fullName: `${data?.meUpdate.firstName} ${data?.meUpdate.lastName}` ?? '',
+            photo: data?.meUpdate.photo,
+          }),
+        );
         toast.success('Profile updated');
       } catch (e) {
         processGqlErrorResponse<SettingsGeneralFormValues>(e, {
@@ -102,7 +116,7 @@ export const useSettingsGeneralForm = ({
         });
       }
     },
-    [form.setError, settingsData],
+    [dispatch, form.setError, profile.id, updateProfile],
   );
 
   return useMemo(

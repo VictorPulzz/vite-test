@@ -1,25 +1,29 @@
 query Me {
   me {
-    id
     firstName
-    email
     lastName
-    # phone
-    # photo {
-    #   url
-    # }
+    email
+    phone
+    address
+    photo {
+      url
+      fileName
+      size
+    }
   }
 }
 
-# mutation ProfileUpdate($data: ProfileInput!) {
-#   profileUpdate(data: $data) {
-#     photo {
-#       url
-#       fileName
-#       size
-#     }
-#     firstName
-#     lastName
-#     phone
-#   }
-# }
+mutation ProfileUpdate($data: ProfileInput!) {
+  meUpdate(data: $data) {
+    firstName
+    lastName
+    email
+    phone
+    address
+    photo {
+      url
+      fileName
+      size
+    }
+  }
+}
