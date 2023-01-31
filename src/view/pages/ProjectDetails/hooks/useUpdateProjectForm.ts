@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-import { FetchProjectDetailsQuery } from '../__generated__/schema';
+// import { FetchProjectDetailsQuery } from '../__generated__/schema';
 
 const formSchema = z.object({
   name: z.string(),
@@ -37,7 +37,7 @@ interface UseUpdateProjectFormReturn {
 
 interface UseUpdateProjectFormProps {
   onSubmitSuccessful?: () => void;
-  prefilledData: FetchProjectDetailsQuery['project'];
+  // prefilledData: FetchProjectDetailsQuery['project'];
   id?: number;
 }
 // TODO remove when backend will be ready

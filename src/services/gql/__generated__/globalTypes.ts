@@ -20,6 +20,24 @@ export type ActiveInput = {
   isActive: Scalars['Boolean'];
 };
 
+export type ClientInput = {
+  email: Scalars['String'];
+  fullName: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  phone?: InputMaybe<Scalars['String']>;
+  position?: InputMaybe<Scalars['String']>;
+};
+
+export type ClientType = {
+  __typename: 'ClientType';
+  email: Scalars['String'];
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
+  notes?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  position?: Maybe<Scalars['String']>;
+};
+
 export enum ContractChoice {
   FULL_TIME = 'full_time',
   PART_TIME = 'part_time',
@@ -40,11 +58,6 @@ export type ForgotPasswordType = {
   email: Scalars['String'];
   message: Scalars['String'];
 };
-
-export enum GitPlatformEnum {
-  BITBUCKET = 'BITBUCKET',
-  GITLAB = 'GITLAB',
-}
 
 export type IdInput = {
   id: Scalars['Int'];
@@ -82,7 +95,7 @@ export type Mutation = {
   /** User updating himself */
   meUpdate: ProfileType;
   /** Project creation or updating by id */
-  project: ProjectType;
+  projectCreate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
   resetPassword: MessageType;
@@ -112,8 +125,8 @@ export type MutationMeUpdateArgs = {
   data: ProfileInput;
 };
 
-export type MutationProjectArgs = {
-  data: ProjectInput;
+export type MutationProjectCreateArgs = {
+  data: ProjectCreateInput;
 };
 
 export type MutationProjectDeleteArgs = {
@@ -183,40 +196,40 @@ export type ProfileType = {
   photo?: Maybe<ImageType>;
 };
 
-export type ProjectInput = {
-  awsLogsSlug?: InputMaybe<Scalars['String']>;
-  gitGroupId?: InputMaybe<Scalars['String']>;
-  gitPlatform?: InputMaybe<GitPlatformEnum>;
-  gitSlug?: InputMaybe<Scalars['String']>;
-  gitUrl?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
-  slackBuildsChannelId?: InputMaybe<Scalars['String']>;
-  slackBuildsChannelUrl?: InputMaybe<Scalars['String']>;
-  slackChannelId?: InputMaybe<Scalars['String']>;
-  slackChannelUrl?: InputMaybe<Scalars['String']>;
-  slackErrorsChannelId?: InputMaybe<Scalars['String']>;
-  slackErrorsChannelUrl?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<StatusEnum>;
+export type ProjectCreateInput = {
+  clientTeam?: InputMaybe<Array<ClientInput>>;
+  design?: InputMaybe<Scalars['String']>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  hoursEstimated?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+  notes?: InputMaybe<Scalars['String']>;
+  phase: ProjectPhaseChoice;
+  roadmap?: InputMaybe<Scalars['String']>;
+  startDate: Scalars['Date'];
 };
+
+export enum ProjectPhaseChoice {
+  CODE_REVIEW = 'CODE_REVIEW',
+  DESIGN = 'DESIGN',
+  DEVELOPMENT = 'DEVELOPMENT',
+  DEVELOPMENT_NEW = 'DEVELOPMENT_NEW',
+  FINISHED = 'FINISHED',
+  SIGNED = 'SIGNED',
+  SUPPORT = 'SUPPORT',
+}
 
 export type ProjectType = {
   __typename: 'ProjectType';
-  awsLogsSlug?: Maybe<Scalars['String']>;
-  createdBy?: Maybe<UserType>;
-  gitGroupId?: Maybe<Scalars['String']>;
-  gitPlatform?: Maybe<GitPlatformEnum>;
-  gitSlug?: Maybe<Scalars['String']>;
-  gitUrl?: Maybe<Scalars['String']>;
+  clientTeam?: Maybe<Array<ClientType>>;
+  design?: Maybe<Scalars['String']>;
+  endDate?: Maybe<Scalars['Date']>;
+  hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
-  slackBuildsChannelId?: Maybe<Scalars['String']>;
-  slackBuildsChannelUrl?: Maybe<Scalars['String']>;
-  slackChannelId?: Maybe<Scalars['String']>;
-  slackChannelUrl?: Maybe<Scalars['String']>;
-  slackErrorsChannelId?: Maybe<Scalars['String']>;
-  slackErrorsChannelUrl?: Maybe<Scalars['String']>;
-  status?: Maybe<StatusEnum>;
+  name: Scalars['String'];
+  notes?: Maybe<Scalars['String']>;
+  phase: ProjectPhaseChoice;
+  roadmap?: Maybe<Scalars['String']>;
+  startDate: Scalars['Date'];
 };
 
 export type Query = {
@@ -265,15 +278,6 @@ export type RoleType = {
   id: Scalars['Int'];
   name: Scalars['String'];
 };
-
-export enum StatusEnum {
-  DESIGN = 'DESIGN',
-  FINISHED = 'FINISHED',
-  IN_PROGRESS = 'IN_PROGRESS',
-  ON_HOLD = 'ON_HOLD',
-  STOPPED = 'STOPPED',
-  SUPPORT = 'SUPPORT',
-}
 
 export type UserFilter = {
   departmentId?: InputMaybe<Array<Scalars['Int']>>;

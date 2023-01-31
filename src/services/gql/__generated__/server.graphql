@@ -8,6 +8,23 @@ input ActiveInput {
   isActive: Boolean!
 }
 
+input ClientInput {
+  email: String!
+  fullName: String!
+  notes: String = null
+  phone: String = null
+  position: String = null
+}
+
+type ClientType {
+  email: String!
+  fullName: String!
+  id: Int!
+  notes: String
+  phone: String
+  position: String
+}
+
 enum ContractChoice {
   full_time
   part_time
@@ -30,11 +47,6 @@ input ForgotPasswordInput {
 type ForgotPasswordType {
   email: String!
   message: String!
-}
-
-enum GitPlatformEnum {
-  BITBUCKET
-  GITLAB
 }
 
 input IDInput {
@@ -75,7 +87,7 @@ type Mutation {
   """
   Project creation or updating by id
   """
-  project(data: ProjectInput!): ProjectType!
+  projectCreate(data: ProjectCreateInput!): ProjectType!
   """
   Project deletion
   """
@@ -144,39 +156,39 @@ type ProfileType {
   photo: ImageType
 }
 
-input ProjectInput {
-  awsLogsSlug: String = null
-  gitGroupId: String = null
-  gitPlatform: GitPlatformEnum = null
-  gitSlug: String = null
-  gitUrl: String = null
-  id: Int = null
-  name: String = null
-  slackBuildsChannelId: String = null
-  slackBuildsChannelUrl: String = null
-  slackChannelId: String = null
-  slackChannelUrl: String = null
-  slackErrorsChannelId: String = null
-  slackErrorsChannelUrl: String = null
-  status: StatusEnum = null
+input ProjectCreateInput {
+  clientTeam: [ClientInput!] = null
+  design: String = null
+  endDate: Date = null
+  hoursEstimated: Int = null
+  name: String!
+  notes: String = null
+  phase: ProjectPhaseChoice!
+  roadmap: String = null
+  startDate: Date!
+}
+
+enum ProjectPhaseChoice {
+  CODE_REVIEW
+  DESIGN
+  DEVELOPMENT
+  DEVELOPMENT_NEW
+  FINISHED
+  SIGNED
+  SUPPORT
 }
 
 type ProjectType {
-  awsLogsSlug: String
-  createdBy: UserType
-  gitGroupId: String
-  gitPlatform: GitPlatformEnum
-  gitSlug: String
-  gitUrl: String
+  clientTeam: [ClientType!]
+  design: String
+  endDate: Date
+  hoursEstimated: Int
   id: Int!
-  name: String
-  slackBuildsChannelId: String
-  slackBuildsChannelUrl: String
-  slackChannelId: String
-  slackChannelUrl: String
-  slackErrorsChannelId: String
-  slackErrorsChannelUrl: String
-  status: StatusEnum
+  name: String!
+  notes: String
+  phase: ProjectPhaseChoice!
+  roadmap: String
+  startDate: Date!
 }
 
 type Query {
@@ -226,15 +238,6 @@ input ResetPasswordInput {
 type RoleType {
   id: Int!
   name: String!
-}
-
-enum StatusEnum {
-  DESIGN
-  FINISHED
-  IN_PROGRESS
-  ON_HOLD
-  STOPPED
-  SUPPORT
 }
 
 scalar Upload

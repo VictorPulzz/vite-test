@@ -13,8 +13,8 @@ export type FetchProjectDetailsQuery = {
   project: {
     __typename?: 'ProjectType';
     id: number;
-    name?: string | null;
-    status?: Types.StatusEnum | null;
+    name: string;
+    phase: Types.ProjectPhaseChoice;
   };
 };
 
@@ -23,7 +23,7 @@ export const FetchProjectDetailsDocument = gql`
     project(data: $data) {
       id
       name
-      status
+      phase
     }
   }
 `;

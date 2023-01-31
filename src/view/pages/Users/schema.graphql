@@ -8,9 +8,29 @@ query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: S
       }
       email
       isActive
-      department {
+      departments {
+        id
+        name
+      }
+      role {
+        id
         name
       }
     }
+    count
+  }
+}
+
+query FetchRolesList {
+  rolesList {
+    id
+    name
+  }
+}
+
+query FetchDepartmentsList {
+  departmentsList {
+    id
+    name
   }
 }

@@ -5,18 +5,19 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type CreateProjectMutationVariables = Types.Exact<{
-  input: Types.ProjectInput;
+  input: Types.ProjectCreateInput;
 }>;
 
 export type CreateProjectMutation = {
   __typename?: 'Mutation';
-  project: { __typename?: 'ProjectType'; id: number };
+  projectCreate: { __typename?: 'ProjectType'; name: string; phase: Types.ProjectPhaseChoice };
 };
 
 export const CreateProjectDocument = gql`
-  mutation CreateProject($input: ProjectInput!) {
-    project(data: $input) {
-      id
+  mutation CreateProject($input: ProjectCreateInput!) {
+    projectCreate(data: $input) {
+      name
+      phase
     }
   }
 `;

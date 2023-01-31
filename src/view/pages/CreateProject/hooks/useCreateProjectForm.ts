@@ -4,7 +4,7 @@ import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import { useCreateProjectMutation } from '~/view/pages/CreateProject/__generated__/schema';
+// import { useCreateProjectMutation } from '~/view/pages/CreateProject/__generated__/schema';
 
 const formSchema = z.object({
   name: z.string(),
@@ -60,18 +60,19 @@ export function useCreateProjectForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  const [createProject] = useCreateProjectMutation();
-
+  // const [createProject] = useCreateProjectMutation();
+  // TODO fix when backend will be ready
   const handleSubmit = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (values: CreateProjectFormValues) => {
       try {
-        await createProject({
-          variables: {
-            input: {
-              name: values.name,
-            },
-          },
-        });
+        // await createProject({
+        //   variables: {
+        //     input: {
+        //       name: values.name,
+        //     },
+        //   },
+        // });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<CreateProjectFormValues>(e, {
@@ -80,7 +81,7 @@ export function useCreateProjectForm({
         });
       }
     },
-    [createProject, form.setError, onSubmitSuccessful],
+    [form.setError, onSubmitSuccessful],
   );
 
   return useMemo(
