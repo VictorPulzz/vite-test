@@ -1,18 +1,8 @@
 query FetchProjects {
   projectsList {
-    awsLogsSlug
-    gitGroupId
-    gitPlatform
-    gitSlug
-    gitUrl
     id
     name
-    slackBuildsChannelId
-    slackBuildsChannelUrl
-    slackChannelId
-    slackChannelUrl
-    slackErrorsChannelId
-    slackErrorsChannelUrl
-    status
+    notes
+    phase
   }
 }

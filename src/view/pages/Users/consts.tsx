@@ -36,6 +36,10 @@ export const USERS_TABLE_COLUMNS = [
     id: 'department',
     header: 'Department',
   }),
+  columnHelper.accessor(row => row?.role?.name, {
+    id: 'role',
+    header: 'Role',
+  }),
   columnHelper.accessor('email', {
     id: 'email',
     header: 'Email',

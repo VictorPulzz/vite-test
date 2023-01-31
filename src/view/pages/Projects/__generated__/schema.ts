@@ -10,40 +10,20 @@ export type FetchProjectsQuery = {
   __typename?: 'Query';
   projectsList: Array<{
     __typename?: 'ProjectType';
-    awsLogsSlug?: string | null;
-    gitGroupId?: string | null;
-    gitPlatform?: Types.GitPlatformEnum | null;
-    gitSlug?: string | null;
-    gitUrl?: string | null;
     id: number;
-    name?: string | null;
-    slackBuildsChannelId?: string | null;
-    slackBuildsChannelUrl?: string | null;
-    slackChannelId?: string | null;
-    slackChannelUrl?: string | null;
-    slackErrorsChannelId?: string | null;
-    slackErrorsChannelUrl?: string | null;
-    status?: Types.StatusEnum | null;
+    name: string;
+    notes?: string | null;
+    phase: Types.ProjectPhaseChoice;
   }>;
 };
 
 export const FetchProjectsDocument = gql`
   query FetchProjects {
     projectsList {
-      awsLogsSlug
-      gitGroupId
-      gitPlatform
-      gitSlug
-      gitUrl
       id
       name
-      slackBuildsChannelId
-      slackBuildsChannelUrl
-      slackChannelId
-      slackChannelUrl
-      slackErrorsChannelId
-      slackErrorsChannelUrl
-      status
+      notes
+      phase
     }
   }
 `;

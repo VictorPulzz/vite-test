@@ -3,7 +3,7 @@ query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
-    status
+    phase
     # estimatedStartDate
     # estimatedEndDate
     # designLink

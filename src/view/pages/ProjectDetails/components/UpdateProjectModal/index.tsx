@@ -37,7 +37,7 @@ export const UpdateProjectModal: FC<Props> = ({ isOpen, close, sectionNumber }) 
   } = useUpdateProjectForm({
     onSubmitSuccessful: () => close(),
     // TODO set prefilledData from useFetchProjectQuery when backend will be ready
-    prefilledData: { id: projectId ?? 0 },
+    // prefilledData: { id: projectId ?? 0 },
     id: projectId,
   });
 

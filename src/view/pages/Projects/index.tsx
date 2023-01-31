@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { ROUTES } from '~/constants/routes';
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -15,7 +15,7 @@ import { SelectField } from '~/view/ui/components/form/SelectField';
 import { useFetchProjectsQuery } from './__generated__/schema';
 import { PROJECTS_TABLE_COLUMNS } from './consts';
 
-const statusOptions = enumToSelectOptions(StatusEnum);
+const statusOptions = enumToSelectOptions(ProjectPhaseChoice);
 
 export const ProjectsPage: FC = () => {
   const { control } = useForm();

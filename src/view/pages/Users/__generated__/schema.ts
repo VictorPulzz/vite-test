@@ -14,6 +14,7 @@ export type FetchUsersQuery = {
   __typename?: 'Query';
   usersList: {
     __typename?: 'UserTypePagination';
+    count: number;
     results: Array<{
       __typename?: 'UserType';
       id?: string | null;
@@ -21,9 +22,24 @@ export type FetchUsersQuery = {
       email: string;
       isActive?: boolean | null;
       photo?: { __typename?: 'ImageType'; url: string } | null;
-      department?: { __typename?: 'DepartmentType'; name: string } | null;
+      department?: { __typename?: 'DepartmentType'; id: number; name: string } | null;
+      role?: { __typename?: 'RoleType'; id: number; name: string } | null;
     }>;
   };
+};
+
+export type FetchRolesListQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type FetchRolesListQuery = {
+  __typename?: 'Query';
+  rolesList: Array<{ __typename?: 'RoleType'; id: number; name: string }>;
+};
+
+export type FetchDepartmentsListQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type FetchDepartmentsListQuery = {
+  __typename?: 'Query';
+  departmentsList: Array<{ __typename?: 'DepartmentType'; id: number; name: string }>;
 };
 
 export const FetchUsersDocument = gql`
@@ -38,9 +54,15 @@ export const FetchUsersDocument = gql`
         email
         isActive
         department {
+          id
+          name
+        }
+        role {
+          id
           name
         }
       }
+      count
     }
   }
 `;
@@ -81,3 +103,107 @@ export function useFetchUsersLazyQuery(
 export type FetchUsersQueryHookResult = ReturnType<typeof useFetchUsersQuery>;
 export type FetchUsersLazyQueryHookResult = ReturnType<typeof useFetchUsersLazyQuery>;
 export type FetchUsersQueryResult = Apollo.QueryResult<FetchUsersQuery, FetchUsersQueryVariables>;
+export const FetchRolesListDocument = gql`
+  query FetchRolesList {
+    rolesList {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useFetchRolesListQuery__
+ *
+ * To run a query within a React component, call `useFetchRolesListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchRolesListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchRolesListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchRolesListQuery(
+  baseOptions?: Apollo.QueryHookOptions<FetchRolesListQuery, FetchRolesListQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchRolesListQuery, FetchRolesListQueryVariables>(
+    FetchRolesListDocument,
+    options,
+  );
+}
+export function useFetchRolesListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchRolesListQuery, FetchRolesListQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchRolesListQuery, FetchRolesListQueryVariables>(
+    FetchRolesListDocument,
+    options,
+  );
+}
+export type FetchRolesListQueryHookResult = ReturnType<typeof useFetchRolesListQuery>;
+export type FetchRolesListLazyQueryHookResult = ReturnType<typeof useFetchRolesListLazyQuery>;
+export type FetchRolesListQueryResult = Apollo.QueryResult<
+  FetchRolesListQuery,
+  FetchRolesListQueryVariables
+>;
+export const FetchDepartmentsListDocument = gql`
+  query FetchDepartmentsList {
+    departmentsList {
+      id
+      name
+    }
+  }
+`;
+
+/**
+ * __useFetchDepartmentsListQuery__
+ *
+ * To run a query within a React component, call `useFetchDepartmentsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchDepartmentsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchDepartmentsListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchDepartmentsListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchDepartmentsListQuery,
+    FetchDepartmentsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchDepartmentsListQuery, FetchDepartmentsListQueryVariables>(
+    FetchDepartmentsListDocument,
+    options,
+  );
+}
+export function useFetchDepartmentsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchDepartmentsListQuery,
+    FetchDepartmentsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchDepartmentsListQuery, FetchDepartmentsListQueryVariables>(
+    FetchDepartmentsListDocument,
+    options,
+  );
+}
+export type FetchDepartmentsListQueryHookResult = ReturnType<typeof useFetchDepartmentsListQuery>;
+export type FetchDepartmentsListLazyQueryHookResult = ReturnType<
+  typeof useFetchDepartmentsListLazyQuery
+>;
+export type FetchDepartmentsListQueryResult = Apollo.QueryResult<
+  FetchDepartmentsListQuery,
+  FetchDepartmentsListQueryVariables
+>;

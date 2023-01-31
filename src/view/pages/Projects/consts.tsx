@@ -37,7 +37,7 @@ export const PROJECTS_TABLE_COLUMNS = [
     // id: ClientOrder.EMAIL,
     header: 'PM',
   }),
-  columnHelper.accessor('status', {
+  columnHelper.accessor('phase', {
     // id: ClientOrder.EMAIL,
     header: 'Status',
   }),
