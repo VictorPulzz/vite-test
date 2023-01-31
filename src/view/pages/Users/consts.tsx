@@ -9,10 +9,9 @@ import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 
 import { MoreCell } from './components/MoreCell';
-// import { UserResultType } from './types';
+import { UserResultType } from './types';
 
-// TODO add UserResultType
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<UserResultType>();
 
 export const USERS_TABLE_COLUMNS = [
   columnHelper.accessor('fullName', {
@@ -25,7 +24,7 @@ export const USERS_TABLE_COLUMNS = [
     }) => {
       return (
         <div className="flex gap-3 items-center">
-          <Avatar uri={photo || photoPlaceholder} size={26} />
+          <Avatar uri={photo?.url || photoPlaceholder} size={26} />
           <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
             {fullName}
           </TextLink>
@@ -33,7 +32,7 @@ export const USERS_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor(row => row.department.name, {
+  columnHelper.accessor(row => row?.department?.name, {
     id: 'department',
     header: 'Department',
   }),

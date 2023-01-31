@@ -3,6 +3,11 @@ schema {
   mutation: Mutation
 }
 
+input ActiveInput {
+  id: Int!
+  isActive: Boolean!
+}
+
 enum ContractChoice {
   full_time
   part_time
@@ -16,6 +21,15 @@ scalar Date
 type DepartmentType {
   id: Int!
   name: String!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+type ForgotPasswordType {
+  email: String!
+  message: String!
 }
 
 enum GitPlatformEnum {
@@ -49,10 +63,15 @@ type MessageType {
 }
 
 type Mutation {
+  forgotPassword(data: ForgotPasswordInput!): ForgotPasswordType!
   """
   Login
   """
   login(data: LoginInput!): LoginSuccessType!
+  """
+  User updating himself
+  """
+  meUpdate(data: ProfileInput!): ProfileType!
   """
   Project creation or updating by id
   """
@@ -61,6 +80,7 @@ type Mutation {
   Project deletion
   """
   projectDelete(data: IDInput!): MessageType!
+  resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation
   """
@@ -70,6 +90,14 @@ type Mutation {
   """
   tokenRefresh(data: RefreshTokenInput!): LoginSuccessType!
   """
+  Change user status
+  """
+  userChangeStatus(data: ActiveInput!): UserType!
+  """
+  User create or updating
+  """
+  userCreateUpdate(data: UserInput!): UserType!
+  """
   User deletion
   """
   userDelete: MessageType!
@@ -77,10 +105,6 @@ type Mutation {
   Add user note
   """
   userNote(data: NoteInput!): NoteType!
-  """
-  User updating
-  """
-  userUpdate(data: UserInput!): UserType!
 }
 
 input NoteInput {
@@ -90,9 +114,34 @@ input NoteInput {
 }
 
 type NoteType {
-  createdBy: UserType
+  createdBy: ProfileType
   id: Int!
   text: String!
+}
+
+input PaginationInput {
+  limit: Int = 10
+  offset: Int = 0
+}
+
+input ProfileInput {
+  address: String = null
+  birthDate: Date = null
+  firstName: String = null
+  lastName: String = null
+  phone: String = null
+  photo: Upload
+}
+
+type ProfileType {
+  address: String
+  birthDate: Date
+  email: String!
+  firstName: String
+  fullName: String!
+  lastName: String
+  phone: String
+  photo: ImageType
 }
 
 input ProjectInput {
@@ -138,7 +187,7 @@ type Query {
   """
   Getting authenticated user
   """
-  me: UserType!
+  me: ProfileType!
   """
   Getting project by id
   """
@@ -152,13 +201,26 @@ type Query {
   """
   rolesList: [RoleType!]!
   """
+  Getting user by id
+  """
+  userDetails(data: IDInput!): UserType!
+  """
   Getting list of users
   """
-  usersList: [UserType!]!
+  usersList(
+    filters: UserFilter = null
+    pagination: PaginationInput!
+    search: String = null
+  ): UserTypePagination!
 }
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+input ResetPasswordInput {
+  password: String!
+  token: String!
 }
 
 type RoleType {
@@ -177,18 +239,26 @@ enum StatusEnum {
 
 scalar Upload
 
+input UserFilter {
+  departmentId: [Int!] = null
+  isActive: Boolean = null
+  roleId: [Int!] = null
+}
+
 input UserInput {
   address: String = null
   birthDate: Date = null
   contractType: ContractChoice = null
-  department: IDInput = null
+  departmentId: Int = null
   email: String = null
   firstName: String = null
+  id: Int = null
   isActive: Boolean = null
   isSuperuser: Boolean = null
   lastName: String = null
+  phone: String = null
   photo: Upload
-  role: IDInput = null
+  roleId: Int = null
 }
 
 type UserType {
@@ -199,11 +269,19 @@ type UserType {
   email: String!
   firstName: String
   fullName: String!
-  id: String!
+  id: String
   isActive: Boolean
   isSuperuser: Boolean
   lastName: String
   notes: [NoteType!]
+  phone: String
   photo: ImageType
   role: RoleType
+}
+
+type UserTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [UserType!]!
 }
