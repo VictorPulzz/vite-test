@@ -1,60 +1,81 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import React, { FC, useCallback, useState } from 'react';
+import { Button, ButtonVariant } from '@ui/components/common/Button';
+import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ProgressBarWithSteps } from '~/view/components/ProgressBarWithSteps';
-import { Tabs } from '~/view/components/Tabs';
-import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { TextLink } from '~/view/ui/components/common/TextLink';
+import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
-import { Participants } from './components/Participants';
-import { Repositories } from './components/Repositories';
-import { UpdateProjectModal } from './components/UpdateProjectModal';
-import { PROJECT_DETAILS_TABS, SectionNumber } from './consts';
-import styles from './styles.module.scss';
+
+// import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
-  const {
-    value: isUpdateProjectModalOpen,
-    on: openUpdateProjectModal,
-    off: closeUpdateProjectModal,
-  } = useSwitchValue(false);
-
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { data, loading } = useFetchProjectDetailsQuery({
+  const { data } = useFetchProjectDetailsQuery({
     variables: {
       data: { id: projectId },
     },
   });
 
-  const [activeTabId, setActiveTabId] = useState<number>(1);
-  const [sectionNumber, setSectionNumber] = useState<number>(0);
-
-  const handleActiveTabChange = useCallback((index: number) => setActiveTabId(index), []);
-
-  const handleEditProjectButton = useCallback(
-    (sectionNumber: number) => {
-      setSectionNumber(sectionNumber);
-      openUpdateProjectModal();
-    },
-    [openUpdateProjectModal],
-  );
-
-  // TODO remove test progressBar data
-  const currentStep = 3;
-
   return (
-    <SidebarLayout>
-      <DetailLayout title="Project details">
-        {loading ? (
-          <span>LOADING</span>
-        ) : (
-          <div className="flex flex-col p-6 gap-5">
+    <SidebarLayout contentClassName="bg-gray-7">
+      <div className="bg-white w-full">
+        <div className="flex items-center justify-between px-7 pt-7">
+          <div className="flex flex-col">
+            <h2 className="text-p1 font-bold">{data?.project.name}</h2>
+            <span className="text-c1 text-gray-2">Created 18 Jul 2022 • by Alex C.</span>
+          </div>
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Edit project"
+            withIcon="edit"
+            onClick={() => null}
+            className="w-[140px]"
+          />
+        </div>
+        <Tabs
+          className="mt-3"
+          contentClassName="bg-gray-7 p-7"
+          headerClassName="pl-7"
+          items={[
+            {
+              title: 'Overview',
+              element: <div>Overview</div>,
+            },
+            {
+              title: 'Info',
+              element: <span>Info</span>,
+            },
+            {
+              title: 'Team',
+              element: <span>Team</span>,
+            },
+            {
+              title: 'Development',
+              element: <span>Development</span>,
+            },
+            {
+              title: 'Docs',
+              element: <span>Docs</span>,
+            },
+            {
+              title: 'Reports',
+              element: <span>Reports</span>,
+            },
+            {
+              title: 'History',
+              element: <span>History</span>,
+            },
+          ]}
+        />
+      </div>
+    </SidebarLayout>
+  );
+};
+
+/* <div className="flex flex-col p-6 gap-5">
             <div className="shadow-4 bg-white rounded-md w-full p-7">
               <ProgressBarWithSteps currentStep={currentStep} />
             </div>
@@ -163,9 +184,4 @@ export const ProjectDetailsPage: FC = () => {
               close={closeUpdateProjectModal}
               sectionNumber={sectionNumber}
             />
-          </div>
-        )}
-      </DetailLayout>
-    </SidebarLayout>
-  );
-};
+          </div> */
