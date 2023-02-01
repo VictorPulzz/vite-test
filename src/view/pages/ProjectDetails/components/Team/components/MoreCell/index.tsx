@@ -1,19 +1,20 @@
+import { CellContext } from '@tanstack/react-table';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
-interface Props {
-  participantId: number;
-  isOtherParticipant: boolean;
-}
+// TODO ad type
+export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
+  const { id } = row.original;
 
-export const ParticipantMenu: FC<Props> = ({ participantId, isOtherParticipant }) => {
   // TODO add mutation
   const options: DropdownItem[] = [
     {
-      label: isOtherParticipant ? 'Set as current' : 'Remove',
-      onSelect: () => (isOtherParticipant ? participantId : participantId),
+      label: 'Remove',
+      onSelect: () => id,
+      iconBefore: <Icon name="trash" size={14} />,
+      className: 'text-red',
     },
   ];
 
