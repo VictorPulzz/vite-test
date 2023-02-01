@@ -6,6 +6,7 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
+import { History } from './components/History';
 import { Info } from './components/Info';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
@@ -66,7 +67,7 @@ export const ProjectDetailsPage: FC = () => {
             },
             {
               title: 'History',
-              element: <span>History</span>,
+              element: <History />,
             },
           ]}
         />
