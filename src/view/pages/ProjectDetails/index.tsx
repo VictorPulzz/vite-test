@@ -7,6 +7,8 @@ import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
 import { Info } from './components/Info';
+import { Team } from './components/Team';
+import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
   const params = useParams();
@@ -35,7 +37,7 @@ export const ProjectDetailsPage: FC = () => {
           />
         </div>
         <Tabs
-          className="mt-3"
+          className={styles['tabs']}
           contentClassName="bg-gray-7 p-7"
           items={[
             {
@@ -48,7 +50,7 @@ export const ProjectDetailsPage: FC = () => {
             },
             {
               title: 'Team',
-              element: <span>Team</span>,
+              element: <Team />,
             },
             {
               title: 'Development',
