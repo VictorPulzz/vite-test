@@ -1,7 +1,4 @@
-.section {
-  &:not(:last-child) {
-    border-bottom: 1px solid hsl(var(--gray-6-color));
-    padding-bottom: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
+.tabs :global(.tabs__head-list) {
+  margin-top: 10px;
+  padding-inline: 10px;
 }
