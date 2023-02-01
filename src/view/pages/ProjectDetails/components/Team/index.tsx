@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Table } from '~/view/ui/components/common/Table';
 
-import { AddParticipantModal } from './components/AddParticipantModal';
+import { AddNewMemberModal } from './components/AddNewMemberModal';
 import { TEAM_TABLE_COLUMNS } from './consts';
 
 const teamMember = {
@@ -19,9 +19,9 @@ const teamMember = {
 
 export const Team: FC = () => {
   const {
-    value: isAddParticipantModalOpen,
-    on: openAddParticipantModal,
-    off: closeAddParticipantModal,
+    value: isAddNewMemberModalOpen,
+    on: openAddNewMemberModalModal,
+    off: closeAddNewMemberModalModal,
   } = useSwitchValue(false);
   // TODO remove currentTeamMembersTestData and otherContributorsTestData when backend will be ready
   const currentTeamMembers = new Array(5).fill(teamMember);
@@ -56,7 +56,7 @@ export const Team: FC = () => {
               label="Add new member"
               withIcon="add"
               className="mt-3 w-[170px]"
-              onClick={openAddParticipantModal}
+              onClick={openAddNewMemberModalModal}
             />
           </div>
           {!!otherContributors.length && (
@@ -67,7 +67,7 @@ export const Team: FC = () => {
           )}
         </div>
       )}
-      <AddParticipantModal isOpen={isAddParticipantModalOpen} close={closeAddParticipantModal} />
+      <AddNewMemberModal isOpen={isAddNewMemberModalOpen} close={closeAddNewMemberModalModal} />
     </div>
   );
 };
