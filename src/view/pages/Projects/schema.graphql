@@ -1,8 +1,12 @@
-query FetchProjects {
-  projectsList {
-    id
-    name
-    notes
-    phase
+#TODO change 'notes'=>'pm'
+query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
+  projectsList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      id
+      name
+      notes
+      status
+    }
+    count
   }
 }

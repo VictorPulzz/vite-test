@@ -20,6 +20,11 @@ export type ActiveInput = {
   isActive: Scalars['Boolean'];
 };
 
+export type ChangePasswordInput = {
+  newPassword: Scalars['String'];
+  oldPassword: Scalars['String'];
+};
+
 export type ClientInput = {
   email: Scalars['String'];
   fullName: Scalars['String'];
@@ -94,6 +99,7 @@ export type Mutation = {
   login: LoginSuccessType;
   /** User updating himself */
   meUpdate: ProfileType;
+  passwordChange: MessageType;
   /** Project creation or updating by id */
   projectCreate: ProjectType;
   /** Project deletion */
@@ -123,6 +129,10 @@ export type MutationLoginArgs = {
 
 export type MutationMeUpdateArgs = {
   data: ProfileInput;
+};
+
+export type MutationPasswordChangeArgs = {
+  data: ChangePasswordInput;
 };
 
 export type MutationProjectCreateArgs = {
@@ -208,6 +218,10 @@ export type ProjectCreateInput = {
   startDate: Scalars['Date'];
 };
 
+export type ProjectFilter = {
+  status?: InputMaybe<StatusEnum>;
+};
+
 export enum ProjectPhaseChoice {
   CODE_REVIEW = 'CODE_REVIEW',
   DESIGN = 'DESIGN',
@@ -230,6 +244,15 @@ export type ProjectType = {
   phase: ProjectPhaseChoice;
   roadmap?: Maybe<Scalars['String']>;
   startDate: Scalars['Date'];
+  status?: Maybe<StatusEnum>;
+};
+
+export type ProjectTypePagination = {
+  __typename: 'ProjectTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<ProjectType>;
 };
 
 export type Query = {
@@ -241,7 +264,7 @@ export type Query = {
   /** Getting project by id */
   project: ProjectType;
   /** Getting list of projects */
-  projectsList: Array<ProjectType>;
+  projectsList: ProjectTypePagination;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
   /** Getting user by id */
@@ -252,6 +275,12 @@ export type Query = {
 
 export type QueryProjectArgs = {
   data: IdInput;
+};
+
+export type QueryProjectsListArgs = {
+  filters?: InputMaybe<ProjectFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUserDetailsArgs = {
@@ -278,6 +307,15 @@ export type RoleType = {
   id: Scalars['Int'];
   name: Scalars['String'];
 };
+
+export enum StatusEnum {
+  DESIGN = 'DESIGN',
+  FINISHED = 'FINISHED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  ON_HOLD = 'ON_HOLD',
+  STOPPED = 'STOPPED',
+  SUPPORT = 'SUPPORT',
+}
 
 export type UserFilter = {
   departmentId?: InputMaybe<Array<Scalars['Int']>>;

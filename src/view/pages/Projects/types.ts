@@ -1,5 +1,5 @@
-// import { PaginationItem } from '~/types';
+import { PaginationItem } from '~/types';
 
-// import { FetchProjectsQuery } from './__generated__/schema';
+import { FetchProjectsQuery } from './__generated__/schema';
 
-// export type ProjectResultType = PaginationItem<FetchProjectsQuery['projectsList']>;
+export type ProjectResultType = PaginationItem<FetchProjectsQuery['projectsList']>;

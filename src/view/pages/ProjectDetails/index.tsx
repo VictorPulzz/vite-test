@@ -1,6 +1,6 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Tabs } from '~/view/ui/components/common/Tabs';
@@ -14,6 +14,7 @@ import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
@@ -27,9 +28,18 @@ export const ProjectDetailsPage: FC = () => {
     <SidebarLayout contentClassName="bg-gray-7">
       <div className="bg-white">
         <div className="flex items-center justify-between px-7 pt-7">
-          <div className="flex flex-col">
-            <h2 className="text-h4 font-bold">{data?.project.name}</h2>
-            <span className="text-c1 text-gray-2">Created 18 Jul 2022 • by Alex C.</span>
+          <div className="flex items-center gap-4">
+            <Button
+              variant={ButtonVariant.SECONDARY}
+              withIcon="left-arrow"
+              onClick={() => navigate(-1)}
+            />
+            <div className="flex flex-col">
+              <h2 className="text-h4 font-bold">{data?.project.name}</h2>
+              <span className="text-c1 text-gray-2 leading-none">
+                Created 18 Jul 2022 • by Alex C.
+              </span>
+            </div>
           </div>
           <Button
             variant={ButtonVariant.SECONDARY}
