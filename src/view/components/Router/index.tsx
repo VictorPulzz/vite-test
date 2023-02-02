@@ -14,6 +14,7 @@ import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
 import { RepositoryDetailsPage } from '~/view/pages/RepositoryDetails';
+import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
@@ -29,6 +30,10 @@ const authRoutes: RouteObject[] = [
   {
     path: ROUTES.FORGOT_PASSWORD,
     element: <ForgotPasswordPage />,
+  },
+  {
+    path: ROUTES.RESET_PASSWORD,
+    element: <ResetPasswordPage />,
   },
 ];
 
