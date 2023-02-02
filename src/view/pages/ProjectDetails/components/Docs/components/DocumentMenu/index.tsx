@@ -3,17 +3,15 @@ import React, { FC } from 'react';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
-interface Props {
-  participantId: number;
-  isOtherParticipant: boolean;
-}
-
-export const ParticipantMenu: FC<Props> = ({ participantId, isOtherParticipant }) => {
-  // TODO add mutation
+export const DocumentMenu: FC = () => {
   const options: DropdownItem[] = [
     {
-      label: isOtherParticipant ? 'Set as current' : 'Remove',
-      onSelect: () => (isOtherParticipant ? participantId : participantId),
+      label: 'Action 1',
+      onSelect: () => null,
+    },
+    {
+      label: 'Action 2',
+      onSelect: () => null,
     },
   ];
 

@@ -8,7 +8,7 @@ query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: S
       }
       email
       isActive
-      departments {
+      department {
         id
         name
       }

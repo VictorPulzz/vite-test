@@ -5,25 +5,27 @@ import { useParams } from 'react-router-dom';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Table } from '~/view/ui/components/common/Table';
 
-import { AddParticipantModal } from './components/AddParticipantModal';
+import { AddNewMemberModal } from './components/AddNewMemberModal';
 import { TEAM_TABLE_COLUMNS } from './consts';
 
-const participantTestData = {
+const teamMember = {
   id: '0',
   fullName: 'Barbara Williams',
-  photo: 'https://picsum.photos/36/36?random',
-  position: 'Backend developer',
-  email: 'expamle@com',
+  photo: { url: 'https://picsum.photos/36/36?random' },
+  role: 'Backend developer',
+  email: 'example@com',
+  slack: 'https://picsum.photos/36/36?random',
 };
 
 export const Team: FC = () => {
   const {
-    value: isAddParticipantModalOpen,
-    on: openAddParticipantModal,
-    off: closeAddParticipantModal,
+    value: isAddNewMemberModalOpen,
+    on: openAddNewMemberModalModal,
+    off: closeAddNewMemberModalModal,
   } = useSwitchValue(false);
-  // TODO remove participantsTestData when backend will be ready
-  const participantsTestData = new Array(3).fill(participantTestData);
+  // TODO remove currentTeamMembersTestData and otherContributorsTestData when backend will be ready
+  const currentTeamMembers = new Array(5).fill(teamMember);
+  const otherContributors = new Array(2).fill(teamMember);
 
   const params = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -46,22 +48,26 @@ export const Team: FC = () => {
         <div className="flex flex-col gap-5">
           <div className="shadow-4 bg-white rounded-md p-7">
             <h2 className="text-p1 font-bold">Current team</h2>
-            <Table className="mt-3" data={participantsTestData} columns={TEAM_TABLE_COLUMNS} />
+            {!!currentTeamMembers.length && (
+              <Table className="mt-3" data={currentTeamMembers} columns={TEAM_TABLE_COLUMNS} />
+            )}
             <Button
               variant={ButtonVariant.SECONDARY}
               label="Add new member"
               withIcon="add"
               className="mt-3 w-[170px]"
-              onClick={openAddParticipantModal}
+              onClick={openAddNewMemberModalModal}
             />
           </div>
-          <div className="shadow-4 bg-white rounded-md p-7">
-            <h2 className="text-p1 font-bold">Other contrubutors</h2>
-            <Table className="mt-3" data={participantsTestData} columns={TEAM_TABLE_COLUMNS} />
-          </div>
+          {!!otherContributors.length && (
+            <div className="shadow-4 bg-white rounded-md p-7">
+              <h2 className="text-p1 font-bold">Other contrubutors</h2>
+              <Table className="mt-3" data={otherContributors} columns={TEAM_TABLE_COLUMNS} />
+            </div>
+          )}
         </div>
       )}
-      <AddParticipantModal isOpen={isAddParticipantModalOpen} close={closeAddParticipantModal} />
+      <AddNewMemberModal isOpen={isAddNewMemberModalOpen} close={closeAddNewMemberModalModal} />
     </div>
   );
 };

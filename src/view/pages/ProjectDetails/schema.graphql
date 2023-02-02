@@ -16,6 +16,15 @@ query FetchProjectDetails($data: IDInput!) {
   }
 }
 
+query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+  usersList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      id
+      fullName
+    }
+  }
+}
+
 # TODO fix fields when backend will be ready
 # mutation UpdateProject($input: ProjectInput!) {
 #   project(data: $input) {

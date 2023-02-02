@@ -9,25 +9,25 @@ const formSchema = z.object({
   user: z.string(),
 });
 
-type AddParticipantFormValues = z.infer<typeof formSchema>;
+type AddNewMemberFormValues = z.infer<typeof formSchema>;
 
-interface UseAddParticipantFormReturn {
-  form: UseFormReturn<AddParticipantFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<AddParticipantFormValues>>;
+interface UseAddNewMemberFormReturn {
+  form: UseFormReturn<AddNewMemberFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<AddNewMemberFormValues>>;
 }
 
-interface UseAddParticipantFormProps {
+interface UseAddNewMemberFormProps {
   onSubmitSuccessful?: () => void;
 }
 
-const defaultValues: AddParticipantFormValues = {
+const defaultValues: AddNewMemberFormValues = {
   user: '',
 };
 
-export function useAddParticipantForm({
+export function useAddNewMemberForm({
   onSubmitSuccessful,
-}: UseAddParticipantFormProps): UseAddParticipantFormReturn {
-  const form = useForm<AddParticipantFormValues>({
+}: UseAddNewMemberFormProps): UseAddNewMemberFormReturn {
+  const form = useForm<AddNewMemberFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -35,7 +35,7 @@ export function useAddParticipantForm({
   // const [addProjectParticipant] = useAddProjectParticipantMutation();
 
   const handleSubmit = useCallback(
-    async (values: AddParticipantFormValues) => {
+    async (values: AddNewMemberFormValues) => {
       try {
         // eslint-disable-next-line no-console
         console.log('🚀 ~ file: useAddParticipantForm.ts:39 ~ values', values);
@@ -48,7 +48,7 @@ export function useAddParticipantForm({
         // });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<AddParticipantFormValues>(e, {
+        processGqlErrorResponse<AddNewMemberFormValues>(e, {
           fields: ['user'],
           setFormError: form.setError,
         });
