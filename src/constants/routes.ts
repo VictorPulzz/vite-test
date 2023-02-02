@@ -1,6 +1,7 @@
 export const ROUTES = {
   HOME: '/',
   SIGN_IN: '/sign-in',
+  FORGOT_PASSWORD: '/forgot-password',
 
   PROJECTS: '/projects',
   ADD_PROJECT: '/projects/add',

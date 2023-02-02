@@ -7,6 +7,7 @@ import { CreateProjectPage } from '~/view/pages/CreateProject';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { CreateUserPage } from '~/view/pages/CreateUser';
 import { DocumentsPage } from '~/view/pages/Documents';
+import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
@@ -24,6 +25,10 @@ const authRoutes: RouteObject[] = [
   {
     path: ROUTES.SIGN_IN,
     element: <SignInPage />,
+  },
+  {
+    path: ROUTES.FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
   },
 ];
 
