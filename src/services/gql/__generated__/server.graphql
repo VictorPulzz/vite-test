@@ -8,6 +8,11 @@ input ActiveInput {
   isActive: Boolean!
 }
 
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
 input ClientInput {
   email: String!
   fullName: String!
@@ -84,6 +89,7 @@ type Mutation {
   User updating himself
   """
   meUpdate(data: ProfileInput!): ProfileType!
+  passwordChange(data: ChangePasswordInput!): MessageType!
   """
   Project creation or updating by id
   """
@@ -168,6 +174,10 @@ input ProjectCreateInput {
   startDate: Date!
 }
 
+input ProjectFilter {
+  status: StatusEnum = null
+}
+
 enum ProjectPhaseChoice {
   CODE_REVIEW
   DESIGN
@@ -189,6 +199,14 @@ type ProjectType {
   phase: ProjectPhaseChoice!
   roadmap: String
   startDate: Date!
+  status: StatusEnum
+}
+
+type ProjectTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectType!]!
 }
 
 type Query {
@@ -207,7 +225,11 @@ type Query {
   """
   Getting list of projects
   """
-  projectsList: [ProjectType!]!
+  projectsList(
+    filters: ProjectFilter = null
+    pagination: PaginationInput!
+    search: String = null
+  ): ProjectTypePagination!
   """
   Getting list of users' roles
   """
@@ -238,6 +260,15 @@ input ResetPasswordInput {
 type RoleType {
   id: Int!
   name: String!
+}
+
+enum StatusEnum {
+  DESIGN
+  FINISHED
+  IN_PROGRESS
+  ON_HOLD
+  STOPPED
+  SUPPORT
 }
 
 scalar Upload
