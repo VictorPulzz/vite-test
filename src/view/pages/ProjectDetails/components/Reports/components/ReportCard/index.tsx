@@ -5,7 +5,7 @@ import { Dropdown, DropdownItem } from '~/view/ui/components/common/Dropdown';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 // TODO remove HistoryUsersType when backend will be ready
-export type ReportsProps = {
+type ReportsProps = {
   reportName: string;
   reportDate: string;
   reportedBy: string;

@@ -8,11 +8,11 @@ import { ReportsCard } from './components/ReportCard';
 import { useGetReportsForm } from './hooks/useFilterByUserForm';
 
 // TODO remove HistoryUsersType when backend will be ready
-export type HistoryUsersType = {
+export type ReportsType = {
   id: number;
-  action: string;
-  madeBy: string;
-  dateAndTime: string;
+  reportName: string;
+  reportDate: string;
+  reportedBy: string;
 };
 
 // TODO remove historyTestData when backend will be ready
@@ -81,7 +81,7 @@ export const Reports: FC = () => {
             />
           </div>
           <div className="flex flex-col gap-4">
-            {reportsTestData.map((report: any) => {
+            {reportsTestData.map((report: ReportsType) => {
               const { reportName, reportDate, reportedBy } = report;
               return (
                 <ReportsCard
