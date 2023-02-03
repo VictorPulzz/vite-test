@@ -1,11 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
+import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { useGetReportsForm } from '~/view/pages/ProjectDetails/hooks/useGetReportsForm';
 import { DateField } from '~/view/ui/components/form/DateField';
-// import { InlineFields } from '~/view/ui/components/form/InlineFields';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
 import { ReportsCard } from './components/ReportCard';
-import { useGetReportsForm } from './hooks/useFilterByUserForm';
 
 // TODO remove HistoryUsersType when backend will be ready
 export type ReportsType = {
@@ -50,9 +50,24 @@ const reportsTestData = [
 ];
 
 export const Reports: FC = () => {
-  const {
-    form: { control },
-  } = useGetReportsForm();
+  const { form } = useGetReportsForm();
+
+  const { data } = useFetchAllUsersQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const usersOptions = useMemo(() => {
+    if (data?.usersList.results) {
+      return data?.usersList.results.map(({ id, fullName }) => ({
+        value: String(id),
+        label: fullName,
+      }));
+    }
+    return [];
+  }, [data?.usersList.results]);
 
   return (
     <div>
@@ -65,15 +80,15 @@ export const Reports: FC = () => {
           <div className="flex items-center gap-3">
             <SelectField
               name="submittedBy"
-              options={[]}
-              control={control}
+              options={usersOptions}
+              control={form.control}
               label=""
               className="w-64 mt-3"
               placeholder="Filter by user"
             />
             <DateField
               name="submittedDateRange"
-              control={control}
+              control={form.control}
               label=""
               required
               className="w-64"

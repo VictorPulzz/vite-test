@@ -1,10 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
+import { useFilterByUserForm } from '~/view/pages/ProjectDetails//hooks/useFilterByUserForm';
+import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Table } from '~/view/ui/components/common/Table';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
 import { HISTORY_TABLE_COLUMNS } from './consts';
-import { useFilterByUserForm } from './hooks/useFilterByUserForm';
 
 // TODO remove HistoryUsersType when backend will be ready
 export type HistoryUsersType = {
@@ -31,9 +32,24 @@ const historyTestData = [
 ];
 
 export const History: FC = () => {
-  const {
-    form: { control },
-  } = useFilterByUserForm();
+  const { form } = useFilterByUserForm();
+
+  const { data } = useFetchAllUsersQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const usersOptions = useMemo(() => {
+    if (data?.usersList.results) {
+      return data?.usersList.results.map(({ id, fullName }) => ({
+        value: String(id),
+        label: fullName,
+      }));
+    }
+    return [];
+  }, [data?.usersList.results]);
 
   return (
     <div>
@@ -42,8 +58,8 @@ export const History: FC = () => {
           <h2 className="text-p1 font-bold">History</h2>
           <SelectField
             name="user"
-            options={[]}
-            control={control}
+            options={usersOptions}
+            control={form.control}
             label=""
             className="w-64 mt-3"
             placeholder="Filter by user"

@@ -48,7 +48,7 @@ export const Team: FC = () => {
         <div className="flex flex-col gap-5">
           <div className="shadow-4 bg-white rounded-md p-7">
             <h2 className="text-p1 font-bold">Current team</h2>
-            {!!currentTeamMembers.length && (
+            {!currentTeamMembers.length && (
               <Table className="mt-3" data={currentTeamMembers} columns={TEAM_TABLE_COLUMNS} />
             )}
             <Button
