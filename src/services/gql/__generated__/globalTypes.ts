@@ -28,6 +28,7 @@ export type ChangePasswordInput = {
 export type ClientInput = {
   email: Scalars['String'];
   fullName: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
   notes?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
   position?: InputMaybe<Scalars['String']>;
@@ -37,7 +38,7 @@ export type ClientType = {
   __typename: 'ClientType';
   email: Scalars['String'];
   fullName: Scalars['String'];
-  id: Scalars['Int'];
+  id?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   position?: Maybe<Scalars['String']>;
@@ -105,7 +106,7 @@ export type Mutation = {
   /** Project change status */
   projectChangeStatus: ProjectType;
   /** Project creation */
-  projectCreate: ProjectType;
+  projectCreateUpdate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
   resetPassword: MessageType;
@@ -147,7 +148,7 @@ export type MutationProjectChangeStatusArgs = {
   data: ProjectStatusInput;
 };
 
-export type MutationProjectCreateArgs = {
+export type MutationProjectCreateUpdateArgs = {
   data: ProjectCreateInput;
 };
 
@@ -223,6 +224,7 @@ export type ProjectCreateInput = {
   design?: InputMaybe<Scalars['String']>;
   endDate?: InputMaybe<Scalars['Date']>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   phase: ProjectPhaseChoice;
@@ -241,6 +243,12 @@ export type ProjectMemberInput = {
   userId: Scalars['Int'];
 };
 
+export type ProjectMemberListType = {
+  __typename: 'ProjectMemberListType';
+  currentTeam: Array<UserType>;
+  otherParticipants: Array<UserType>;
+};
+
 export type ProjectMemberType = {
   __typename: 'ProjectMemberType';
   currentTeam: Scalars['Boolean'];
@@ -249,11 +257,11 @@ export type ProjectMemberType = {
 };
 
 export enum ProjectPhaseChoice {
-  CODE_REVIEW = 'CODE_REVIEW',
   DESIGN = 'DESIGN',
   DEVELOPMENT = 'DEVELOPMENT',
-  DEVELOPMENT_NEW = 'DEVELOPMENT_NEW',
-  FINISHED = 'FINISHED',
+  HANDOVER = 'HANDOVER',
+  PRE_SIGNED = 'PRE_SIGNED',
+  RELEASED = 'RELEASED',
   SIGNED = 'SIGNED',
   SUPPORT = 'SUPPORT',
 }
@@ -296,6 +304,8 @@ export type Query = {
   me: ProfileType;
   /** Getting project by id */
   project: ProjectType;
+  /** Getting member for project by id */
+  projectMemberList: ProjectMemberListType;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
   /** Getting list of users' roles */
@@ -307,6 +317,10 @@ export type Query = {
 };
 
 export type QueryProjectArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectMemberListArgs = {
   data: IdInput;
 };
 
@@ -342,12 +356,10 @@ export type RoleType = {
 };
 
 export enum StatusEnum {
-  DESIGN = 'DESIGN',
-  FINISHED = 'FINISHED',
+  BLOCKED = 'BLOCKED',
   IN_PROGRESS = 'IN_PROGRESS',
-  ON_HOLD = 'ON_HOLD',
   STOPPED = 'STOPPED',
-  SUPPORT = 'SUPPORT',
+  WAITING = 'WAITING',
 }
 
 export type UserFilter = {

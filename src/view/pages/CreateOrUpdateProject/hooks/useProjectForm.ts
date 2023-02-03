@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO } from 'date-fns';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -10,6 +10,7 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 import { numberValidation } from '~/utils/validations';
 
 import { FetchProjectQuery, useCreateOrUpdateProjectMutation } from '../__generated__/schema';
+import { transformPrefilledData } from './utils';
 
 const formSchema = z
   .object({
@@ -27,15 +28,16 @@ const formSchema = z
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
-    clientTeamMembers: z
-      .object({
-        name: z.string(),
-        email: z.string(),
-        phone: z.string(),
-        position: z.string(),
-        notes: z.string(),
-      })
-      .array(),
+    // TODO add clientTeamMembers later
+    // clientTeamMembers: z
+    //   .object({
+    //     name: z.string(),
+    //     email: z.string(),
+    //     phone: z.string(),
+    //     position: z.string(),
+    //     notes: z.string(),
+    //   })
+    //   .array(),
   })
   .superRefine((value, ctx) => {
     if (value.endDate && value.startDate) {
@@ -49,7 +51,7 @@ const formSchema = z
     }
   });
 
-type ProjectFormValues = z.infer<typeof formSchema>;
+export type ProjectFormValues = z.infer<typeof formSchema>;
 
 interface UseProjectFormReturn {
   form: UseFormReturn<ProjectFormValues>;
@@ -71,7 +73,8 @@ const defaultValues: ProjectFormValues = {
   design: '',
   roadmap: '',
   notes: '',
-  clientTeamMembers: [],
+  // TODO add clientTeamMembers later
+  // clientTeamMembers: [],
 };
 
 export function useProjectForm({
@@ -81,33 +84,19 @@ export function useProjectForm({
 }: UseProjectFormProps): UseProjectFormReturn {
   const form = useForm<ProjectFormValues>({
     defaultValues,
+    values: prefilledData ? transformPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  const [createorUpdateProject] = useCreateOrUpdateProjectMutation();
-
-  useEffect(() => {
-    if (prefilledData) {
-      form.reset({
-        name: prefilledData.name,
-        hoursEstimated: prefilledData.hoursEstimated?.toString(),
-        startDate: prefilledData.startDate ? new Date(prefilledData.startDate) : null,
-        endDate: prefilledData.endDate ? new Date(prefilledData.endDate) : null,
-        design: prefilledData.design ?? '',
-        roadmap: prefilledData.roadmap ?? '',
-        notes: prefilledData.notes ?? '',
-      });
-    }
-  }, [form, prefilledData]);
+  const [projectCreateUpdate] = useCreateOrUpdateProjectMutation();
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
       try {
-        await createorUpdateProject({
+        await projectCreateUpdate({
           variables: {
             input: {
-              // TODO add 'id' when edit project will be ready on backend
-              // id,
+              id,
               name: values.name,
               hoursEstimated: +values.hoursEstimated,
               startDate: values.startDate
@@ -117,20 +106,21 @@ export function useProjectForm({
               design: values.design,
               roadmap: values.roadmap,
               notes: values.notes,
-              phase: ProjectPhaseChoice.SIGNED,
-              status: StatusEnum.DESIGN,
+              phase: ProjectPhaseChoice.PRE_SIGNED,
+              status: StatusEnum.IN_PROGRESS,
+              // TODO add clientTeamMembers later
             },
           },
         });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
-          fields: ['name'],
+          fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],
           setFormError: form.setError,
         });
       }
     },
-    [createorUpdateProject, form.setError, id, onSubmitSuccessful],
+    [projectCreateUpdate, form.setError, id, onSubmitSuccessful],
   );
 
   return useMemo(

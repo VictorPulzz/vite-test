@@ -20,6 +20,7 @@ export type FetchProjectQuery = {
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
+    phase: Types.ProjectPhaseChoice;
   };
 };
 
@@ -29,7 +30,7 @@ export type CreateOrUpdateProjectMutationVariables = Types.Exact<{
 
 export type CreateOrUpdateProjectMutation = {
   __typename?: 'Mutation';
-  projectCreate: {
+  projectCreateUpdate: {
     __typename?: 'ProjectType';
     id: number;
     name: string;
@@ -55,6 +56,7 @@ export const FetchProjectDocument = gql`
       design
       roadmap
       notes
+      phase
     }
   }
 `;
@@ -101,7 +103,7 @@ export type FetchProjectQueryResult = Apollo.QueryResult<
 >;
 export const CreateOrUpdateProjectDocument = gql`
   mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
-    projectCreate(data: $input) {
+    projectCreateUpdate(data: $input) {
       id
       name
       hoursEstimated

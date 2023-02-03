@@ -2,7 +2,7 @@ import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { DateField } from '@ui/components/form/DateField';
 import { InlineFields } from '@ui/components/form/InlineFields';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,20 +20,16 @@ export const CreateOrUpdateProject: FC = () => {
   const navigate = useNavigate();
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
 
-  const projectId = params.id ? Number(params.id) : 0;
-  const isEditMode = !!projectId;
+  const projectId = useMemo(() => (params?.id ? Number(params.id) : undefined), [params]);
 
   const { data } = useFetchProjectQuery({
     variables: {
-      data: { id: projectId },
+      data: { id: projectId ?? 0 },
     },
-    skip: !isEditMode,
+    skip: !projectId,
   });
 
-  const {
-    form: { control, formState, watch },
-    handleSubmit,
-  } = useProjectForm({
+  const { form, handleSubmit } = useProjectForm({
     onSubmitSuccessful: () => navigate(-1),
     prefilledData: data?.project,
     id: projectId,
@@ -45,7 +41,7 @@ export const CreateOrUpdateProject: FC = () => {
       toast.success('Copied');
     }
   }, []);
-
+  // TODO add clientTeamMembers with useFieldArray
   // const { fields, append } = useFieldArray({
   //   control,
   //   name: 'clientTeamMembers',
@@ -56,15 +52,15 @@ export const CreateOrUpdateProject: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isEditMode ? 'Edit project' : 'New project'}
+        title={`${projectId ? 'Edit' : 'New'} project`}
         contentClassName="my-4 mx-6"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label={isEditMode ? 'Save project' : 'Create project'}
+            label={`${projectId ? 'Save' : 'Create'} project`}
             className="w-36"
             onClick={handleSubmit}
-            isLoading={formState.isSubmitting}
+            isLoading={form.formState.isSubmitting}
           />
         }
       >
@@ -72,38 +68,43 @@ export const CreateOrUpdateProject: FC = () => {
           <section className="shadow-4 rounded-md bg-white p-7">
             <h2 className="text-p1 font-bold pb-2">General</h2>
             <InlineFields>
-              <TextField name="name" control={control} label="Project name" required />
-              <TextField name="hoursEstimated" control={control} label="Hours estimated" required />
+              <TextField name="name" control={form.control} label="Project name" required />
+              <TextField
+                name="hoursEstimated"
+                control={form.control}
+                label="Hours estimated"
+                required
+              />
             </InlineFields>
             <InlineFields>
               <InlineFields>
-                <DateField name="startDate" control={control} label="Start date" required />
-                <DateField name="endDate" control={control} label="Estimated end date" />
+                <DateField name="startDate" control={form.control} label="Start date" required />
+                <DateField name="endDate" control={form.control} label="Estimated end date" />
               </InlineFields>
               <InlineFields>
                 <div className="relative">
-                  <TextField name="design" control={control} label="Design link" />
+                  <TextField name="design" control={form.control} label="Design link" />
                   <button
                     type="button"
                     className="absolute right-[10px] top-[30px] z-10 text-blue hover:opacity-70"
-                    onClick={() => copyFieldValue(watch('design'))}
+                    onClick={() => copyFieldValue(form.watch('design'))}
                   >
                     <Icon name="copy" size={14} />
                   </button>
                 </div>
                 <div className="relative">
-                  <TextField name="roadmap" control={control} label="Roadmap link" />
+                  <TextField name="roadmap" control={form.control} label="Roadmap link" />
                   <button
                     type="button"
                     className="absolute right-[10px] top-[30px] z-10 text-blue hover:opacity-70"
-                    onClick={() => copyFieldValue(watch('roadmap'))}
+                    onClick={() => copyFieldValue(form.watch('roadmap'))}
                   >
                     <Icon name="copy" size={14} />
                   </button>
                 </div>
               </InlineFields>
             </InlineFields>
-            <TextAreaField name="notes" control={control} label="Notes" />
+            <TextAreaField name="notes" control={form.control} label="Notes" />
           </section>
           <section className="shadow-4 rounded-md bg-white p-7">
             <h2 className="text-p1 font-bold pb-2">Client team</h2>
