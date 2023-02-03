@@ -8,11 +8,12 @@ query FetchProject($data: IDInput!) {
     design
     roadmap
     notes
+    phase
   }
 }
 
 mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
-  projectCreate(data: $input) {
+  projectCreateUpdate(data: $input) {
     id
     name
     hoursEstimated

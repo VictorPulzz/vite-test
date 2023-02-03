@@ -17,11 +17,11 @@ const getBadgeByStatus = (status: StatusEnum): BadgeColor => {
   switch (true) {
     case status === StatusEnum.IN_PROGRESS:
       return BadgeColor.BLUE;
-    case status === StatusEnum.ON_HOLD:
+    case status === StatusEnum.WAITING:
       return BadgeColor.RED;
     case status === StatusEnum.STOPPED:
       return BadgeColor.GRAY;
-    case status === StatusEnum.FINISHED:
+    case status === StatusEnum.BLOCKED:
       return BadgeColor.GREEN;
     default:
       return BadgeColor.BLUE;

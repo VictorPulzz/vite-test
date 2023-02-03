@@ -1,4 +1,3 @@
-#TODO change 'notes'=>'pm'
 query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
   projectsList(filters: $filters, pagination: $pagination, search: $search) {
     results {
