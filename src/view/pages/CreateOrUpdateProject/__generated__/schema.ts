@@ -10,14 +10,32 @@ export type CreateProjectMutationVariables = Types.Exact<{
 
 export type CreateProjectMutation = {
   __typename?: 'Mutation';
-  projectCreate: { __typename?: 'ProjectType'; name: string; phase: Types.ProjectPhaseChoice };
+  projectCreate: {
+    __typename?: 'ProjectType';
+    name: string;
+    hoursEstimated?: number | null;
+    startDate: string;
+    endDate?: string | null;
+    design?: string | null;
+    roadmap?: string | null;
+    notes?: string | null;
+    phase: Types.ProjectPhaseChoice;
+    status?: Types.StatusEnum | null;
+  };
 };
 
 export const CreateProjectDocument = gql`
   mutation CreateProject($input: ProjectCreateInput!) {
     projectCreate(data: $input) {
       name
+      hoursEstimated
+      startDate
+      endDate
+      design
+      roadmap
+      notes
       phase
+      status
     }
   }
 `;

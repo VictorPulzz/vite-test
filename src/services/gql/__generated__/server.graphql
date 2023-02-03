@@ -91,6 +91,14 @@ type Mutation {
   meUpdate(data: ProfileInput!): ProfileType!
   passwordChange(data: ChangePasswordInput!): MessageType!
   """
+  Project add member
+  """
+  projectAddMember(data: ProjectMemberInput!): ProjectMemberType!
+  """
+  Project change status
+  """
+  projectChangeStatus(data: ProjectStatusInput!): ProjectType!
+  """
   Project creation or updating by id
   """
   projectCreate(data: ProjectCreateInput!): ProjectType!
@@ -178,6 +186,18 @@ input ProjectFilter {
   status: StatusEnum = null
 }
 
+input ProjectMemberInput {
+  currentTeam: Boolean! = true
+  projectId: Int!
+  userId: Int!
+}
+
+type ProjectMemberType {
+  currentTeam: Boolean!
+  project: ProjectType!
+  user: UserType!
+}
+
 enum ProjectPhaseChoice {
   CODE_REVIEW
   DESIGN
@@ -186,6 +206,11 @@ enum ProjectPhaseChoice {
   FINISHED
   SIGNED
   SUPPORT
+}
+
+input ProjectStatusInput {
+  id: Int!
+  status: StatusEnum!
 }
 
 type ProjectType {

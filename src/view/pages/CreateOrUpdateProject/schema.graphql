@@ -1,7 +1,13 @@
-# TODO fix fields when backend will be ready
 mutation CreateProject($input: ProjectCreateInput!) {
   projectCreate(data: $input) {
     name
+    hoursEstimated
+    startDate
+    endDate
+    design
+    roadmap
+    notes
     phase
+    status
   }
 }

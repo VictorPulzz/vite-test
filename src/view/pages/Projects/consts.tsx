@@ -52,7 +52,10 @@ export const PROJECTS_TABLE_COLUMNS = [
     id: 'status',
     header: 'Status',
     cell: props => {
-      const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
+      // TODO remove condition when ProjectCreateInput has a 'status' field
+      const value = props.getValue()
+        ? convertUppercaseToReadable(props.getValue() as StatusEnum)
+        : '-';
       return <Badge color={getBadgeByStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
     },
   }),

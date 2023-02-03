@@ -100,6 +100,10 @@ export type Mutation = {
   /** User updating himself */
   meUpdate: ProfileType;
   passwordChange: MessageType;
+  /** Project add member */
+  projectAddMember: ProjectMemberType;
+  /** Project change status */
+  projectChangeStatus: ProjectType;
   /** Project creation or updating by id */
   projectCreate: ProjectType;
   /** Project deletion */
@@ -133,6 +137,14 @@ export type MutationMeUpdateArgs = {
 
 export type MutationPasswordChangeArgs = {
   data: ChangePasswordInput;
+};
+
+export type MutationProjectAddMemberArgs = {
+  data: ProjectMemberInput;
+};
+
+export type MutationProjectChangeStatusArgs = {
+  data: ProjectStatusInput;
 };
 
 export type MutationProjectCreateArgs = {
@@ -222,6 +234,19 @@ export type ProjectFilter = {
   status?: InputMaybe<StatusEnum>;
 };
 
+export type ProjectMemberInput = {
+  currentTeam?: Scalars['Boolean'];
+  projectId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+export type ProjectMemberType = {
+  __typename: 'ProjectMemberType';
+  currentTeam: Scalars['Boolean'];
+  project: ProjectType;
+  user: UserType;
+};
+
 export enum ProjectPhaseChoice {
   CODE_REVIEW = 'CODE_REVIEW',
   DESIGN = 'DESIGN',
@@ -231,6 +256,11 @@ export enum ProjectPhaseChoice {
   SIGNED = 'SIGNED',
   SUPPORT = 'SUPPORT',
 }
+
+export type ProjectStatusInput = {
+  id: Scalars['Int'];
+  status: StatusEnum;
+};
 
 export type ProjectType = {
   __typename: 'ProjectType';

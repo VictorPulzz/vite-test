@@ -6,6 +6,7 @@ export const ROUTES = {
 
   PROJECTS: '/projects',
   ADD_PROJECT: '/projects/add',
+  EDIT_PROJECT: '/projects/:id/edit',
   PROJECT_DETAILS: '/projects/:id',
 
   USERS: '/users',
