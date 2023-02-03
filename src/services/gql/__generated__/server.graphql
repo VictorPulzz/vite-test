@@ -16,6 +16,7 @@ input ChangePasswordInput {
 input ClientInput {
   email: String!
   fullName: String!
+  id: Int = null
   notes: String = null
   phone: String = null
   position: String = null
@@ -24,7 +25,7 @@ input ClientInput {
 type ClientType {
   email: String!
   fullName: String!
-  id: Int!
+  id: Int
   notes: String
   phone: String
   position: String
@@ -101,7 +102,7 @@ type Mutation {
   """
   Project creation
   """
-  projectCreate(data: ProjectCreateInput!): ProjectType!
+  projectCreateUpdate(data: ProjectCreateInput!): ProjectType!
   """
   Project deletion
   """
@@ -175,6 +176,7 @@ input ProjectCreateInput {
   design: String = null
   endDate: Date = null
   hoursEstimated: Int = null
+  id: Int = null
   name: String!
   notes: String = null
   phase: ProjectPhaseChoice!
@@ -193,6 +195,11 @@ input ProjectMemberInput {
   userId: Int!
 }
 
+type ProjectMemberListType {
+  currentTeam: [UserType!]!
+  otherParticipants: [UserType!]!
+}
+
 type ProjectMemberType {
   currentTeam: Boolean!
   project: ProjectType!
@@ -200,11 +207,11 @@ type ProjectMemberType {
 }
 
 enum ProjectPhaseChoice {
-  CODE_REVIEW
   DESIGN
   DEVELOPMENT
-  DEVELOPMENT_NEW
-  FINISHED
+  HANDOVER
+  PRE_SIGNED
+  RELEASED
   SIGNED
   SUPPORT
 }
@@ -251,6 +258,10 @@ type Query {
   """
   project(data: IDInput!): ProjectType!
   """
+  Getting member for project by id
+  """
+  projectMemberList(data: IDInput!): ProjectMemberListType!
+  """
   Getting list of projects
   """
   projectsList(
@@ -291,12 +302,10 @@ type RoleType {
 }
 
 enum StatusEnum {
-  DESIGN
-  FINISHED
+  BLOCKED
   IN_PROGRESS
-  ON_HOLD
   STOPPED
-  SUPPORT
+  WAITING
 }
 
 scalar Upload
