@@ -3,16 +3,18 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { CreateProjectPage } from '~/view/pages/CreateProject';
+import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { CreateUserPage } from '~/view/pages/CreateUser';
 import { DocumentsPage } from '~/view/pages/Documents';
+import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
 import { HomePage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
 import { RepositoryDetailsPage } from '~/view/pages/RepositoryDetails';
+import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
@@ -24,6 +26,14 @@ const authRoutes: RouteObject[] = [
   {
     path: ROUTES.SIGN_IN,
     element: <SignInPage />,
+  },
+  {
+    path: ROUTES.FORGOT_PASSWORD,
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: ROUTES.RESET_PASSWORD,
+    element: <ResetPasswordPage />,
   },
 ];
 
@@ -42,7 +52,11 @@ const protectedRoutes: RouteObject[] = [
   },
   {
     path: ROUTES.ADD_PROJECT,
-    element: <CreateProjectPage />,
+    element: <CreateOrUpdateProject />,
+  },
+  {
+    path: ROUTES.EDIT_PROJECT,
+    element: <CreateOrUpdateProject />,
   },
   {
     path: ROUTES.PROJECT_DETAILS,

@@ -1,26 +1,36 @@
 import { createColumnHelper } from '@tanstack/react-table';
-// import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { TextLink } from '@ui/components/common/TextLink';
-// import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
+import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
+import { ProjectResultType } from './types';
 
-// import { generatePath } from 'react-router-dom';
-// import { DATE_FORMAT } from '~/constants/dates';
-// import { ROUTES } from '~/constants/routes';
-// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
-// import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
-// import { ClientResultType } from './types';
+const columnHelper = createColumnHelper<ProjectResultType>();
 
-const columnHelper = createColumnHelper<any>();
+const getBadgeByStatus = (status: StatusEnum): BadgeColor => {
+  switch (true) {
+    case status === StatusEnum.IN_PROGRESS:
+      return BadgeColor.BLUE;
+    case status === StatusEnum.ON_HOLD:
+      return BadgeColor.RED;
+    case status === StatusEnum.STOPPED:
+      return BadgeColor.GRAY;
+    case status === StatusEnum.FINISHED:
+      return BadgeColor.GREEN;
+    default:
+      return BadgeColor.BLUE;
+  }
+};
 
 export const PROJECTS_TABLE_COLUMNS = [
   columnHelper.accessor('name', {
-    // id: ClientOrder.FULL_NAME,
+    id: 'name',
     header: 'Project name',
     cell: props => {
       const { id } = props.row.original;
@@ -33,27 +43,19 @@ export const PROJECTS_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('pm', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor(row => row.PM && row.PM[0].fullName, {
+    id: 'PM',
     header: 'PM',
   }),
-  columnHelper.accessor('phase', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor('status', {
+    id: 'status',
     header: 'Status',
+    cell: props => {
+      const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
+
+      return <Badge color={getBadgeByStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
+    },
   }),
-  // TODO change status cell
-  // columnHelper.accessor('user.isActive', {
-  //   id: ClientOrder.STATUS,
-  //   header: 'Status',
-  //   cell: props => {
-  //     const isActive = props.getValue();
-  //     return (
-  //       <Badge color={isActive ? BadgeColor.GREEN : BadgeColor.GRAY}>
-  //         {isActive ? 'Active' : 'Inactive'}
-  //       </Badge>
-  //     );
-  //   },
-  // }),
   columnHelper.group({
     id: 'more',
     cell: MoreCell,

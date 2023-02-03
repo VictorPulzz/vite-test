@@ -1,0 +1,5 @@
+mutation PasswordChange($data: ChangePasswordInput!) {
+  passwordChange(data: $data) {
+    message
+  }
+}

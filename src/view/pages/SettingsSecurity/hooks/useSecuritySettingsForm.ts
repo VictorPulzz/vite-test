@@ -8,6 +8,8 @@ import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { passwordValidation } from '~/utils/validations';
 
+import { usePasswordChangeMutation } from '../__generated__/schema';
+
 const formSchema = z
   .object({
     oldPassword: z.string().min(1),
@@ -37,9 +39,8 @@ interface UseChangePasswordFormFormReturn {
   handleSubmit: ReturnType<UseFormHandleSubmit<ChangePasswordFormValues>>;
 }
 
-// TODO fix hook when backend will be ready
 export const useSecuritySettingsForm = (): UseChangePasswordFormFormReturn => {
-  // const [changePassword] = usePasswordChangeMutation();
+  const [changePassword] = usePasswordChangeMutation();
 
   const form = useForm<ChangePasswordFormValues>({
     defaultValues,
@@ -50,17 +51,15 @@ export const useSecuritySettingsForm = (): UseChangePasswordFormFormReturn => {
   const handleSubmit = useCallback(
     async (values: ChangePasswordFormValues) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useSecuritySettingsForm.ts:51 ~ values', values);
-        // await changePassword({
-        //   variables: {
-        //     data: {
-        //       oldPassword: values.oldPassword,
-        //       newPassword: values.newPassword,
-        //     },
-        //   },
-        // });
-        toast('Password changed');
+        await changePassword({
+          variables: {
+            data: {
+              oldPassword: values.oldPassword,
+              newPassword: values.newPassword,
+            },
+          },
+        });
+        toast.success('Password changed');
         form.reset(defaultValues);
       } catch (e) {
         processGqlErrorResponse<ChangePasswordFormValues>(e, {
@@ -69,7 +68,7 @@ export const useSecuritySettingsForm = (): UseChangePasswordFormFormReturn => {
         });
       }
     },
-    [form],
+    [changePassword, form],
   );
 
   return useMemo(

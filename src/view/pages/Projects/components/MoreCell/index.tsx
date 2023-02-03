@@ -3,15 +3,14 @@ import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
 
+import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { Icon } from '~/view/ui/components/common/Icon';
 
-// import { useChangeClientStatusMutation } from '~/view/pages/ClientsList/__generated__/schema';
-// import { ProjectResultType } from '../../types';
-// TODO need to fix this cell
-// TODO remove any
-export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
-  // eslint-disable-next-line no-console
-  console.log('🚀 ~ file: index.tsx:13 ~ row', row);
+import { ProjectResultType } from '../../types';
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) => {
   // const { user } = row.original;
 
   // const [changeStatus] = useChangeClientStatusMutation();
@@ -36,49 +35,15 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
   //   },
   //   [changeStatus, id],
   // );
-
+  // TODO add changeStatus mutation
   const options: DropdownItem[] = [
     {
       label: 'Change status',
       iconBefore: <Icon name="connection" size={16} />,
-      items: [
-        {
-          label: 'Design',
-          // onSelect: () => setActiveStatus(true),
-          onSelect: () => null,
-          // iconAfter: user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'Finished',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'In progress',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'On hold',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'Stopped',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-        {
-          label: 'Support',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
-        },
-      ],
+      items: Object.keys(StatusEnum).map(status => ({
+        label: convertUppercaseToReadable(status),
+        onSelect: () => status,
+      })),
     },
   ];
 

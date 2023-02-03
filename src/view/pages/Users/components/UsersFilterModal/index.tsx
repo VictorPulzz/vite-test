@@ -13,12 +13,7 @@ export interface UsersFilterModalProps extends Pick<ModalProps, 'isOpen' | 'clos
   setFilter: (filter: Nullable<UserFilter>) => void;
 }
 
-export const UsersFilterModal: FC<UsersFilterModalProps> = ({
-  isOpen,
-  close,
-
-  setFilter,
-}) => {
+export const UsersFilterModal: FC<UsersFilterModalProps> = ({ isOpen, close, setFilter }) => {
   const { data: rolesList } = useFetchRolesListQuery();
   const { data: departmentsList } = useFetchDepartmentsListQuery();
 

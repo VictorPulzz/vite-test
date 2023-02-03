@@ -91,7 +91,15 @@ type Mutation {
   meUpdate(data: ProfileInput!): ProfileType!
   passwordChange(data: ChangePasswordInput!): MessageType!
   """
-  Project creation or updating by id
+  Project add member
+  """
+  projectAddMember(data: ProjectMemberInput!): ProjectMemberType!
+  """
+  Project change status
+  """
+  projectChangeStatus(data: ProjectStatusInput!): ProjectType!
+  """
+  Project creation
   """
   projectCreate(data: ProjectCreateInput!): ProjectType!
   """
@@ -172,10 +180,23 @@ input ProjectCreateInput {
   phase: ProjectPhaseChoice!
   roadmap: String = null
   startDate: Date!
+  status: StatusEnum
 }
 
 input ProjectFilter {
   status: StatusEnum = null
+}
+
+input ProjectMemberInput {
+  currentTeam: Boolean! = true
+  projectId: Int!
+  userId: Int!
+}
+
+type ProjectMemberType {
+  currentTeam: Boolean!
+  project: ProjectType!
+  user: UserType!
 }
 
 enum ProjectPhaseChoice {
@@ -188,8 +209,15 @@ enum ProjectPhaseChoice {
   SUPPORT
 }
 
+input ProjectStatusInput {
+  id: Int!
+  status: StatusEnum!
+}
+
 type ProjectType {
+  PM: [UserType!]
   clientTeam: [ClientType!]
+  createdBy: UserType
   design: String
   endDate: Date
   hoursEstimated: Int

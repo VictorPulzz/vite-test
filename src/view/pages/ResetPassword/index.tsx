@@ -1,47 +1,47 @@
 import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
 import { PasswordField } from '@ui/components/form/PasswordField';
-import { TextField } from '@ui/components/form/TextField';
 import { InputSize } from '@ui/components/form/TextInput';
 import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { AuthLayout } from '~/view/layouts/AuthLayout';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
-import { useSignInForm } from './hooks/useSignInForm';
+import { useResetPasswordForm } from './hooks/useResetPasswordForm';
 
-export const SignInPage: FC = () => {
+export const ResetPasswordPage: FC = () => {
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const token = searchParams.get('key') ?? '';
 
-  const { form, handleSubmit } = useSignInForm({
-    onSubmitSuccessful: () => navigate(ROUTES.HOME),
+  const { form, handleSubmit } = useResetPasswordForm({
+    token,
+    onSubmitSuccessful: () => navigate(ROUTES.SIGN_IN),
   });
 
   return (
     <AuthLayout>
       <form onSubmit={handleSubmit}>
-        <h1 className="text-h2 mb-4 text-center">Log in</h1>
-        <TextField
-          name="email"
-          control={form.control}
-          label="Email"
-          size={InputSize.LARGE}
-          placeholder="Enter email"
-          autoFocus
-        />
+        <h1 className="text-h2 text-center mb-7">Create a new password</h1>
         <PasswordField
           name="password"
           control={form.control}
-          label="Password"
+          label="New password"
           size={InputSize.LARGE}
           placeholder="Enter password"
+          autoFocus
+          autoComplete="new-password"
         />
-        <TextLink to={ROUTES.FORGOT_PASSWORD} className="text-p2 mt-2 underline text-gray-1">
-          Forgot password?
-        </TextLink>
+        <PasswordField
+          name="confirmPassword"
+          control={form.control}
+          label="Confirm new password"
+          size={InputSize.LARGE}
+          placeholder="Confirm password"
+          autoComplete="new-password"
+        />
         <Button
-          label="Log in"
+          label="Change password"
           variant={ButtonVariant.PRIMARY}
           size={ButtonSize.LARGE}
           type="submit"

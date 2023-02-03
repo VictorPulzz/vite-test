@@ -1,0 +1,5 @@
+mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(data: $input) {
+    message
+  }
+}
