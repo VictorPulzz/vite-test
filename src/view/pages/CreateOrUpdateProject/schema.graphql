@@ -1,0 +1,27 @@
+query FetchProject($data: IDInput!) {
+  project(data: $data) {
+    id
+    name
+    hoursEstimated
+    startDate
+    endDate
+    design
+    roadmap
+    notes
+  }
+}
+
+mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
+  projectCreate(data: $input) {
+    id
+    name
+    hoursEstimated
+    startDate
+    endDate
+    design
+    roadmap
+    notes
+    phase
+    status
+  }
+}

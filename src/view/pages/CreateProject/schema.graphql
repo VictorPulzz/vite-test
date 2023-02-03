@@ -1,7 +1,0 @@
-# TODO fix fields when backend will be ready
-mutation CreateProject($input: ProjectCreateInput!) {
-  projectCreate(data: $input) {
-    name
-    phase
-  }
-}

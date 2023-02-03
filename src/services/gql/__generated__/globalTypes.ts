@@ -100,7 +100,11 @@ export type Mutation = {
   /** User updating himself */
   meUpdate: ProfileType;
   passwordChange: MessageType;
-  /** Project creation or updating by id */
+  /** Project add member */
+  projectAddMember: ProjectMemberType;
+  /** Project change status */
+  projectChangeStatus: ProjectType;
+  /** Project creation */
   projectCreate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
@@ -133,6 +137,14 @@ export type MutationMeUpdateArgs = {
 
 export type MutationPasswordChangeArgs = {
   data: ChangePasswordInput;
+};
+
+export type MutationProjectAddMemberArgs = {
+  data: ProjectMemberInput;
+};
+
+export type MutationProjectChangeStatusArgs = {
+  data: ProjectStatusInput;
 };
 
 export type MutationProjectCreateArgs = {
@@ -216,10 +228,24 @@ export type ProjectCreateInput = {
   phase: ProjectPhaseChoice;
   roadmap?: InputMaybe<Scalars['String']>;
   startDate: Scalars['Date'];
+  status?: InputMaybe<StatusEnum>;
 };
 
 export type ProjectFilter = {
   status?: InputMaybe<StatusEnum>;
+};
+
+export type ProjectMemberInput = {
+  currentTeam?: Scalars['Boolean'];
+  projectId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+export type ProjectMemberType = {
+  __typename: 'ProjectMemberType';
+  currentTeam: Scalars['Boolean'];
+  project: ProjectType;
+  user: UserType;
 };
 
 export enum ProjectPhaseChoice {
@@ -232,9 +258,16 @@ export enum ProjectPhaseChoice {
   SUPPORT = 'SUPPORT',
 }
 
+export type ProjectStatusInput = {
+  id: Scalars['Int'];
+  status: StatusEnum;
+};
+
 export type ProjectType = {
   __typename: 'ProjectType';
+  PM?: Maybe<Array<UserType>>;
   clientTeam?: Maybe<Array<ClientType>>;
+  createdBy?: Maybe<UserType>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
   hoursEstimated?: Maybe<Scalars['Int']>;

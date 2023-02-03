@@ -43,9 +43,8 @@ export const PROJECTS_TABLE_COLUMNS = [
       );
     },
   }),
-  // TODO change accessor to 'pm"
-  columnHelper.accessor('notes', {
-    // id: 'pm',
+  columnHelper.accessor(row => row.PM && row.PM[0].fullName, {
+    id: 'PM',
     header: 'PM',
   }),
   columnHelper.accessor('status', {
@@ -53,6 +52,7 @@ export const PROJECTS_TABLE_COLUMNS = [
     header: 'Status',
     cell: props => {
       const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
+
       return <Badge color={getBadgeByStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
     },
   }),

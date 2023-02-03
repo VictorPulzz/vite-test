@@ -19,8 +19,8 @@ export type FetchProjectsQuery = {
       __typename?: 'ProjectType';
       id: number;
       name: string;
-      notes?: string | null;
       status?: Types.StatusEnum | null;
+      PM?: Array<{ __typename?: 'UserType'; fullName: string }> | null;
     }>;
   };
 };
@@ -31,7 +31,9 @@ export const FetchProjectsDocument = gql`
       results {
         id
         name
-        notes
+        PM {
+          fullName
+        }
         status
       }
       count

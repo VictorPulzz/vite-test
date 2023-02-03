@@ -1,7 +1,9 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import React, { FC } from 'react';
+import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { ROUTES } from '~/constants/routes';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
@@ -45,7 +47,7 @@ export const ProjectDetailsPage: FC = () => {
             variant={ButtonVariant.SECONDARY}
             label="Edit project"
             withIcon="edit"
-            onClick={() => null}
+            onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
             className="w-[140px]"
           />
         </div>
