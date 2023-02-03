@@ -1,16 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
-import { useCallback, useMemo } from 'react';
+import { formatISO } from 'date-fns';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
-import { DateFormat } from '~/constants/dates';
 import { formErrors } from '~/constants/form';
-import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
 
-import { useCreateProjectMutation } from '../__generated__/schema';
+import { FetchProjectQuery, useCreateOrUpdateProjectMutation } from '../__generated__/schema';
 
 const formSchema = z
   .object({
@@ -50,18 +49,20 @@ const formSchema = z
     }
   });
 
-type CreateProjectFormValues = z.infer<typeof formSchema>;
+type ProjectFormValues = z.infer<typeof formSchema>;
 
-interface UseCreateProjectFormReturn {
-  form: UseFormReturn<CreateProjectFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<CreateProjectFormValues>>;
+interface UseProjectFormReturn {
+  form: UseFormReturn<ProjectFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<ProjectFormValues>>;
 }
 
-interface UseCreateProjectFormProps {
+interface UseProjectFormProps {
   onSubmitSuccessful?: () => void;
+  prefilledData?: FetchProjectQuery['project'];
+  id?: number;
 }
 
-const defaultValues: CreateProjectFormValues = {
+const defaultValues: ProjectFormValues = {
   name: '',
   phase: '',
   hoursEstimated: '',
@@ -73,42 +74,63 @@ const defaultValues: CreateProjectFormValues = {
   clientTeamMembers: [],
 };
 
-export function useCreateProjectForm({
+export function useProjectForm({
   onSubmitSuccessful,
-}: UseCreateProjectFormProps): UseCreateProjectFormReturn {
-  const form = useForm<CreateProjectFormValues>({
+  prefilledData,
+  id,
+}: UseProjectFormProps): UseProjectFormReturn {
+  const form = useForm<ProjectFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  const [createProject] = useCreateProjectMutation();
+  const [createorUpdateProject] = useCreateOrUpdateProjectMutation();
+
+  useEffect(() => {
+    if (prefilledData) {
+      form.reset({
+        name: prefilledData.name,
+        hoursEstimated: prefilledData.hoursEstimated?.toString(),
+        startDate: prefilledData.startDate ? new Date(prefilledData.startDate) : null,
+        endDate: prefilledData.endDate ? new Date(prefilledData.endDate) : null,
+        design: prefilledData.design ?? '',
+        roadmap: prefilledData.roadmap ?? '',
+        notes: prefilledData.notes ?? '',
+      });
+    }
+  }, [form, prefilledData]);
 
   const handleSubmit = useCallback(
-    async (values: CreateProjectFormValues) => {
+    async (values: ProjectFormValues) => {
       try {
-        await createProject({
+        await createorUpdateProject({
           variables: {
             input: {
+              // TODO add 'id' when edit project will be ready on backend
+              // id,
               name: values.name,
               hoursEstimated: +values.hoursEstimated,
-              startDate: format(new Date(values.startDate ?? ''), DateFormat.YMD),
-              endDate: format(new Date(values.endDate ?? ''), DateFormat.YMD),
+              startDate: values.startDate
+                ? formatISO(values.startDate, { representation: 'date' })
+                : '',
+              endDate: values.endDate ? formatISO(values.endDate, { representation: 'date' }) : '',
               design: values.design,
               roadmap: values.roadmap,
               notes: values.notes,
               phase: ProjectPhaseChoice.SIGNED,
+              status: StatusEnum.DESIGN,
             },
           },
         });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<CreateProjectFormValues>(e, {
+        processGqlErrorResponse<ProjectFormValues>(e, {
           fields: ['name'],
           setFormError: form.setError,
         });
       }
     },
-    [createProject, form.setError, onSubmitSuccessful],
+    [createorUpdateProject, form.setError, id, onSubmitSuccessful],
   );
 
   return useMemo(

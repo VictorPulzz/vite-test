@@ -43,19 +43,16 @@ export const PROJECTS_TABLE_COLUMNS = [
       );
     },
   }),
-  // TODO change accessor to 'pm"
-  columnHelper.accessor('notes', {
-    // id: 'pm',
+  columnHelper.accessor(row => row.PM && row.PM[0].fullName, {
+    id: 'PM',
     header: 'PM',
   }),
   columnHelper.accessor('status', {
     id: 'status',
     header: 'Status',
     cell: props => {
-      // TODO remove condition when ProjectCreateInput has a 'status' field
-      const value = props.getValue()
-        ? convertUppercaseToReadable(props.getValue() as StatusEnum)
-        : '-';
+      const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
+
       return <Badge color={getBadgeByStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
     },
   }),

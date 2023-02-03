@@ -4,7 +4,9 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
     results {
       id
       name
-      notes
+      PM {
+        fullName
+      }
       status
     }
     count

@@ -4,30 +4,40 @@ import { InlineFields } from '@ui/components/form/InlineFields';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC, useCallback } from 'react';
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { ExtractRouteParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { ROUTES } from '~/constants/routes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useCreateProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useCreateProjectForm';
+import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
+import { useFetchProjectQuery } from './__generated__/schema';
+
 export const CreateOrUpdateProject: FC = () => {
   const navigate = useNavigate();
+  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
+
+  const projectId = params.id ? Number(params.id) : 0;
+  const isEditMode = !!projectId;
+
+  const { data } = useFetchProjectQuery({
+    variables: {
+      data: { id: projectId },
+    },
+    skip: !isEditMode,
+  });
 
   const {
     form: { control, formState, watch },
     handleSubmit,
-  } = useCreateProjectForm({
+  } = useProjectForm({
     onSubmitSuccessful: () => navigate(-1),
+    prefilledData: data?.project,
+    id: projectId,
   });
-
-  // const { fields, append } = useFieldArray({
-  //   control,
-  //   name: 'clientTeamMembers',
-  // });
-
-  // const clientTeamMemberFields = { name: '', email: '', phone: '', position: '', notes: '' };
 
   const copyFieldValue = useCallback((field: string) => {
     navigator.clipboard.writeText(field);
@@ -36,15 +46,22 @@ export const CreateOrUpdateProject: FC = () => {
     }
   }, []);
 
+  // const { fields, append } = useFieldArray({
+  //   control,
+  //   name: 'clientTeamMembers',
+  // });
+
+  // const clientTeamMemberFields = { name: '', email: '', phone: '', position: '', notes: '' };
+
   return (
     <SidebarLayout>
       <DetailLayout
-        title="New project"
+        title={isEditMode ? 'Edit project' : 'New project'}
         contentClassName="my-4 mx-6"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label="Create project"
+            label={isEditMode ? 'Save project' : 'Create project'}
             className="w-36"
             onClick={handleSubmit}
             isLoading={formState.isSubmitting}

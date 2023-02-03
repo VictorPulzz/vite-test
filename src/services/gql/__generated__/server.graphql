@@ -99,7 +99,7 @@ type Mutation {
   """
   projectChangeStatus(data: ProjectStatusInput!): ProjectType!
   """
-  Project creation or updating by id
+  Project creation
   """
   projectCreate(data: ProjectCreateInput!): ProjectType!
   """
@@ -180,6 +180,7 @@ input ProjectCreateInput {
   phase: ProjectPhaseChoice!
   roadmap: String = null
   startDate: Date!
+  status: StatusEnum
 }
 
 input ProjectFilter {
@@ -214,7 +215,9 @@ input ProjectStatusInput {
 }
 
 type ProjectType {
+  PM: [UserType!]
   clientTeam: [ClientType!]
+  createdBy: UserType
   design: String
   endDate: Date
   hoursEstimated: Int

@@ -104,7 +104,7 @@ export type Mutation = {
   projectAddMember: ProjectMemberType;
   /** Project change status */
   projectChangeStatus: ProjectType;
-  /** Project creation or updating by id */
+  /** Project creation */
   projectCreate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
@@ -228,6 +228,7 @@ export type ProjectCreateInput = {
   phase: ProjectPhaseChoice;
   roadmap?: InputMaybe<Scalars['String']>;
   startDate: Scalars['Date'];
+  status?: InputMaybe<StatusEnum>;
 };
 
 export type ProjectFilter = {
@@ -264,7 +265,9 @@ export type ProjectStatusInput = {
 
 export type ProjectType = {
   __typename: 'ProjectType';
+  PM?: Maybe<Array<UserType>>;
   clientTeam?: Maybe<Array<ClientType>>;
+  createdBy?: Maybe<UserType>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
   hoursEstimated?: Maybe<Scalars['Int']>;
