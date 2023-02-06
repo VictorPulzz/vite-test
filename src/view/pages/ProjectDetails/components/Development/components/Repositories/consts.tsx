@@ -6,6 +6,8 @@ import { generatePath } from 'react-router-dom';
 import { ROUTES } from '~/constants/routes';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
+import { MoreCell } from './components/MoreCell';
+
 // TODO move ProjectPlatfrom to common models later
 export enum ProjectPlatfrom {
   WEB = 'WEB',
@@ -30,9 +32,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('createdAt', {
+  columnHelper.accessor('type', {
     // id: ClientOrder.EMAIL,
-    header: 'Created at',
+    header: 'Type',
   }),
   columnHelper.accessor('platform', {
     // id: ClientOrder.STATUS,
@@ -51,6 +53,17 @@ export const REPOSITORIES_TABLE_COLUMNS = [
           {platform}
         </Badge>
       );
+    },
+  }),
+  columnHelper.accessor('createdAt', {
+    // id: ClientOrder.EMAIL,
+    header: 'Created at',
+  }),
+  columnHelper.group({
+    id: 'more',
+    cell: MoreCell,
+    meta: {
+      className: 'w-0',
     },
   }),
 ];
