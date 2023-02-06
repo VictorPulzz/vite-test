@@ -1,10 +1,10 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-import { SidebarLayout } from '~/view/layouts/SidebarLayout';
+import { TabLayout } from '~/view/layouts/TabLayout';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
@@ -27,8 +27,48 @@ export const ProjectDetailsPage: FC = () => {
     },
   });
 
+  const DocumentTabs = useMemo(
+    () => (
+      <Tabs
+        className={styles['tabs']}
+        contentClassName="bg-gray-7 p-7 flex-auto"
+        items={[
+          {
+            title: 'Overview',
+            element: <div>Overview</div>,
+          },
+          {
+            title: 'Info',
+            element: <Info />,
+          },
+          {
+            title: 'Team',
+            element: <Team />,
+          },
+          {
+            title: 'Development',
+            element: <Development />,
+          },
+          {
+            title: 'Docs',
+            element: <Docs withHeading />,
+          },
+          {
+            title: 'Reports',
+            element: <Reports />,
+          },
+          {
+            title: 'History',
+            element: <History />,
+          },
+        ]}
+      />
+    ),
+    [],
+  );
+
   return (
-    <SidebarLayout contentClassName="bg-gray-7">
+    <TabLayout tabs={DocumentTabs}>
       <div className="bg-white">
         <div className="flex items-center justify-between px-7 pt-7">
           <div className="flex items-center gap-4">
@@ -52,41 +92,7 @@ export const ProjectDetailsPage: FC = () => {
             className="w-[140px]"
           />
         </div>
-        <Tabs
-          className={styles['tabs']}
-          contentClassName="bg-gray-7 p-7 flex-auto"
-          items={[
-            {
-              title: 'Overview',
-              element: <div>Overview</div>,
-            },
-            {
-              title: 'Info',
-              element: <Info />,
-            },
-            {
-              title: 'Team',
-              element: <Team />,
-            },
-            {
-              title: 'Development',
-              element: <Development />,
-            },
-            {
-              title: 'Docs',
-              element: <Docs />,
-            },
-            {
-              title: 'Reports',
-              element: <Reports />,
-            },
-            {
-              title: 'History',
-              element: <History />,
-            },
-          ]}
-        />
       </div>
-    </SidebarLayout>
+    </TabLayout>
   );
 };

@@ -18,7 +18,11 @@ const document = {
   format: 'PDF',
 };
 
-export const Docs: FC = () => {
+interface DocsProps {
+  withHeading?: boolean;
+}
+
+export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const params = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const projectId = params.id ? Number(params.id) : 0;
@@ -40,19 +44,21 @@ export const Docs: FC = () => {
 
   return (
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-col gap-[2px]">
-          <h2 className="text-p1 font-bold">Documents</h2>
-          <span className="text-c1 text-gray-1 leading-none">Last update: 8h ago</span>
+      {withHeading && (
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-[2px]">
+            <h2 className="text-p1 font-bold">Documents</h2>
+            <span className="text-c1 text-gray-1 leading-none">Last update: 8h ago</span>
+          </div>
+          <Button
+            variant={ButtonVariant.PRIMARY}
+            label="Upload new"
+            withIcon="add"
+            className="w-36"
+            onClick={() => null}
+          />
         </div>
-        <Button
-          variant={ButtonVariant.PRIMARY}
-          label="Upload new"
-          withIcon="add"
-          className="w-36"
-          onClick={() => null}
-        />
-      </div>
+      )}
       <div className="flex items-end gap-3 mt-3">
         <SearchInput onChange={() => null} placeholder="Search documents" className="flex-auto" />
         <div className="flex items-end gap-3 w-1/2">
