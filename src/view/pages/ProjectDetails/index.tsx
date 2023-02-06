@@ -8,6 +8,7 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
+import { Development } from './components/Development';
 import { Docs } from './components/Docs';
 import { History } from './components/History';
 import { Info } from './components/Info';
@@ -46,7 +47,7 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Development',
-            element: <span>Development</span>,
+            element: <Development />,
           },
           {
             title: 'Docs',

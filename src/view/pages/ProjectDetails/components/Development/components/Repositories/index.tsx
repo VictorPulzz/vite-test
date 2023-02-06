@@ -2,8 +2,8 @@ import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
 import { RequestNewRepositoryModal } from './components/RequestNewRepositoryModal';
@@ -19,6 +19,7 @@ const repositoriesTestData = [
     gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
     createdAt: '28/10/2022',
     platform: 'Web',
+    type: 'Frontend',
   },
   {
     projectId: 4,
@@ -28,17 +29,16 @@ const repositoriesTestData = [
     gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',
     createdAt: '29/10/2022',
     platform: 'Mobile',
+    type: 'Backend',
   },
 ];
 
-export const Repositories: FC = () => {
+export const DevelopmentRepositories: FC = () => {
   const {
     value: isRequestNewRepositoryOpen,
     on: openRequestNewRepositoryModal,
     off: closeRequestNewRepositoryModal,
   } = useSwitchValue(false);
-  // TODO remove participantsTestData when backend will be ready
-  //   const participantsTestData = new Array(9).fill(participantTestData);
 
   const params = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,25 +57,21 @@ export const Repositories: FC = () => {
   };
 
   return (
-    <>
-      {data.loading && <span>LOADING</span>}
-      {data && data.repositoriesList.length === 0 && (
-        <EmptyState iconName="repositories" label="No repositories here yet" />
-      )}
-      {!data.loading && data && data.repositoriesList.length > 0 && (
-        <Table className="px-2" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
-      )}
+    <div>
+      <SectionContainer title="Repositories">
+        <Table className="mt-2" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
+        <Button
+          variant={ButtonVariant.SECONDARY}
+          label="Request new repo"
+          className={`mt-3 w-[136px] ${!data.repositoriesList.length && 'mx-auto'}`}
+          onClick={openRequestNewRepositoryModal}
+        />
+      </SectionContainer>
 
-      <Button
-        variant={ButtonVariant.SECONDARY}
-        label="Request new repo"
-        className={`mt-3 w-[136px] ${!data.repositoriesList.length && 'mx-auto'}`}
-        onClick={openRequestNewRepositoryModal}
-      />
       <RequestNewRepositoryModal
         isOpen={isRequestNewRepositoryOpen}
         close={closeRequestNewRepositoryModal}
       />
-    </>
+    </div>
   );
 };
