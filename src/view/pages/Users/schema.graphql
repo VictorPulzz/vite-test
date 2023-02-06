@@ -34,3 +34,10 @@ query FetchDepartmentsList {
     name
   }
 }
+
+mutation ChangeUserStatus($input: ActiveInput!) {
+  userChangeStatus(data: $input) {
+    id
+    isActive
+  }
+}

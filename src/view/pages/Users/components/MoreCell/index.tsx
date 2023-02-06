@@ -1,43 +1,39 @@
-// import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
-// import { useChangeClientStatusMutation } from '~/view/pages/ClientsList/__generated__/schema';
-// import { ProjectResultType } from '../../types';
+import { useChangeUserStatusMutation } from '../../__generated__/schema';
+import { UserResultType } from '../../types';
 
-// TODO need to fix this cell
-// TODO remove any
-export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
-  // TODO remove console.log
-  // eslint-disable-next-line no-console
-  console.log('🚀 ~ file: index.tsx:13 ~ row', row);
-  // const { user } = row.original;
+export const MoreCell: FC<CellContext<UserResultType, unknown>> = ({ row }) => {
+  const { isActive, id } = row.original;
 
-  // const [changeStatus] = useChangeClientStatusMutation();
+  const [changeStatus] = useChangeUserStatusMutation();
 
-  // const setActiveStatus = useCallback(
-  //   (isActive: boolean) => {
-  //     toast.promise(
-  //       changeStatus({
-  //         variables: {
-  //           input: { id, isActive },
-  //         },
-  //       }),
-  //       {
-  //         loading: 'Changing status...',
-  //         success: 'Status changed',
-  //         error: e => {
-  //           const errors = getGqlError(e?.graphQLErrors);
-  //           return `Error while changing status: ${JSON.stringify(errors)}`;
-  //         },
-  //       },
-  //     );
-  //   },
-  //   [changeStatus, id],
-  // );
+  const setActiveStatus = useCallback(
+    (isActive: boolean) => {
+      toast.promise(
+        changeStatus({
+          variables: {
+            input: { id: Number(id), isActive },
+          },
+        }),
+        {
+          loading: 'Changing status...',
+          success: 'Status changed',
+          error: e => {
+            const errors = getGqlError(e?.graphQLErrors);
+            return `Error while changing status: ${JSON.stringify(errors)}`;
+          },
+        },
+      );
+    },
+    [changeStatus, id],
+  );
 
   const options: DropdownItem[] = [
     {
@@ -46,15 +42,13 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
       items: [
         {
           label: 'Active',
-          // onSelect: () => setActiveStatus(true),
-          onSelect: () => null,
-          // iconAfter: user.isActive && <Icon name="check" className="text-green" size={18} />,
+          onSelect: () => setActiveStatus(true),
+          iconAfter: isActive && <Icon name="check" className="text-green" size={18} />,
         },
         {
           label: 'Inactive',
-          // onSelect: () => setActiveStatus(false),
-          onSelect: () => null,
-          // iconAfter: !user.isActive && <Icon name="check" className="text-green" size={18} />,
+          onSelect: () => setActiveStatus(false),
+          iconAfter: !isActive && <Icon name="check" className="text-green" size={18} />,
         },
       ],
     },

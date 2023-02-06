@@ -42,6 +42,15 @@ export type FetchDepartmentsListQuery = {
   departmentsList: Array<{ __typename?: 'DepartmentType'; id: number; name: string }>;
 };
 
+export type ChangeUserStatusMutationVariables = Types.Exact<{
+  input: Types.ActiveInput;
+}>;
+
+export type ChangeUserStatusMutation = {
+  __typename?: 'Mutation';
+  userChangeStatus: { __typename?: 'UserType'; id?: string | null; isActive?: boolean | null };
+};
+
 export const FetchUsersDocument = gql`
   query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
     usersList(filters: $filters, pagination: $pagination, search: $search) {
@@ -206,4 +215,52 @@ export type FetchDepartmentsListLazyQueryHookResult = ReturnType<
 export type FetchDepartmentsListQueryResult = Apollo.QueryResult<
   FetchDepartmentsListQuery,
   FetchDepartmentsListQueryVariables
+>;
+export const ChangeUserStatusDocument = gql`
+  mutation ChangeUserStatus($input: ActiveInput!) {
+    userChangeStatus(data: $input) {
+      id
+      isActive
+    }
+  }
+`;
+export type ChangeUserStatusMutationFn = Apollo.MutationFunction<
+  ChangeUserStatusMutation,
+  ChangeUserStatusMutationVariables
+>;
+
+/**
+ * __useChangeUserStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeUserStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeUserStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeUserStatusMutation, { data, loading, error }] = useChangeUserStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangeUserStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ChangeUserStatusMutation,
+    ChangeUserStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ChangeUserStatusMutation, ChangeUserStatusMutationVariables>(
+    ChangeUserStatusDocument,
+    options,
+  );
+}
+export type ChangeUserStatusMutationHookResult = ReturnType<typeof useChangeUserStatusMutation>;
+export type ChangeUserStatusMutationResult = Apollo.MutationResult<ChangeUserStatusMutation>;
+export type ChangeUserStatusMutationOptions = Apollo.BaseMutationOptions<
+  ChangeUserStatusMutation,
+  ChangeUserStatusMutationVariables
 >;

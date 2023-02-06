@@ -12,7 +12,7 @@ import { useChangeProjectStatusMutation } from '../../__generated__/schema';
 import { ProjectResultType } from '../../types';
 
 export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) => {
-  const { id } = row.original;
+  const { id, status } = row.original;
 
   const [changeStatus] = useChangeProjectStatusMutation();
 
@@ -41,9 +41,12 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
     {
       label: 'Change status',
       iconBefore: <Icon name="connection" size={16} />,
-      items: Object.keys(StatusEnum).map(status => ({
-        label: convertUppercaseToReadable(status),
-        onSelect: () => setProjectStatus(status as StatusEnum),
+      items: Object.keys(StatusEnum).map(projectStatus => ({
+        label: convertUppercaseToReadable(projectStatus),
+        onSelect: () => setProjectStatus(projectStatus as StatusEnum),
+        iconAfter: projectStatus === status && (
+          <Icon name="check" className="text-green" size={18} />
+        ),
       })),
     },
   ];
