@@ -19,7 +19,7 @@ export enum RepositoryType {
   BACK_END = 'BACKEND',
 }
 
-export const RequestNewRepositoryModal: FC<Props> = ({ isOpen, close }) => {
+export const RequestNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
   const { form, handleSubmit } = useRequestNewRepositoryForm({
     onSubmitSuccessful: () => {
       toast.success(
@@ -40,7 +40,7 @@ export const RequestNewRepositoryModal: FC<Props> = ({ isOpen, close }) => {
       isOpen={isOpen}
       close={close}
       contentClassName="w-[22.18rem]"
-      title="Request new repository"
+      title="Request new integration"
     >
       <div className="flex flex-col items-center">
         <SelectField

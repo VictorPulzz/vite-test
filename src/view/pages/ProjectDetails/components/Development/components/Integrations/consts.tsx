@@ -1,63 +1,47 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
-import { generatePath } from 'react-router-dom';
 
-import { ROUTES } from '~/constants/routes';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { CopyTextButton } from '~/view/components/CopyTextButton';
 
 import { MoreCell } from './components/MoreCell';
 
-// TODO move ProjectPlatfrom to common models later
-export enum ProjectPlatfrom {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-}
-
 const columnHelper = createColumnHelper<any>();
 
-export const REPOSITORIES_TABLE_COLUMNS = [
-  columnHelper.accessor('repositoryName', {
-    // id: ClientOrder.EMAIL,
+export const INTEGRATIONS_TABLE_COLUMNS = [
+  columnHelper.accessor('name', {
+    id: 'name',
     header: 'Name',
-    cell: props => {
-      const { repositoryId } = props.row.original;
-      return (
-        <TextLink
-          to={generatePath(ROUTES.REPOSITORY_DETAILS, { id: repositoryId })}
-          className="underline"
-        >
-          {props.getValue()}
-        </TextLink>
-      );
-    },
   }),
-  columnHelper.accessor('type', {
-    // id: ClientOrder.EMAIL,
-    header: 'Type',
-  }),
-  columnHelper.accessor('platform', {
-    // id: ClientOrder.STATUS,
-    header: 'Platfrom',
+  columnHelper.accessor('credentials', {
+    id: 'credentials',
+    header: 'Credentials',
     cell: ({
       row: {
-        original: { platform },
+        original: { credentials },
       },
     }) => {
       return (
-        <Badge
-          color={
-            platform.toUpperCase() === ProjectPlatfrom.WEB ? BadgeColor.GREEN : BadgeColor.GRAY
-          }
-        >
-          {platform}
-        </Badge>
+        <div className="flex flex-col gap-2">
+          {Object.entries(credentials).map(([key, value]) => (
+            <div key={key} className="flex items-center gap-1">
+              <span className="font-semibold">
+                {key[0].toUpperCase() +
+                  key
+                    .slice(1)
+                    .replace(/([A-Z])/g, ' $1')
+                    .trim()
+                    .toLowerCase()}{' '}
+                -
+              </span>
+              <div className="flex items-center gap-2">
+                <span>{value as string}</span>
+                <CopyTextButton value={value as string} />
+              </div>
+            </div>
+          ))}
+        </div>
       );
     },
-  }),
-  columnHelper.accessor('createdAt', {
-    // id: ClientOrder.EMAIL,
-    header: 'Created at',
   }),
   columnHelper.group({
     id: 'more',

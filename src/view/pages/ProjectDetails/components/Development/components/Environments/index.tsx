@@ -46,7 +46,7 @@ const environmentsTestData = [
 export const DevelopmentEnvironments: FC = () => {
   const {
     value: isRequestNewEnvironmentModalOpen,
-    on: openRequestNeEnvironmentyModal,
+    on: openRequestNewEnvironmentModal,
     off: closeRequestNewEnvironmentModal,
   } = useSwitchValue(false);
 
@@ -80,7 +80,7 @@ export const DevelopmentEnvironments: FC = () => {
           variant={ButtonVariant.SECONDARY}
           label="Request new environment"
           className="mt-3 w-[180px]"
-          onClick={openRequestNeEnvironmentyModal}
+          onClick={openRequestNewEnvironmentModal}
         />
       </SectionContainer>
       <RequestNewEnvironmentModal

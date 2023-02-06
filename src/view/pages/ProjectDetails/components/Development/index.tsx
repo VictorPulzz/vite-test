@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 
 import { DevelopmentEnvironments } from './components/Environments';
+import { DevelopmentIntegrations } from './components/Integrations';
 import { DevelopmentRepositories } from './components/Repositories';
 
 export const Development: FC = () => {
@@ -8,7 +9,7 @@ export const Development: FC = () => {
     <div className="flex flex-col gap-5">
       <DevelopmentRepositories />
       <DevelopmentEnvironments />
-      <DevelopmentRepositories />
+      <DevelopmentIntegrations />
     </div>
   );
 };
