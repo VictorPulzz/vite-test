@@ -25,6 +25,15 @@ export type FetchProjectsQuery = {
   };
 };
 
+export type ChangeProjectStatusMutationVariables = Types.Exact<{
+  input: Types.ProjectStatusInput;
+}>;
+
+export type ChangeProjectStatusMutation = {
+  __typename?: 'Mutation';
+  projectChangeStatus: { __typename?: 'ProjectType'; id: number; status?: Types.StatusEnum | null };
+};
+
 export const FetchProjectsDocument = gql`
   query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
     projectsList(filters: $filters, pagination: $pagination, search: $search) {
@@ -82,4 +91,54 @@ export type FetchProjectsLazyQueryHookResult = ReturnType<typeof useFetchProject
 export type FetchProjectsQueryResult = Apollo.QueryResult<
   FetchProjectsQuery,
   FetchProjectsQueryVariables
+>;
+export const ChangeProjectStatusDocument = gql`
+  mutation ChangeProjectStatus($input: ProjectStatusInput!) {
+    projectChangeStatus(data: $input) {
+      id
+      status
+    }
+  }
+`;
+export type ChangeProjectStatusMutationFn = Apollo.MutationFunction<
+  ChangeProjectStatusMutation,
+  ChangeProjectStatusMutationVariables
+>;
+
+/**
+ * __useChangeProjectStatusMutation__
+ *
+ * To run a mutation, you first call `useChangeProjectStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeProjectStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeProjectStatusMutation, { data, loading, error }] = useChangeProjectStatusMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useChangeProjectStatusMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ChangeProjectStatusMutation,
+    ChangeProjectStatusMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ChangeProjectStatusMutation, ChangeProjectStatusMutationVariables>(
+    ChangeProjectStatusDocument,
+    options,
+  );
+}
+export type ChangeProjectStatusMutationHookResult = ReturnType<
+  typeof useChangeProjectStatusMutation
+>;
+export type ChangeProjectStatusMutationResult = Apollo.MutationResult<ChangeProjectStatusMutation>;
+export type ChangeProjectStatusMutationOptions = Apollo.BaseMutationOptions<
+  ChangeProjectStatusMutation,
+  ChangeProjectStatusMutationVariables
 >;
