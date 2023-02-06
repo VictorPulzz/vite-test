@@ -1,60 +1,41 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
 import React, { FC } from 'react';
-import toast from 'react-hot-toast';
 
-import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useRequestNewRepositoryForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewRepositoryForm';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { useRequestNewIntegrationForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewIntegrationForm';
+import { InlineFields } from '~/view/ui/components/form/InlineFields';
+import { PasswordField } from '~/view/ui/components/form/PasswordField';
+import { TextField } from '~/view/ui/components/form/TextField';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
-// TODO move ProjectPlatfrom and RepositoryType later
-export enum ProjectPlatform {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-}
-export enum RepositoryType {
-  FRONT_END = 'FRONTEND',
-  BACK_END = 'BACKEND',
-}
-
 export const RequestNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit } = useRequestNewRepositoryForm({
-    onSubmitSuccessful: () => {
-      toast.success(
-        `Your request for ${form.getValues().platform.toLowerCase()} ${form
-          .getValues()
-          .type.toLowerCase()} repository is in progress`,
-      );
-      close();
-    },
+  const { form, handleSubmit } = useRequestNewIntegrationForm({
+    onSubmitSuccessful: () => close(),
   });
-
-  const projectPlatformOptions = enumToSelectOptions(ProjectPlatform);
-  const repositoryTypeOptions = enumToSelectOptions(RepositoryType);
 
   return (
     <Modal
       withCloseButton
       isOpen={isOpen}
       close={close}
-      contentClassName="w-[22.18rem]"
+      contentClassName="w-5/9"
       title="Request new integration"
     >
-      <div className="flex flex-col items-center">
-        <SelectField
-          name="platform"
-          options={projectPlatformOptions}
-          control={form.control}
-          label="Platform"
-        />
-        <SelectField
-          name="type"
-          options={repositoryTypeOptions}
-          control={form.control}
-          label="Type"
-        />
+      <div className="flex flex-col">
+        <TextField name="name" control={form.control} label="Integration name" />
+        <InlineFields>
+          <TextField name="credentials.login" control={form.control} label="Login" />
+          <PasswordField name="credentials.password" control={form.control} label="Password" />
+        </InlineFields>
+        <InlineFields>
+          <TextField name="credentials.devApiKey" control={form.control} label="Dev API key" />
+          <PasswordField
+            name="credentials.prodApiKey"
+            control={form.control}
+            label="Prod API key"
+          />
+        </InlineFields>
       </div>
       <Button
         variant={ButtonVariant.PRIMARY}
