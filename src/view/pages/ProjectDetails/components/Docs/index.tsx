@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -42,7 +43,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const { control } = useForm();
 
   return (
-    <div className="shadow-4 bg-white rounded-md p-7 min-h-[calc(100vh-12rem)]">
+    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
       {withHeading && (
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-[2px]">
@@ -88,6 +89,6 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
           </div>
         ))}
       </div>
-    </div>
+    </SectionContainer>
   );
 };

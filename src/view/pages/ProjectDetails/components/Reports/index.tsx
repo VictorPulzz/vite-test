@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { useGetReportsForm } from '~/view/pages/ProjectDetails/hooks/useGetReportsForm';
 import { DateField } from '~/view/ui/components/form/DateField';
@@ -70,46 +71,44 @@ export const Reports: FC = () => {
   }, [data?.usersList.results]);
 
   return (
-    <div>
-      <div className="flex flex-col gap-5">
-        <div className="shadow-4 bg-white rounded-md p-7">
-          <div className="flex justify-between items-center">
-            <h2 className="text-p1 font-bold">Reports</h2>
-            <span className="text-blue text-p2">Edit reporting rules</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <SelectField
-              name="submittedBy"
-              options={usersOptions}
-              control={form.control}
-              label=""
-              className="w-64 mt-3"
-              placeholder="Filter by user"
-            />
-            <DateField
-              name="submittedDateRange"
-              control={form.control}
-              label=""
-              required
-              className="w-64"
-              placeholder="Date range"
-            />
-          </div>
-          <div className="flex flex-col gap-4">
-            {reportsTestData.map((report: ReportsType) => {
-              const { reportName, reportDate, reportedBy } = report;
-              return (
-                <ReportsCard
-                  key={report.id}
-                  reportName={reportName}
-                  reportDate={reportDate}
-                  reportedBy={reportedBy}
-                />
-              );
-            })}
-          </div>
+    <div className="flex flex-col gap-5">
+      <SectionContainer>
+        <div className="flex justify-between items-center">
+          <h2 className="text-p1 font-bold">Reports</h2>
+          <span className="text-blue text-p2">Edit reporting rules</span>
         </div>
-      </div>
+        <div className="flex items-center gap-3">
+          <SelectField
+            name="submittedBy"
+            options={usersOptions}
+            control={form.control}
+            label=""
+            className="w-64 mt-3"
+            placeholder="Filter by user"
+          />
+          <DateField
+            name="submittedDateRange"
+            control={form.control}
+            label=""
+            required
+            className="w-64"
+            placeholder="Date range"
+          />
+        </div>
+        <div className="flex flex-col gap-4">
+          {reportsTestData.map((report: ReportsType) => {
+            const { reportName, reportDate, reportedBy } = report;
+            return (
+              <ReportsCard
+                key={report.id}
+                reportName={reportName}
+                reportDate={reportDate}
+                reportedBy={reportedBy}
+              />
+            );
+          })}
+        </div>
+      </SectionContainer>
     </div>
   );
 };

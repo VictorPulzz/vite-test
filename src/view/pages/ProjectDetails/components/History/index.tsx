@@ -1,5 +1,6 @@
 import React, { FC, useMemo } from 'react';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFilterByUserForm } from '~/view/pages/ProjectDetails//hooks/useFilterByUserForm';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Table } from '~/view/ui/components/common/Table';
@@ -52,21 +53,18 @@ export const History: FC = () => {
   }, [data?.usersList.results]);
 
   return (
-    <div>
-      <div className="flex flex-col gap-5">
-        <div className="shadow-4 bg-white rounded-md p-7">
-          <h2 className="text-p1 font-bold">History</h2>
-          <SelectField
-            name="user"
-            options={usersOptions}
-            control={form.control}
-            label=""
-            className="w-64 mt-3"
-            placeholder="Filter by user"
-          />
-          <Table className="mt-4" data={historyTestData} columns={HISTORY_TABLE_COLUMNS} />
-        </div>
-      </div>
+    <div className="flex flex-col gap-5">
+      <SectionContainer title="History">
+        <SelectField
+          name="user"
+          options={usersOptions}
+          control={form.control}
+          label=""
+          className="w-64 mt-3"
+          placeholder="Filter by user"
+        />
+        <Table className="mt-4" data={historyTestData} columns={HISTORY_TABLE_COLUMNS} />
+      </SectionContainer>
     </div>
   );
 };
