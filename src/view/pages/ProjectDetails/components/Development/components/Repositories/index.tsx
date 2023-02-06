@@ -44,7 +44,7 @@ export const DevelopmentRepositories: FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const projectId = params.id ? Number(params.id) : 0;
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
+  // const { data, loading } = useFetchDevelopmentRepositoriesQuery({
   //   variables: {
   //     data: { id: projectId },
   //   },
@@ -59,7 +59,13 @@ export const DevelopmentRepositories: FC = () => {
   return (
     <div>
       <SectionContainer title="Repositories">
-        <Table className="mt-3" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
+        {!!data.repositoriesList.length && (
+          <Table
+            className="mt-3"
+            data={data.repositoriesList}
+            columns={REPOSITORIES_TABLE_COLUMNS}
+          />
+        )}
         <Button
           variant={ButtonVariant.SECONDARY}
           label="Request new repo"

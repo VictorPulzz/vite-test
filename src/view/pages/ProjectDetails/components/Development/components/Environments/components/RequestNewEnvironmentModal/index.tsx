@@ -1,60 +1,66 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
 import React, { FC } from 'react';
-import toast from 'react-hot-toast';
 
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useRequestNewRepositoryForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewRepositoryForm';
+import { useRequestNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewEnvironmentForm';
+import { PasswordField } from '~/view/ui/components/form/PasswordField';
 import { SelectField } from '~/view/ui/components/form/SelectField';
+import { TextField } from '~/view/ui/components/form/TextField';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
-// TODO move ProjectPlatfrom and RepositoryType later
-export enum ProjectPlatform {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-}
-export enum RepositoryType {
-  FRONT_END = 'FRONTEND',
-  BACK_END = 'BACKEND',
+// TODO remove ProjectEnvironment later
+export enum ProjectEnvironment {
+  DEV = 'DEV',
+  STAGE = 'STAGE',
+  PROD = 'PROD',
 }
 
 export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit } = useRequestNewRepositoryForm({
-    onSubmitSuccessful: () => {
-      toast.success(
-        `Your request for ${form.getValues().platform.toLowerCase()} ${form
-          .getValues()
-          .type.toLowerCase()} repository is in progress`,
-      );
-      close();
-    },
+  const { form, handleSubmit } = useRequestNewEnvironmentForm({
+    onSubmitSuccessful: () => close(),
   });
 
-  const projectPlatformOptions = enumToSelectOptions(ProjectPlatform);
-  const repositoryTypeOptions = enumToSelectOptions(RepositoryType);
+  const projectEnvironmentsOptions = enumToSelectOptions(ProjectEnvironment);
 
   return (
     <Modal
       withCloseButton
       isOpen={isOpen}
       close={close}
-      contentClassName="w-[22.18rem]"
+      contentClassName="w-5/9"
       title="Request new environment"
     >
-      <div className="flex flex-col items-center">
+      <div>
         <SelectField
-          name="platform"
-          options={projectPlatformOptions}
+          name="environment"
+          options={projectEnvironmentsOptions}
           control={form.control}
-          label="Platform"
+          label="Environment"
         />
-        <SelectField
-          name="type"
-          options={repositoryTypeOptions}
-          control={form.control}
-          label="Type"
-        />
+        <div className="grid grid-cols-2 gap-x-5 mt-4">
+          <div>
+            <h2 className="text-p1 font-bold pb-2">Frontend credentials</h2>
+            <TextField name="frontendCredentials.url" control={form.control} label="Url" />
+            <TextField name="frontendCredentials.login" control={form.control} label="Login" />
+            <PasswordField
+              name="frontendCredentials.password"
+              control={form.control}
+              label="Password"
+            />
+          </div>
+          <div>
+            <h2 className="text-p1 font-bold pb-2">Backend credentials</h2>
+            <TextField name="backendCredentials.url" control={form.control} label="Url" />
+            <TextField name="backendCredentials.login" control={form.control} label="Login" />
+            <PasswordField
+              name="backendCredentials.password"
+              control={form.control}
+              label="Password"
+            />
+          </div>
+        </div>
       </div>
       <Button
         variant={ButtonVariant.PRIMARY}

@@ -54,7 +54,7 @@ export const DevelopmentEnvironments: FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const projectId = params.id ? Number(params.id) : 0;
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
+  // const { data, loading } = useFetchDevelopmentEnvironmentsQuery({
   //   variables: {
   //     data: { id: projectId },
   //   },
@@ -69,7 +69,13 @@ export const DevelopmentEnvironments: FC = () => {
   return (
     <div>
       <SectionContainer title="Environments">
-        <Table className="mt-3" data={data.environmentsList} columns={ENVIRONMENTS_TABLE_COLUMNS} />
+        {!!data.environmentsList.length && (
+          <Table
+            className="mt-3"
+            data={data.environmentsList}
+            columns={ENVIRONMENTS_TABLE_COLUMNS}
+          />
+        )}
         <Button
           variant={ButtonVariant.SECONDARY}
           label="Request new environment"
