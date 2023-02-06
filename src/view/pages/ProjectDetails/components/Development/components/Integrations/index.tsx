@@ -35,7 +35,7 @@ const repositoriesTestData = [
 
 export const DevelopmentRepositories: FC = () => {
   const {
-    value: isRequestNewRepositoryModalOpen,
+    value: isRequestNewRepositoryOpen,
     on: openRequestNewRepositoryModal,
     off: closeRequestNewRepositoryModal,
   } = useSwitchValue(false);
@@ -59,16 +59,17 @@ export const DevelopmentRepositories: FC = () => {
   return (
     <div>
       <SectionContainer title="Repositories">
-        <Table className="mt-3" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
+        <Table className="mt-2" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
         <Button
           variant={ButtonVariant.SECONDARY}
           label="Request new repo"
-          className="mt-3 w-[140px]"
+          className={`mt-3 w-[136px] ${!data.repositoriesList.length && 'mx-auto'}`}
           onClick={openRequestNewRepositoryModal}
         />
       </SectionContainer>
+
       <RequestNewRepositoryModal
-        isOpen={isRequestNewRepositoryModalOpen}
+        isOpen={isRequestNewRepositoryOpen}
         close={closeRequestNewRepositoryModal}
       />
     </div>
