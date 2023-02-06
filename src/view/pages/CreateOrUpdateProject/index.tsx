@@ -8,6 +8,7 @@ import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
@@ -65,8 +66,7 @@ export const CreateOrUpdateProject: FC = () => {
         }
       >
         <div className="flex flex-col gap-4">
-          <section className="shadow-4 rounded-md bg-white p-7">
-            <h2 className="text-p1 font-bold pb-2">General</h2>
+          <SectionContainer title="General">
             <InlineFields>
               <TextField name="name" control={form.control} label="Project name" required />
               <TextField
@@ -105,16 +105,15 @@ export const CreateOrUpdateProject: FC = () => {
               </InlineFields>
             </InlineFields>
             <TextAreaField name="notes" control={form.control} label="Notes" />
-          </section>
-          <section className="shadow-4 rounded-md bg-white p-7">
-            <h2 className="text-p1 font-bold pb-2">Client team</h2>
+          </SectionContainer>
+          <SectionContainer title="Client team">
             <Button
               variant={ButtonVariant.SECONDARY}
               label="Add team member"
               withIcon="add"
               className="w-[170px] mt-3"
             />
-          </section>
+          </SectionContainer>
         </div>
       </DetailLayout>
     </SidebarLayout>

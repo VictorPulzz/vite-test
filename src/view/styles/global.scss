@@ -87,6 +87,10 @@ body {
     top: 50%;
     transform: translateY(-50%);
   }
+
+  .section-container {
+    @apply shadow-4 rounded-md bg-white p-7;
+  }
 }
 
 @layer components {
