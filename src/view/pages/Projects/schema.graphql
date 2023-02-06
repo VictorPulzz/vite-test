@@ -11,3 +11,10 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
     count
   }
 }
+
+mutation ChangeProjectStatus($input: ProjectStatusInput!) {
+  projectChangeStatus(data: $input) {
+    id
+    status
+  }
+}
