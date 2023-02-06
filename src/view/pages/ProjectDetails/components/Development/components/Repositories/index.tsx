@@ -35,7 +35,7 @@ const repositoriesTestData = [
 
 export const DevelopmentRepositories: FC = () => {
   const {
-    value: isRequestNewRepositoryOpen,
+    value: isRequestNewRepositoryModalOpen,
     on: openRequestNewRepositoryModal,
     off: closeRequestNewRepositoryModal,
   } = useSwitchValue(false);
@@ -44,7 +44,7 @@ export const DevelopmentRepositories: FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const projectId = params.id ? Number(params.id) : 0;
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
+  // const { data, loading } = useFetchDevelopmentRepositoriesQuery({
   //   variables: {
   //     data: { id: projectId },
   //   },
@@ -59,17 +59,22 @@ export const DevelopmentRepositories: FC = () => {
   return (
     <div>
       <SectionContainer title="Repositories">
-        <Table className="mt-2" data={data.repositoriesList} columns={REPOSITORIES_TABLE_COLUMNS} />
+        {!!data.repositoriesList.length && (
+          <Table
+            className="mt-3"
+            data={data.repositoriesList}
+            columns={REPOSITORIES_TABLE_COLUMNS}
+          />
+        )}
         <Button
           variant={ButtonVariant.SECONDARY}
           label="Request new repo"
-          className={`mt-3 w-[136px] ${!data.repositoriesList.length && 'mx-auto'}`}
+          className="mt-3 w-[140px]"
           onClick={openRequestNewRepositoryModal}
         />
       </SectionContainer>
-
       <RequestNewRepositoryModal
-        isOpen={isRequestNewRepositoryOpen}
+        isOpen={isRequestNewRepositoryModalOpen}
         close={closeRequestNewRepositoryModal}
       />
     </div>

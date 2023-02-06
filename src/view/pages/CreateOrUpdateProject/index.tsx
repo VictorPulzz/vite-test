@@ -2,17 +2,16 @@ import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { DateField } from '@ui/components/form/DateField';
 import { InlineFields } from '@ui/components/form/InlineFields';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useCallback, useMemo } from 'react';
-import { toast } from 'react-hot-toast';
+import React, { FC, useMemo } from 'react';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
+import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
-import { Icon } from '~/view/ui/components/common/Icon';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
 import { useFetchProjectQuery } from './__generated__/schema';
@@ -36,12 +35,6 @@ export const CreateOrUpdateProject: FC = () => {
     id: projectId,
   });
 
-  const copyFieldValue = useCallback((field: string) => {
-    navigator.clipboard.writeText(field);
-    if (field) {
-      toast.success('Copied');
-    }
-  }, []);
   // TODO add clientTeamMembers with useFieldArray
   // const { fields, append } = useFieldArray({
   //   control,
@@ -84,23 +77,17 @@ export const CreateOrUpdateProject: FC = () => {
               <InlineFields>
                 <div className="relative">
                   <TextField name="design" control={form.control} label="Design link" />
-                  <button
-                    type="button"
-                    className="absolute right-[10px] top-[30px] z-10 text-blue hover:opacity-70"
-                    onClick={() => copyFieldValue(form.watch('design'))}
-                  >
-                    <Icon name="copy" size={14} />
-                  </button>
+                  <CopyTextButton
+                    value={form.watch('design')}
+                    className="absolute right-[10px] top-[30px] z-10"
+                  />
                 </div>
                 <div className="relative">
                   <TextField name="roadmap" control={form.control} label="Roadmap link" />
-                  <button
-                    type="button"
-                    className="absolute right-[10px] top-[30px] z-10 text-blue hover:opacity-70"
-                    onClick={() => copyFieldValue(form.watch('roadmap'))}
-                  >
-                    <Icon name="copy" size={14} />
-                  </button>
+                  <CopyTextButton
+                    value={form.watch('roadmap')}
+                    className="absolute right-[10px] top-[30px] z-10"
+                  />
                 </div>
               </InlineFields>
             </InlineFields>

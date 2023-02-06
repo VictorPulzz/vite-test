@@ -36,10 +36,15 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close }) => {
       isOpen={isOpen}
       close={close}
       contentClassName="w-[22.18rem]"
-      title="Add new member"
+      title="New member"
     >
       <div className="flex flex-col items-center">
-        <SelectField name="user" options={usersOptions} control={form.control} label="User" />
+        <SelectField
+          name="user"
+          options={usersOptions}
+          control={form.control}
+          label="Select user"
+        />
       </div>
       <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} label="Add" className="mt-6" />
     </Modal>
