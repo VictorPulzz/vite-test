@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { Table } from '~/view/ui/components/common/Table';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
@@ -53,8 +54,7 @@ export const Info: FC = () => {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="shadow-4 bg-white rounded-md p-7">
-        <h2 className="text-p1 font-bold">General</h2>
+      <SectionContainer title="General">
         <div className="grid grid-cols-2 gap-y-[15px] mt-3">
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Project status</span>
@@ -97,11 +97,10 @@ export const Info: FC = () => {
             <span className="text-p3 leading-none">Some notes go here</span>
           </div>
         </div>
-      </div>
-      <div className="shadow-4 bg-white rounded-md p-7">
-        <h2 className="text-p1 font-bold">Client team</h2>
+      </SectionContainer>
+      <SectionContainer title="Client team">
         <Table className="mt-3" data={data.clientTeamList} columns={CLIENT_TEAM_TABLE_COLUMNS} />
-      </div>
+      </SectionContainer>
     </div>
   );
 };

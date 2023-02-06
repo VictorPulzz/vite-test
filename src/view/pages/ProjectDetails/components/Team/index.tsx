@@ -2,6 +2,7 @@ import { useSwitchValue } from '@appello/common/lib/hooks';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Table } from '~/view/ui/components/common/Table';
 
@@ -24,8 +25,8 @@ export const Team: FC = () => {
     off: closeAddNewMemberModalModal,
   } = useSwitchValue(false);
   // TODO remove currentTeamMembersTestData and otherContributorsTestData when backend will be ready
-  const currentTeamMembers = new Array(5).fill(teamMember);
-  const otherContributors = new Array(2).fill(teamMember);
+  const currentTeamMembers = new Array(2).fill(teamMember);
+  const otherContributors = new Array(5).fill(teamMember);
 
   const params = useParams();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -46,9 +47,8 @@ export const Team: FC = () => {
         <span>LOADING</span>
       ) : (
         <div className="flex flex-col gap-5">
-          <div className="shadow-4 bg-white rounded-md p-7">
-            <h2 className="text-p1 font-bold">Current team</h2>
-            {!currentTeamMembers.length && (
+          <SectionContainer title="Current team">
+            {!!currentTeamMembers.length && (
               <Table className="mt-3" data={currentTeamMembers} columns={TEAM_TABLE_COLUMNS} />
             )}
             <Button
@@ -58,12 +58,11 @@ export const Team: FC = () => {
               className="mt-3 w-[170px]"
               onClick={openAddNewMemberModalModal}
             />
-          </div>
+          </SectionContainer>
           {!!otherContributors.length && (
-            <div className="shadow-4 bg-white rounded-md p-7">
-              <h2 className="text-p1 font-bold">Other contrubutors</h2>
+            <SectionContainer title="Other contrubutors">
               <Table className="mt-3" data={otherContributors} columns={TEAM_TABLE_COLUMNS} />
-            </div>
+            </SectionContainer>
           )}
         </div>
       )}
