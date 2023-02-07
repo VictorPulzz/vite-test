@@ -59,7 +59,11 @@ export const Team: FC = () => {
           )}
         </div>
       )}
-      <AddNewMemberModal isOpen={isAddNewMemberModalOpen} close={closeAddNewMemberModalModal} />
+      <AddNewMemberModal
+        isOpen={isAddNewMemberModalOpen}
+        close={closeAddNewMemberModalModal}
+        projectId={projectId}
+      />
     </div>
   );
 };

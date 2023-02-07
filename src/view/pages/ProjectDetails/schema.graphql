@@ -51,3 +51,21 @@ query FetchProjectMembers($data: IDInput!) {
     }
   }
 }
+
+mutation AddProjectMember($input: ProjectMemberInput!) {
+  projectAddMember(data: $input) {
+    currentTeam
+    project {
+      name
+    }
+    user {
+      fullName
+    }
+  }
+}
+
+mutation RemoveProjectMember($input: ProjectMemberInput!) {
+  projectDeleteMember(data: $input) {
+    message
+  }
+}

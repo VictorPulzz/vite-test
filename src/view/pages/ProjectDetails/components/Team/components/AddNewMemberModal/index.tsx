@@ -6,11 +6,14 @@ import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__
 import { useAddNewMemberForm } from '~/view/pages/ProjectDetails/hooks/useAddNewMemberForm';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
-interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
+interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
+  projectId: number;
+}
 
-export const AddNewMemberModal: FC<Props> = ({ isOpen, close }) => {
+export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
   const { form, handleSubmit } = useAddNewMemberForm({
     onSubmitSuccessful: () => close(),
+    projectId,
   });
 
   const { data } = useFetchAllUsersQuery({
@@ -30,6 +33,8 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close }) => {
     return [];
   }, [data?.usersList.results]);
 
+  const isDisabled = !form.watch('user');
+  // TODO add reset form
   return (
     <Modal
       withCloseButton
@@ -46,7 +51,14 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close }) => {
           label="Select user"
         />
       </div>
-      <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} label="Add" className="mt-6" />
+      <Button
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
+        label="Add"
+        className="mt-6"
+        disabled={isDisabled}
+        isLoading={form.formState.isSubmitting}
+      />
     </Modal>
   );
 };

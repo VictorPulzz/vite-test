@@ -59,6 +59,29 @@ export type FetchProjectMembersQuery = {
   };
 };
 
+export type AddProjectMemberMutationVariables = Types.Exact<{
+  input: Types.ProjectMemberInput;
+}>;
+
+export type AddProjectMemberMutation = {
+  __typename?: 'Mutation';
+  projectAddMember: {
+    __typename?: 'ProjectMemberType';
+    currentTeam: boolean;
+    project: { __typename?: 'ProjectType'; name: string };
+    user: { __typename?: 'UserType'; fullName: string };
+  };
+};
+
+export type RemoveProjectMemberMutationVariables = Types.Exact<{
+  input: Types.ProjectMemberInput;
+}>;
+
+export type RemoveProjectMemberMutation = {
+  __typename?: 'Mutation';
+  projectDeleteMember: { __typename?: 'MessageType'; message: string };
+};
+
 export const FetchProjectDetailsDocument = gql`
   query FetchProjectDetails($data: IDInput!) {
     project(data: $data) {
@@ -240,4 +263,106 @@ export type FetchProjectMembersLazyQueryHookResult = ReturnType<
 export type FetchProjectMembersQueryResult = Apollo.QueryResult<
   FetchProjectMembersQuery,
   FetchProjectMembersQueryVariables
+>;
+export const AddProjectMemberDocument = gql`
+  mutation AddProjectMember($input: ProjectMemberInput!) {
+    projectAddMember(data: $input) {
+      currentTeam
+      project {
+        name
+      }
+      user {
+        fullName
+      }
+    }
+  }
+`;
+export type AddProjectMemberMutationFn = Apollo.MutationFunction<
+  AddProjectMemberMutation,
+  AddProjectMemberMutationVariables
+>;
+
+/**
+ * __useAddProjectMemberMutation__
+ *
+ * To run a mutation, you first call `useAddProjectMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProjectMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProjectMemberMutation, { data, loading, error }] = useAddProjectMemberMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddProjectMemberMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddProjectMemberMutation,
+    AddProjectMemberMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddProjectMemberMutation, AddProjectMemberMutationVariables>(
+    AddProjectMemberDocument,
+    options,
+  );
+}
+export type AddProjectMemberMutationHookResult = ReturnType<typeof useAddProjectMemberMutation>;
+export type AddProjectMemberMutationResult = Apollo.MutationResult<AddProjectMemberMutation>;
+export type AddProjectMemberMutationOptions = Apollo.BaseMutationOptions<
+  AddProjectMemberMutation,
+  AddProjectMemberMutationVariables
+>;
+export const RemoveProjectMemberDocument = gql`
+  mutation RemoveProjectMember($input: ProjectMemberInput!) {
+    projectDeleteMember(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveProjectMemberMutationFn = Apollo.MutationFunction<
+  RemoveProjectMemberMutation,
+  RemoveProjectMemberMutationVariables
+>;
+
+/**
+ * __useRemoveProjectMemberMutation__
+ *
+ * To run a mutation, you first call `useRemoveProjectMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveProjectMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeProjectMemberMutation, { data, loading, error }] = useRemoveProjectMemberMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveProjectMemberMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveProjectMemberMutation,
+    RemoveProjectMemberMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveProjectMemberMutation, RemoveProjectMemberMutationVariables>(
+    RemoveProjectMemberDocument,
+    options,
+  );
+}
+export type RemoveProjectMemberMutationHookResult = ReturnType<
+  typeof useRemoveProjectMemberMutation
+>;
+export type RemoveProjectMemberMutationResult = Apollo.MutationResult<RemoveProjectMemberMutation>;
+export type RemoveProjectMemberMutationOptions = Apollo.BaseMutationOptions<
+  RemoveProjectMemberMutation,
+  RemoveProjectMemberMutationVariables
 >;
