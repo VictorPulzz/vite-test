@@ -31,7 +31,7 @@ export const TEAM_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('role', {
+  columnHelper.accessor(row => row?.role?.name, {
     id: 'role',
     header: 'Position',
   }),

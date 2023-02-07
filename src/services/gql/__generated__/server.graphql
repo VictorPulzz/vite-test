@@ -46,6 +46,18 @@ type DepartmentType {
   name: String!
 }
 
+input EnvironmentCredentialsInput {
+  login: String!
+  password: String!
+  url: String!
+}
+
+type EnvironmentCredentialsType {
+  login: String!
+  password: String!
+  url: String!
+}
+
 input ForgotPasswordInput {
   email: String!
 }
@@ -107,6 +119,10 @@ type Mutation {
   Project deletion
   """
   projectDelete(data: IDInput!): MessageType!
+  """
+  Project create or update environment
+  """
+  projectEnvironmentCreateUpdate(data: ProjectEnvironmentInput!): ProjectEnvironmentType!
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation
@@ -183,6 +199,22 @@ input ProjectCreateInput {
   roadmap: String = null
   startDate: Date!
   status: StatusEnum
+}
+
+input ProjectEnvironmentInput {
+  backendCredentials: EnvironmentCredentialsInput = null
+  frontendCredentials: EnvironmentCredentialsInput = null
+  id: Int = null
+  name: String!
+  projectId: Int!
+}
+
+type ProjectEnvironmentType {
+  backendCredentials: EnvironmentCredentialsType
+  frontendCredentials: EnvironmentCredentialsType
+  id: Int
+  name: String!
+  projectId: Int!
 }
 
 input ProjectFilter {

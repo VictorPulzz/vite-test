@@ -32,6 +32,33 @@ export type FetchAllUsersQuery = {
   };
 };
 
+export type FetchProjectMembersQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectMembersQuery = {
+  __typename?: 'Query';
+  projectMemberList: {
+    __typename?: 'ProjectMemberListType';
+    currentTeam: Array<{
+      __typename?: 'UserType';
+      id?: string | null;
+      fullName: string;
+      email: string;
+      photo?: { __typename?: 'ImageType'; url: string } | null;
+      role?: { __typename?: 'RoleType'; name: string } | null;
+    }>;
+    otherParticipants: Array<{
+      __typename?: 'UserType';
+      id?: string | null;
+      fullName: string;
+      email: string;
+      photo?: { __typename?: 'ImageType'; url: string } | null;
+      role?: { __typename?: 'RoleType'; name: string } | null;
+    }>;
+  };
+};
+
 export const FetchProjectDetailsDocument = gql`
   query FetchProjectDetails($data: IDInput!) {
     project(data: $data) {
@@ -139,4 +166,78 @@ export type FetchAllUsersLazyQueryHookResult = ReturnType<typeof useFetchAllUser
 export type FetchAllUsersQueryResult = Apollo.QueryResult<
   FetchAllUsersQuery,
   FetchAllUsersQueryVariables
+>;
+export const FetchProjectMembersDocument = gql`
+  query FetchProjectMembers($data: IDInput!) {
+    projectMemberList(data: $data) {
+      currentTeam {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
+      }
+      otherParticipants {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectMembersQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectMembersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectMembersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectMembersQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectMembersQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchProjectMembersQuery, FetchProjectMembersQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectMembersQuery, FetchProjectMembersQueryVariables>(
+    FetchProjectMembersDocument,
+    options,
+  );
+}
+export function useFetchProjectMembersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectMembersQuery,
+    FetchProjectMembersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectMembersQuery, FetchProjectMembersQueryVariables>(
+    FetchProjectMembersDocument,
+    options,
+  );
+}
+export type FetchProjectMembersQueryHookResult = ReturnType<typeof useFetchProjectMembersQuery>;
+export type FetchProjectMembersLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectMembersLazyQuery
+>;
+export type FetchProjectMembersQueryResult = Apollo.QueryResult<
+  FetchProjectMembersQuery,
+  FetchProjectMembersQueryVariables
 >;

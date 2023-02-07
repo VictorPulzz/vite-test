@@ -25,40 +25,29 @@ query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search
   }
 }
 
-# TODO fix fields when backend will be ready
-# mutation UpdateProject($input: ProjectInput!) {
-#   project(data: $input) {
-#     id
-#   }
-# }
-
-# TODO fix fields when backend will be ready
-# query FetchProjectParticipants($data: IDInput!) {
-#   projectParticipants(data: $data) {
-#     id
-#     name
-#   }
-# }
-
-# TODO fix fields when backend will be ready
-# mutation AddProjectParticipant($input: ProjectInput!) {
-#   projectParticipant(data: $input) {
-#     user
-#     accessLevel
-#   }
-# }
-
-# TODO fix fields when backend will be ready
-# query FetchProjectRepositories($data: IDInput!) {
-#   repositories(data: $data) {
-#     id
-#     name
-#   }
-# }
-
-# TODO fix fields when backend will be ready
-# mutation RequestNewRepository($input: ProjectInput!) {
-#   repository(data: $input) {
-#     id
-#   }
-# }
+query FetchProjectMembers($data: IDInput!) {
+  projectMemberList(data: $data) {
+    currentTeam {
+      id
+      photo {
+        url
+      }
+      fullName
+      role {
+        name
+      }
+      email
+    }
+    otherParticipants {
+      id
+      photo {
+        url
+      }
+      fullName
+      role {
+        name
+      }
+      email
+    }
+  }
+}
