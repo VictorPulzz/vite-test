@@ -43,9 +43,10 @@ export const PROJECTS_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor(row => row.PM && row.PM[0].fullName, {
+  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
     id: 'PM',
     header: 'PM',
+    cell: props => <span>{props.getValue() ?? '-'}</span>,
   }),
   columnHelper.accessor('status', {
     id: 'status',

@@ -5,6 +5,8 @@ import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
+import { FetchProjectMembersDocument, useAddProjectMemberMutation } from '../__generated__/schema';
+
 const formSchema = z.object({
   user: z.string(),
 });
@@ -18,6 +20,7 @@ interface UseAddNewMemberFormReturn {
 
 interface UseAddNewMemberFormProps {
   onSubmitSuccessful?: () => void;
+  projectId: number;
 }
 
 const defaultValues: AddNewMemberFormValues = {
@@ -26,26 +29,28 @@ const defaultValues: AddNewMemberFormValues = {
 
 export function useAddNewMemberForm({
   onSubmitSuccessful,
+  projectId,
 }: UseAddNewMemberFormProps): UseAddNewMemberFormReturn {
   const form = useForm<AddNewMemberFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [addProjectParticipant] = useAddProjectParticipantMutation();
+  const [addProjectMember] = useAddProjectMemberMutation();
 
   const handleSubmit = useCallback(
     async (values: AddNewMemberFormValues) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useAddParticipantForm.ts:39 ~ values', values);
-        // await addProjectParticipant({
-        //   variables: {
-        //     input: {
-        //       user: values.user,
-        //     },
-        //   },
-        // });
+        await addProjectMember({
+          variables: {
+            input: {
+              currentTeam: true,
+              projectId,
+              userId: Number(values.user),
+            },
+          },
+          refetchQueries: [FetchProjectMembersDocument],
+        });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<AddNewMemberFormValues>(e, {
@@ -54,7 +59,7 @@ export function useAddNewMemberForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful],
+    [addProjectMember, form.setError, onSubmitSuccessful, projectId],
   );
 
   return useMemo(

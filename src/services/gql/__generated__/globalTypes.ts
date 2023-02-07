@@ -55,6 +55,19 @@ export type DepartmentType = {
   name: Scalars['String'];
 };
 
+export type EnvironmentCredentialsInput = {
+  login: Scalars['String'];
+  password: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type EnvironmentCredentialsType = {
+  __typename: 'EnvironmentCredentialsType';
+  login: Scalars['String'];
+  password: Scalars['String'];
+  url: Scalars['String'];
+};
+
 export type ForgotPasswordInput = {
   email: Scalars['String'];
 };
@@ -109,6 +122,10 @@ export type Mutation = {
   projectCreateUpdate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
+  /** Project delete member */
+  projectDeleteMember: MessageType;
+  /** Project create or update environment */
+  projectEnvironmentCreateUpdate: ProjectEnvironmentType;
   resetPassword: MessageType;
   /** User creation */
   signup: MessageType;
@@ -154,6 +171,14 @@ export type MutationProjectCreateUpdateArgs = {
 
 export type MutationProjectDeleteArgs = {
   data: IdInput;
+};
+
+export type MutationProjectDeleteMemberArgs = {
+  data: ProjectMemberInput;
+};
+
+export type MutationProjectEnvironmentCreateUpdateArgs = {
+  data: ProjectEnvironmentInput;
 };
 
 export type MutationResetPasswordArgs = {
@@ -233,12 +258,29 @@ export type ProjectCreateInput = {
   status?: InputMaybe<StatusEnum>;
 };
 
+export type ProjectEnvironmentInput = {
+  backendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
+  frontendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
+  id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+  projectId: Scalars['Int'];
+};
+
+export type ProjectEnvironmentType = {
+  __typename: 'ProjectEnvironmentType';
+  backendCredentials?: Maybe<EnvironmentCredentialsType>;
+  frontendCredentials?: Maybe<EnvironmentCredentialsType>;
+  id?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  projectId: Scalars['Int'];
+};
+
 export type ProjectFilter = {
   status?: InputMaybe<StatusEnum>;
 };
 
 export type ProjectMemberInput = {
-  currentTeam?: Scalars['Boolean'];
+  currentTeam?: InputMaybe<Scalars['Boolean']>;
   projectId: Scalars['Int'];
   userId: Scalars['Int'];
 };
@@ -246,7 +288,7 @@ export type ProjectMemberInput = {
 export type ProjectMemberListType = {
   __typename: 'ProjectMemberListType';
   currentTeam: Array<UserType>;
-  otherParticipants: Array<UserType>;
+  otherContrubutors: Array<UserType>;
 };
 
 export type ProjectMemberType = {

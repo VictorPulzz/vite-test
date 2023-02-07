@@ -46,6 +46,18 @@ type DepartmentType {
   name: String!
 }
 
+input EnvironmentCredentialsInput {
+  login: String!
+  password: String!
+  url: String!
+}
+
+type EnvironmentCredentialsType {
+  login: String!
+  password: String!
+  url: String!
+}
+
 input ForgotPasswordInput {
   email: String!
 }
@@ -107,6 +119,14 @@ type Mutation {
   Project deletion
   """
   projectDelete(data: IDInput!): MessageType!
+  """
+  Project delete member
+  """
+  projectDeleteMember(data: ProjectMemberInput!): MessageType!
+  """
+  Project create or update environment
+  """
+  projectEnvironmentCreateUpdate(data: ProjectEnvironmentInput!): ProjectEnvironmentType!
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation
@@ -185,19 +205,35 @@ input ProjectCreateInput {
   status: StatusEnum
 }
 
+input ProjectEnvironmentInput {
+  backendCredentials: EnvironmentCredentialsInput = null
+  frontendCredentials: EnvironmentCredentialsInput = null
+  id: Int = null
+  name: String!
+  projectId: Int!
+}
+
+type ProjectEnvironmentType {
+  backendCredentials: EnvironmentCredentialsType
+  frontendCredentials: EnvironmentCredentialsType
+  id: Int
+  name: String!
+  projectId: Int!
+}
+
 input ProjectFilter {
   status: StatusEnum = null
 }
 
 input ProjectMemberInput {
-  currentTeam: Boolean! = true
+  currentTeam: Boolean = true
   projectId: Int!
   userId: Int!
 }
 
 type ProjectMemberListType {
   currentTeam: [UserType!]!
-  otherParticipants: [UserType!]!
+  otherContrubutors: [UserType!]!
 }
 
 type ProjectMemberType {

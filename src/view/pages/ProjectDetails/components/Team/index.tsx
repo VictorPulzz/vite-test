@@ -1,22 +1,14 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Table } from '~/view/ui/components/common/Table';
 
+import { useFetchProjectMembersQuery } from '../../__generated__/schema';
 import { AddNewMemberModal } from './components/AddNewMemberModal';
 import { TEAM_TABLE_COLUMNS } from './consts';
-
-const teamMember = {
-  id: '0',
-  fullName: 'Barbara Williams',
-  photo: { url: 'https://picsum.photos/36/36?random' },
-  role: 'Backend developer',
-  email: 'example@com',
-  slack: 'https://picsum.photos/36/36?random',
-};
 
 export const Team: FC = () => {
   const {
@@ -24,22 +16,15 @@ export const Team: FC = () => {
     on: openAddNewMemberModalModal,
     off: closeAddNewMemberModalModal,
   } = useSwitchValue(false);
-  // TODO remove currentTeamMembersTestData and otherContributorsTestData when backend will be ready
-  const currentTeamMembers = new Array(2).fill(teamMember);
-  const otherContributors = new Array(5).fill(teamMember);
 
   const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const projectId = params.id ? Number(params.id) : 0;
+  const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  // const { data, loading } = useFetchProjectParticipantsQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-
-  // TODO remove when backend will be ready
-  const loading = false;
+  const { data, loading } = useFetchProjectMembersQuery({
+    variables: {
+      data: { id: projectId },
+    },
+  });
 
   return (
     <div>
@@ -48,8 +33,12 @@ export const Team: FC = () => {
       ) : (
         <div className="flex flex-col gap-5">
           <SectionContainer title="Current team">
-            {!!currentTeamMembers.length && (
-              <Table className="mt-3" data={currentTeamMembers} columns={TEAM_TABLE_COLUMNS} />
+            {!!data?.projectMemberList.currentTeam.length && (
+              <Table
+                className="mt-3"
+                data={data?.projectMemberList.currentTeam}
+                columns={TEAM_TABLE_COLUMNS}
+              />
             )}
             <Button
               variant={ButtonVariant.SECONDARY}
@@ -59,14 +48,22 @@ export const Team: FC = () => {
               onClick={openAddNewMemberModalModal}
             />
           </SectionContainer>
-          {!!otherContributors.length && (
+          {!!data?.projectMemberList.otherContrubutors.length && (
             <SectionContainer title="Other contrubutors">
-              <Table className="mt-3" data={otherContributors} columns={TEAM_TABLE_COLUMNS} />
+              <Table
+                className="mt-3"
+                data={data.projectMemberList.otherContrubutors}
+                columns={TEAM_TABLE_COLUMNS}
+              />
             </SectionContainer>
           )}
         </div>
       )}
-      <AddNewMemberModal isOpen={isAddNewMemberModalOpen} close={closeAddNewMemberModalModal} />
+      <AddNewMemberModal
+        isOpen={isAddNewMemberModalOpen}
+        close={closeAddNewMemberModalModal}
+        projectId={projectId}
+      />
     </div>
   );
 };
