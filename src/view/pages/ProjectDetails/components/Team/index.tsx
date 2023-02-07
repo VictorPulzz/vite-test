@@ -48,11 +48,11 @@ export const Team: FC = () => {
               onClick={openAddNewMemberModalModal}
             />
           </SectionContainer>
-          {!!data?.projectMemberList.otherParticipants.length && (
+          {!!data?.projectMemberList.otherContrubutors.length && (
             <SectionContainer title="Other contrubutors">
               <Table
                 className="mt-3"
-                data={data.projectMemberList.otherParticipants}
+                data={data.projectMemberList.otherContrubutors}
                 columns={TEAM_TABLE_COLUMNS}
               />
             </SectionContainer>

@@ -38,7 +38,7 @@ query FetchProjectMembers($data: IDInput!) {
       }
       email
     }
-    otherParticipants {
+    otherContrubutors {
       id
       photo {
         url

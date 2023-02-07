@@ -120,6 +120,10 @@ type Mutation {
   """
   projectDelete(data: IDInput!): MessageType!
   """
+  Project delete member
+  """
+  projectDeleteMember(data: ProjectMemberInput!): MessageType!
+  """
   Project create or update environment
   """
   projectEnvironmentCreateUpdate(data: ProjectEnvironmentInput!): ProjectEnvironmentType!
@@ -222,14 +226,14 @@ input ProjectFilter {
 }
 
 input ProjectMemberInput {
-  currentTeam: Boolean! = true
+  currentTeam: Boolean = true
   projectId: Int!
   userId: Int!
 }
 
 type ProjectMemberListType {
   currentTeam: [UserType!]!
-  otherParticipants: [UserType!]!
+  otherContrubutors: [UserType!]!
 }
 
 type ProjectMemberType {

@@ -48,7 +48,7 @@ export type FetchProjectMembersQuery = {
       photo?: { __typename?: 'ImageType'; url: string } | null;
       role?: { __typename?: 'RoleType'; name: string } | null;
     }>;
-    otherParticipants: Array<{
+    otherContrubutors: Array<{
       __typename?: 'UserType';
       id?: string | null;
       fullName: string;
@@ -181,7 +181,7 @@ export const FetchProjectMembersDocument = gql`
         }
         email
       }
-      otherParticipants {
+      otherContrubutors {
         id
         photo {
           url
