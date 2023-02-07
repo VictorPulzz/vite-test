@@ -106,8 +106,8 @@ export const Info: FC<Props> = ({
             </TextLink>
           </div>
           <div className="flex flex-col gap-[2px]">
-            <span className="text-c1 text-gray-2">Notes</span>
-            <span className="text-p3 leading-none">{notes}</span>
+            <span className="text-c1 text-gray-2 leading-none">Notes</span>
+            <span className="text-p3 w-3/4 leading-5">{notes}</span>
           </div>
         </div>
       </SectionContainer>
