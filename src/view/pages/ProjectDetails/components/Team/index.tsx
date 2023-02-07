@@ -4,6 +4,8 @@ import { useParams } from 'react-router-dom';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+import { EmptyState } from '~/view/ui/components/common/EmptyState';
+import { Loader } from '~/view/ui/components/common/Loader';
 import { Table } from '~/view/ui/components/common/Table';
 
 import { useFetchProjectMembersQuery } from '../../__generated__/schema';
@@ -28,17 +30,18 @@ export const Team: FC = () => {
 
   return (
     <div>
-      {loading ? (
-        <span>LOADING</span>
-      ) : (
+      {loading && <Loader full colorful />}
+      {data && (
         <div className="flex flex-col gap-5">
           <SectionContainer title="Current team">
-            {!!data?.projectMemberList.currentTeam.length && (
+            {data && !!data?.projectMemberList.currentTeam.length ? (
               <Table
                 className="mt-3"
                 data={data?.projectMemberList.currentTeam}
                 columns={TEAM_TABLE_COLUMNS}
               />
+            ) : (
+              <EmptyState iconName="users" label="No contributors here yet" />
             )}
             <Button
               variant={ButtonVariant.SECONDARY}
