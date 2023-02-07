@@ -14,7 +14,22 @@ export type FetchProjectDetailsQuery = {
     __typename?: 'ProjectType';
     id: number;
     name: string;
+    status?: Types.StatusEnum | null;
+    startDate: string;
+    endDate?: string | null;
     phase: Types.ProjectPhaseChoice;
+    design?: string | null;
+    roadmap?: string | null;
+    notes?: string | null;
+    createdBy?: { __typename?: 'UserType'; fullName: string } | null;
+    clientTeam?: Array<{
+      __typename?: 'ClientType';
+      fullName: string;
+      email: string;
+      phone?: string | null;
+      position?: string | null;
+      notes?: string | null;
+    }> | null;
   };
 };
 
@@ -87,7 +102,23 @@ export const FetchProjectDetailsDocument = gql`
     project(data: $data) {
       id
       name
+      createdBy {
+        fullName
+      }
+      status
+      startDate
+      endDate
       phase
+      design
+      roadmap
+      notes
+      clientTeam {
+        fullName
+        email
+        phone
+        position
+        notes
+      }
     }
   }
 `;

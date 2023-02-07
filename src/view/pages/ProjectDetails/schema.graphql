@@ -1,18 +1,24 @@
-# # TODO fix fields when backend will be ready
 query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
+    createdBy {
+      fullName
+    }
+    status
+    startDate
+    endDate
     phase
-    # estimatedStartDate
-    # estimatedEndDate
-    # designLink
-    # notes
-    # clientName
-    # clientPhone
-    # clientEmail
-    # clientNotes
-    # clientTeamMembers
+    design
+    roadmap
+    notes
+    clientTeam {
+      fullName
+      email
+      phone
+      position
+      notes
+    }
   }
 }
 

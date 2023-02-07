@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { TabLayout } from '~/view/layouts/TabLayout';
+import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
@@ -21,7 +22,7 @@ export const ProjectDetailsPage: FC = () => {
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { data } = useFetchProjectDetailsQuery({
+  const { data, loading } = useFetchProjectDetailsQuery({
     variables: {
       data: { id: projectId },
     },
@@ -39,7 +40,12 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Info',
-            element: <Info />,
+            element: (
+              <>
+                {loading && <Loader full colorful />}
+                {data && <Info projectInfo={data.project} />}
+              </>
+            ),
           },
           {
             title: 'Team',
@@ -64,9 +70,9 @@ export const ProjectDetailsPage: FC = () => {
         ]}
       />
     ),
-    [],
+    [data, loading],
   );
-
+  // TODO add createdAt field
   return (
     <TabLayout tabs={DocumentTabs}>
       <div className="bg-white">
@@ -80,7 +86,7 @@ export const ProjectDetailsPage: FC = () => {
             <div className="flex flex-col">
               <h2 className="text-h4 font-bold">{data?.project.name}</h2>
               <span className="text-c1 text-gray-2 leading-none">
-                Created 18 Jul 2022 • by Alex C.
+                Created 18 Jul 2022 • by {data?.project.createdBy?.fullName}
               </span>
             </div>
           </div>
