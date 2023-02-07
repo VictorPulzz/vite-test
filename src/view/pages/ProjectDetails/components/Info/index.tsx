@@ -1,56 +1,56 @@
-import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
+import { format, formatDuration, intervalToDuration, isPast, parseISO } from 'date-fns';
+import React, { FC, useMemo } from 'react';
 
+import { DateFormat } from '~/constants/dates';
+import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
+import { FetchProjectDetailsQuery } from '../../__generated__/schema';
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';
 
-// TODO remove repositoriesTestData when backend will be ready
-const clientTeamTestData = [
-  {
-    fullName: 'Robert Smith',
-    email: 'example@com',
-    phone: '0454 842 032',
-    position: 'CEO',
-    notes: 'Available only on Mon',
-  },
-  {
-    fullName: 'Jesse Anderson',
-    email: 'example@com',
-    phone: '0454 842 032',
-    position: 'Developer',
-    notes: 'Available only on Mon',
-  },
-  {
-    fullName: 'Randy Coleman',
-    email: 'example@com',
-    phone: '0454 842 032',
-    position: 'CTO',
-    notes: 'Available only on Mon',
-  },
-];
+interface Props {
+  projectInfo: FetchProjectDetailsQuery['project'];
+}
 
-export const Info: FC = () => {
-  // TODO remove participantsTestData when backend will be ready
-  //   const participantsTestData = new Array(9).fill(participantTestData);
+export const Info: FC<Props> = ({
+  projectInfo: { status, startDate, endDate, phase, design, roadmap, notes, clientTeam },
+}) => {
+  const getBadgeByStatus = useMemo((): BadgeColor => {
+    switch (true) {
+      case status === StatusEnum.IN_PROGRESS:
+        return BadgeColor.BLUE;
+      case status === StatusEnum.WAITING:
+        return BadgeColor.RED;
+      case status === StatusEnum.STOPPED:
+        return BadgeColor.GRAY;
+      case status === StatusEnum.BLOCKED:
+        return BadgeColor.GREEN;
+      default:
+        return BadgeColor.BLUE;
+    }
+  }, [status]);
 
-  const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const projectId = params.id ? Number(params.id) : 0;
+  const isPastEndDate = useMemo(() => isPast(new Date(endDate as string)), [endDate]);
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-
-  // TODO remove test data later
-  const data = {
-    loading: false,
-    clientTeamList: clientTeamTestData,
-  };
+  const durationToEndDate = useMemo(
+    () =>
+      formatDuration(
+        intervalToDuration({
+          start: new Date(parseISO(endDate as string)),
+          end: new Date(),
+        }),
+        {
+          format: ['years', 'months', 'days', 'hours'],
+        },
+      ),
+    [endDate],
+  );
 
   return (
     <div className="flex flex-col gap-5">
@@ -58,26 +58,37 @@ export const Info: FC = () => {
         <div className="grid grid-cols-2 gap-y-[15px] mt-3">
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Project status</span>
-            <span className="text-p3 leading-none">In progress</span>
+            <Badge color={getBadgeByStatus}>
+              {convertUppercaseToReadable(status as StatusEnum)}
+            </Badge>
           </div>
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Start date</span>
-            <span className="text-p3 leading-none">28 Mar 2022</span>
+            <span className="text-p3 leading-none">
+              {format(new Date(startDate), DateFormat.PP)}
+            </span>
           </div>
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Estimated end date</span>
-            <span className="text-p3 leading-none">1 Feb 2023 (in 43d )</span>
+            <span className="text-p3 leading-none">
+              {format(new Date(String(endDate)), DateFormat.PP)}{' '}
+              <span className="text-gray-2">{!isPastEndDate && `(in ${durationToEndDate})`}</span>
+            </span>
           </div>
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Current phase</span>
-            <span className="text-p3 leading-none">MVP Development</span>
+            <span className="text-p3 leading-none">
+              {convertUppercaseToReadable(phase as ProjectPhaseChoice)}
+            </span>
           </div>
           <div className="flex flex-col gap-[2px] break-words">
             <span className="text-c1 text-gray-2">Design link</span>
             <TextLink
               external
-              to="https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0"
-              className="text-p3 text-blue leading-none hover:underline"
+              to={design ?? ''}
+              className={`text-p3 text-blue leading-none hover:underline ${
+                !isValidHttpUrl(design ?? '') && 'pointer-events-none'
+              }`}
             >
               Design link
             </TextLink>
@@ -86,20 +97,26 @@ export const Info: FC = () => {
             <span className="text-c1 text-gray-2">Roadmap</span>
             <TextLink
               external
-              to="https://www.figma.com/file/8T6cuBdFJeUz4jwBzfZE7h/Untitled?node-id=1%3A4275&t=YqWzSw0DCpWG9RMx-0"
-              className="text-p3 text-blue leading-none hover:underline"
+              to={roadmap ?? ''}
+              className={`text-p3 text-blue leading-none hover:underline ${
+                !isValidHttpUrl(roadmap ?? '') && 'pointer-events-none'
+              }`}
             >
               Roadmap link
             </TextLink>
           </div>
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Notes</span>
-            <span className="text-p3 leading-none">Some notes go here</span>
+            <span className="text-p3 leading-none">{notes}</span>
           </div>
         </div>
       </SectionContainer>
       <SectionContainer title="Client team">
-        <Table className="mt-3" data={data.clientTeamList} columns={CLIENT_TEAM_TABLE_COLUMNS} />
+        {clientTeam?.length ? (
+          <Table className="mt-3" data={clientTeam} columns={CLIENT_TEAM_TABLE_COLUMNS} />
+        ) : (
+          <EmptyState iconName="users" label="No client team members here yet" />
+        )}
       </SectionContainer>
     </div>
   );
