@@ -13,5 +13,14 @@ export function transformPrefilledData(data: FetchProjectQuery['project']): Proj
     roadmap: data.roadmap ?? '',
     notes: data.notes ?? '',
     phase: data.phase,
+    // TODO fix fields below when backend will be ready
+    isGenerateDesignAndPrototypeAgreement: false,
+    isGenerateServiceAgreement: true,
+    companyName: '',
+    companyAcn: '',
+    depositHours: '',
+    hourlyRate: '',
+    address: '',
+    abn: '',
   };
 }

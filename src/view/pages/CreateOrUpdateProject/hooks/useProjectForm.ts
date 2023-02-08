@@ -24,11 +24,24 @@ const formSchema = z
       .date()
       .nullable()
       .refine(value => value !== null, formErrors.REQUIRED),
-    endDate: z.date().nullable(),
+    endDate: z
+      .date()
+      .nullable()
+      .refine(value => value !== null, formErrors.REQUIRED),
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
+    // TODO add validations on fields below when backend will be ready
+    isGenerateDesignAndPrototypeAgreement: z.boolean(),
+    isGenerateServiceAgreement: z.boolean(),
+    companyName: z.string(),
+    companyAcn: z.string(),
+    depositHours: z.string().and(numberValidation),
+    hourlyRate: z.string().and(numberValidation),
+    address: z.string(),
+    abn: z.string(),
     // TODO add clientTeamMembers later
+    // TODO it is necessary to add a client with a point of contract
     // clientTeamMembers: z
     //   .object({
     //     name: z.string(),
@@ -73,6 +86,14 @@ const defaultValues: ProjectFormValues = {
   design: '',
   roadmap: '',
   notes: '',
+  isGenerateDesignAndPrototypeAgreement: false,
+  isGenerateServiceAgreement: false,
+  companyName: '',
+  companyAcn: '',
+  depositHours: '',
+  hourlyRate: '',
+  address: '',
+  abn: '',
   // TODO add clientTeamMembers later
   // clientTeamMembers: [],
 };
@@ -84,6 +105,7 @@ export function useProjectForm({
 }: UseProjectFormProps): UseProjectFormReturn {
   const form = useForm<ProjectFormValues>({
     defaultValues,
+    // TODO fix transformPrefilledData when backend will be ready
     values: prefilledData ? transformPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -92,6 +114,8 @@ export function useProjectForm({
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
+      // eslint-disable-next-line no-console
+      console.log('🚀 ~ file: useProjectForm.ts:101 ~ values', values);
       try {
         await projectCreateUpdate({
           variables: {
@@ -108,7 +132,7 @@ export function useProjectForm({
               notes: values.notes,
               phase: ProjectPhaseChoice.PRE_SIGNED,
               status: StatusEnum.IN_PROGRESS,
-              // TODO add clientTeamMembers later
+              // TODO add rest fields
             },
           },
         });
