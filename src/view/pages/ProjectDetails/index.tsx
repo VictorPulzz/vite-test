@@ -1,8 +1,10 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
@@ -72,7 +74,7 @@ export const ProjectDetailsPage: FC = () => {
     ),
     [data, loading],
   );
-  // TODO add createdAt field
+
   return (
     <TabLayout tabs={DocumentTabs}>
       <div className="bg-white">
@@ -86,7 +88,8 @@ export const ProjectDetailsPage: FC = () => {
             <div className="flex flex-col">
               <h2 className="text-h4 font-bold">{data?.project.name}</h2>
               <span className="text-c1 text-gray-2 leading-none">
-                Created 18 Jul 2022 • by {data?.project.createdBy?.fullName}
+                Created {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.PP)} •
+                by {data?.project.createdBy?.fullName}
               </span>
             </div>
           </div>

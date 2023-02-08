@@ -12,6 +12,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: string;
+  DateTime: string;
   Upload: File;
 };
 
@@ -89,6 +90,25 @@ export type ImageType = {
   url: Scalars['String'];
 };
 
+export type IntegrationCredentialsInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  key?: InputMaybe<Scalars['String']>;
+  login?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+export type IntegrationCredentialsType = {
+  __typename: 'IntegrationCredentialsType';
+  id?: Maybe<Scalars['Int']>;
+  key?: Maybe<Scalars['String']>;
+  login?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -126,6 +146,10 @@ export type Mutation = {
   projectDeleteMember: MessageType;
   /** Project create or update environment */
   projectEnvironmentCreateUpdate: ProjectEnvironmentType;
+  /** Project create or update integration */
+  projectIntegrationCreateUpdate: ProjectIntegrationType;
+  /** Repository creation or update */
+  repositoryCreateUpdate: RepositoryType;
   resetPassword: MessageType;
   /** User creation */
   signup: MessageType;
@@ -179,6 +203,14 @@ export type MutationProjectDeleteMemberArgs = {
 
 export type MutationProjectEnvironmentCreateUpdateArgs = {
   data: ProjectEnvironmentInput;
+};
+
+export type MutationProjectIntegrationCreateUpdateArgs = {
+  data: ProjectIntegrationInput;
+};
+
+export type MutationRepositoryCreateUpdateArgs = {
+  data: RepositoryInput;
 };
 
 export type MutationResetPasswordArgs = {
@@ -279,6 +311,21 @@ export type ProjectFilter = {
   status?: InputMaybe<StatusEnum>;
 };
 
+export type ProjectIntegrationInput = {
+  credentials?: InputMaybe<Array<IntegrationCredentialsInput>>;
+  id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+  projectId: Scalars['Int'];
+};
+
+export type ProjectIntegrationType = {
+  __typename: 'ProjectIntegrationType';
+  credentials?: Maybe<Array<IntegrationCredentialsType>>;
+  id?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  projectId: Scalars['Int'];
+};
+
 export type ProjectMemberInput = {
   currentTeam?: InputMaybe<Scalars['Boolean']>;
   projectId: Scalars['Int'];
@@ -317,6 +364,7 @@ export type ProjectType = {
   __typename: 'ProjectType';
   PM?: Maybe<Array<UserType>>;
   clientTeam?: Maybe<Array<ClientType>>;
+  createdAt: Scalars['DateTime'];
   createdBy?: Maybe<UserType>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
@@ -346,10 +394,16 @@ export type Query = {
   me: ProfileType;
   /** Getting project by id */
   project: ProjectType;
+  /** Getting environments for project by id */
+  projectEnvironmentList: Array<ProjectEnvironmentType>;
+  /** Getting integrations for project by id */
+  projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting member for project by id */
   projectMemberList: ProjectMemberListType;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
+  /** Getting repositories for project by id */
+  repositoryList: Array<RepositoryType>;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
   /** Getting user by id */
@@ -362,6 +416,14 @@ export type QueryProjectArgs = {
   data: IdInput;
 };
 
+export type QueryProjectEnvironmentListArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectIntegrationListArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectMemberListArgs = {
   data: IdInput;
 };
@@ -370,6 +432,10 @@ export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
+};
+
+export type QueryRepositoryListArgs = {
+  data: IdInput;
 };
 
 export type QueryUserDetailsArgs = {
@@ -385,6 +451,34 @@ export type QueryUsersListArgs = {
 export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
 };
+
+export type RepositoryInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+  platform?: InputMaybe<RepositoryPlatformChoice>;
+  projectId: Scalars['Int'];
+  type?: InputMaybe<RepositoryTypeChoice>;
+};
+
+export enum RepositoryPlatformChoice {
+  MOBILE = 'MOBILE',
+  WEB = 'WEB',
+}
+
+export type RepositoryType = {
+  __typename: 'RepositoryType';
+  createdAt: Scalars['DateTime'];
+  id?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+  platform?: Maybe<RepositoryPlatformChoice>;
+  projectId: Scalars['Int'];
+  type?: Maybe<RepositoryTypeChoice>;
+};
+
+export enum RepositoryTypeChoice {
+  BACKTEND = 'BACKTEND',
+  FRONTEND = 'FRONTEND',
+}
 
 export type ResetPasswordInput = {
   password: Scalars['String'];
