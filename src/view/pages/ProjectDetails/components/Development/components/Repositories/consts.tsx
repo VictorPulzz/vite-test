@@ -16,7 +16,7 @@ import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 
-const columnHelper = createColumnHelper<Omit<RepositoryType, '__typename'>>();
+const columnHelper = createColumnHelper<RepositoryType>();
 
 export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('name', {

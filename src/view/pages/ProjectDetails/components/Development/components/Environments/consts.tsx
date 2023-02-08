@@ -1,11 +1,13 @@
 import { createColumnHelper } from '@tanstack/react-table';
+import omit from 'lodash/omit';
 import React from 'react';
 
+import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 
 import { MoreCell } from './components/MoreCell';
 
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<ProjectEnvironmentType>();
 
 export const ENVIRONMENTS_TABLE_COLUMNS = [
   columnHelper.accessor('name', {
@@ -20,14 +22,16 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { frontendCredentials },
       },
     }) => {
+      const credentials = omit(frontendCredentials, ['__typename']);
+
       return (
         <div className="flex flex-col gap-2">
-          {Object.entries(frontendCredentials).map(([key, value]) => (
+          {Object.entries(credentials).map(([key, value]) => (
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">
-                <span>{value as string}</span>
-                <CopyTextButton value={value as string} />
+                <span>{value}</span>
+                <CopyTextButton value={value} />
               </div>
             </div>
           ))}
@@ -43,14 +47,16 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { backendCredentials },
       },
     }) => {
+      const credentials = omit(backendCredentials, ['__typename']);
+
       return (
         <div className="flex flex-col gap-2">
-          {Object.entries(backendCredentials).map(([key, value]) => (
+          {Object.entries(credentials).map(([key, value]) => (
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">
-                <span>{value as string}</span>
-                <CopyTextButton value={value as string} />
+                <span>{value}</span>
+                <CopyTextButton value={value} />
               </div>
             </div>
           ))}

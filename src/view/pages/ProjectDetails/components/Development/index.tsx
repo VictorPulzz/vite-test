@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { Loader } from '~/view/ui/components/common/Loader';
 
 import {
-  // useFetchProjectEnvironmentsListQuery,
+  useFetchProjectEnvironmentsListQuery,
   // useFetchProjectIntegrationsListQuery,
   useFetchProjectRepositoriesListQuery,
 } from '../../__generated__/schema';
@@ -23,12 +23,12 @@ export const Development: FC = () => {
       },
     });
 
-  // const { data: environmentsList, loading: isProjectEnvironmentsListLoading } =
-  //   useFetchProjectEnvironmentsListQuery({
-  //     variables: {
-  //       data: { id: projectId },
-  //     },
-  //   });
+  const { data: environmentsList, loading: isProjectEnvironmentsListLoading } =
+    useFetchProjectEnvironmentsListQuery({
+      variables: {
+        data: { id: projectId },
+      },
+    });
 
   // const { data: integrationsList, loading: isProjectIntegrationsListLoading } =
   //   useFetchProjectIntegrationsListQuery({
@@ -37,18 +37,20 @@ export const Development: FC = () => {
   //     },
   //   });
 
-  // console.log('🚀 ~ file: index.tsx:26 ~ projectEnvironmentList', environmentsList);
   // console.log('🚀 ~ file: index.tsx:32 ~ projectIntegrationList', integrationsList);
   return (
     <div>
-      {isProjectRepositoriesListLoading ? (
+      {isProjectRepositoriesListLoading || isProjectEnvironmentsListLoading ? (
         <Loader full colorful />
       ) : (
         <div className="flex flex-col gap-5">
           {repositoriesList && (
             <DevelopmentRepositories repositories={repositoriesList?.projectRepositoryList} />
           )}
-          <DevelopmentEnvironments />
+          {environmentsList && (
+            <DevelopmentEnvironments environments={environmentsList.projectEnvironmentList} />
+          )}
+
           <DevelopmentIntegrations />
         </div>
       )}

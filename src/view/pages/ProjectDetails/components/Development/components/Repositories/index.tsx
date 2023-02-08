@@ -1,6 +1,7 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
 
+import { RepositoryType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { FetchProjectRepositoriesListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
@@ -28,7 +29,11 @@ export const DevelopmentRepositories: FC<Props> = ({ repositories }) => {
           <EmptyState iconName="repositories" label="No repositories here yet" />
         )}
         {!!repositories.length && (
-          <Table className="mt-3" data={repositories} columns={REPOSITORIES_TABLE_COLUMNS} />
+          <Table
+            className="mt-3"
+            data={repositories as RepositoryType[]}
+            columns={REPOSITORIES_TABLE_COLUMNS}
+          />
         )}
         <Button
           variant={ButtonVariant.SECONDARY}

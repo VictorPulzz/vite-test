@@ -107,11 +107,10 @@ export type FetchProjectRepositoriesListQuery = {
   projectRepositoryList: Array<{
     __typename?: 'RepositoryType';
     id?: number | null;
-    name: string;
+    name?: string | null;
     type?: Types.RepositoryTypeChoice | null;
     platform?: Types.RepositoryPlatformChoice | null;
     createdAt: string;
-    projectId: number;
   }>;
 };
 
@@ -470,7 +469,6 @@ export const FetchProjectRepositoriesListDocument = gql`
       type
       platform
       createdAt
-      projectId
     }
   }
 `;

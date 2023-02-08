@@ -387,7 +387,7 @@ input RefreshTokenInput {
 
 input RepositoryInput {
   id: Int = null
-  name: String!
+  name: String = null
   platform: RepositoryPlatformChoice = null
   projectId: Int!
   type: RepositoryTypeChoice = null
@@ -401,7 +401,7 @@ enum RepositoryPlatformChoice {
 type RepositoryType {
   createdAt: DateTime!
   id: Int
-  name: String!
+  name: String
   platform: RepositoryPlatformChoice
   projectId: Int!
   type: RepositoryTypeChoice

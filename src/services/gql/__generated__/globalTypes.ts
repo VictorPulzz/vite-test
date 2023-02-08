@@ -454,7 +454,7 @@ export type RefreshTokenInput = {
 
 export type RepositoryInput = {
   id?: InputMaybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
   platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type?: InputMaybe<RepositoryTypeChoice>;
@@ -469,7 +469,7 @@ export type RepositoryType = {
   __typename: 'RepositoryType';
   createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   platform?: Maybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type?: Maybe<RepositoryTypeChoice>;

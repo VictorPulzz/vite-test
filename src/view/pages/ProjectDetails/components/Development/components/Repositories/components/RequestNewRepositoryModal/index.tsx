@@ -14,7 +14,7 @@ export enum ProjectPlatform {
   WEB = 'WEB',
   MOBILE = 'MOBILE',
 }
-export enum RepositoryType {
+export enum RepositoryTypes {
   FRONT_END = 'FRONTEND',
   BACK_END = 'BACKEND',
 }
@@ -32,7 +32,7 @@ export const RequestNewRepositoryModal: FC<Props> = ({ isOpen, close }) => {
   });
 
   const projectPlatformOptions = enumToSelectOptions(ProjectPlatform);
-  const repositoryTypeOptions = enumToSelectOptions(RepositoryType);
+  const repositoryTypeOptions = enumToSelectOptions(RepositoryTypes);
 
   return (
     <Modal

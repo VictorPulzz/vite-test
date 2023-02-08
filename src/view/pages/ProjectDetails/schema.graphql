@@ -84,7 +84,6 @@ query FetchProjectRepositoriesList($data: IDInput!) {
     type
     platform
     createdAt
-    projectId
   }
 }
 
