@@ -1,5 +1,5 @@
+import { pick } from '@appello/common/lib/utils/object/pick';
 import { createColumnHelper } from '@tanstack/react-table';
-import omit from 'lodash/omit';
 import React from 'react';
 
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
@@ -22,7 +22,9 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { frontendCredentials },
       },
     }) => {
-      const credentials = omit(frontendCredentials, ['__typename']);
+      const credentials = frontendCredentials
+        ? pick(frontendCredentials, ['url', 'login', 'password'])
+        : {};
 
       return (
         <div className="flex flex-col gap-2">
@@ -30,8 +32,8 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">
-                <span>{value}</span>
-                <CopyTextButton value={value} />
+                <span>{value as string}</span>
+                <CopyTextButton value={value as string} />
               </div>
             </div>
           ))}
@@ -47,7 +49,9 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { backendCredentials },
       },
     }) => {
-      const credentials = omit(backendCredentials, ['__typename']);
+      const credentials = backendCredentials
+        ? pick(backendCredentials, ['url', 'login', 'password'])
+        : {};
 
       return (
         <div className="flex flex-col gap-2">
@@ -55,8 +59,8 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">
-                <span>{value}</span>
-                <CopyTextButton value={value} />
+                <span>{value as string}</span>
+                <CopyTextButton value={value as string} />
               </div>
             </div>
           ))}
