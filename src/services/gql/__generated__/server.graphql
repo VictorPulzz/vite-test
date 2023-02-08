@@ -352,6 +352,10 @@ type Query {
   """
   projectMemberList(data: IDInput!): ProjectMemberListType!
   """
+  Getting repositories for project by id
+  """
+  projectRepositoryList(data: IDInput!): [RepositoryType!]!
+  """
   Getting list of projects
   """
   projectsList(
@@ -359,10 +363,6 @@ type Query {
     pagination: PaginationInput!
     search: String = null
   ): ProjectTypePagination!
-  """
-  Getting repositories for project by id
-  """
-  repositoryList(data: IDInput!): [RepositoryType!]!
   """
   Getting list of users' roles
   """
@@ -408,7 +408,7 @@ type RepositoryType {
 }
 
 enum RepositoryTypeChoice {
-  BACKTEND
+  BACKEND
   FRONTEND
 }
 

@@ -400,10 +400,10 @@ export type Query = {
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting member for project by id */
   projectMemberList: ProjectMemberListType;
+  /** Getting repositories for project by id */
+  projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
-  /** Getting repositories for project by id */
-  repositoryList: Array<RepositoryType>;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
   /** Getting user by id */
@@ -428,14 +428,14 @@ export type QueryProjectMemberListArgs = {
   data: IdInput;
 };
 
+export type QueryProjectRepositoryListArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
-};
-
-export type QueryRepositoryListArgs = {
-  data: IdInput;
 };
 
 export type QueryUserDetailsArgs = {
@@ -476,7 +476,7 @@ export type RepositoryType = {
 };
 
 export enum RepositoryTypeChoice {
-  BACKTEND = 'BACKTEND',
+  BACKEND = 'BACKEND',
   FRONTEND = 'FRONTEND',
 }
 
