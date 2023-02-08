@@ -6,27 +6,13 @@ import { generatePath } from 'react-router-dom';
 import { ROUTES } from '~/constants/routes';
 import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { getBadgeByProjectStatus } from '~/utils/getBadgeByProjectStatus';
+import { Badge } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 import { ProjectResultType } from './types';
 
 const columnHelper = createColumnHelper<ProjectResultType>();
-
-const getBadgeByStatus = (status: StatusEnum): BadgeColor => {
-  switch (true) {
-    case status === StatusEnum.IN_PROGRESS:
-      return BadgeColor.BLUE;
-    case status === StatusEnum.WAITING:
-      return BadgeColor.RED;
-    case status === StatusEnum.STOPPED:
-      return BadgeColor.GRAY;
-    case status === StatusEnum.BLOCKED:
-      return BadgeColor.GREEN;
-    default:
-      return BadgeColor.BLUE;
-  }
-};
 
 export const PROJECTS_TABLE_COLUMNS = [
   columnHelper.accessor('name', {
@@ -53,8 +39,7 @@ export const PROJECTS_TABLE_COLUMNS = [
     header: 'Status',
     cell: props => {
       const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
-
-      return <Badge color={getBadgeByStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
+      return <Badge color={getBadgeByProjectStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
     },
   }),
   columnHelper.group({

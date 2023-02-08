@@ -2,6 +2,7 @@ query FetchProjectDetails($data: IDInput!) {
   project(data: $data) {
     id
     name
+    createdAt
     createdBy {
       fullName
     }

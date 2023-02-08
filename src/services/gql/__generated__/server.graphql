@@ -41,6 +41,11 @@ Date (isoformat)
 """
 scalar Date
 
+"""
+Date with time (isoformat)
+"""
+scalar DateTime
+
 type DepartmentType {
   id: Int!
   name: String!
@@ -75,6 +80,24 @@ type ImageType {
   fileName: String!
   size: Int!
   url: String!
+}
+
+input IntegrationCredentialsInput {
+  id: Int = null
+  key: String = null
+  login: String = null
+  name: String = null
+  password: String = null
+  url: String = null
+}
+
+type IntegrationCredentialsType {
+  id: Int
+  key: String
+  login: String
+  name: String
+  password: String
+  url: String
 }
 
 input LoginInput {
@@ -127,6 +150,14 @@ type Mutation {
   Project create or update environment
   """
   projectEnvironmentCreateUpdate(data: ProjectEnvironmentInput!): ProjectEnvironmentType!
+  """
+  Project create or update integration
+  """
+  projectIntegrationCreateUpdate(data: ProjectIntegrationInput!): ProjectIntegrationType!
+  """
+  Repository creation or update
+  """
+  repositoryCreateUpdate(data: RepositoryInput!): RepositoryType!
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation
@@ -225,6 +256,20 @@ input ProjectFilter {
   status: StatusEnum = null
 }
 
+input ProjectIntegrationInput {
+  credentials: [IntegrationCredentialsInput!]
+  id: Int = null
+  name: String!
+  projectId: Int!
+}
+
+type ProjectIntegrationType {
+  credentials: [IntegrationCredentialsType!]
+  id: Int
+  name: String!
+  projectId: Int!
+}
+
 input ProjectMemberInput {
   currentTeam: Boolean = true
   projectId: Int!
@@ -260,6 +305,7 @@ input ProjectStatusInput {
 type ProjectType {
   PM: [UserType!]
   clientTeam: [ClientType!]
+  createdAt: DateTime!
   createdBy: UserType
   design: String
   endDate: Date
@@ -294,6 +340,14 @@ type Query {
   """
   project(data: IDInput!): ProjectType!
   """
+  Getting environments for project by id
+  """
+  projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
+  """
+  Getting integrations for project by id
+  """
+  projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
+  """
   Getting member for project by id
   """
   projectMemberList(data: IDInput!): ProjectMemberListType!
@@ -305,6 +359,10 @@ type Query {
     pagination: PaginationInput!
     search: String = null
   ): ProjectTypePagination!
+  """
+  Getting repositories for project by id
+  """
+  repositoryList(data: IDInput!): [RepositoryType!]!
   """
   Getting list of users' roles
   """
@@ -325,6 +383,33 @@ type Query {
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+input RepositoryInput {
+  id: Int = null
+  name: String!
+  platform: RepositoryPlatformChoice = null
+  projectId: Int!
+  type: RepositoryTypeChoice = null
+}
+
+enum RepositoryPlatformChoice {
+  MOBILE
+  WEB
+}
+
+type RepositoryType {
+  createdAt: DateTime!
+  id: Int
+  name: String!
+  platform: RepositoryPlatformChoice
+  projectId: Int!
+  type: RepositoryTypeChoice
+}
+
+enum RepositoryTypeChoice {
+  BACKTEND
+  FRONTEND
 }
 
 input ResetPasswordInput {

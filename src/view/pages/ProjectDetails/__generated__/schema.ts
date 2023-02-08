@@ -14,6 +14,7 @@ export type FetchProjectDetailsQuery = {
     __typename?: 'ProjectType';
     id: number;
     name: string;
+    createdAt: string;
     status?: Types.StatusEnum | null;
     startDate: string;
     endDate?: string | null;
@@ -102,6 +103,7 @@ export const FetchProjectDetailsDocument = gql`
     project(data: $data) {
       id
       name
+      createdAt
       createdBy {
         fullName
       }

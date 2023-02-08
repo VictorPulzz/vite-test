@@ -4,9 +4,10 @@ import React, { FC, useMemo } from 'react';
 import { DateFormat } from '~/constants/dates';
 import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { getBadgeByProjectStatus } from '~/utils/getBadgeByProjectStatus';
 import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
+import { Badge } from '~/view/ui/components/common/Badge';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 import { TextLink } from '~/view/ui/components/common/TextLink';
@@ -21,21 +22,6 @@ interface Props {
 export const Info: FC<Props> = ({
   projectInfo: { status, startDate, endDate, phase, design, roadmap, notes, clientTeam },
 }) => {
-  const getBadgeByStatus = useMemo((): BadgeColor => {
-    switch (true) {
-      case status === StatusEnum.IN_PROGRESS:
-        return BadgeColor.BLUE;
-      case status === StatusEnum.WAITING:
-        return BadgeColor.RED;
-      case status === StatusEnum.STOPPED:
-        return BadgeColor.GRAY;
-      case status === StatusEnum.BLOCKED:
-        return BadgeColor.GREEN;
-      default:
-        return BadgeColor.BLUE;
-    }
-  }, [status]);
-
   const isPastEndDate = useMemo(() => isPast(new Date(endDate as string)), [endDate]);
 
   const durationToEndDate = useMemo(
@@ -58,7 +44,7 @@ export const Info: FC<Props> = ({
         <div className="grid grid-cols-2 gap-y-[15px] mt-3">
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Project status</span>
-            <Badge color={getBadgeByStatus}>
+            <Badge color={getBadgeByProjectStatus(status as StatusEnum)}>
               {convertUppercaseToReadable(status as StatusEnum)}
             </Badge>
           </div>
