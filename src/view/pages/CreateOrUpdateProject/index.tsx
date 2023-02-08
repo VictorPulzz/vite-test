@@ -12,6 +12,7 @@ import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
+import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
 import { useFetchProjectQuery } from './__generated__/schema';
@@ -34,6 +35,8 @@ export const CreateOrUpdateProject: FC = () => {
     prefilledData: data?.project,
     id: projectId,
   });
+
+  const isGenerateServiceAgreementChecked = form.watch('isGenerateServiceAgreement');
 
   // TODO add clientTeamMembers with useFieldArray
   // const { fields, append } = useFieldArray({
@@ -72,7 +75,12 @@ export const CreateOrUpdateProject: FC = () => {
             <InlineFields>
               <InlineFields>
                 <DateField name="startDate" control={form.control} label="Start date" required />
-                <DateField name="endDate" control={form.control} label="Estimated end date" />
+                <DateField
+                  name="endDate"
+                  control={form.control}
+                  label="Estimated end date"
+                  required
+                />
               </InlineFields>
               <InlineFields>
                 <div className="relative">
@@ -92,6 +100,26 @@ export const CreateOrUpdateProject: FC = () => {
               </InlineFields>
             </InlineFields>
             <TextAreaField name="notes" control={form.control} label="Notes" />
+            <div className="flex items-center gap-4 my-4">
+              <Checkbox
+                label="Generate Design & Prototype Agreement"
+                {...form.register('isGenerateDesignAndPrototypeAgreement')}
+              />
+              <Checkbox
+                label="Generate Service agreement"
+                {...form.register('isGenerateServiceAgreement')}
+              />
+            </div>
+            {isGenerateServiceAgreementChecked && (
+              <InlineFields>
+                <TextField name="companyName" control={form.control} label="Company name" />
+                <TextField name="companyAcn" control={form.control} label="Company ACN" />
+                <TextField name="hourlyRate" control={form.control} label="Hourly rate" />
+                <TextField name="depositHours" control={form.control} label="Deposit hours" />
+                <TextField name="address" control={form.control} label="Address" />
+                <TextField name="abn" control={form.control} label="ABN" />
+              </InlineFields>
+            )}
           </SectionContainer>
           <SectionContainer title="Client team">
             <Button
