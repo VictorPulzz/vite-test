@@ -3,6 +3,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 
 import { MoreCell } from './components/MoreCell';
@@ -13,6 +14,7 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
   columnHelper.accessor('name', {
     id: 'name',
     header: 'Name',
+    cell: props => <span>{convertUppercaseToReadable(props.getValue())}</span>,
   }),
   columnHelper.accessor('frontendCredentials', {
     id: 'frontendCredentials',

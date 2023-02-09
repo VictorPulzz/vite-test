@@ -56,6 +56,12 @@ type DocumentCategoryType {
   name: String!
 }
 
+input DocumentFilter {
+  addedById: Int = null
+  categoryId: Int = null
+  projectId: Int = null
+}
+
 input DocumentGenerateFieldInput {
   name: String!
   value: String = null
@@ -84,6 +90,13 @@ type DocumentType {
   file: ImageType!
   id: Int!
   project: ProjectType
+}
+
+type DocumentTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [DocumentType!]!
 }
 
 input EnvironmentCredentialsInput {
@@ -275,11 +288,17 @@ input ProjectCreateInput {
   status: StatusEnum
 }
 
+enum ProjectEnvironmentChoice {
+  DEV
+  PROD
+  STAGE
+}
+
 input ProjectEnvironmentInput {
   backendCredentials: EnvironmentCredentialsInput = null
   frontendCredentials: EnvironmentCredentialsInput = null
   id: Int = null
-  name: String!
+  name: ProjectEnvironmentChoice!
   projectId: Int!
 }
 
@@ -287,7 +306,7 @@ type ProjectEnvironmentType {
   backendCredentials: EnvironmentCredentialsType
   frontendCredentials: EnvironmentCredentialsType
   id: Int
-  name: String!
+  name: ProjectEnvironmentChoice!
   projectId: Int!
 }
 
@@ -373,7 +392,11 @@ type Query {
   """
   Getting list of documents
   """
-  documentList: [DocumentType!]!
+  documentList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput!
+    search: String = null
+  ): DocumentTypePagination!
   """
   Getting list of document templates
   """

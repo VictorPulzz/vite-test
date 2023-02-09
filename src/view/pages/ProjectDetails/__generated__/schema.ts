@@ -137,7 +137,7 @@ export type FetchProjectEnvironmentsListQuery = {
     __typename?: 'ProjectEnvironmentType';
     id?: number | null;
     projectId: number;
-    name: string;
+    name: Types.ProjectEnvironmentChoice;
     frontendCredentials?: {
       __typename?: 'EnvironmentCredentialsType';
       url: string;
@@ -151,6 +151,18 @@ export type FetchProjectEnvironmentsListQuery = {
       password: string;
     } | null;
   }>;
+};
+
+export type RequestNewProjectEnvironmentMutationVariables = Types.Exact<{
+  input: Types.ProjectEnvironmentInput;
+}>;
+
+export type RequestNewProjectEnvironmentMutation = {
+  __typename?: 'Mutation';
+  projectEnvironmentCreateUpdate: {
+    __typename?: 'ProjectEnvironmentType';
+    name: Types.ProjectEnvironmentChoice;
+  };
 };
 
 export type FetchProjectIntegrationsListQueryVariables = Types.Exact<{
@@ -658,6 +670,56 @@ export type FetchProjectEnvironmentsListLazyQueryHookResult = ReturnType<
 export type FetchProjectEnvironmentsListQueryResult = Apollo.QueryResult<
   FetchProjectEnvironmentsListQuery,
   FetchProjectEnvironmentsListQueryVariables
+>;
+export const RequestNewProjectEnvironmentDocument = gql`
+  mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
+    projectEnvironmentCreateUpdate(data: $input) {
+      name
+    }
+  }
+`;
+export type RequestNewProjectEnvironmentMutationFn = Apollo.MutationFunction<
+  RequestNewProjectEnvironmentMutation,
+  RequestNewProjectEnvironmentMutationVariables
+>;
+
+/**
+ * __useRequestNewProjectEnvironmentMutation__
+ *
+ * To run a mutation, you first call `useRequestNewProjectEnvironmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestNewProjectEnvironmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestNewProjectEnvironmentMutation, { data, loading, error }] = useRequestNewProjectEnvironmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRequestNewProjectEnvironmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RequestNewProjectEnvironmentMutation,
+    RequestNewProjectEnvironmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RequestNewProjectEnvironmentMutation,
+    RequestNewProjectEnvironmentMutationVariables
+  >(RequestNewProjectEnvironmentDocument, options);
+}
+export type RequestNewProjectEnvironmentMutationHookResult = ReturnType<
+  typeof useRequestNewProjectEnvironmentMutation
+>;
+export type RequestNewProjectEnvironmentMutationResult =
+  Apollo.MutationResult<RequestNewProjectEnvironmentMutation>;
+export type RequestNewProjectEnvironmentMutationOptions = Apollo.BaseMutationOptions<
+  RequestNewProjectEnvironmentMutation,
+  RequestNewProjectEnvironmentMutationVariables
 >;
 export const FetchProjectIntegrationsListDocument = gql`
   query FetchProjectIntegrationsList($data: IDInput!) {

@@ -112,6 +112,12 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
   }
 }
 
+mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
+  projectEnvironmentCreateUpdate(data: $input) {
+    name
+  }
+}
+
 query FetchProjectIntegrationsList($data: IDInput!) {
   projectIntegrationList(data: $data) {
     id

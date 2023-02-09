@@ -62,6 +62,12 @@ export type DocumentCategoryType = {
   name: Scalars['String'];
 };
 
+export type DocumentFilter = {
+  addedById?: InputMaybe<Scalars['Int']>;
+  categoryId?: InputMaybe<Scalars['Int']>;
+  projectId?: InputMaybe<Scalars['Int']>;
+};
+
 export type DocumentGenerateFieldInput = {
   name: Scalars['String'];
   value?: InputMaybe<Scalars['String']>;
@@ -93,6 +99,14 @@ export type DocumentType = {
   file: ImageType;
   id: Scalars['Int'];
   project?: Maybe<ProjectType>;
+};
+
+export type DocumentTypePagination = {
+  __typename: 'DocumentTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<DocumentType>;
 };
 
 export type EnvironmentCredentialsInput = {
@@ -335,11 +349,17 @@ export type ProjectCreateInput = {
   status?: InputMaybe<StatusEnum>;
 };
 
+export enum ProjectEnvironmentChoice {
+  DEV = 'DEV',
+  PROD = 'PROD',
+  STAGE = 'STAGE',
+}
+
 export type ProjectEnvironmentInput = {
   backendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
   frontendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
   id?: InputMaybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
 };
 
@@ -348,7 +368,7 @@ export type ProjectEnvironmentType = {
   backendCredentials?: Maybe<EnvironmentCredentialsType>;
   frontendCredentials?: Maybe<EnvironmentCredentialsType>;
   id?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
 };
 
@@ -436,7 +456,7 @@ export type Query = {
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
   /** Getting list of documents */
-  documentList: Array<DocumentType>;
+  documentList: DocumentTypePagination;
   /** Getting list of document templates */
   documentTemplateList: Array<DocumentTemplateType>;
   /** Getting authenticated user */
@@ -459,6 +479,12 @@ export type Query = {
   userDetails: UserType;
   /** Getting list of users */
   usersList: UserTypePagination;
+};
+
+export type QueryDocumentListArgs = {
+  filters?: InputMaybe<DocumentFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryProjectArgs = {
