@@ -1,17 +1,24 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
+import {
+  FetchProjectIntegrationsListDocument,
+  useRequestNewProjectIntegrationMutation,
+} from '../__generated__/schema';
+
 const formSchema = z.object({
   name: z.string(),
   credentials: z.object({
+    name: z.string(),
+    url: z.string(),
     login: z.string(),
     password: z.string(),
-    devApiKey: z.string(),
-    prodApiKey: z.string(),
+    key: z.string(),
   }),
 });
 
@@ -20,19 +27,21 @@ type RequestNewIntegrationFormValues = z.infer<typeof formSchema>;
 interface UseRequestNewIntegrationFormReturn {
   form: UseFormReturn<RequestNewIntegrationFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<RequestNewIntegrationFormValues>>;
+  resetForm?(): void;
 }
 
 interface UseRequestNewIntegrationFormProps {
-  onSubmitSuccessful?: () => void;
+  onSubmitSuccessful?(): void;
 }
 
 const defaultValues: RequestNewIntegrationFormValues = {
   name: '',
   credentials: {
+    name: '',
+    url: '',
     login: '',
     password: '',
-    devApiKey: '',
-    prodApiKey: '',
+    key: '',
   },
 };
 
@@ -44,19 +53,32 @@ export function useRequestNewIntegrationForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [requestNewIntegration] = useRequestNewIntegrationMutation();
+  const params = useParams();
+  const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
+
+  const [requestNewProjectIntegration] = useRequestNewProjectIntegrationMutation();
 
   const handleSubmit = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async (values: RequestNewIntegrationFormValues) => {
       try {
-        // await requestNewIntegration({
-        //   variables: {
-        //     input: {
-        //       name: values.name,
-        //     },
-        //   },
-        // });
+        await requestNewProjectIntegration({
+          variables: {
+            input: {
+              projectId,
+              name: values.name,
+              credentials: [
+                {
+                  name: values.credentials.name,
+                  url: values.credentials.url,
+                  login: values.credentials.login,
+                  password: values.credentials.password,
+                  key: values.credentials.key,
+                },
+              ],
+            },
+          },
+          refetchQueries: [FetchProjectIntegrationsListDocument],
+        });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<RequestNewIntegrationFormValues>(e, {
@@ -65,11 +87,15 @@ export function useRequestNewIntegrationForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful],
+    [form.setError, onSubmitSuccessful, projectId, requestNewProjectIntegration],
   );
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit) }),
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      resetForm: () => form.reset(defaultValues),
+    }),
     [form, handleSubmit],
   );
 }

@@ -132,3 +132,9 @@ query FetchProjectIntegrationsList($data: IDInput!) {
     }
   }
 }
+
+mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
+  projectIntegrationCreateUpdate(data: $input) {
+    name
+  }
+}

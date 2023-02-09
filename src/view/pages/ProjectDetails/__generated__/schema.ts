@@ -187,6 +187,15 @@ export type FetchProjectIntegrationsListQuery = {
   }>;
 };
 
+export type RequestNewProjectIntegrationMutationVariables = Types.Exact<{
+  input: Types.ProjectIntegrationInput;
+}>;
+
+export type RequestNewProjectIntegrationMutation = {
+  __typename?: 'Mutation';
+  projectIntegrationCreateUpdate: { __typename?: 'ProjectIntegrationType'; name: string };
+};
+
 export const FetchProjectDetailsDocument = gql`
   query FetchProjectDetails($data: IDInput!) {
     project(data: $data) {
@@ -787,4 +796,54 @@ export type FetchProjectIntegrationsListLazyQueryHookResult = ReturnType<
 export type FetchProjectIntegrationsListQueryResult = Apollo.QueryResult<
   FetchProjectIntegrationsListQuery,
   FetchProjectIntegrationsListQueryVariables
+>;
+export const RequestNewProjectIntegrationDocument = gql`
+  mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
+    projectIntegrationCreateUpdate(data: $input) {
+      name
+    }
+  }
+`;
+export type RequestNewProjectIntegrationMutationFn = Apollo.MutationFunction<
+  RequestNewProjectIntegrationMutation,
+  RequestNewProjectIntegrationMutationVariables
+>;
+
+/**
+ * __useRequestNewProjectIntegrationMutation__
+ *
+ * To run a mutation, you first call `useRequestNewProjectIntegrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestNewProjectIntegrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestNewProjectIntegrationMutation, { data, loading, error }] = useRequestNewProjectIntegrationMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRequestNewProjectIntegrationMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RequestNewProjectIntegrationMutation,
+    RequestNewProjectIntegrationMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RequestNewProjectIntegrationMutation,
+    RequestNewProjectIntegrationMutationVariables
+  >(RequestNewProjectIntegrationDocument, options);
+}
+export type RequestNewProjectIntegrationMutationHookResult = ReturnType<
+  typeof useRequestNewProjectIntegrationMutation
+>;
+export type RequestNewProjectIntegrationMutationResult =
+  Apollo.MutationResult<RequestNewProjectIntegrationMutation>;
+export type RequestNewProjectIntegrationMutationOptions = Apollo.BaseMutationOptions<
+  RequestNewProjectIntegrationMutation,
+  RequestNewProjectIntegrationMutationVariables
 >;
