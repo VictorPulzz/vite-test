@@ -114,6 +114,8 @@ query FetchProjectIntegrationsList($data: IDInput!) {
       url
       login
       password
+      key
+      name
     }
   }
 }

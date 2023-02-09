@@ -56,6 +56,19 @@ export type DepartmentType = {
   name: Scalars['String'];
 };
 
+export type DocumentTemplateFieldType = {
+  __typename: 'DocumentTemplateFieldType';
+  description?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type DocumentTemplateType = {
+  __typename: 'DocumentTemplateType';
+  fields?: Maybe<Array<DocumentTemplateFieldType>>;
+  name: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+};
+
 export type EnvironmentCredentialsInput = {
   login: Scalars['String'];
   password: Scalars['String'];
@@ -390,6 +403,8 @@ export type Query = {
   __typename: 'Query';
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
+  /** Getting list of document templates */
+  documentTemplateList: Array<DocumentTemplateType>;
   /** Getting authenticated user */
   me: ProfileType;
   /** Getting project by id */

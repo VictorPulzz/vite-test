@@ -1,4 +1,4 @@
-import isNumber from 'lodash/isNumber';
+import { isNumber } from '~/utils/isNumber';
 
 import { FetchProjectQuery } from '../__generated__/schema';
 import { ProjectFormValues } from './useProjectForm';

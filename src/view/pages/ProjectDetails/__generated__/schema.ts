@@ -156,6 +156,8 @@ export type FetchProjectIntegrationsListQuery = {
       url?: string | null;
       login?: string | null;
       password?: string | null;
+      key?: string | null;
+      name?: string | null;
     }> | null;
   }>;
 };
@@ -603,6 +605,8 @@ export const FetchProjectIntegrationsListDocument = gql`
         url
         login
         password
+        key
+        name
       }
     }
   }

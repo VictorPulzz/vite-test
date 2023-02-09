@@ -51,6 +51,17 @@ type DepartmentType {
   name: String!
 }
 
+type DocumentTemplateFieldType {
+  description: String
+  name: String!
+}
+
+type DocumentTemplateType {
+  fields: [DocumentTemplateFieldType!]
+  name: String!
+  url: String
+}
+
 input EnvironmentCredentialsInput {
   login: String!
   password: String!
@@ -331,6 +342,10 @@ type Query {
   Getting list of users' departments
   """
   departmentsList: [DepartmentType!]!
+  """
+  Getting list of document templates
+  """
+  documentTemplateList: [DocumentTemplateType!]!
   """
   Getting authenticated user
   """
