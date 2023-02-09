@@ -32,15 +32,7 @@ export const INTEGRATIONS_TABLE_COLUMNS = [
                 <Fragment key={key}>
                   {value && (
                     <div className="flex items-center gap-1">
-                      <span className="font-semibold">
-                        {key[0].toUpperCase() +
-                          key
-                            .slice(1)
-                            .replace(/([A-Z])/g, ' $1')
-                            .trim()
-                            .toLowerCase()}{' '}
-                        -
-                      </span>
+                      <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} -</span>
                       <div className="flex items-center gap-2">
                         <span>{value}</span>
                         {key !== 'name' && <CopyTextButton value={value as string} />}

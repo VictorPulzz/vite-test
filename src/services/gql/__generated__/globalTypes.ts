@@ -56,6 +56,23 @@ export type DepartmentType = {
   name: Scalars['String'];
 };
 
+export type DocumentCategoryType = {
+  __typename: 'DocumentCategoryType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type DocumentGenerateFieldInput = {
+  name: Scalars['String'];
+  value?: InputMaybe<Scalars['String']>;
+};
+
+export type DocumentGenerateInput = {
+  fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
+  id: Scalars['Int'];
+  projectId: Scalars['Int'];
+};
+
 export type DocumentTemplateFieldType = {
   __typename: 'DocumentTemplateFieldType';
   description?: Maybe<Scalars['String']>;
@@ -67,6 +84,15 @@ export type DocumentTemplateType = {
   fields?: Maybe<Array<DocumentTemplateFieldType>>;
   name: Scalars['String'];
   url?: Maybe<Scalars['String']>;
+};
+
+export type DocumentType = {
+  __typename: 'DocumentType';
+  addedBy?: Maybe<UserType>;
+  category?: Maybe<DocumentCategoryType>;
+  file: ImageType;
+  id: Scalars['Int'];
+  project?: Maybe<ProjectType>;
 };
 
 export type EnvironmentCredentialsInput = {
@@ -141,6 +167,8 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  /** Generate document */
+  documentGenerate: DocumentType;
   forgotPassword: ForgotPasswordType;
   /** Login */
   login: LoginSuccessType;
@@ -176,6 +204,10 @@ export type Mutation = {
   userDelete: MessageType;
   /** Add user note */
   userNote: NoteType;
+};
+
+export type MutationDocumentGenerateArgs = {
+  data: DocumentGenerateInput;
 };
 
 export type MutationForgotPasswordArgs = {
@@ -403,6 +435,8 @@ export type Query = {
   __typename: 'Query';
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
+  /** Getting list of documents */
+  documentList: Array<DocumentType>;
   /** Getting list of document templates */
   documentTemplateList: Array<DocumentTemplateType>;
   /** Getting authenticated user */

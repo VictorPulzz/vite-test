@@ -87,6 +87,13 @@ query FetchProjectRepositoriesList($data: IDInput!) {
   }
 }
 
+mutation RequestNewProjectRepository($input: RepositoryInput!) {
+  repositoryCreateUpdate(data: $input) {
+    platform
+    type
+  }
+}
+
 query FetchProjectEnvironmentsList($data: IDInput!) {
   projectEnvironmentList(data: $data) {
     id

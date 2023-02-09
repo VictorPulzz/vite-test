@@ -11,7 +11,7 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 }
 
 export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
-  const { form, handleSubmit } = useAddNewMemberForm({
+  const { form, handleSubmit, resetForm } = useAddNewMemberForm({
     onSubmitSuccessful: () => close(),
     projectId,
   });
@@ -33,8 +33,6 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
     return [];
   }, [data?.usersList.results]);
 
-  const isDisabled = !form.watch('user');
-  // TODO add reset form
   return (
     <Modal
       withCloseButton
@@ -42,6 +40,7 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
       close={close}
       contentClassName="w-[22.18rem]"
       title="New member"
+      onAfterClose={resetForm}
     >
       <div className="flex flex-col items-center">
         <SelectField
@@ -56,7 +55,6 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
         onClick={handleSubmit}
         label="Add"
         className="mt-6"
-        disabled={isDisabled}
         isLoading={form.formState.isSubmitting}
       />
     </Modal>

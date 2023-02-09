@@ -114,6 +114,19 @@ export type FetchProjectRepositoriesListQuery = {
   }>;
 };
 
+export type RequestNewProjectRepositoryMutationVariables = Types.Exact<{
+  input: Types.RepositoryInput;
+}>;
+
+export type RequestNewProjectRepositoryMutation = {
+  __typename?: 'Mutation';
+  repositoryCreateUpdate: {
+    __typename?: 'RepositoryType';
+    platform?: Types.RepositoryPlatformChoice | null;
+    type?: Types.RepositoryTypeChoice | null;
+  };
+};
+
 export type FetchProjectEnvironmentsListQueryVariables = Types.Exact<{
   data: Types.IdInput;
 }>;
@@ -524,6 +537,57 @@ export type FetchProjectRepositoriesListLazyQueryHookResult = ReturnType<
 export type FetchProjectRepositoriesListQueryResult = Apollo.QueryResult<
   FetchProjectRepositoriesListQuery,
   FetchProjectRepositoriesListQueryVariables
+>;
+export const RequestNewProjectRepositoryDocument = gql`
+  mutation RequestNewProjectRepository($input: RepositoryInput!) {
+    repositoryCreateUpdate(data: $input) {
+      platform
+      type
+    }
+  }
+`;
+export type RequestNewProjectRepositoryMutationFn = Apollo.MutationFunction<
+  RequestNewProjectRepositoryMutation,
+  RequestNewProjectRepositoryMutationVariables
+>;
+
+/**
+ * __useRequestNewProjectRepositoryMutation__
+ *
+ * To run a mutation, you first call `useRequestNewProjectRepositoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRequestNewProjectRepositoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [requestNewProjectRepositoryMutation, { data, loading, error }] = useRequestNewProjectRepositoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRequestNewProjectRepositoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RequestNewProjectRepositoryMutation,
+    RequestNewProjectRepositoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RequestNewProjectRepositoryMutation,
+    RequestNewProjectRepositoryMutationVariables
+  >(RequestNewProjectRepositoryDocument, options);
+}
+export type RequestNewProjectRepositoryMutationHookResult = ReturnType<
+  typeof useRequestNewProjectRepositoryMutation
+>;
+export type RequestNewProjectRepositoryMutationResult =
+  Apollo.MutationResult<RequestNewProjectRepositoryMutation>;
+export type RequestNewProjectRepositoryMutationOptions = Apollo.BaseMutationOptions<
+  RequestNewProjectRepositoryMutation,
+  RequestNewProjectRepositoryMutationVariables
 >;
 export const FetchProjectEnvironmentsListDocument = gql`
   query FetchProjectEnvironmentsList($data: IDInput!) {
