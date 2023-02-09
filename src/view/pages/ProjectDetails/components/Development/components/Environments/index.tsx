@@ -1,78 +1,37 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
 
+import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { FetchProjectEnvironmentsListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
 import { RequestNewEnvironmentModal } from './components/RequestNewEnvironmentModal';
 import { ENVIRONMENTS_TABLE_COLUMNS } from './consts';
 
-// TODO remove environmentsTestData when backend will be ready
-const environmentsTestData = [
-  {
-    projectId: 2,
-    id: 1,
-    name: 'Dev',
-    frontendCredentials: {
-      url: 'swop-front-dev.appello.xyz',
-      login: 'admin@admin.com',
-      password: 'admin123',
-    },
-    backendCredentials: {
-      url: 'swop-back-dev.appello.xyz',
-      login: 'admin@admin.com',
-      password: 'admin123',
-    },
-  },
-  {
-    projectId: 2,
-    id: 2,
-    name: 'Stage',
-    frontendCredentials: {
-      url: 'swop-front-stage.appello.xyz',
-      login: 'admin@admin.com',
-      password: 'admin123',
-    },
-    backendCredentials: {
-      url: 'swop-back-stage.appello.xyz',
-      login: 'admin@admin.com',
-      password: 'admin123',
-    },
-  },
-];
+interface Props {
+  environments: FetchProjectEnvironmentsListQuery['projectEnvironmentList'];
+}
 
-export const DevelopmentEnvironments: FC = () => {
+export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
   const {
     value: isRequestNewEnvironmentModalOpen,
     on: openRequestNewEnvironmentModal,
     off: closeRequestNewEnvironmentModal,
   } = useSwitchValue(false);
 
-  const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const projectId = params.id ? Number(params.id) : 0;
-
-  // const { data, loading } = useFetchDevelopmentEnvironmentsQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-
-  // TODO remove test data later
-  const data = {
-    loading: false,
-    environmentsList: environmentsTestData,
-  };
-
   return (
     <div>
       <SectionContainer title="Environments">
-        {!!data.environmentsList.length && (
+        {environments.length === 0 && (
+          <EmptyState iconName="repositories" label="No environments here yet" />
+        )}
+        {!!environments.length && (
           <Table
             className="mt-3"
-            data={data.environmentsList}
+            data={environments as ProjectEnvironmentType[]}
             columns={ENVIRONMENTS_TABLE_COLUMNS}
           />
         )}

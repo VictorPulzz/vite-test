@@ -1,16 +1,20 @@
+import { pick } from '@appello/common/lib/utils/object/pick';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
+import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 
 import { MoreCell } from './components/MoreCell';
 
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<ProjectEnvironmentType>();
 
 export const ENVIRONMENTS_TABLE_COLUMNS = [
   columnHelper.accessor('name', {
     id: 'name',
     header: 'Name',
+    cell: props => <span>{convertUppercaseToReadable(props.getValue())}</span>,
   }),
   columnHelper.accessor('frontendCredentials', {
     id: 'frontendCredentials',
@@ -20,9 +24,13 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { frontendCredentials },
       },
     }) => {
+      const credentials = frontendCredentials
+        ? pick(frontendCredentials, ['url', 'login', 'password'])
+        : {};
+
       return (
         <div className="flex flex-col gap-2">
-          {Object.entries(frontendCredentials).map(([key, value]) => (
+          {Object.entries(credentials).map(([key, value]) => (
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">
@@ -43,9 +51,13 @@ export const ENVIRONMENTS_TABLE_COLUMNS = [
         original: { backendCredentials },
       },
     }) => {
+      const credentials = backendCredentials
+        ? pick(backendCredentials, ['url', 'login', 'password'])
+        : {};
+
       return (
         <div className="flex flex-col gap-2">
-          {Object.entries(backendCredentials).map(([key, value]) => (
+          {Object.entries(credentials).map(([key, value]) => (
             <div key={key} className="flex items-center gap-1">
               <span className="font-semibold">{key[0].toUpperCase() + key.slice(1)} - </span>
               <div className="flex items-center gap-2">

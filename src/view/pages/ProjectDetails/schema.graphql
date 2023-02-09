@@ -76,3 +76,65 @@ mutation RemoveProjectMember($input: ProjectMemberInput!) {
     message
   }
 }
+
+query FetchProjectRepositoriesList($data: IDInput!) {
+  projectRepositoryList(data: $data) {
+    id
+    name
+    type
+    platform
+    createdAt
+  }
+}
+
+mutation RequestNewProjectRepository($input: RepositoryInput!) {
+  repositoryCreateUpdate(data: $input) {
+    platform
+    type
+  }
+}
+
+query FetchProjectEnvironmentsList($data: IDInput!) {
+  projectEnvironmentList(data: $data) {
+    id
+    projectId
+    name
+    frontendCredentials {
+      url
+      login
+      password
+    }
+    backendCredentials {
+      url
+      login
+      password
+    }
+  }
+}
+
+mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
+  projectEnvironmentCreateUpdate(data: $input) {
+    name
+  }
+}
+
+query FetchProjectIntegrationsList($data: IDInput!) {
+  projectIntegrationList(data: $data) {
+    id
+    name
+    projectId
+    credentials {
+      url
+      login
+      password
+      key
+      name
+    }
+  }
+}
+
+mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
+  projectIntegrationCreateUpdate(data: $input) {
+    name
+  }
+}

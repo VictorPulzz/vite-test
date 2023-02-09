@@ -56,6 +56,59 @@ export type DepartmentType = {
   name: Scalars['String'];
 };
 
+export type DocumentCategoryType = {
+  __typename: 'DocumentCategoryType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type DocumentFilter = {
+  addedById?: InputMaybe<Scalars['Int']>;
+  categoryId?: InputMaybe<Scalars['Int']>;
+  projectId?: InputMaybe<Scalars['Int']>;
+};
+
+export type DocumentGenerateFieldInput = {
+  name: Scalars['String'];
+  value?: InputMaybe<Scalars['String']>;
+};
+
+export type DocumentGenerateInput = {
+  fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
+  id: Scalars['Int'];
+  projectId: Scalars['Int'];
+};
+
+export type DocumentTemplateFieldType = {
+  __typename: 'DocumentTemplateFieldType';
+  description?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+};
+
+export type DocumentTemplateType = {
+  __typename: 'DocumentTemplateType';
+  fields?: Maybe<Array<DocumentTemplateFieldType>>;
+  name: Scalars['String'];
+  url?: Maybe<Scalars['String']>;
+};
+
+export type DocumentType = {
+  __typename: 'DocumentType';
+  addedBy?: Maybe<UserType>;
+  category?: Maybe<DocumentCategoryType>;
+  file: ImageType;
+  id: Scalars['Int'];
+  project?: Maybe<ProjectType>;
+};
+
+export type DocumentTypePagination = {
+  __typename: 'DocumentTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<DocumentType>;
+};
+
 export type EnvironmentCredentialsInput = {
   login: Scalars['String'];
   password: Scalars['String'];
@@ -128,6 +181,8 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  /** Generate document */
+  documentGenerate: DocumentType;
   forgotPassword: ForgotPasswordType;
   /** Login */
   login: LoginSuccessType;
@@ -163,6 +218,10 @@ export type Mutation = {
   userDelete: MessageType;
   /** Add user note */
   userNote: NoteType;
+};
+
+export type MutationDocumentGenerateArgs = {
+  data: DocumentGenerateInput;
 };
 
 export type MutationForgotPasswordArgs = {
@@ -290,11 +349,17 @@ export type ProjectCreateInput = {
   status?: InputMaybe<StatusEnum>;
 };
 
+export enum ProjectEnvironmentChoice {
+  DEV = 'DEV',
+  PROD = 'PROD',
+  STAGE = 'STAGE',
+}
+
 export type ProjectEnvironmentInput = {
   backendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
   frontendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
   id?: InputMaybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
 };
 
@@ -303,7 +368,7 @@ export type ProjectEnvironmentType = {
   backendCredentials?: Maybe<EnvironmentCredentialsType>;
   frontendCredentials?: Maybe<EnvironmentCredentialsType>;
   id?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
 };
 
@@ -390,6 +455,10 @@ export type Query = {
   __typename: 'Query';
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
+  /** Getting list of documents */
+  documentList: DocumentTypePagination;
+  /** Getting list of document templates */
+  documentTemplateList: Array<DocumentTemplateType>;
   /** Getting authenticated user */
   me: ProfileType;
   /** Getting project by id */
@@ -400,16 +469,22 @@ export type Query = {
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting member for project by id */
   projectMemberList: ProjectMemberListType;
+  /** Getting repositories for project by id */
+  projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
-  /** Getting repositories for project by id */
-  repositoryList: Array<RepositoryType>;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
   /** Getting user by id */
   userDetails: UserType;
   /** Getting list of users */
   usersList: UserTypePagination;
+};
+
+export type QueryDocumentListArgs = {
+  filters?: InputMaybe<DocumentFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryProjectArgs = {
@@ -428,14 +503,14 @@ export type QueryProjectMemberListArgs = {
   data: IdInput;
 };
 
+export type QueryProjectRepositoryListArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
-};
-
-export type QueryRepositoryListArgs = {
-  data: IdInput;
 };
 
 export type QueryUserDetailsArgs = {
@@ -454,7 +529,7 @@ export type RefreshTokenInput = {
 
 export type RepositoryInput = {
   id?: InputMaybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
   platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type?: InputMaybe<RepositoryTypeChoice>;
@@ -469,14 +544,14 @@ export type RepositoryType = {
   __typename: 'RepositoryType';
   createdAt: Scalars['DateTime'];
   id?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
   platform?: Maybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type?: Maybe<RepositoryTypeChoice>;
 };
 
 export enum RepositoryTypeChoice {
-  BACKTEND = 'BACKTEND',
+  BACKEND = 'BACKEND',
   FRONTEND = 'FRONTEND',
 }
 

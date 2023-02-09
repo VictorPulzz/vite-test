@@ -1,28 +1,22 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
+import { PasswordField } from '@ui/components/form/PasswordField';
+import { SelectField } from '@ui/components/form/SelectField';
+import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 
+import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { useRequestNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewEnvironmentForm';
-import { PasswordField } from '~/view/ui/components/form/PasswordField';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { TextField } from '~/view/ui/components/form/TextField';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
-// TODO remove ProjectEnvironment later
-export enum ProjectEnvironment {
-  DEV = 'DEV',
-  STAGE = 'STAGE',
-  PROD = 'PROD',
-}
-
 export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit } = useRequestNewEnvironmentForm({
+  const { form, handleSubmit, resetForm } = useRequestNewEnvironmentForm({
     onSubmitSuccessful: () => close(),
   });
 
-  const projectEnvironmentsOptions = enumToSelectOptions(ProjectEnvironment);
+  const projectEnvironmentsOptions = enumToSelectOptions(ProjectEnvironmentChoice);
 
   return (
     <Modal
@@ -31,6 +25,7 @@ export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
       close={close}
       contentClassName="w-5/9"
       title="Request new environment"
+      onAfterClose={resetForm}
     >
       <div>
         <SelectField
@@ -67,6 +62,7 @@ export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
         onClick={handleSubmit}
         label="Send"
         className="mt-6"
+        isLoading={form.formState.isSubmitting}
       />
     </Modal>
   );

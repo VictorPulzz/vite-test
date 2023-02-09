@@ -3,12 +3,13 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import { FetchProjectMembersDocument, useAddProjectMemberMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
-  user: z.string(),
+  user: z.string().refine(value => value !== '', formErrors.REQUIRED),
 });
 
 type AddNewMemberFormValues = z.infer<typeof formSchema>;
@@ -16,6 +17,7 @@ type AddNewMemberFormValues = z.infer<typeof formSchema>;
 interface UseAddNewMemberFormReturn {
   form: UseFormReturn<AddNewMemberFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<AddNewMemberFormValues>>;
+  resetForm?: () => void;
 }
 
 interface UseAddNewMemberFormProps {
@@ -63,7 +65,11 @@ export function useAddNewMemberForm({
   );
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit) }),
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      resetForm: () => form.reset(defaultValues),
+    }),
     [form, handleSubmit],
   );
 }

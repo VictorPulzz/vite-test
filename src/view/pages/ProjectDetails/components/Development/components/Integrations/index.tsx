@@ -1,65 +1,40 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
-import { useParams } from 'react-router-dom';
 
+import { ProjectIntegrationType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { FetchProjectIntegrationsListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
 import { RequestNewIntegrationModal } from './components/RequestNewIntegrationModal';
 import { INTEGRATIONS_TABLE_COLUMNS } from './consts';
 
-// TODO remove integrationsTestData when backend will be ready
-const integrationsTestData = [
-  {
-    projectId: 2,
-    name: 'Stripe',
-    credentials: {
-      login: 'test@appello.co',
-      password: 'admin123',
-      devApiKey: 'KMFkaslfa8782riunfhui78cfhfa89ca898sca',
-      prodApiKey: 'KMFkaslfa8782riunfhui78cfhfa89ca898gt',
-    },
-  },
-  {
-    projectId: 2,
-    name: 'Google Maps',
-    credentials: {
-      login: 'test@appello.co',
-      password: 'admin123****',
-      devApiKey: 'KMFkaslfa8782riunfhui78cfhfa89ca898sca',
-      prodApiKey: 'KMFkaslfa8782riunfhui78cfhfa89ca898gt',
-    },
-  },
-];
+interface Props {
+  integrations: FetchProjectIntegrationsListQuery['projectIntegrationList'];
+}
 
-export const DevelopmentIntegrations: FC = () => {
+export const DevelopmentIntegrations: FC<Props> = ({ integrations }) => {
   const {
     value: isRequestNewIntegrationModalOpen,
     on: openRequestNewIntegrationModal,
     off: closeRequestNewIntegrationModal,
   } = useSwitchValue(false);
 
-  const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const projectId = params.id ? Number(params.id) : 0;
-
-  // const { data, loading } = useFetchDevelopmentIntegrationsQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-
-  // TODO remove test data later
-  const data = {
-    loading: false,
-    integrationsList: integrationsTestData,
-  };
-
   return (
     <div>
       <SectionContainer title="Integrations">
-        <Table className="mt-2" data={data.integrationsList} columns={INTEGRATIONS_TABLE_COLUMNS} />
+        {integrations.length === 0 && (
+          <EmptyState iconName="repositories" label="No integrations here yet" />
+        )}
+        {!!integrations.length && (
+          <Table
+            className="mt-3"
+            data={integrations as ProjectIntegrationType[]}
+            columns={INTEGRATIONS_TABLE_COLUMNS}
+          />
+        )}
         <Button
           variant={ButtonVariant.SECONDARY}
           label="Request new integration"

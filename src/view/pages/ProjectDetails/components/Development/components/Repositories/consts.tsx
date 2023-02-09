@@ -1,43 +1,51 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import { TextLink } from '@ui/components/common/TextLink';
+import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
+import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import {
+  RepositoryPlatformChoice,
+  RepositoryType,
+  RepositoryTypeChoice,
+} from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 
-// TODO move ProjectPlatfrom to common models later
-export enum ProjectPlatfrom {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-}
-
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<RepositoryType>();
 
 export const REPOSITORIES_TABLE_COLUMNS = [
-  columnHelper.accessor('repositoryName', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor('name', {
+    id: 'name',
     header: 'Name',
     cell: props => {
-      const { repositoryId } = props.row.original;
+      const { id, name } = props.row.original;
       return (
-        <TextLink
-          to={generatePath(ROUTES.REPOSITORY_DETAILS, { id: repositoryId })}
-          className="underline"
-        >
-          {props.getValue()}
-        </TextLink>
+        <div>
+          {name ? (
+            <TextLink to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })} className="underline">
+              {props.getValue()}
+            </TextLink>
+          ) : (
+            <span className="text-red">Requested</span>
+          )}
+        </div>
       );
     },
   }),
   columnHelper.accessor('type', {
-    // id: ClientOrder.EMAIL,
+    id: 'type',
     header: 'Type',
+    cell: props => (
+      <span>{convertUppercaseToReadable(props.getValue() as RepositoryTypeChoice)}</span>
+    ),
   }),
   columnHelper.accessor('platform', {
-    // id: ClientOrder.STATUS,
+    id: 'platform',
     header: 'Platfrom',
     cell: ({
       row: {
@@ -47,7 +55,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       return (
         <Badge
           color={
-            platform.toUpperCase() === ProjectPlatfrom.WEB ? BadgeColor.GREEN : BadgeColor.GRAY
+            platform?.toUpperCase() === RepositoryPlatformChoice.WEB
+              ? BadgeColor.GREEN
+              : BadgeColor.GRAY
           }
         >
           {platform}
@@ -56,8 +66,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     },
   }),
   columnHelper.accessor('createdAt', {
-    // id: ClientOrder.EMAIL,
+    id: 'createdAt',
     header: 'Created at',
+    cell: props => <span>{format(new Date(props.getValue()), DateFormat.PP)}</span>,
   }),
   columnHelper.group({
     id: 'more',
