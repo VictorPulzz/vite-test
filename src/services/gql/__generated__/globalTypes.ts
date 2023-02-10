@@ -65,6 +65,7 @@ export type DocumentCategoryType = {
 export type DocumentFilter = {
   addedById?: InputMaybe<Scalars['Int']>;
   categoryId?: InputMaybe<Scalars['Int']>;
+  internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
 };
 
@@ -75,8 +76,16 @@ export type DocumentGenerateFieldInput = {
 
 export type DocumentGenerateInput = {
   fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
-  id: Scalars['Int'];
   projectId: Scalars['Int'];
+  templateId: Scalars['Int'];
+};
+
+export type DocumentInput = {
+  categoryId?: InputMaybe<Scalars['Int']>;
+  file?: InputMaybe<Scalars['Upload']>;
+  id?: InputMaybe<Scalars['Int']>;
+  internal?: InputMaybe<Scalars['Boolean']>;
+  projectId?: InputMaybe<Scalars['Int']>;
 };
 
 export type DocumentTemplateFieldType = {
@@ -96,8 +105,10 @@ export type DocumentType = {
   __typename: 'DocumentType';
   addedBy?: Maybe<UserType>;
   category?: Maybe<DocumentCategoryType>;
+  createdAt: Scalars['DateTime'];
   file: ImageType;
   id: Scalars['Int'];
+  internal: Scalars['Boolean'];
   project?: Maybe<ProjectType>;
 };
 
@@ -181,6 +192,8 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  /** Create or update document */
+  documentCreateUpdate: DocumentType;
   /** Generate document */
   documentGenerate: DocumentType;
   forgotPassword: ForgotPasswordType;
@@ -205,6 +218,10 @@ export type Mutation = {
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Repository creation or update */
   repositoryCreateUpdate: RepositoryType;
+  /** Create requests */
+  requestCreate: RequestType;
+  /** Update request status */
+  requestUpdateStatus: RequestType;
   resetPassword: MessageType;
   /** User creation */
   signup: MessageType;
@@ -218,6 +235,10 @@ export type Mutation = {
   userDelete: MessageType;
   /** Add user note */
   userNote: NoteType;
+};
+
+export type MutationDocumentCreateUpdateArgs = {
+  data: DocumentInput;
 };
 
 export type MutationDocumentGenerateArgs = {
@@ -270,6 +291,14 @@ export type MutationProjectIntegrationCreateUpdateArgs = {
 
 export type MutationRepositoryCreateUpdateArgs = {
   data: RepositoryInput;
+};
+
+export type MutationRequestCreateArgs = {
+  data: RequestInput;
+};
+
+export type MutationRequestUpdateStatusArgs = {
+  data: RequestUpdateStatusInput;
 };
 
 export type MutationResetPasswordArgs = {
@@ -473,6 +502,8 @@ export type Query = {
   projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
+  /** Getting list of requests */
+  requestList: RequestTypePagination;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
   /** Getting user by id */
@@ -511,6 +542,11 @@ export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
+};
+
+export type QueryRequestListArgs = {
+  filters?: InputMaybe<RequestFilter>;
+  pagination: PaginationInput;
 };
 
 export type QueryUserDetailsArgs = {
@@ -554,6 +590,50 @@ export enum RepositoryTypeChoice {
   BACKEND = 'BACKEND',
   FRONTEND = 'FRONTEND',
 }
+
+export type RequestFilter = {
+  createdById?: InputMaybe<Scalars['Int']>;
+  projectId?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<RequestStatusChoice>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
+export type RequestInput = {
+  projectId?: InputMaybe<Scalars['Int']>;
+  repositories?: InputMaybe<Array<Scalars['Int']>>;
+  roleId: Scalars['Int'];
+  type: Scalars['String'];
+};
+
+export enum RequestStatusChoice {
+  PENDING = 'PENDING',
+  RESOLVED = 'RESOLVED',
+}
+
+export type RequestType = {
+  __typename: 'RequestType';
+  createdAt: Scalars['DateTime'];
+  createdBy: UserType;
+  id: Scalars['Int'];
+  project?: Maybe<ProjectType>;
+  repositories?: Maybe<Array<RepositoryType>>;
+  role: RoleType;
+  status: RequestStatusChoice;
+  type: Scalars['String'];
+};
+
+export type RequestTypePagination = {
+  __typename: 'RequestTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<RequestType>;
+};
+
+export type RequestUpdateStatusInput = {
+  id: Scalars['Int'];
+  status: RequestStatusChoice;
+};
 
 export type ResetPasswordInput = {
   password: Scalars['String'];

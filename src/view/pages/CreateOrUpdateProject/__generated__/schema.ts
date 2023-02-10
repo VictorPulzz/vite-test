@@ -21,6 +21,14 @@ export type FetchProjectQuery = {
     roadmap?: string | null;
     notes?: string | null;
     phase: Types.ProjectPhaseChoice;
+    clientTeam?: Array<{
+      __typename?: 'ClientType';
+      fullName: string;
+      email: string;
+      phone?: string | null;
+      position?: string | null;
+      notes?: string | null;
+    }> | null;
   };
 };
 
@@ -42,6 +50,14 @@ export type CreateOrUpdateProjectMutation = {
     notes?: string | null;
     phase: Types.ProjectPhaseChoice;
     status?: Types.StatusEnum | null;
+    clientTeam?: Array<{
+      __typename?: 'ClientType';
+      fullName: string;
+      email: string;
+      phone?: string | null;
+      position?: string | null;
+      notes?: string | null;
+    }> | null;
   };
 };
 
@@ -57,6 +73,13 @@ export const FetchProjectDocument = gql`
       roadmap
       notes
       phase
+      clientTeam {
+        fullName
+        email
+        phone
+        position
+        notes
+      }
     }
   }
 `;
@@ -114,6 +137,13 @@ export const CreateOrUpdateProjectDocument = gql`
       notes
       phase
       status
+      clientTeam {
+        fullName
+        email
+        phone
+        position
+        notes
+      }
     }
   }
 `;

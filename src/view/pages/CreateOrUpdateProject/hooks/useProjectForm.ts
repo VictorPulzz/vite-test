@@ -8,9 +8,9 @@ import { formErrors } from '~/constants/form';
 import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
+import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
 import { FetchProjectQuery, useCreateOrUpdateProjectMutation } from '../__generated__/schema';
-import { transformPrefilledData } from './utils';
 
 const formSchema = z
   .object({
@@ -40,17 +40,16 @@ const formSchema = z
     hourlyRate: z.string().and(numberValidation),
     address: z.string(),
     abn: z.string(),
-    // TODO add clientTeamMembers later
     // TODO it is necessary to add a client with a point of contract
-    // clientTeamMembers: z
-    //   .object({
-    //     name: z.string(),
-    //     email: z.string(),
-    //     phone: z.string(),
-    //     position: z.string(),
-    //     notes: z.string(),
-    //   })
-    //   .array(),
+    clientTeamMembers: z
+      .object({
+        fullName: z.string(),
+        email: z.string(),
+        phone: z.string(),
+        position: z.string(),
+        notes: z.string(),
+      })
+      .array(),
   })
   .superRefine((value, ctx) => {
     if (value.endDate && value.startDate) {
@@ -94,8 +93,7 @@ const defaultValues: ProjectFormValues = {
   hourlyRate: '',
   address: '',
   abn: '',
-  // TODO add clientTeamMembers later
-  // clientTeamMembers: [],
+  clientTeamMembers: [],
 };
 
 export function useProjectForm({
@@ -106,7 +104,7 @@ export function useProjectForm({
   const form = useForm<ProjectFormValues>({
     defaultValues,
     // TODO fix transformPrefilledData when backend will be ready
-    values: prefilledData ? transformPrefilledData(prefilledData) : undefined,
+    values: prefilledData ? transformProjectPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
@@ -114,8 +112,6 @@ export function useProjectForm({
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useProjectForm.ts:101 ~ values', values);
       try {
         await projectCreateUpdate({
           variables: {
@@ -132,6 +128,7 @@ export function useProjectForm({
               notes: values.notes,
               phase: ProjectPhaseChoice.PRE_SIGNED,
               status: StatusEnum.IN_PROGRESS,
+              clientTeam: values.clientTeamMembers ?? [],
               // TODO add rest fields
             },
           },
