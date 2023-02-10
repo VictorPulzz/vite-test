@@ -59,6 +59,7 @@ type DocumentCategoryType {
 input DocumentFilter {
   addedById: Int = null
   categoryId: Int = null
+  internal: Boolean = null
   projectId: Int = null
 }
 
@@ -69,8 +70,16 @@ input DocumentGenerateFieldInput {
 
 input DocumentGenerateInput {
   fields: [DocumentGenerateFieldInput!] = null
-  id: Int!
   projectId: Int!
+  templateId: Int!
+}
+
+input DocumentInput {
+  categoryId: Int = null
+  file: Upload
+  id: Int = null
+  internal: Boolean = null
+  projectId: Int = null
 }
 
 type DocumentTemplateFieldType {
@@ -87,8 +96,10 @@ type DocumentTemplateType {
 type DocumentType {
   addedBy: UserType
   category: DocumentCategoryType
+  createdAt: DateTime!
   file: ImageType!
   id: Int!
+  internal: Boolean!
   project: ProjectType
 }
 
@@ -165,6 +176,10 @@ type MessageType {
 
 type Mutation {
   """
+  Create or update document
+  """
+  documentCreateUpdate(data: DocumentInput!): DocumentType!
+  """
   Generate document
   """
   documentGenerate(data: DocumentGenerateInput!): DocumentType!
@@ -210,6 +225,14 @@ type Mutation {
   Repository creation or update
   """
   repositoryCreateUpdate(data: RepositoryInput!): RepositoryType!
+  """
+  Create requests
+  """
+  requestCreate(data: RequestInput!): RequestType!
+  """
+  Update request status
+  """
+  requestUpdateStatus(data: RequestUpdateStatusInput!): RequestType!
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation
@@ -434,6 +457,10 @@ type Query {
     search: String = null
   ): ProjectTypePagination!
   """
+  Getting list of requests
+  """
+  requestList(filters: RequestFilter = null, pagination: PaginationInput!): RequestTypePagination!
+  """
   Getting list of users' roles
   """
   rolesList: [RoleType!]!
@@ -480,6 +507,48 @@ type RepositoryType {
 enum RepositoryTypeChoice {
   BACKEND
   FRONTEND
+}
+
+input RequestFilter {
+  createdById: Int = null
+  projectId: Int = null
+  status: RequestStatusChoice = null
+  type: String = null
+}
+
+input RequestInput {
+  projectId: Int = null
+  repositories: [Int!]
+  roleId: Int!
+  type: String!
+}
+
+enum RequestStatusChoice {
+  PENDING
+  RESOLVED
+}
+
+type RequestType {
+  createdAt: DateTime!
+  createdBy: UserType!
+  id: Int!
+  project: ProjectType
+  repositories: [RepositoryType!]
+  role: RoleType!
+  status: RequestStatusChoice!
+  type: String!
+}
+
+type RequestTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [RequestType!]!
+}
+
+input RequestUpdateStatusInput {
+  id: Int!
+  status: RequestStatusChoice!
 }
 
 input ResetPasswordInput {

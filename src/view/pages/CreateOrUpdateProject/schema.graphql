@@ -9,6 +9,13 @@ query FetchProject($data: IDInput!) {
     roadmap
     notes
     phase
+    clientTeam {
+      fullName
+      email
+      phone
+      position
+      notes
+    }
   }
 }
 
@@ -24,5 +31,12 @@ mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
     notes
     phase
     status
+    clientTeam {
+      fullName
+      email
+      phone
+      position
+      notes
+    }
   }
 }
