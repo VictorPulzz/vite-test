@@ -18,7 +18,7 @@ export type FetchUsersQuery = {
     results: Array<{
       __typename?: 'UserType';
       id?: string | null;
-      fullName: string;
+      fullName?: string | null;
       email: string;
       isActive?: boolean | null;
       photo?: { __typename?: 'ImageType'; url: string } | null;

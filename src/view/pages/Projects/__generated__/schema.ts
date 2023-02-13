@@ -20,7 +20,7 @@ export type FetchProjectsQuery = {
       id: number;
       name: string;
       status?: Types.StatusEnum | null;
-      PM?: Array<{ __typename?: 'UserType'; fullName: string }> | null;
+      PM?: Array<{ __typename?: 'UserType'; fullName?: string | null }> | null;
     }>;
   };
 };

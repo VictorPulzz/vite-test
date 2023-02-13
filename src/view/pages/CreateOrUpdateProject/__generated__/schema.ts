@@ -28,6 +28,7 @@ export type FetchProjectQuery = {
       phone?: string | null;
       position?: string | null;
       notes?: string | null;
+      pointContact?: boolean | null;
     }> | null;
   };
 };
@@ -57,6 +58,7 @@ export type CreateOrUpdateProjectMutation = {
       phone?: string | null;
       position?: string | null;
       notes?: string | null;
+      pointContact?: boolean | null;
     }> | null;
   };
 };
@@ -79,6 +81,7 @@ export const FetchProjectDocument = gql`
         phone
         position
         notes
+        pointContact
       }
     }
   }
@@ -143,6 +146,7 @@ export const CreateOrUpdateProjectDocument = gql`
         phone
         position
         notes
+        pointContact
       }
     }
   }

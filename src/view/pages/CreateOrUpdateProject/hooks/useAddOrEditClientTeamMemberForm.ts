@@ -22,6 +22,7 @@ const formSchema = z.object({
   phone: z.string().min(1).and(phoneNumberValidation),
   position: z.string().refine(value => value !== '', formErrors.REQUIRED),
   notes: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  pointContact: z.boolean(),
 });
 
 export type AddOrEditClientTeamMemberFormValues = z.infer<typeof formSchema>;
@@ -43,6 +44,7 @@ const defaultValues: AddOrEditClientTeamMemberFormValues = {
   phone: '',
   position: '',
   notes: '',
+  pointContact: false,
 };
 
 export function useAddOrEditClientTeamMemberForm({

@@ -22,7 +22,7 @@ export type FetchProjectDetailsQuery = {
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
-    createdBy?: { __typename?: 'UserType'; fullName: string } | null;
+    createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -30,6 +30,7 @@ export type FetchProjectDetailsQuery = {
       phone?: string | null;
       position?: string | null;
       notes?: string | null;
+      pointContact?: boolean | null;
     }> | null;
   };
 };
@@ -44,7 +45,7 @@ export type FetchAllUsersQuery = {
   __typename?: 'Query';
   usersList: {
     __typename?: 'UserTypePagination';
-    results: Array<{ __typename?: 'UserType'; id?: string | null; fullName: string }>;
+    results: Array<{ __typename?: 'UserType'; id?: string | null; fullName?: string | null }>;
   };
 };
 
@@ -59,7 +60,7 @@ export type FetchProjectMembersQuery = {
     currentTeam: Array<{
       __typename?: 'UserType';
       id?: string | null;
-      fullName: string;
+      fullName?: string | null;
       email: string;
       photo?: { __typename?: 'ImageType'; url: string } | null;
       role?: { __typename?: 'RoleType'; name: string } | null;
@@ -67,7 +68,7 @@ export type FetchProjectMembersQuery = {
     otherContrubutors: Array<{
       __typename?: 'UserType';
       id?: string | null;
-      fullName: string;
+      fullName?: string | null;
       email: string;
       photo?: { __typename?: 'ImageType'; url: string } | null;
       role?: { __typename?: 'RoleType'; name: string } | null;
@@ -85,7 +86,7 @@ export type AddProjectMemberMutation = {
     __typename?: 'ProjectMemberType';
     currentTeam: boolean;
     project: { __typename?: 'ProjectType'; name: string };
-    user: { __typename?: 'UserType'; fullName: string };
+    user: { __typename?: 'UserType'; fullName?: string | null };
   };
 };
 
@@ -218,6 +219,7 @@ export const FetchProjectDetailsDocument = gql`
         phone
         position
         notes
+        pointContact
       }
     }
   }

@@ -19,6 +19,7 @@ input ClientInput {
   id: Int = null
   notes: String = null
   phone: String = null
+  pointContact: Boolean = null
   position: String = null
 }
 
@@ -28,6 +29,7 @@ type ClientType {
   id: Int
   notes: String
   phone: String
+  pointContact: Boolean
   position: String
 }
 
@@ -159,6 +161,25 @@ type IntegrationCredentialsType {
   url: String
 }
 
+input LogFilter {
+  createdById: Int = null
+  projectId: Int = null
+  userId: Int = null
+}
+
+type LogType {
+  createdAt: DateTime!
+  id: Int!
+  message: String!
+}
+
+type LogTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [LogType!]!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -175,6 +196,10 @@ type MessageType {
 }
 
 type Mutation {
+  """
+  Update client point contact
+  """
+  clientMakePointContact(data: IDInput!): ClientType!
   """
   Create or update document
   """
@@ -291,7 +316,7 @@ type ProfileType {
   birthDate: Date
   email: String!
   firstName: String
-  fullName: String!
+  fullName: String
   lastName: String
   phone: String
   photo: ImageType
@@ -424,6 +449,10 @@ type Query {
   Getting list of document templates
   """
   documentTemplateList: [DocumentTemplateType!]!
+  """
+  Getting list of logs
+  """
+  logList(filters: LogFilter = null, pagination: PaginationInput!): LogTypePagination!
   """
   Getting authenticated user
   """
@@ -599,7 +628,7 @@ type UserType {
   department: DepartmentType
   email: String!
   firstName: String
-  fullName: String!
+  fullName: String
   id: String
   isActive: Boolean
   isSuperuser: Boolean

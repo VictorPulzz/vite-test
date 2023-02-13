@@ -40,7 +40,6 @@ const formSchema = z
     hourlyRate: z.string().and(numberValidation),
     address: z.string(),
     abn: z.string(),
-    // TODO it is necessary to add a client with a point of contract
     clientTeamMembers: z
       .object({
         fullName: z.string(),
@@ -48,6 +47,7 @@ const formSchema = z
         phone: z.string(),
         position: z.string(),
         notes: z.string(),
+        pointContact: z.boolean(),
       })
       .array(),
   })

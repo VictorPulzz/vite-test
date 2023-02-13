@@ -1,7 +1,7 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
@@ -10,6 +10,8 @@ import { Icon } from '~/view/ui/components/common/Icon';
 import { AddOrEditClientTeamMemberModal } from '../AddOrEditClientTeamMemberModal';
 
 export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
+  const { pointContact } = row.original;
+
   const {
     value: isAddOrEditClientTeamMemberModalOpen,
     on: openAddOrEditClientTeamMemberModal,
@@ -18,10 +20,17 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
 
   const { control } = useFormContext();
 
-  const { remove } = useFieldArray({
+  const { remove, update } = useFieldArray({
     control,
     name: 'clientTeamMembers',
   });
+
+  const togglePointOfContact = useCallback(
+    (rowIndex: number) => {
+      update(rowIndex, Object.assign(row.original, { pointContact: !pointContact }));
+    },
+    [pointContact, row.original, update],
+  );
 
   const options: DropdownItem[] = [
     {
@@ -30,9 +39,9 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
       onSelect: openAddOrEditClientTeamMemberModal,
     },
     {
-      label: 'Make point of contact',
+      label: `${pointContact ? 'Remove' : 'Make'} point of contact`,
       iconBefore: <Icon name="connection" size={14} />,
-      onSelect: () => row,
+      onSelect: () => togglePointOfContact(row.index),
     },
     {
       label: 'Delete member',

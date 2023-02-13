@@ -15,6 +15,7 @@ query FetchProject($data: IDInput!) {
       phone
       position
       notes
+      pointContact
     }
   }
 }
@@ -37,6 +38,7 @@ mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
       phone
       position
       notes
+      pointContact
     }
   }
 }

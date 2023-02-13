@@ -32,6 +32,7 @@ export type ClientInput = {
   id?: InputMaybe<Scalars['Int']>;
   notes?: InputMaybe<Scalars['String']>;
   phone?: InputMaybe<Scalars['String']>;
+  pointContact?: InputMaybe<Scalars['Boolean']>;
   position?: InputMaybe<Scalars['String']>;
 };
 
@@ -42,6 +43,7 @@ export type ClientType = {
   id?: Maybe<Scalars['Int']>;
   notes?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
+  pointContact?: Maybe<Scalars['Boolean']>;
   position?: Maybe<Scalars['String']>;
 };
 
@@ -173,6 +175,27 @@ export type IntegrationCredentialsType = {
   url?: Maybe<Scalars['String']>;
 };
 
+export type LogFilter = {
+  createdById?: InputMaybe<Scalars['Int']>;
+  projectId?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['Int']>;
+};
+
+export type LogType = {
+  __typename: 'LogType';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
+  message: Scalars['String'];
+};
+
+export type LogTypePagination = {
+  __typename: 'LogTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<LogType>;
+};
+
 export type LoginInput = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -192,6 +215,8 @@ export type MessageType = {
 
 export type Mutation = {
   __typename: 'Mutation';
+  /** Update client point contact */
+  clientMakePointContact: ClientType;
   /** Create or update document */
   documentCreateUpdate: DocumentType;
   /** Generate document */
@@ -235,6 +260,10 @@ export type Mutation = {
   userDelete: MessageType;
   /** Add user note */
   userNote: NoteType;
+};
+
+export type MutationClientMakePointContactArgs = {
+  data: IdInput;
 };
 
 export type MutationDocumentCreateUpdateArgs = {
@@ -358,7 +387,7 @@ export type ProfileType = {
   birthDate?: Maybe<Scalars['Date']>;
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
-  fullName: Scalars['String'];
+  fullName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<ImageType>;
@@ -488,6 +517,8 @@ export type Query = {
   documentList: DocumentTypePagination;
   /** Getting list of document templates */
   documentTemplateList: Array<DocumentTemplateType>;
+  /** Getting list of logs */
+  logList: LogTypePagination;
   /** Getting authenticated user */
   me: ProfileType;
   /** Getting project by id */
@@ -516,6 +547,11 @@ export type QueryDocumentListArgs = {
   filters?: InputMaybe<DocumentFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
+};
+
+export type QueryLogListArgs = {
+  filters?: InputMaybe<LogFilter>;
+  pagination: PaginationInput;
 };
 
 export type QueryProjectArgs = {
@@ -683,7 +719,7 @@ export type UserType = {
   department?: Maybe<DepartmentType>;
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
-  fullName: Scalars['String'];
+  fullName?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   isActive?: Maybe<Scalars['Boolean']>;
   isSuperuser?: Maybe<Scalars['Boolean']>;

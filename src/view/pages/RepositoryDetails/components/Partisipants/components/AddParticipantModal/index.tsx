@@ -23,10 +23,10 @@ export const AddParticipantModal: FC<Props> = ({ isOpen, close }) => {
 
   // TODO remove usersOptions when backend will be ready
   const usersOptions = [
-    { value: '1', label: 'Emma Stone' },
-    { value: '2', label: 'John Stone' },
-    { value: '3', label: 'Bruce Stone' },
-    { value: '4', label: 'Ann Stone' },
+    { value: '1', label: 'Emma Stone' ?? '' },
+    { value: '2', label: 'John Stone' ?? '' },
+    { value: '3', label: 'Bruce Stone' ?? '' },
+    { value: '4', label: 'Ann Stone' ?? '' },
   ];
 
   const accessLevelOptions = enumToSelectOptions(UserAccessLevel);
