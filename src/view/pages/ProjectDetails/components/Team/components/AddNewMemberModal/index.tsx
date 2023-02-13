@@ -27,7 +27,7 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
     if (data?.usersList.results) {
       return data?.usersList.results.map(({ id, fullName }) => ({
         value: String(id),
-        label: fullName,
+        label: fullName ?? '',
       }));
     }
     return [];

@@ -18,7 +18,7 @@ export type SignInMutation = {
       __typename?: 'UserType';
       id?: string | null;
       email: string;
-      fullName: string;
+      fullName?: string | null;
       photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
     };
   };

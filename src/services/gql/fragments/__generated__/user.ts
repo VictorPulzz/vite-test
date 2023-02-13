@@ -8,7 +8,7 @@ export type AuthorizedUserFragment = {
   email: string;
   firstName?: string | null;
   lastName?: string | null;
-  fullName: string;
+  fullName?: string | null;
   photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
 };
 
