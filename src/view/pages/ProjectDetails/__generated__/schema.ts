@@ -30,6 +30,7 @@ export type FetchProjectDetailsQuery = {
       phone?: string | null;
       position?: string | null;
       notes?: string | null;
+      pointContact?: boolean | null;
     }> | null;
   };
 };
@@ -218,6 +219,7 @@ export const FetchProjectDetailsDocument = gql`
         phone
         position
         notes
+        pointContact
       }
     }
   }

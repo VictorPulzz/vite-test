@@ -9,6 +9,7 @@ interface ClientTeamMember extends Pick<ClientType, 'fullName' | 'email'> {
   phone: string;
   position: string;
   notes: string;
+  pointContact: boolean;
 }
 
 export function transformProjectPrefilledData(
@@ -45,5 +46,6 @@ export function transformClientTeamMemberPrefilledData(
     phone: data.phone ?? '',
     position: data.position ?? '',
     notes: data.notes ?? '',
+    pointContact: !!data.pointContact,
   };
 }
