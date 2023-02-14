@@ -63,6 +63,31 @@ export type CreateOrUpdateProjectMutation = {
   };
 };
 
+export type FetchDocumentTemplateListQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type FetchDocumentTemplateListQuery = {
+  __typename?: 'Query';
+  documentTemplateList: Array<{
+    __typename?: 'DocumentTemplateType';
+    id: number;
+    name: string;
+    fields?: Array<{
+      __typename?: 'DocumentTemplateFieldType';
+      name: string;
+      description?: string | null;
+    }> | null;
+  }>;
+};
+
+export type DocumentGenerateMutationVariables = Types.Exact<{
+  input: Types.DocumentGenerateInput;
+}>;
+
+export type DocumentGenerateMutation = {
+  __typename?: 'Mutation';
+  documentGenerate: { __typename?: 'DocumentType'; createdAt: string };
+};
+
 export const FetchProjectDocument = gql`
   query FetchProject($data: IDInput!) {
     project(data: $data) {
@@ -193,4 +218,113 @@ export type CreateOrUpdateProjectMutationResult =
 export type CreateOrUpdateProjectMutationOptions = Apollo.BaseMutationOptions<
   CreateOrUpdateProjectMutation,
   CreateOrUpdateProjectMutationVariables
+>;
+export const FetchDocumentTemplateListDocument = gql`
+  query FetchDocumentTemplateList {
+    documentTemplateList {
+      id
+      name
+      fields {
+        name
+        description
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchDocumentTemplateListQuery__
+ *
+ * To run a query within a React component, call `useFetchDocumentTemplateListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchDocumentTemplateListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchDocumentTemplateListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchDocumentTemplateListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchDocumentTemplateListQuery,
+    FetchDocumentTemplateListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchDocumentTemplateListQuery, FetchDocumentTemplateListQueryVariables>(
+    FetchDocumentTemplateListDocument,
+    options,
+  );
+}
+export function useFetchDocumentTemplateListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchDocumentTemplateListQuery,
+    FetchDocumentTemplateListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchDocumentTemplateListQuery,
+    FetchDocumentTemplateListQueryVariables
+  >(FetchDocumentTemplateListDocument, options);
+}
+export type FetchDocumentTemplateListQueryHookResult = ReturnType<
+  typeof useFetchDocumentTemplateListQuery
+>;
+export type FetchDocumentTemplateListLazyQueryHookResult = ReturnType<
+  typeof useFetchDocumentTemplateListLazyQuery
+>;
+export type FetchDocumentTemplateListQueryResult = Apollo.QueryResult<
+  FetchDocumentTemplateListQuery,
+  FetchDocumentTemplateListQueryVariables
+>;
+export const DocumentGenerateDocument = gql`
+  mutation DocumentGenerate($input: DocumentGenerateInput!) {
+    documentGenerate(data: $input) {
+      createdAt
+    }
+  }
+`;
+export type DocumentGenerateMutationFn = Apollo.MutationFunction<
+  DocumentGenerateMutation,
+  DocumentGenerateMutationVariables
+>;
+
+/**
+ * __useDocumentGenerateMutation__
+ *
+ * To run a mutation, you first call `useDocumentGenerateMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDocumentGenerateMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [documentGenerateMutation, { data, loading, error }] = useDocumentGenerateMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDocumentGenerateMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    DocumentGenerateMutation,
+    DocumentGenerateMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<DocumentGenerateMutation, DocumentGenerateMutationVariables>(
+    DocumentGenerateDocument,
+    options,
+  );
+}
+export type DocumentGenerateMutationHookResult = ReturnType<typeof useDocumentGenerateMutation>;
+export type DocumentGenerateMutationResult = Apollo.MutationResult<DocumentGenerateMutation>;
+export type DocumentGenerateMutationOptions = Apollo.BaseMutationOptions<
+  DocumentGenerateMutation,
+  DocumentGenerateMutationVariables
 >;

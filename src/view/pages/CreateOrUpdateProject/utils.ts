@@ -24,15 +24,6 @@ export function transformProjectPrefilledData(
     roadmap: data.roadmap ?? '',
     notes: data.notes ?? '',
     phase: data.phase,
-    // TODO fix fields below when backend will be ready
-    isGenerateDesignAndPrototypeAgreement: false,
-    isGenerateServiceAgreement: true,
-    companyName: '',
-    companyAcn: '',
-    depositHours: '',
-    hourlyRate: '',
-    address: '',
-    abn: '',
     clientTeamMembers: data.clientTeam as ClientTeamMember[],
   };
 }
