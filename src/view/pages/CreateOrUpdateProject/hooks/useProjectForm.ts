@@ -31,15 +31,6 @@ const formSchema = z
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
-    // TODO add validations on fields below when backend will be ready
-    isGenerateDesignAndPrototypeAgreement: z.boolean(),
-    isGenerateServiceAgreement: z.boolean(),
-    companyName: z.string(),
-    companyAcn: z.string(),
-    depositHours: z.string().and(numberValidation),
-    hourlyRate: z.string().and(numberValidation),
-    address: z.string(),
-    abn: z.string(),
     clientTeamMembers: z
       .object({
         fullName: z.string(),
@@ -85,14 +76,6 @@ const defaultValues: ProjectFormValues = {
   design: '',
   roadmap: '',
   notes: '',
-  isGenerateDesignAndPrototypeAgreement: false,
-  isGenerateServiceAgreement: false,
-  companyName: '',
-  companyAcn: '',
-  depositHours: '',
-  hourlyRate: '',
-  address: '',
-  abn: '',
   clientTeamMembers: [],
 };
 
@@ -103,7 +86,6 @@ export function useProjectForm({
 }: UseProjectFormProps): UseProjectFormReturn {
   const form = useForm<ProjectFormValues>({
     defaultValues,
-    // TODO fix transformPrefilledData when backend will be ready
     values: prefilledData ? transformProjectPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -129,7 +111,6 @@ export function useProjectForm({
               phase: ProjectPhaseChoice.PRE_SIGNED,
               status: StatusEnum.IN_PROGRESS,
               clientTeam: values.clientTeamMembers ?? [],
-              // TODO add rest fields
             },
           },
         });

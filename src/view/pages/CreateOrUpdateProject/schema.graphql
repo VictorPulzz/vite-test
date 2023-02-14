@@ -42,3 +42,20 @@ mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
     }
   }
 }
+
+query FetchDocumentTemplateList {
+  documentTemplateList {
+    id
+    name
+    fields {
+      name
+      description
+    }
+  }
+}
+
+mutation DocumentGenerate($input: DocumentGenerateInput!) {
+  documentGenerate(data: $input) {
+    createdAt
+  }
+}

@@ -3,25 +3,26 @@ import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { DateField } from '@ui/components/form/DateField';
 import { InlineFields } from '@ui/components/form/InlineFields';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-import { ClientType } from '~/services/gql/__generated__/globalTypes';
+import { ClientType, DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
+import { Icon } from '~/view/ui/components/common/Icon';
 import { Table } from '~/view/ui/components/common/Table';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
-import { useFetchProjectQuery } from './__generated__/schema';
+import { useFetchDocumentTemplateListQuery, useFetchProjectQuery } from './__generated__/schema';
 import { AddOrEditClientTeamMemberModal } from './components/AddOrEditClientTeamMemberModal';
+import { GenerateDocumentModal } from './components/GenerateDocumentModal';
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';
 
 export const CreateOrUpdateProject: FC = () => {
@@ -31,12 +32,20 @@ export const CreateOrUpdateProject: FC = () => {
     off: closeAddOrEditClientTeamMemberModal,
   } = useSwitchValue(false);
 
+  const {
+    value: isGenerateDocumentModalOpen,
+    on: openGenerateDocumentModal,
+    off: closeGenerateDocumentModal,
+  } = useSwitchValue(false);
+
   const navigate = useNavigate();
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
 
   const projectId = useMemo(() => (params?.id ? Number(params.id) : undefined), [params]);
 
-  const { data } = useFetchProjectQuery({
+  const { data: documentTemplates } = useFetchDocumentTemplateListQuery();
+
+  const { data: projectInfo } = useFetchProjectQuery({
     variables: {
       data: { id: projectId ?? 0 },
     },
@@ -45,13 +54,29 @@ export const CreateOrUpdateProject: FC = () => {
 
   const { form, handleSubmit } = useProjectForm({
     onSubmitSuccessful: () => navigate(-1),
-    prefilledData: data?.project,
+    prefilledData: projectInfo?.project,
     id: projectId,
   });
 
-  const isGenerateServiceAgreementChecked = form.watch('isGenerateServiceAgreement');
-
   const clientTeamMembers = form.watch('clientTeamMembers');
+
+  const [template, setTemplate] = useState<{ id: number; name: string }>({ id: 0, name: '' });
+
+  const prepeareGenerateDocumentFields = useCallback(
+    (templateId: number, templateName: string) => {
+      setTemplate({ id: templateId, name: templateName });
+      openGenerateDocumentModal();
+    },
+    [openGenerateDocumentModal],
+  );
+
+  const templateById = useMemo(
+    () =>
+      documentTemplates?.documentTemplateList.find(
+        documentTemplate => documentTemplate.id === template.id,
+      ),
+    [documentTemplates?.documentTemplateList, template.id],
+  );
 
   return (
     <FormProvider {...form}>
@@ -108,26 +133,21 @@ export const CreateOrUpdateProject: FC = () => {
                 </InlineFields>
               </InlineFields>
               <TextAreaField name="notes" control={form.control} label="Notes" />
-              <div className="flex items-center gap-4 my-4">
-                <Checkbox
-                  label="Generate Design & Prototype Agreement"
-                  {...form.register('isGenerateDesignAndPrototypeAgreement')}
-                />
-                <Checkbox
-                  label="Generate Service agreement"
-                  {...form.register('isGenerateServiceAgreement')}
-                />
+              <div className=" mt-5 flex gap-4">
+                {documentTemplates?.documentTemplateList.map((template, index) => (
+                  <div key={index} className="flex items-center gap-1">
+                    <Icon name="documents" size={16} className="text-blue" />
+                    <button
+                      key={template.name}
+                      type="button"
+                      className="hover:underline"
+                      onClick={() => prepeareGenerateDocumentFields(template.id, template.name)}
+                    >
+                      <span className="text-c1">Generate {template.name}</span>
+                    </button>
+                  </div>
+                ))}
               </div>
-              {isGenerateServiceAgreementChecked && (
-                <InlineFields>
-                  <TextField name="companyName" control={form.control} label="Company name" />
-                  <TextField name="companyAcn" control={form.control} label="Company ACN" />
-                  <TextField name="hourlyRate" control={form.control} label="Hourly rate" />
-                  <TextField name="depositHours" control={form.control} label="Deposit hours" />
-                  <TextField name="address" control={form.control} label="Address" />
-                  <TextField name="abn" control={form.control} label="ABN" />
-                </InlineFields>
-              )}
             </SectionContainer>
             <SectionContainer title="Client team">
               {clientTeamMembers.length === 0 && (
@@ -155,6 +175,11 @@ export const CreateOrUpdateProject: FC = () => {
             </SectionContainer>
           </div>
         </DetailLayout>
+        <GenerateDocumentModal
+          isOpen={isGenerateDocumentModalOpen}
+          close={closeGenerateDocumentModal}
+          template={templateById as DocumentTemplateType}
+        />
       </SidebarLayout>
     </FormProvider>
   );

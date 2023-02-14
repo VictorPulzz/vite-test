@@ -36,6 +36,11 @@ export type ClientInput = {
   position?: InputMaybe<Scalars['String']>;
 };
 
+export type ClientPointContactInput = {
+  id: Scalars['Int'];
+  pointContact: Scalars['Boolean'];
+};
+
 export type ClientType = {
   __typename: 'ClientType';
   email: Scalars['String'];
@@ -99,6 +104,7 @@ export type DocumentTemplateFieldType = {
 export type DocumentTemplateType = {
   __typename: 'DocumentTemplateType';
   fields?: Maybe<Array<DocumentTemplateFieldType>>;
+  id: Scalars['Int'];
   name: Scalars['String'];
   url?: Maybe<Scalars['String']>;
 };
@@ -239,8 +245,12 @@ export type Mutation = {
   projectDeleteMember: MessageType;
   /** Project create or update environment */
   projectEnvironmentCreateUpdate: ProjectEnvironmentType;
+  /** Project delete environment */
+  projectEnvironmentDelete: MessageType;
   /** Project create or update integration */
   projectIntegrationCreateUpdate: ProjectIntegrationType;
+  /** Project delete integration */
+  projectIntegrationDelete: MessageType;
   /** Repository creation or update */
   repositoryCreateUpdate: RepositoryType;
   /** Create requests */
@@ -263,7 +273,7 @@ export type Mutation = {
 };
 
 export type MutationClientMakePointContactArgs = {
-  data: IdInput;
+  data: ClientPointContactInput;
 };
 
 export type MutationDocumentCreateUpdateArgs = {
@@ -314,8 +324,16 @@ export type MutationProjectEnvironmentCreateUpdateArgs = {
   data: ProjectEnvironmentInput;
 };
 
+export type MutationProjectEnvironmentDeleteArgs = {
+  data: IdInput;
+};
+
 export type MutationProjectIntegrationCreateUpdateArgs = {
   data: ProjectIntegrationInput;
+};
+
+export type MutationProjectIntegrationDeleteArgs = {
+  data: IdInput;
 };
 
 export type MutationRepositoryCreateUpdateArgs = {
