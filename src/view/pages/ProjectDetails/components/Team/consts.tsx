@@ -3,16 +3,17 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
+import { UserType } from '~/services/gql/__generated__/globalTypes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
-// TODO ad type
-const columnHelper = createColumnHelper<any>();
 
-export const TEAM_TABLE_COLUMNS = [
+const columnHelper = createColumnHelper<UserType>();
+
+export const CURRENT_TEAM_TABLE_COLUMNS = [
   columnHelper.accessor('fullName', {
     id: 'fullName',
     header: 'Name',
@@ -41,15 +42,11 @@ export const TEAM_TABLE_COLUMNS = [
   }),
   columnHelper.group({
     id: 'slack',
-    cell: ({
-      row: {
-        original: { slack },
-      },
-    }) => (
+    cell: props => (
       <Button
         variant={ButtonVariant.SECONDARY}
         label="Slack"
-        onClick={() => slack}
+        onClick={() => props}
         className="w-[100px]"
       />
     ),
@@ -59,7 +56,18 @@ export const TEAM_TABLE_COLUMNS = [
   }),
   columnHelper.group({
     id: 'more',
-    cell: MoreCell,
+    cell: ctx => <MoreCell isCurrentTeam ctx={ctx} />,
+    meta: {
+      className: 'w-0',
+    },
+  }),
+];
+
+export const OTHER_CONTRUBUTORS_TABLE_COLUMNS = [
+  ...CURRENT_TEAM_TABLE_COLUMNS.slice(0, CURRENT_TEAM_TABLE_COLUMNS.length - 1),
+  columnHelper.group({
+    id: 'more',
+    cell: ctx => <MoreCell isCurrentTeam={false} ctx={ctx} />,
     meta: {
       className: 'w-0',
     },

@@ -48,7 +48,7 @@ export function useAddNewMemberForm({
             input: {
               currentTeam: true,
               projectId,
-              userId: Number(values.user),
+              userId: +values.user,
             },
           },
           refetchQueries: [FetchProjectMembersDocument],

@@ -28,7 +28,14 @@ query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search
   usersList(filters: $filters, pagination: $pagination, search: $search) {
     results {
       id
+      photo {
+        url
+      }
       fullName
+      role {
+        name
+      }
+      email
     }
   }
 }

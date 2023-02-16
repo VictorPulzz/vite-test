@@ -8,9 +8,15 @@ import { SelectField } from '~/view/ui/components/form/SelectField';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
+  projectMembersListIds: string[];
 }
 
-export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
+export const AddNewMemberModal: FC<Props> = ({
+  isOpen,
+  close,
+  projectId,
+  projectMembersListIds,
+}) => {
   const { form, handleSubmit, resetForm } = useAddNewMemberForm({
     onSubmitSuccessful: () => close(),
     projectId,
@@ -23,15 +29,20 @@ export const AddNewMemberModal: FC<Props> = ({ isOpen, close, projectId }) => {
     fetchPolicy: 'cache-and-network',
   });
 
+  const outsideProjectTeamUsers = useMemo(
+    () => data?.usersList.results.filter(user => !projectMembersListIds.includes(user.id ?? '')),
+    [data?.usersList.results, projectMembersListIds],
+  );
+
   const usersOptions = useMemo(() => {
-    if (data?.usersList.results) {
-      return data?.usersList.results.map(({ id, fullName }) => ({
-        value: String(id),
+    if (outsideProjectTeamUsers) {
+      return outsideProjectTeamUsers.map(({ id, fullName }) => ({
+        value: `${id}`,
         label: fullName ?? '',
       }));
     }
     return [];
-  }, [data?.usersList.results]);
+  }, [outsideProjectTeamUsers]);
 
   return (
     <Modal
