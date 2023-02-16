@@ -20,7 +20,12 @@ export type FetchProjectsQuery = {
       id: number;
       name: string;
       status?: Types.StatusEnum | null;
-      PM?: Array<{ __typename?: 'UserType'; fullName?: string | null }> | null;
+      PM?: Array<{
+        __typename?: 'UserType';
+        id?: string | null;
+        fullName?: string | null;
+        photo?: { __typename?: 'ImageType'; url: string } | null;
+      }> | null;
     }>;
   };
 };
@@ -41,6 +46,10 @@ export const FetchProjectsDocument = gql`
         id
         name
         PM {
+          id
+          photo {
+            url
+          }
           fullName
         }
         status

@@ -4,6 +4,10 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
       id
       name
       PM {
+        id
+        photo {
+          url
+        }
         fullName
       }
       status
