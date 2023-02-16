@@ -21,6 +21,23 @@ export type ActiveInput = {
   isActive: Scalars['Boolean'];
 };
 
+export type BoilerplateFilter = {
+  isActive?: InputMaybe<Scalars['Boolean']>;
+  platform?: InputMaybe<RepositoryPlatformChoice>;
+  type?: InputMaybe<RepositoryTypeChoice>;
+};
+
+export type BoilerplateType = {
+  __typename: 'BoilerplateType';
+  gitRepoId?: Maybe<Scalars['String']>;
+  gitTfRepoId?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  isActive: Scalars['Boolean'];
+  name: Scalars['String'];
+  platform?: Maybe<RepositoryPlatformChoice>;
+  type?: Maybe<RepositoryTypeChoice>;
+};
+
 export type ChangePasswordInput = {
   newPassword: Scalars['String'];
   oldPassword: Scalars['String'];
@@ -233,6 +250,8 @@ export type Mutation = {
   /** User updating himself */
   meUpdate: ProfileType;
   passwordChange: MessageType;
+  /** Update permissions */
+  permissionsUpdate: MessageType;
   /** Project add member */
   projectAddMember: ProjectMemberType;
   /** Project change status */
@@ -251,6 +270,8 @@ export type Mutation = {
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Project delete integration */
   projectIntegrationDelete: MessageType;
+  /** Repository creation */
+  repositoryCreate: RepositoryType;
   /** Repository creation or update */
   repositoryCreateUpdate: RepositoryType;
   /** Create requests */
@@ -300,6 +321,10 @@ export type MutationPasswordChangeArgs = {
   data: ChangePasswordInput;
 };
 
+export type MutationPermissionsUpdateArgs = {
+  data: Array<PermissionInput>;
+};
+
 export type MutationProjectAddMemberArgs = {
   data: ProjectMemberInput;
 };
@@ -334,6 +359,10 @@ export type MutationProjectIntegrationCreateUpdateArgs = {
 
 export type MutationProjectIntegrationDeleteArgs = {
   data: IdInput;
+};
+
+export type MutationRepositoryCreateArgs = {
+  data: RepositoryCreateInput;
 };
 
 export type MutationRepositoryCreateUpdateArgs = {
@@ -388,6 +417,25 @@ export type NoteType = {
 export type PaginationInput = {
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+};
+
+export type PermissionInput = {
+  addParticipant: Scalars['Boolean'];
+  createEditProject: Scalars['Boolean'];
+  createEditRepository: Scalars['Boolean'];
+  createEditUser: Scalars['Boolean'];
+  editRolesPermissions: Scalars['Boolean'];
+  roleId: Scalars['Int'];
+};
+
+export type PermissionType = {
+  __typename: 'PermissionType';
+  addParticipant: Scalars['Boolean'];
+  createEditProject: Scalars['Boolean'];
+  createEditRepository: Scalars['Boolean'];
+  createEditUser: Scalars['Boolean'];
+  editRolesPermissions: Scalars['Boolean'];
+  role: RoleType;
 };
 
 export type ProfileInput = {
@@ -468,7 +516,7 @@ export type ProjectIntegrationType = {
 };
 
 export type ProjectMemberInput = {
-  currentTeam?: InputMaybe<Scalars['Boolean']>;
+  currentTeam: Scalars['Boolean'];
   projectId: Scalars['Int'];
   userId: Scalars['Int'];
 };
@@ -529,6 +577,8 @@ export type ProjectTypePagination = {
 
 export type Query = {
   __typename: 'Query';
+  /** Getting boilerplates */
+  boilerplateList: Array<BoilerplateType>;
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
   /** Getting list of documents */
@@ -539,6 +589,8 @@ export type Query = {
   logList: LogTypePagination;
   /** Getting authenticated user */
   me: ProfileType;
+  /** Getting list of roles and permissions */
+  permissionsList: Array<PermissionType>;
   /** Getting project by id */
   project: ProjectType;
   /** Getting environments for project by id */
@@ -551,6 +603,8 @@ export type Query = {
   projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
+  /** Getting repositories */
+  repositoryList: RepositoryTypePagination;
   /** Getting list of requests */
   requestList: RequestTypePagination;
   /** Getting list of users' roles */
@@ -559,6 +613,10 @@ export type Query = {
   userDetails: UserType;
   /** Getting list of users */
   usersList: UserTypePagination;
+};
+
+export type QueryBoilerplateListArgs = {
+  filters?: InputMaybe<BoilerplateFilter>;
 };
 
 export type QueryDocumentListArgs = {
@@ -598,6 +656,12 @@ export type QueryProjectsListArgs = {
   search?: InputMaybe<Scalars['String']>;
 };
 
+export type QueryRepositoryListArgs = {
+  filters?: InputMaybe<RepositoryFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
+};
+
 export type QueryRequestListArgs = {
   filters?: InputMaybe<RequestFilter>;
   pagination: PaginationInput;
@@ -617,6 +681,27 @@ export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
 };
 
+export type RepositoryCreateInput = {
+  awsSecrets?: InputMaybe<Scalars['Boolean']>;
+  boilerplateId?: InputMaybe<Scalars['Int']>;
+  createEmpty?: InputMaybe<Scalars['Boolean']>;
+  gitRepoId?: InputMaybe<Scalars['String']>;
+  gitSlug?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
+  platform: RepositoryPlatformChoice;
+  projectId: Scalars['Int'];
+  type: RepositoryTypeChoice;
+  useTerraform?: InputMaybe<Scalars['Boolean']>;
+  withRelay?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type RepositoryFilter = {
+  createdById?: InputMaybe<Scalars['Int']>;
+  platform?: InputMaybe<RepositoryPlatformChoice>;
+  projectId?: InputMaybe<Scalars['Int']>;
+  type?: InputMaybe<RepositoryTypeChoice>;
+};
+
 export type RepositoryInput = {
   id?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
@@ -632,18 +717,32 @@ export enum RepositoryPlatformChoice {
 
 export type RepositoryType = {
   __typename: 'RepositoryType';
+  boilerplate?: Maybe<BoilerplateType>;
   createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<UserType>;
+  gitRepoId?: Maybe<Scalars['String']>;
+  gitSlug?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   platform?: Maybe<RepositoryPlatformChoice>;
+  project: ProjectType;
   projectId: Scalars['Int'];
   type?: Maybe<RepositoryTypeChoice>;
+  useTerraform?: Maybe<Scalars['Boolean']>;
 };
 
 export enum RepositoryTypeChoice {
   BACKEND = 'BACKEND',
   FRONTEND = 'FRONTEND',
 }
+
+export type RepositoryTypePagination = {
+  __typename: 'RepositoryTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<RepositoryType>;
+};
 
 export type RequestFilter = {
   createdById?: InputMaybe<Scalars['Int']>;

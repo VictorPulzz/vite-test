@@ -2,6 +2,7 @@ import { useSwitchValue } from '@appello/common/lib/hooks';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { UserType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
@@ -10,7 +11,7 @@ import { Table } from '~/view/ui/components/common/Table';
 
 import { useFetchProjectMembersQuery } from '../../__generated__/schema';
 import { AddNewMemberModal } from './components/AddNewMemberModal';
-import { TEAM_TABLE_COLUMNS } from './consts';
+import { CURRENT_TEAM_TABLE_COLUMNS, OTHER_CONTRUBUTORS_TABLE_COLUMNS } from './consts';
 
 export const Team: FC = () => {
   const {
@@ -28,6 +29,15 @@ export const Team: FC = () => {
     },
   });
 
+  const projectMembersListIds = useMemo(
+    () =>
+      [
+        ...(data?.projectMemberList.currentTeam ?? []),
+        ...(data?.projectMemberList.otherContrubutors ?? []),
+      ].map(user => user.id),
+    [data],
+  );
+
   return (
     <div>
       {loading && <Loader full colorful />}
@@ -37,8 +47,8 @@ export const Team: FC = () => {
             {data && !!data?.projectMemberList.currentTeam.length ? (
               <Table
                 className="mt-3"
-                data={data?.projectMemberList.currentTeam}
-                columns={TEAM_TABLE_COLUMNS}
+                data={data?.projectMemberList.currentTeam as UserType[]}
+                columns={CURRENT_TEAM_TABLE_COLUMNS}
               />
             ) : (
               <EmptyState iconName="users" label="No contributors here yet" />
@@ -55,8 +65,8 @@ export const Team: FC = () => {
             <SectionContainer title="Other contrubutors">
               <Table
                 className="mt-3"
-                data={data.projectMemberList.otherContrubutors}
-                columns={TEAM_TABLE_COLUMNS}
+                data={data.projectMemberList.otherContrubutors as UserType[]}
+                columns={OTHER_CONTRUBUTORS_TABLE_COLUMNS}
               />
             </SectionContainer>
           )}
@@ -66,6 +76,7 @@ export const Team: FC = () => {
         isOpen={isAddNewMemberModalOpen}
         close={closeAddNewMemberModalModal}
         projectId={projectId}
+        projectMembersListIds={projectMembersListIds as string[]}
       />
     </div>
   );

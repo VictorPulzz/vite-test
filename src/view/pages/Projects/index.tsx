@@ -32,7 +32,13 @@ export const ProjectsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const statusOptions = enumToSelectOptions(StatusEnum);
+  const statusOptions = [
+    {
+      label: 'All',
+      value: null,
+    },
+    ...enumToSelectOptions(StatusEnum),
+  ];
 
   return (
     <SidebarLayout contentClassName="p-6">

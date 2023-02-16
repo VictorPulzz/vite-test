@@ -7,6 +7,8 @@ import { ROUTES } from '~/constants/routes';
 import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { getBadgeByProjectStatus } from '~/utils/getBadgeByProjectStatus';
+import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
+import { Avatar } from '~/view/components/Avatar';
 import { Badge } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
@@ -32,7 +34,30 @@ export const PROJECTS_TABLE_COLUMNS = [
   columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
     id: 'PM',
     header: 'PM',
-    cell: props => <span>{props.getValue() ?? '-'}</span>,
+    cell: props => {
+      const isProjectHasPm = props.row.original.PM && props.row.original.PM[0];
+      return (
+        <div>
+          {isProjectHasPm ? (
+            <div>
+              {props.row.original.PM?.map(pm => (
+                <div key={pm.id} className="flex gap-3 items-center">
+                  <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
+                  <TextLink
+                    to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}
+                    className="underline"
+                  >
+                    {pm.fullName}
+                  </TextLink>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span>-</span>
+          )}
+        </div>
+      );
+    },
   }),
   columnHelper.accessor('status', {
     id: 'status',
