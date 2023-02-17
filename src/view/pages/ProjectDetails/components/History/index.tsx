@@ -1,39 +1,21 @@
 import React, { FC, useMemo } from 'react';
 
+import { PAGE_SIZE } from '~/constants/pagination';
+import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useFilterByUserForm } from '~/view/pages/ProjectDetails//hooks/useFilterByUserForm';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
+import {
+  useFetchAllUsersQuery,
+  useFetchHistoryLogsQuery,
+} from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Table } from '~/view/ui/components/common/Table';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { TableLoader } from '~/view/ui/components/common/TableLoader';
+import { Select } from '~/view/ui/components/form/Select';
+import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { HISTORY_TABLE_COLUMNS } from './consts';
 
-// TODO remove HistoryUsersType when backend will be ready
-export type HistoryUsersType = {
-  id: number;
-  action: string;
-  madeBy: string;
-  dateAndTime: string;
-};
-
-// TODO remove historyTestData when backend will be ready
-const historyTestData = [
-  {
-    id: 1,
-    action: 'Added new current team member',
-    madeBy: 'Alex C.',
-    dateAndTime: '28 May 2022, 8:22 pm',
-  },
-  {
-    id: 2,
-    action: 'Added new current team member',
-    madeBy: 'Alex C.',
-    dateAndTime: '28 May 2022, 8:22 pm',
-  },
-];
-
 export const History: FC = () => {
-  const { form } = useFilterByUserForm();
+  const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
   const { data } = useFetchAllUsersQuery({
     variables: {
@@ -45,25 +27,61 @@ export const History: FC = () => {
   const usersOptions = useMemo(() => {
     if (data?.usersList.results) {
       return data?.usersList.results.map(({ id, fullName }) => ({
-        value: String(id),
+        value: Number(id),
         label: fullName ?? '',
       }));
     }
     return [];
   }, [data?.usersList.results]);
 
+  const {
+    data: tableData,
+    loading,
+    fetchMore,
+  } = useFetchHistoryLogsQuery({
+    variables: {
+      pagination: {
+        limit: PAGE_SIZE,
+        offset,
+      },
+      filters: filter,
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const filterByUserOptions = useMemo(
+    () => [
+      {
+        label: 'All',
+        value: null,
+      },
+      ...usersOptions,
+    ],
+    [usersOptions],
+  );
+
   return (
     <div className="flex flex-col gap-5">
       <SectionContainer title="History">
-        <SelectField
-          name="user"
-          options={usersOptions}
-          control={form.control}
-          label=""
-          className="w-64 mt-3"
-          placeholder="Filter by user"
+        <Select
+          className="w-40"
+          options={filterByUserOptions}
+          value={filter?.userId}
+          placeholder="Status"
+          onChange={value => setFilter({ userId: value })}
         />
-        <Table className="mt-4" data={historyTestData} columns={HISTORY_TABLE_COLUMNS} />
+        {loading && <TableLoader className="mt-10" />}
+        {!loading && tableData && tableData.logList.results.length > 0 && (
+          <Table
+            className="mt-4"
+            data={tableData.logList.results}
+            columns={HISTORY_TABLE_COLUMNS}
+            setOffset={setOffset}
+            offset={offset}
+            fetchMore={fetchMore}
+            totalCount={tableData.logList.count}
+          />
+        )}
       </SectionContainer>
     </div>
   );

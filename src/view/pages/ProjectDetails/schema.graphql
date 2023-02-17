@@ -146,3 +146,14 @@ mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
     name
   }
 }
+
+query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
+  logList(filters: $filters, pagination: $pagination) {
+    results {
+      createdAt
+      id
+      message
+    }
+    count
+  }
+}

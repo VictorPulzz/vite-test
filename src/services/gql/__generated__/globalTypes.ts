@@ -112,6 +112,15 @@ export type DocumentInput = {
   projectId?: InputMaybe<Scalars['Int']>;
 };
 
+export enum DocumentSort {
+  CREATED_AT = 'created_at',
+}
+
+export type DocumentSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: DocumentSort;
+};
+
 export type DocumentTemplateFieldType = {
   __typename: 'DocumentTemplateFieldType';
   description?: Maybe<Scalars['String']>;
@@ -274,6 +283,10 @@ export type Mutation = {
   repositoryCreate: RepositoryType;
   /** Repository creation or update */
   repositoryCreateUpdate: RepositoryType;
+  /** Repository participant creation or update */
+  repositoryParticipantCreateUpdate: RepositoryParticipantType;
+  /** Repository participant deleting */
+  repositoryParticipantDelete: MessageType;
   /** Create requests */
   requestCreate: RequestType;
   /** Update request status */
@@ -369,6 +382,14 @@ export type MutationRepositoryCreateUpdateArgs = {
   data: RepositoryInput;
 };
 
+export type MutationRepositoryParticipantCreateUpdateArgs = {
+  data: RepositoryParticipantInput;
+};
+
+export type MutationRepositoryParticipantDeleteArgs = {
+  data: RepositoryParticipantInput;
+};
+
 export type MutationRequestCreateArgs = {
   data: RequestInput;
 };
@@ -413,6 +434,11 @@ export type NoteType = {
   id: Scalars['Int'];
   text: Scalars['String'];
 };
+
+export enum OrderDirectionChoice {
+  ASC = 'ASC',
+  DESC = 'DESC',
+}
 
 export type PaginationInput = {
   limit?: InputMaybe<Scalars['Int']>;
@@ -605,6 +631,8 @@ export type Query = {
   projectsList: ProjectTypePagination;
   /** Getting repositories */
   repositoryList: RepositoryTypePagination;
+  /** Getting repository participants */
+  repositoryParticipantList: RepositoryParticipantTypePagination;
   /** Getting list of requests */
   requestList: RequestTypePagination;
   /** Getting list of users' roles */
@@ -623,6 +651,7 @@ export type QueryDocumentListArgs = {
   filters?: InputMaybe<DocumentFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
 export type QueryLogListArgs = {
@@ -662,6 +691,11 @@ export type QueryRepositoryListArgs = {
   search?: InputMaybe<Scalars['String']>;
 };
 
+export type QueryRepositoryParticipantListArgs = {
+  filters?: InputMaybe<RepositoryParticipantFilter>;
+  pagination: PaginationInput;
+};
+
 export type QueryRequestListArgs = {
   filters?: InputMaybe<RequestFilter>;
   pagination: PaginationInput;
@@ -680,6 +714,12 @@ export type QueryUsersListArgs = {
 export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
 };
+
+export enum RepositoryAccessLevelChoice {
+  ADMIN = 'ADMIN',
+  GUEST = 'GUEST',
+  MAINTAINER = 'MAINTAINER',
+}
 
 export type RepositoryCreateInput = {
   awsSecrets?: InputMaybe<Scalars['Boolean']>;
@@ -708,6 +748,33 @@ export type RepositoryInput = {
   platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type?: InputMaybe<RepositoryTypeChoice>;
+};
+
+export type RepositoryParticipantFilter = {
+  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  repositoryId?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['Int']>;
+};
+
+export type RepositoryParticipantInput = {
+  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  repositoryId: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
+export type RepositoryParticipantType = {
+  __typename: 'RepositoryParticipantType';
+  acceessLevel: RepositoryAccessLevelChoice;
+  repository: RepositoryType;
+  user: UserType;
+};
+
+export type RepositoryParticipantTypePagination = {
+  __typename: 'RepositoryParticipantTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<RepositoryParticipantType>;
 };
 
 export enum RepositoryPlatformChoice {

@@ -105,6 +105,15 @@ input DocumentInput {
   projectId: Int = null
 }
 
+enum DocumentSort {
+  created_at
+}
+
+input DocumentSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: DocumentSort!
+}
+
 type DocumentTemplateFieldType {
   description: String
   name: String!
@@ -289,6 +298,14 @@ type Mutation {
   """
   repositoryCreateUpdate(data: RepositoryInput!): RepositoryType!
   """
+  Repository participant creation or update
+  """
+  repositoryParticipantCreateUpdate(data: RepositoryParticipantInput!): RepositoryParticipantType!
+  """
+  Repository participant deleting
+  """
+  repositoryParticipantDelete(data: RepositoryParticipantInput!): MessageType!
+  """
   Create requests
   """
   requestCreate(data: RequestInput!): RequestType!
@@ -333,6 +350,11 @@ type NoteType {
   createdBy: ProfileType
   id: Int!
   text: String!
+}
+
+enum OrderDirectionChoice {
+  ASC
+  DESC
 }
 
 input PaginationInput {
@@ -504,6 +526,7 @@ type Query {
     filters: DocumentFilter = null
     pagination: PaginationInput!
     search: String = null
+    sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
   Getting list of document templates
@@ -558,6 +581,13 @@ type Query {
     search: String = null
   ): RepositoryTypePagination!
   """
+  Getting repository participants
+  """
+  repositoryParticipantList(
+    filters: RepositoryParticipantFilter = null
+    pagination: PaginationInput!
+  ): RepositoryParticipantTypePagination!
+  """
   Getting list of requests
   """
   requestList(filters: RequestFilter = null, pagination: PaginationInput!): RequestTypePagination!
@@ -581,6 +611,12 @@ type Query {
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+enum RepositoryAccessLevelChoice {
+  ADMIN
+  GUEST
+  MAINTAINER
 }
 
 input RepositoryCreateInput {
@@ -610,6 +646,31 @@ input RepositoryInput {
   platform: RepositoryPlatformChoice = null
   projectId: Int!
   type: RepositoryTypeChoice = null
+}
+
+input RepositoryParticipantFilter {
+  acceessLevel: RepositoryAccessLevelChoice = null
+  repositoryId: Int = null
+  userId: Int = null
+}
+
+input RepositoryParticipantInput {
+  acceessLevel: RepositoryAccessLevelChoice = null
+  repositoryId: Int!
+  userId: Int!
+}
+
+type RepositoryParticipantType {
+  acceessLevel: RepositoryAccessLevelChoice!
+  repository: RepositoryType!
+  user: UserType!
+}
+
+type RepositoryParticipantTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [RepositoryParticipantType!]!
 }
 
 enum RepositoryPlatformChoice {
