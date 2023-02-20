@@ -7,7 +7,8 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 
 const formSchema = z.object({
   submittedBy: z.string(),
-  submittedDateRange: z.date().nullable(),
+  submittedReportsDateRange: z.date().nullable(),
+  submittedClientsDateRange: z.date().nullable(),
 });
 
 type ProjectReportsFormValues = z.infer<typeof formSchema>;
@@ -19,7 +20,8 @@ interface UseGetReportsFormReturn {
 
 const defaultValues: ProjectReportsFormValues = {
   submittedBy: '',
-  submittedDateRange: null,
+  submittedReportsDateRange: null,
+  submittedClientsDateRange: null,
 };
 
 export function useGetReportsForm(): UseGetReportsFormReturn {
@@ -36,7 +38,7 @@ export function useGetReportsForm(): UseGetReportsFormReturn {
         /* empty */
       } catch (e) {
         processGqlErrorResponse<ProjectReportsFormValues>(e, {
-          fields: ['submittedBy', 'submittedDateRange'],
+          fields: ['submittedBy', 'submittedReportsDateRange', 'submittedClientsDateRange'],
           setFormError: form.setError,
         });
       }
