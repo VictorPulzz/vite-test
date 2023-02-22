@@ -614,6 +614,8 @@ export type Query = {
   boilerplateList: Array<BoilerplateType>;
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
+  /** Getting list of document categories */
+  documentCategoryList: Array<DocumentCategoryType>;
   /** Getting list of documents */
   documentList: DocumentTypePagination;
   /** Getting list of document templates */

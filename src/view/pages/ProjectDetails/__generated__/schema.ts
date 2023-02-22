@@ -222,17 +222,9 @@ export type FetchDocumentsQuery = {
       createdAt: string;
       project?: { __typename?: 'ProjectType'; name: string } | null;
       file: { __typename: 'ImageType'; fileName: string; url: string; size: number };
+      addedBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
     }>;
   };
-};
-
-export type RemoveDocumentMutationVariables = Types.Exact<{
-  input: Types.IdInput;
-}>;
-
-export type RemoveDocumentMutation = {
-  __typename?: 'Mutation';
-  documentDelete: { __typename?: 'MessageType'; message: string };
 };
 
 export type FetchAllProjectsQueryVariables = Types.Exact<{
@@ -245,8 +237,19 @@ export type FetchAllProjectsQuery = {
   __typename?: 'Query';
   projectsList: {
     __typename?: 'ProjectTypePagination';
-    results: Array<{ __typename?: 'ProjectType'; id: number; name: string }>;
+    results: Array<{ __typename?: 'ProjectType'; value: number; label: string }>;
   };
+};
+
+export type FetchAllDocumentCategoriesQueryVariables = Types.Exact<{ [key: string]: never }>;
+
+export type FetchAllDocumentCategoriesQuery = {
+  __typename?: 'Query';
+  documentCategoryList: Array<{
+    __typename?: 'DocumentCategoryType';
+    value: number;
+    label: string;
+  }>;
 };
 
 export const FetchProjectDetailsDocument = gql`
@@ -928,6 +931,9 @@ export const FetchDocumentsDocument = gql`
           __typename
         }
         createdAt
+        addedBy {
+          fullName
+        }
       }
       count
     }
@@ -977,56 +983,12 @@ export type FetchDocumentsQueryResult = Apollo.QueryResult<
   FetchDocumentsQuery,
   FetchDocumentsQueryVariables
 >;
-export const RemoveDocumentDocument = gql`
-  mutation RemoveDocument($input: IDInput!) {
-    documentDelete(data: $input) {
-      message
-    }
-  }
-`;
-export type RemoveDocumentMutationFn = Apollo.MutationFunction<
-  RemoveDocumentMutation,
-  RemoveDocumentMutationVariables
->;
-
-/**
- * __useRemoveDocumentMutation__
- *
- * To run a mutation, you first call `useRemoveDocumentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveDocumentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeDocumentMutation, { data, loading, error }] = useRemoveDocumentMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRemoveDocumentMutation(
-  baseOptions?: Apollo.MutationHookOptions<RemoveDocumentMutation, RemoveDocumentMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(
-    RemoveDocumentDocument,
-    options,
-  );
-}
-export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
-export type RemoveDocumentMutationResult = Apollo.MutationResult<RemoveDocumentMutation>;
-export type RemoveDocumentMutationOptions = Apollo.BaseMutationOptions<
-  RemoveDocumentMutation,
-  RemoveDocumentMutationVariables
->;
 export const FetchAllProjectsDocument = gql`
   query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
     projectsList(filters: $filters, pagination: $pagination, search: $search) {
       results {
-        id
-        name
+        value: id
+        label: name
       }
     }
   }
@@ -1073,4 +1035,62 @@ export type FetchAllProjectsLazyQueryHookResult = ReturnType<typeof useFetchAllP
 export type FetchAllProjectsQueryResult = Apollo.QueryResult<
   FetchAllProjectsQuery,
   FetchAllProjectsQueryVariables
+>;
+export const FetchAllDocumentCategoriesDocument = gql`
+  query FetchAllDocumentCategories {
+    documentCategoryList {
+      value: id
+      label: name
+    }
+  }
+`;
+
+/**
+ * __useFetchAllDocumentCategoriesQuery__
+ *
+ * To run a query within a React component, call `useFetchAllDocumentCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchAllDocumentCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchAllDocumentCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFetchAllDocumentCategoriesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchAllDocumentCategoriesQuery,
+    FetchAllDocumentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchAllDocumentCategoriesQuery, FetchAllDocumentCategoriesQueryVariables>(
+    FetchAllDocumentCategoriesDocument,
+    options,
+  );
+}
+export function useFetchAllDocumentCategoriesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchAllDocumentCategoriesQuery,
+    FetchAllDocumentCategoriesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchAllDocumentCategoriesQuery,
+    FetchAllDocumentCategoriesQueryVariables
+  >(FetchAllDocumentCategoriesDocument, options);
+}
+export type FetchAllDocumentCategoriesQueryHookResult = ReturnType<
+  typeof useFetchAllDocumentCategoriesQuery
+>;
+export type FetchAllDocumentCategoriesLazyQueryHookResult = ReturnType<
+  typeof useFetchAllDocumentCategoriesLazyQuery
+>;
+export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
+  FetchAllDocumentCategoriesQuery,
+  FetchAllDocumentCategoriesQueryVariables
 >;

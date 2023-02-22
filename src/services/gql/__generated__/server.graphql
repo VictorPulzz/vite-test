@@ -525,6 +525,10 @@ type Query {
   """
   departmentsList: [DepartmentType!]!
   """
+  Getting list of document categories
+  """
+  documentCategoryList: [DocumentCategoryType!]!
+  """
   Getting list of documents
   """
   documentList(

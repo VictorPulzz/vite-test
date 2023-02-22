@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
@@ -20,24 +20,34 @@ import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { Select } from '~/view/ui/components/form/Select';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
-import { useFetchAllProjectsQuery, useFetchDocumentsQuery } from '../../__generated__/schema';
+import {
+  useFetchAllDocumentCategoriesQuery,
+  useFetchAllProjectsQuery,
+  useFetchAllUsersQuery,
+  useFetchDocumentsQuery,
+} from '../../__generated__/schema';
 import { DocumentMenu } from './components/DocumentMenu';
 
 interface DocsProps {
   withHeading?: boolean;
 }
 
+const allSelectOption = {
+  value: null,
+  label: 'All',
+};
+
 export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const params = useParams();
 
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
-    useListQueryParams<DocumentFilter>();
+  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
-  const [sortDirecion, setSortDirecion] = React.useState<OrderDirectionChoice>(
-    OrderDirectionChoice.DESC,
-  );
+  const [project, setProject] = useState<Nullable<number>>();
+  const [category, setCategory] = useState<Nullable<number>>();
+  const [addedBy, setAddedBy] = useState<Nullable<number>>();
+  const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>(OrderDirectionChoice.DESC);
 
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
@@ -47,13 +57,26 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
     skip: !!projectId,
   });
 
+  const { data: allDocumentCategories } = useFetchAllDocumentCategoriesQuery();
+
+  const { data: allUsers } = useFetchAllUsersQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
   const { data, loading, fetchMore } = useFetchDocumentsQuery({
     variables: {
       pagination: {
         limit: PAGE_SIZE,
         offset,
       },
-      filters: filter,
+      filters: {
+        addedById: addedBy,
+        categoryId: category,
+        projectId: project,
+      },
       search: searchValue,
       sort: {
         direction: sortDirecion,
@@ -63,17 +86,37 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
+  const projectsOptions = useMemo(
+    () =>
+      allProjects?.projectsList.results
+        ? [allSelectOption, ...allProjects.projectsList.results]
+        : [],
+    [allProjects?.projectsList.results],
+  );
 
-  const projectOptions = useMemo(() => {
-    if (allProjects?.projectsList.results) {
-      return allProjects?.projectsList.results.map(({ id, name }) => ({
-        value: `${id}`,
-        label: name ?? '',
-      }));
-    }
-    return [];
-  }, [allProjects?.projectsList.results]);
+  const categoriesOptions = useMemo(
+    () =>
+      allDocumentCategories?.documentCategoryList
+        ? [allSelectOption, ...allDocumentCategories.documentCategoryList]
+        : [],
+    [allDocumentCategories?.documentCategoryList],
+  );
+
+  const usersOptions = useMemo(
+    () =>
+      allUsers?.usersList?.results
+        ? [
+            allSelectOption,
+            ...allUsers.usersList.results.map(({ id, fullName }) => ({
+              value: Number(id),
+              label: fullName ?? '',
+            })),
+          ]
+        : [],
+    [allUsers?.usersList.results],
+  );
+
+  const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
 
   return (
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
@@ -91,26 +134,38 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
           />
         </div>
       )}
-      <div className="flex items-end gap-3 mt-3">
+      <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
         <SearchInput
           onChange={setSearchValue}
           defaultValue={searchValue}
           placeholder="Search documents"
           className="flex-auto"
         />
-        <div className="flex items-end gap-3 w-1/2">
+        <div className="flex items-end gap-3">
           {!projectId && (
             <Select
-              options={projectOptions}
-              // value={sortDirecion}
+              options={projectsOptions}
+              value={project}
+              onChange={setProject}
               placeholder="Project"
-              onChange={value => setFilter({ ...filter, projectId: +value })}
             />
           )}
           <Select
+            options={categoriesOptions}
+            value={category}
+            onChange={setCategory}
+            placeholder="Category"
+          />
+          <Select
+            options={usersOptions}
+            value={addedBy}
+            onChange={setAddedBy}
+            placeholder="Added by"
+          />
+          <Select
             options={sortingOptions}
             value={sortDirecion}
-            placeholder="Status"
+            placeholder="Sort"
             onChange={sortDirecion => setSortDirecion(sortDirecion)}
           />
         </div>
@@ -140,8 +195,8 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
                   <div className="flex flex-col gap-[3px]">
                     <span className="text-p3 text-black">{document.file.fileName}</span>
                     <span className="text-c1 text-gray-2 leading-none">
-                      {format(new Date(String(document.createdAt)), DateFormat.PP)}{' '}
-                      {!projectId && `• ${document.project?.name}`}
+                      {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
+                      {document.addedBy?.fullName}
                     </span>
                   </div>
                 </div>

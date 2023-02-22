@@ -166,6 +166,9 @@ query FetchDocuments(
         __typename
       }
       createdAt
+      addedBy {
+        fullName
+      }
     }
     count
   }
@@ -174,8 +177,15 @@ query FetchDocuments(
 query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
   projectsList(filters: $filters, pagination: $pagination, search: $search) {
     results {
-      id
-      name
+      value: id
+      label: name
     }
+  }
+}
+
+query FetchAllDocumentCategories {
+  documentCategoryList {
+    value: id
+    label: name
   }
 }
