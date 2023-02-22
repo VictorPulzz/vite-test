@@ -93,7 +93,8 @@ export const Reports: FC = () => {
             required
             className="w-64"
             placeholder="Date range"
-            mode="range"
+            // TODO add mode
+            // mode="range"
           />
         </div>
         <div className="flex flex-col">
@@ -131,7 +132,8 @@ export const Reports: FC = () => {
             required
             className="w-64"
             placeholder="Date range"
-            mode="range"
+            // TODO add mode
+            // mode="range"
           />
         </div>
         <div className="flex flex-col">
