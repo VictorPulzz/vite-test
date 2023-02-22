@@ -166,7 +166,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
             options={sortingOptions}
             value={sortDirecion}
             placeholder="Sort"
-            onChange={sortDirecion => setSortDirecion(sortDirecion)}
+            onChange={setSortDirecion}
           />
         </div>
       </div>
