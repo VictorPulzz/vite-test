@@ -71,7 +71,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
       filters: {
         addedById: addedBy,
         categoryId: category,
-        projectId: project,
+        projectId: projectId || project,
       },
       search: searchValue,
       sort: {
@@ -113,6 +113,8 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
   );
 
   const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
+
+  const hasPagination = data && data.documentList.count > PAGE_SIZE;
 
   return (
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
@@ -177,38 +179,38 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         </div>
       )}
       {!loading && data && data.documentList.results.length > 0 && (
-        <>
-          <div className="grid grid-cols-4 gap-4 mt-6">
-            {data.documentList.results.map((document, index) => (
-              <div
-                key={index}
-                className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
-              >
-                <div className="flex gap-3">
-                  <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
-                    {getFileExtension(document.file.fileName)}
-                  </div>
-                  <div className="flex flex-col gap-[3px]">
-                    <span className="text-p3 text-black">{document.file.fileName}</span>
-                    <span className="text-c1 text-gray-2 leading-none">
-                      {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
-                      {document.addedBy?.fullName}
-                    </span>
-                  </div>
+        <div className="grid grid-cols-4 gap-4 mt-6">
+          {data.documentList.results.map((document, index) => (
+            <div
+              key={index}
+              className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+            >
+              <div className="flex gap-3">
+                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
+                  {getFileExtension(document.file.fileName)}
                 </div>
-                <DocumentMenu file={document.file} />
+                <div className="flex flex-col gap-[3px]">
+                  <span className="text-p3 text-black">{document.file.fileName}</span>
+                  <span className="text-c1 text-gray-2 leading-none">
+                    {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
+                    {document.addedBy?.fullName}
+                  </span>
+                </div>
               </div>
-            ))}
-          </div>
-          <Pagination
-            className="absolute bottom-10"
-            setOffset={setOffset}
-            totalCount={data.documentList.count}
-            offset={offset}
-            dataLength={data.documentList.results.length}
-            fetchMore={fetchMore}
-          />
-        </>
+              <DocumentMenu file={document.file} documentId={document.id} />
+            </div>
+          ))}
+        </div>
+      )}
+      {hasPagination && (
+        <Pagination
+          className="absolute bottom-10"
+          setOffset={setOffset}
+          totalCount={data.documentList.count}
+          offset={offset}
+          dataLength={data.documentList.results.length}
+          fetchMore={fetchMore}
+        />
       )}
     </SectionContainer>
   );

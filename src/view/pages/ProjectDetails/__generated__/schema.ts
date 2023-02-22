@@ -227,6 +227,15 @@ export type FetchDocumentsQuery = {
   };
 };
 
+export type RemoveDocumentMutationVariables = Types.Exact<{
+  input: Types.IdInput;
+}>;
+
+export type RemoveDocumentMutation = {
+  __typename?: 'Mutation';
+  documentDelete: { __typename?: 'MessageType'; message: string };
+};
+
 export type FetchAllProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
   pagination: Types.PaginationInput;
@@ -982,6 +991,50 @@ export type FetchDocumentsLazyQueryHookResult = ReturnType<typeof useFetchDocume
 export type FetchDocumentsQueryResult = Apollo.QueryResult<
   FetchDocumentsQuery,
   FetchDocumentsQueryVariables
+>;
+export const RemoveDocumentDocument = gql`
+  mutation RemoveDocument($input: IDInput!) {
+    documentDelete(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveDocumentMutationFn = Apollo.MutationFunction<
+  RemoveDocumentMutation,
+  RemoveDocumentMutationVariables
+>;
+
+/**
+ * __useRemoveDocumentMutation__
+ *
+ * To run a mutation, you first call `useRemoveDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeDocumentMutation, { data, loading, error }] = useRemoveDocumentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<RemoveDocumentMutation, RemoveDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(
+    RemoveDocumentDocument,
+    options,
+  );
+}
+export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
+export type RemoveDocumentMutationResult = Apollo.MutationResult<RemoveDocumentMutation>;
+export type RemoveDocumentMutationOptions = Apollo.BaseMutationOptions<
+  RemoveDocumentMutation,
+  RemoveDocumentMutationVariables
 >;
 export const FetchAllProjectsDocument = gql`
   query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
