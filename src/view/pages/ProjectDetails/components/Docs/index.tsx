@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { PAGE_SIZE } from '~/constants/pagination';
+import { ALL_SELECT_OPTION } from '~/constants/select';
 import {
   DocumentFilter,
   DocumentSort,
@@ -31,11 +32,6 @@ import { DocumentMenu } from './components/DocumentMenu';
 interface DocsProps {
   withHeading?: boolean;
 }
-
-const allSelectOption = {
-  value: null,
-  label: 'All',
-};
 
 export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const params = useParams();
@@ -89,7 +85,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const projectsOptions = useMemo(
     () =>
       allProjects?.projectsList.results
-        ? [allSelectOption, ...allProjects.projectsList.results]
+        ? [ALL_SELECT_OPTION, ...allProjects.projectsList.results]
         : [],
     [allProjects?.projectsList.results],
   );
@@ -97,7 +93,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const categoriesOptions = useMemo(
     () =>
       allDocumentCategories?.documentCategoryList
-        ? [allSelectOption, ...allDocumentCategories.documentCategoryList]
+        ? [ALL_SELECT_OPTION, ...allDocumentCategories.documentCategoryList]
         : [],
     [allDocumentCategories?.documentCategoryList],
   );
@@ -106,7 +102,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
     () =>
       allUsers?.usersList?.results
         ? [
-            allSelectOption,
+            ALL_SELECT_OPTION,
             ...allUsers.usersList.results.map(({ id, fullName }) => ({
               value: Number(id),
               label: fullName ?? '',
