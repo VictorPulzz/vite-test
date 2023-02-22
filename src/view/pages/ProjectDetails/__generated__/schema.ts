@@ -204,6 +204,42 @@ export type RequestNewProjectIntegrationMutation = {
   projectIntegrationCreateUpdate: { __typename?: 'ProjectIntegrationType'; name: string };
 };
 
+export type FetchDocumentsQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.DocumentFilter>;
+  pagination: Types.PaginationInput;
+  search?: Types.InputMaybe<Types.Scalars['String']>;
+  sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
+}>;
+
+export type FetchDocumentsQuery = {
+  __typename?: 'Query';
+  documentList: {
+    __typename?: 'DocumentTypePagination';
+    count: number;
+    results: Array<{
+      __typename?: 'DocumentType';
+      id: number;
+      createdAt: string;
+      project?: { __typename?: 'ProjectType'; name: string } | null;
+      file: { __typename: 'ImageType'; fileName: string; url: string; size: number };
+    }>;
+  };
+};
+
+export type FetchAllProjectsQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.ProjectFilter>;
+  pagination: Types.PaginationInput;
+  search?: Types.InputMaybe<Types.Scalars['String']>;
+}>;
+
+export type FetchAllProjectsQuery = {
+  __typename?: 'Query';
+  projectsList: {
+    __typename?: 'ProjectTypePagination';
+    results: Array<{ __typename?: 'ProjectType'; id: number; name: string }>;
+  };
+};
+
 export const FetchProjectDetailsDocument = gql`
   query FetchProjectDetails($data: IDInput!) {
     project(data: $data) {
@@ -862,4 +898,126 @@ export type RequestNewProjectIntegrationMutationResult =
 export type RequestNewProjectIntegrationMutationOptions = Apollo.BaseMutationOptions<
   RequestNewProjectIntegrationMutation,
   RequestNewProjectIntegrationMutationVariables
+>;
+export const FetchDocumentsDocument = gql`
+  query FetchDocuments(
+    $filters: DocumentFilter
+    $pagination: PaginationInput!
+    $search: String
+    $sort: [DocumentSortFieldInput!]
+  ) {
+    documentList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+      results {
+        id
+        project {
+          name
+        }
+        file {
+          fileName
+          url
+          size
+          __typename
+        }
+        createdAt
+      }
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchDocumentsQuery__
+ *
+ * To run a query within a React component, call `useFetchDocumentsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchDocumentsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      search: // value for 'search'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchDocumentsQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchDocumentsQuery, FetchDocumentsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchDocumentsQuery, FetchDocumentsQueryVariables>(
+    FetchDocumentsDocument,
+    options,
+  );
+}
+export function useFetchDocumentsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchDocumentsQuery, FetchDocumentsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchDocumentsQuery, FetchDocumentsQueryVariables>(
+    FetchDocumentsDocument,
+    options,
+  );
+}
+export type FetchDocumentsQueryHookResult = ReturnType<typeof useFetchDocumentsQuery>;
+export type FetchDocumentsLazyQueryHookResult = ReturnType<typeof useFetchDocumentsLazyQuery>;
+export type FetchDocumentsQueryResult = Apollo.QueryResult<
+  FetchDocumentsQuery,
+  FetchDocumentsQueryVariables
+>;
+export const FetchAllProjectsDocument = gql`
+  query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
+    projectsList(filters: $filters, pagination: $pagination, search: $search) {
+      results {
+        id
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchAllProjectsQuery__
+ *
+ * To run a query within a React component, call `useFetchAllProjectsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchAllProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchAllProjectsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      search: // value for 'search'
+ *   },
+ * });
+ */
+export function useFetchAllProjectsQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>(
+    FetchAllProjectsDocument,
+    options,
+  );
+}
+export function useFetchAllProjectsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>(
+    FetchAllProjectsDocument,
+    options,
+  );
+}
+export type FetchAllProjectsQueryHookResult = ReturnType<typeof useFetchAllProjectsQuery>;
+export type FetchAllProjectsLazyQueryHookResult = ReturnType<typeof useFetchAllProjectsLazyQuery>;
+export type FetchAllProjectsQueryResult = Apollo.QueryResult<
+  FetchAllProjectsQuery,
+  FetchAllProjectsQueryVariables
 >;

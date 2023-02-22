@@ -1,17 +1,26 @@
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 
+import { DocumentType } from '~/services/gql/__generated__/globalTypes';
+import { downloadFile } from '~/utils/downloadFile';
 import { Icon } from '~/view/ui/components/common/Icon';
 
-export const DocumentMenu: FC = () => {
+interface Props {
+  file: DocumentType['file'];
+}
+
+export const DocumentMenu: FC<Props> = ({ file }) => {
+  const downloadDocument = useCallback(() => downloadFile(file.url, file.fileName), [file]);
+
   const options: DropdownItem[] = [
     {
-      label: 'Action 1',
-      onSelect: () => null,
+      label: 'Download',
+      onSelect: downloadDocument,
     },
     {
-      label: 'Action 2',
+      label: 'Delete',
       onSelect: () => null,
+      className: 'text-red',
     },
   ];
 

@@ -1,22 +1,26 @@
-import React, { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { DateFormat } from '~/constants/dates';
+import { PAGE_SIZE } from '~/constants/pagination';
+import {
+  DocumentFilter,
+  DocumentSort,
+  OrderDirectionChoice,
+} from '~/services/gql/__generated__/globalTypes';
+import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { getFileExtension } from '~/utils/getFileExtension';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
+import { Loader } from '~/view/ui/components/common/Loader';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { Select } from '~/view/ui/components/form/Select';
+import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
+import { useFetchAllProjectsQuery, useFetchDocumentsQuery } from '../../__generated__/schema';
 import { DocumentMenu } from './components/DocumentMenu';
-
-// TODO remove document when backend will be ready
-const document = {
-  name: 'Document name',
-  createdAt: '16 Mar 2023',
-  createdBy: 'Alex C',
-  format: 'PDF',
-};
 
 interface DocsProps {
   withHeading?: boolean;
@@ -24,23 +28,51 @@ interface DocsProps {
 
 export const Docs: FC<DocsProps> = ({ withHeading }) => {
   const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const projectId = params.id ? Number(params.id) : 0;
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-  const documents = new Array(7).fill(document);
+  const { searchValue, setSearchValue, offset, filter, setFilter } =
+    useListQueryParams<DocumentFilter>();
 
-  // TODO remove test data later
-  const data = {
-    loading: false,
-    documentsList: documents,
-  };
+  const [sortDirecion, setSortDirecion] = React.useState<OrderDirectionChoice>(
+    OrderDirectionChoice.DESC,
+  );
 
-  const { control } = useForm();
+  const { data: allProjects } = useFetchAllProjectsQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !!projectId,
+  });
+
+  const { data, loading } = useFetchDocumentsQuery({
+    variables: {
+      pagination: {
+        limit: PAGE_SIZE,
+        offset,
+      },
+      filters: filter,
+      search: searchValue,
+      sort: {
+        direction: sortDirecion,
+        field: DocumentSort.CREATED_AT,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
+
+  const projectOptions = useMemo(() => {
+    if (allProjects?.projectsList.results) {
+      return allProjects?.projectsList.results.map(({ id, name }) => ({
+        value: `${id}`,
+        label: name ?? '',
+      }));
+    }
+    return [];
+  }, [allProjects?.projectsList.results]);
 
   return (
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
@@ -48,7 +80,6 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-[2px]">
             <h2 className="text-p1 font-bold">Documents</h2>
-            <span className="text-c1 text-gray-1 leading-none">Last update: 8h ago</span>
           </div>
           <Button
             variant={ButtonVariant.PRIMARY}
@@ -60,35 +91,63 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         </div>
       )}
       <div className="flex items-end gap-3 mt-3">
-        <SearchInput onChange={() => null} placeholder="Search documents" className="flex-auto" />
+        <SearchInput
+          onChange={setSearchValue}
+          defaultValue={searchValue}
+          placeholder="Search documents"
+          className="flex-auto"
+        />
         <div className="flex items-end gap-3 w-1/2">
-          <SelectField name="user" options={[]} control={control} placeholder="Category" />
-          <SelectField name="user" options={[]} control={control} placeholder="Added by" />
-          <SelectField name="user" options={[]} control={control} placeholder="Sort" />
+          {!projectId && (
+            <Select
+              options={projectOptions}
+              // value={sortDirecion}
+              placeholder="Project"
+              onChange={value => setFilter({ ...filter, projectId: +value })}
+            />
+          )}
+          <Select
+            options={sortingOptions}
+            value={sortDirecion}
+            placeholder="Status"
+            onChange={sortDirecion => setSortDirecion(sortDirecion)}
+          />
         </div>
       </div>
-      {data.documentsList.length === 0 && (
-        <EmptyState iconName="documents" label="No documents here yet" />
+      {loading && (
+        <div className="flex h-[60vh]">
+          <Loader full colorful />
+        </div>
       )}
-      <div className="grid grid-cols-3 gap-4 mt-6">
-        {data.documentsList.map(({ format, name, createdAt, createdBy }, index) => (
-          <div
-            key={index}
-            className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
-          >
-            <div className="flex gap-3">
-              <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">{format}</div>
-              <div className="flex flex-col gap-[3px]">
-                <span className="text-p3 text-black">{name}</span>
-                <span className="text-c1 text-gray-2 leading-none">
-                  {createdAt}, {createdBy}
-                </span>
+      {data && data.documentList.results.length === 0 && (
+        <div className="flex h-[60vh]">
+          <EmptyState iconName="documents" label="No documents here yet" />
+        </div>
+      )}
+      {!loading && data && data.documentList.results.length > 0 && (
+        <div className="grid grid-cols-4 gap-4 mt-6">
+          {data.documentList.results.map((document, index) => (
+            <div
+              key={index}
+              className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+            >
+              <div className="flex gap-3">
+                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
+                  {getFileExtension(document.file.fileName)}
+                </div>
+                <div className="flex flex-col gap-[3px]">
+                  <span className="text-p3 text-black">{document.file.fileName}</span>
+                  <span className="text-c1 text-gray-2 leading-none">
+                    {format(new Date(String(document.createdAt)), DateFormat.PP)}{' '}
+                    {!projectId && `• ${document.project?.name}`}
+                  </span>
+                </div>
               </div>
+              <DocumentMenu file={document.file} />
             </div>
-            <DocumentMenu />
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </SectionContainer>
   );
 };
