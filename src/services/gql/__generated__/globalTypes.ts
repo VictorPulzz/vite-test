@@ -252,6 +252,8 @@ export type Mutation = {
   clientMakePointContact: ClientType;
   /** Create or update document */
   documentCreateUpdate: DocumentType;
+  /** Delete document */
+  documentDelete: MessageType;
   /** Generate document */
   documentGenerate: DocumentType;
   forgotPassword: ForgotPasswordType;
@@ -313,6 +315,10 @@ export type MutationClientMakePointContactArgs = {
 
 export type MutationDocumentCreateUpdateArgs = {
   data: DocumentInput;
+};
+
+export type MutationDocumentDeleteArgs = {
+  data: IdInput;
 };
 
 export type MutationDocumentGenerateArgs = {

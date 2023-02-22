@@ -11,6 +11,7 @@ import {
 } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { getFileExtension } from '~/utils/getFileExtension';
+import { Pagination } from '~/view/components/Pagination';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
@@ -31,7 +32,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
 
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { searchValue, setSearchValue, offset, filter, setFilter } =
+  const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
     useListQueryParams<DocumentFilter>();
 
   const [sortDirecion, setSortDirecion] = React.useState<OrderDirectionChoice>(
@@ -46,7 +47,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
     skip: !!projectId,
   });
 
-  const { data, loading } = useFetchDocumentsQuery({
+  const { data, loading, fetchMore } = useFetchDocumentsQuery({
     variables: {
       pagination: {
         limit: PAGE_SIZE,
@@ -75,7 +76,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
   }, [allProjects?.projectsList.results]);
 
   return (
-    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
       {withHeading && (
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-[2px]">
@@ -125,28 +126,38 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         </div>
       )}
       {!loading && data && data.documentList.results.length > 0 && (
-        <div className="grid grid-cols-4 gap-4 mt-6">
-          {data.documentList.results.map((document, index) => (
-            <div
-              key={index}
-              className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
-            >
-              <div className="flex gap-3">
-                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
-                  {getFileExtension(document.file.fileName)}
+        <>
+          <div className="grid grid-cols-4 gap-4 mt-6">
+            {data.documentList.results.map((document, index) => (
+              <div
+                key={index}
+                className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+              >
+                <div className="flex gap-3">
+                  <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
+                    {getFileExtension(document.file.fileName)}
+                  </div>
+                  <div className="flex flex-col gap-[3px]">
+                    <span className="text-p3 text-black">{document.file.fileName}</span>
+                    <span className="text-c1 text-gray-2 leading-none">
+                      {format(new Date(String(document.createdAt)), DateFormat.PP)}{' '}
+                      {!projectId && `• ${document.project?.name}`}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex flex-col gap-[3px]">
-                  <span className="text-p3 text-black">{document.file.fileName}</span>
-                  <span className="text-c1 text-gray-2 leading-none">
-                    {format(new Date(String(document.createdAt)), DateFormat.PP)}{' '}
-                    {!projectId && `• ${document.project?.name}`}
-                  </span>
-                </div>
+                <DocumentMenu file={document.file} />
               </div>
-              <DocumentMenu file={document.file} />
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          <Pagination
+            className="absolute bottom-10"
+            setOffset={setOffset}
+            totalCount={data.documentList.count}
+            offset={offset}
+            dataLength={data.documentList.results.length}
+            fetchMore={fetchMore}
+          />
+        </>
       )}
     </SectionContainer>
   );
