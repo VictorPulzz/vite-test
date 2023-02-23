@@ -185,25 +185,24 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
       )}
       {!loading && data && data.documentList.results.length > 0 && (
         <div className="grid grid-cols-3 gap-4 mt-6">
-          {data.documentList.results.map((document, index) => (
+          {data.documentList.results.map(({ id, file, createdAt, addedBy, project }) => (
             <div
-              key={index}
+              key={id}
               className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
             >
               <div className="flex gap-3 items-center">
                 <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
-                  {getFileExtension(document.file.fileName)}
+                  {getFileExtension(file.fileName)}
                 </div>
                 <div className="flex flex-col gap-[5px]">
-                  <span className="text-p3 text-black leading-3">{document.file.fileName}</span>
+                  <span className="text-p3 text-black leading-3">{file.fileName}</span>
                   <span className="text-c1 text-gray-2 leading-4">
-                    {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
-                    {document.addedBy?.fullName}{' '}
-                    {!isInternal && !withHeading && `• ${document.project?.name}`}
+                    {format(new Date(String(createdAt)), DateFormat.PP)} • {addedBy?.fullName}{' '}
+                    {!isInternal && !withHeading && `• ${project?.name}`}
                   </span>
                 </div>
               </div>
-              <DocumentMenu file={document.file} documentId={document.id} />
+              <DocumentMenu file={file} documentId={id} />
             </div>
           ))}
         </div>

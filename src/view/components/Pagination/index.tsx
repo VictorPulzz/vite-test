@@ -15,6 +15,7 @@ interface Props {
   totalCount: number;
   offset: number;
   dataLength: number;
+  pageSize?: number;
   /* eslint-disable @typescript-eslint/no-explicit-any */
   fetchMore: (
     options: FetchMoreQueryOptions<any> & {
@@ -36,12 +37,13 @@ export const Pagination: FC<Props> = ({
   offset,
   dataLength,
   fetchMore,
+  pageSize = PAGE_SIZE,
 }) => {
   const [isFetching, setFetching] = useState<boolean>(false);
 
   const handlePageClick = useCallback(
     async (event: { selected: number }) => {
-      const newOffset = (event.selected * PAGE_SIZE) % totalCount;
+      const newOffset = (event.selected * pageSize) % totalCount;
       setOffset(newOffset);
 
       try {
@@ -49,7 +51,7 @@ export const Pagination: FC<Props> = ({
         await fetchMore({
           variables: {
             pagination: {
-              limit: PAGE_SIZE,
+              limit: pageSize,
               offset: newOffset,
             },
           },
@@ -59,10 +61,10 @@ export const Pagination: FC<Props> = ({
         setFetching(false);
       }
     },
-    [fetchMore, setOffset, totalCount],
+    [fetchMore, pageSize, setOffset, totalCount],
   );
 
-  const pageCount = Math.ceil(totalCount / PAGE_SIZE);
+  const pageCount = Math.ceil(totalCount / pageSize);
 
   return (
     <div className={className}>

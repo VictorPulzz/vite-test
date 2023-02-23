@@ -14,6 +14,7 @@ import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
+import { Docs } from './components/Docs';
 import styles from './styles.module.scss';
 
 export const UserDetailsPage: FC = () => {
@@ -41,7 +42,7 @@ export const UserDetailsPage: FC = () => {
           },
           {
             title: 'Docs',
-            element: <span>Docs</span>,
+            element: <Docs userId={userId} />,
           },
           {
             title: 'History',
@@ -50,7 +51,7 @@ export const UserDetailsPage: FC = () => {
         ]}
       />
     ),
-    [],
+    [userId],
   );
 
   return (
@@ -73,7 +74,7 @@ export const UserDetailsPage: FC = () => {
           </div>
         )}
         {data && (
-          <div className="flex gap-5 p-6">
+          <div className="flex gap-5 p-6 min-h-[calc(90vh+2rem)]">
             <SectionContainer containerClassName="w-[382px] min-w-[382px]">
               <div className="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
                 <Avatar uri={photo?.url || photoPlaceholder} size={50} />
