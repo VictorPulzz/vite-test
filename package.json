@@ -31,6 +31,7 @@
     "axios": "1.2.0",
     "clsx": "1.2.1",
     "date-fns": "^2.29.3",
+    "dot-path-value": "^0.0.6",
     "immer": "9.0.16",
     "libphonenumber-js": "^1.10.18",
     "react": "18.2.0",
