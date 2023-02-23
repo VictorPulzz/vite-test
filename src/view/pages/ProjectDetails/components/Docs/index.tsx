@@ -31,9 +31,10 @@ import { DocumentMenu } from './components/DocumentMenu';
 
 interface DocsProps {
   withHeading?: boolean;
+  isInternal?: boolean;
 }
 
-export const Docs: FC<DocsProps> = ({ withHeading }) => {
+export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
   const params = useParams();
 
   const projectId = params.id ? Number(params.id) : 0;
@@ -72,6 +73,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         addedById: addedBy,
         categoryId: category,
         projectId: projectId || project,
+        internal: isInternal,
       },
       search: searchValue,
       sort: {
@@ -118,11 +120,13 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
 
   return (
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
-      {withHeading && (
-        <div className="flex items-center justify-between">
+      <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
+        {withHeading && (
           <div className="flex flex-col gap-[2px]">
             <h2 className="text-p1 font-bold">Documents</h2>
           </div>
+        )}
+        {(isInternal || withHeading) && (
           <Button
             variant={ButtonVariant.PRIMARY}
             label="Upload new"
@@ -130,8 +134,9 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
             className="w-36"
             onClick={() => null}
           />
-        </div>
-      )}
+        )}
+      </div>
+
       <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
         <SearchInput
           onChange={setSearchValue}
@@ -139,8 +144,8 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
           placeholder="Search documents"
           className="flex-auto"
         />
-        <div className="flex items-end gap-3">
-          {!projectId && (
+        <div className="flex items-end justify-end gap-3">
+          {!projectId && !isInternal && (
             <Select
               options={projectsOptions}
               value={project}
@@ -179,7 +184,7 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
         </div>
       )}
       {!loading && data && data.documentList.results.length > 0 && (
-        <div className="grid grid-cols-4 gap-4 mt-6">
+        <div className="grid grid-cols-3 gap-4 mt-6">
           {data.documentList.results.map((document, index) => (
             <div
               key={index}
@@ -190,10 +195,11 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
                   {getFileExtension(document.file.fileName)}
                 </div>
                 <div className="flex flex-col gap-[3px]">
-                  <span className="text-p3 text-black">{document.file.fileName}</span>
-                  <span className="text-c1 text-gray-2 leading-none">
+                  <span className="text-p3 text-black leading-none">{document.file.fileName}</span>
+                  <span className="text-c1 text-gray-2">
                     {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
-                    {document.addedBy?.fullName}
+                    {document.addedBy?.fullName}{' '}
+                    {!isInternal && !withHeading && `• ${document.project?.name}`}
                   </span>
                 </div>
               </div>
@@ -204,7 +210,6 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
       )}
       {hasPagination && (
         <Pagination
-          className="absolute bottom-10"
           setOffset={setOffset}
           totalCount={data.documentList.count}
           offset={offset}
