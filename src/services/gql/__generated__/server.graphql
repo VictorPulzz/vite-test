@@ -200,6 +200,7 @@ input LogFilter {
 
 type LogType {
   createdAt: DateTime!
+  createdBy: UserType!
   id: Int!
   message: String!
 }
@@ -235,6 +236,10 @@ type Mutation {
   Create or update document
   """
   documentCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Delete document
+  """
+  documentDelete(data: IDInput!): MessageType!
   """
   Generate document
   """
@@ -520,6 +525,10 @@ type Query {
   """
   departmentsList: [DepartmentType!]!
   """
+  Getting list of document categories
+  """
+  documentCategoryList: [DocumentCategoryType!]!
+  """
   Getting list of documents
   """
   documentList(
@@ -573,6 +582,10 @@ type Query {
     search: String = null
   ): ProjectTypePagination!
   """
+  Getting repository
+  """
+  repository(data: IDInput!): RepositoryType!
+  """
   Getting repositories
   """
   repositoryList(
@@ -599,6 +612,14 @@ type Query {
   Getting user by id
   """
   userDetails(data: IDInput!): UserType!
+  """
+  Getting project by user
+  """
+  userProjects(
+    data: IDInput!
+    filters: ProjectFilter = null
+    search: String = null
+  ): [ProjectMemberType!]!
   """
   Getting list of users
   """

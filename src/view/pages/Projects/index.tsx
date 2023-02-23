@@ -6,6 +6,7 @@ import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { ROUTES } from '~/constants/routes';
+import { ALL_SELECT_OPTION } from '~/constants/select';
 import { ProjectFilter, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -32,13 +33,7 @@ export const ProjectsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const statusOptions = [
-    {
-      label: 'All',
-      value: null,
-    },
-    ...enumToSelectOptions(StatusEnum),
-  ];
+  const statusOptions = [ALL_SELECT_OPTION, ...enumToSelectOptions(StatusEnum)];
 
   return (
     <SidebarLayout contentClassName="p-6">

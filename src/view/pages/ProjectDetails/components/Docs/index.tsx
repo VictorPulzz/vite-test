@@ -1,55 +1,132 @@
-import React, { FC } from 'react';
-import { useForm } from 'react-hook-form';
+import { format } from 'date-fns';
+import React, { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { DateFormat } from '~/constants/dates';
+import { PAGE_SIZE } from '~/constants/pagination';
+import { ALL_SELECT_OPTION } from '~/constants/select';
+import {
+  DocumentFilter,
+  DocumentSort,
+  OrderDirectionChoice,
+} from '~/services/gql/__generated__/globalTypes';
+import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { getFileExtension } from '~/utils/getFileExtension';
+import { Pagination } from '~/view/components/Pagination';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
+import { Loader } from '~/view/ui/components/common/Loader';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { Select } from '~/view/ui/components/form/Select';
+import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
+import {
+  useFetchAllDocumentCategoriesQuery,
+  useFetchAllProjectsQuery,
+  useFetchAllUsersQuery,
+  useFetchDocumentsQuery,
+} from '../../__generated__/schema';
 import { DocumentMenu } from './components/DocumentMenu';
-
-// TODO remove document when backend will be ready
-const document = {
-  name: 'Document name',
-  createdAt: '16 Mar 2023',
-  createdBy: 'Alex C',
-  format: 'PDF',
-};
 
 interface DocsProps {
   withHeading?: boolean;
+  isInternal?: boolean;
 }
 
-export const Docs: FC<DocsProps> = ({ withHeading }) => {
+export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
   const params = useParams();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const projectId = params.id ? Number(params.id) : 0;
 
-  // const { data, loading } = useFetchProjectRepositoriesQuery({
-  //   variables: {
-  //     data: { id: projectId },
-  //   },
-  // });
-  const documents = new Array(7).fill(document);
+  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
-  // TODO remove test data later
-  const data = {
-    loading: false,
-    documentsList: documents,
-  };
+  const [project, setProject] = useState<Nullable<number>>();
+  const [category, setCategory] = useState<Nullable<number>>();
+  const [addedBy, setAddedBy] = useState<Nullable<number>>();
+  const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>(OrderDirectionChoice.DESC);
 
-  const { control } = useForm();
+  const { data: allProjects } = useFetchAllProjectsQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+    skip: !!projectId,
+  });
+
+  const { data: allDocumentCategories } = useFetchAllDocumentCategoriesQuery();
+
+  const { data: allUsers } = useFetchAllUsersQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const { data, loading, fetchMore } = useFetchDocumentsQuery({
+    variables: {
+      pagination: {
+        limit: PAGE_SIZE,
+        offset,
+      },
+      filters: {
+        addedById: addedBy,
+        categoryId: category,
+        projectId: projectId || project,
+        internal: isInternal,
+      },
+      search: searchValue,
+      sort: {
+        direction: sortDirecion,
+        field: DocumentSort.CREATED_AT,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const projectsOptions = useMemo(
+    () =>
+      allProjects?.projectsList.results
+        ? [ALL_SELECT_OPTION, ...allProjects.projectsList.results]
+        : [],
+    [allProjects?.projectsList.results],
+  );
+
+  const categoriesOptions = useMemo(
+    () =>
+      allDocumentCategories?.documentCategoryList
+        ? [ALL_SELECT_OPTION, ...allDocumentCategories.documentCategoryList]
+        : [],
+    [allDocumentCategories?.documentCategoryList],
+  );
+
+  const usersOptions = useMemo(
+    () =>
+      allUsers?.usersList?.results
+        ? [
+            ALL_SELECT_OPTION,
+            ...allUsers.usersList.results.map(({ id, fullName }) => ({
+              value: Number(id),
+              label: fullName ?? '',
+            })),
+          ]
+        : [],
+    [allUsers?.usersList.results],
+  );
+
+  const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
+
+  const hasPagination = data && data.documentList.count > PAGE_SIZE;
 
   return (
-    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-      {withHeading && (
-        <div className="flex items-center justify-between">
+    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
+      <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
+        {withHeading && (
           <div className="flex flex-col gap-[2px]">
             <h2 className="text-p1 font-bold">Documents</h2>
-            <span className="text-c1 text-gray-1 leading-none">Last update: 8h ago</span>
           </div>
+        )}
+        {(isInternal || withHeading) && (
           <Button
             variant={ButtonVariant.PRIMARY}
             label="Upload new"
@@ -57,38 +134,89 @@ export const Docs: FC<DocsProps> = ({ withHeading }) => {
             className="w-36"
             onClick={() => null}
           />
-        </div>
-      )}
-      <div className="flex items-end gap-3 mt-3">
-        <SearchInput onChange={() => null} placeholder="Search documents" className="flex-auto" />
-        <div className="flex items-end gap-3 w-1/2">
-          <SelectField name="user" options={[]} control={control} placeholder="Category" />
-          <SelectField name="user" options={[]} control={control} placeholder="Added by" />
-          <SelectField name="user" options={[]} control={control} placeholder="Sort" />
+        )}
+      </div>
+
+      <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
+        <SearchInput
+          onChange={setSearchValue}
+          defaultValue={searchValue}
+          placeholder="Search documents"
+          className="flex-auto"
+        />
+        <div className="flex items-end justify-end gap-3">
+          {!projectId && !isInternal && (
+            <Select
+              options={projectsOptions}
+              value={project}
+              onChange={setProject}
+              placeholder="Project"
+            />
+          )}
+          <Select
+            options={categoriesOptions}
+            value={category}
+            onChange={setCategory}
+            placeholder="Category"
+          />
+          <Select
+            options={usersOptions}
+            value={addedBy}
+            onChange={setAddedBy}
+            placeholder="Added by"
+          />
+          <Select
+            options={sortingOptions}
+            value={sortDirecion}
+            placeholder="Sort"
+            onChange={setSortDirecion}
+          />
         </div>
       </div>
-      {data.documentsList.length === 0 && (
-        <EmptyState iconName="documents" label="No documents here yet" />
+      {loading && (
+        <div className="flex h-[60vh]">
+          <Loader full colorful />
+        </div>
       )}
-      <div className="grid grid-cols-3 gap-4 mt-6">
-        {data.documentsList.map(({ format, name, createdAt, createdBy }, index) => (
-          <div
-            key={index}
-            className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
-          >
-            <div className="flex gap-3">
-              <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">{format}</div>
-              <div className="flex flex-col gap-[3px]">
-                <span className="text-p3 text-black">{name}</span>
-                <span className="text-c1 text-gray-2 leading-none">
-                  {createdAt}, {createdBy}
-                </span>
+      {data && data.documentList.results.length === 0 && (
+        <div className="flex h-[60vh]">
+          <EmptyState iconName="documents" label="No documents here yet" />
+        </div>
+      )}
+      {!loading && data && data.documentList.results.length > 0 && (
+        <div className="grid grid-cols-3 gap-4 mt-6">
+          {data.documentList.results.map((document, index) => (
+            <div
+              key={index}
+              className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+            >
+              <div className="flex gap-3 items-center">
+                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
+                  {getFileExtension(document.file.fileName)}
+                </div>
+                <div className="flex flex-col gap-[5px]">
+                  <span className="text-p3 text-black leading-3">{document.file.fileName}</span>
+                  <span className="text-c1 text-gray-2 leading-4">
+                    {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
+                    {document.addedBy?.fullName}{' '}
+                    {!isInternal && !withHeading && `• ${document.project?.name}`}
+                  </span>
+                </div>
               </div>
+              <DocumentMenu file={document.file} documentId={document.id} />
             </div>
-            <DocumentMenu />
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+      {hasPagination && (
+        <Pagination
+          setOffset={setOffset}
+          totalCount={data.documentList.count}
+          offset={offset}
+          dataLength={data.documentList.results.length}
+          fetchMore={fetchMore}
+        />
+      )}
     </SectionContainer>
   );
 };

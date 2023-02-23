@@ -216,6 +216,7 @@ export type LogFilter = {
 export type LogType = {
   __typename: 'LogType';
   createdAt: Scalars['DateTime'];
+  createdBy: UserType;
   id: Scalars['Int'];
   message: Scalars['String'];
 };
@@ -251,6 +252,8 @@ export type Mutation = {
   clientMakePointContact: ClientType;
   /** Create or update document */
   documentCreateUpdate: DocumentType;
+  /** Delete document */
+  documentDelete: MessageType;
   /** Generate document */
   documentGenerate: DocumentType;
   forgotPassword: ForgotPasswordType;
@@ -312,6 +315,10 @@ export type MutationClientMakePointContactArgs = {
 
 export type MutationDocumentCreateUpdateArgs = {
   data: DocumentInput;
+};
+
+export type MutationDocumentDeleteArgs = {
+  data: IdInput;
 };
 
 export type MutationDocumentGenerateArgs = {
@@ -607,6 +614,8 @@ export type Query = {
   boilerplateList: Array<BoilerplateType>;
   /** Getting list of users' departments */
   departmentsList: Array<DepartmentType>;
+  /** Getting list of document categories */
+  documentCategoryList: Array<DocumentCategoryType>;
   /** Getting list of documents */
   documentList: DocumentTypePagination;
   /** Getting list of document templates */
@@ -629,6 +638,8 @@ export type Query = {
   projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
+  /** Getting repository */
+  repository: RepositoryType;
   /** Getting repositories */
   repositoryList: RepositoryTypePagination;
   /** Getting repository participants */
@@ -639,6 +650,8 @@ export type Query = {
   rolesList: Array<RoleType>;
   /** Getting user by id */
   userDetails: UserType;
+  /** Getting project by user */
+  userProjects: Array<ProjectMemberType>;
   /** Getting list of users */
   usersList: UserTypePagination;
 };
@@ -685,6 +698,10 @@ export type QueryProjectsListArgs = {
   search?: InputMaybe<Scalars['String']>;
 };
 
+export type QueryRepositoryArgs = {
+  data: IdInput;
+};
+
 export type QueryRepositoryListArgs = {
   filters?: InputMaybe<RepositoryFilter>;
   pagination: PaginationInput;
@@ -703,6 +720,12 @@ export type QueryRequestListArgs = {
 
 export type QueryUserDetailsArgs = {
   data: IdInput;
+};
+
+export type QueryUserProjectsArgs = {
+  data: IdInput;
+  filters?: InputMaybe<ProjectFilter>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUsersListArgs = {

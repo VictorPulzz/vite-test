@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import {
@@ -49,16 +50,7 @@ export const History: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const filterByUserOptions = useMemo(
-    () => [
-      {
-        label: 'All',
-        value: null,
-      },
-      ...usersOptions,
-    ],
-    [usersOptions],
-  );
+  const filterByUserOptions = [ALL_SELECT_OPTION, ...usersOptions];
 
   return (
     <div className="flex flex-col gap-5">
@@ -79,7 +71,6 @@ export const History: FC = () => {
             setOffset={setOffset}
             offset={offset}
             fetchMore={fetchMore}
-            totalCount={tableData.logList.count}
           />
         )}
       </SectionContainer>

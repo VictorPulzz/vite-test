@@ -14,11 +14,11 @@ export const DocumentsPage: FC = () => {
         items={[
           {
             title: 'Internal',
-            element: <Docs />,
+            element: <Docs isInternal />,
           },
           {
             title: 'Clients',
-            element: <Docs />,
+            element: <Docs isInternal={false} />,
           },
         ]}
       />

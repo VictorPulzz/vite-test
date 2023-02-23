@@ -5,3 +5,8 @@ export enum DateFormat {
   PP = 'PP',
   PP_P = 'PPp',
 }
+
+export enum DayPickerMode {
+  RANGE = 'range',
+  SINGLE = 'single',
+}

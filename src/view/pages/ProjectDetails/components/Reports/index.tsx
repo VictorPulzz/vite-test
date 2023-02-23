@@ -74,7 +74,7 @@ export const Reports: FC = () => {
     <div className="flex flex-col gap-5">
       <SectionContainer>
         <div className="flex justify-between items-center">
-          <h2 className="text-p1 font-bold">Reports</h2>
+          <h2 className="text-p1 font-bold">Reports for clients</h2>
           <span className="text-blue text-p2">Edit reporting rules</span>
         </div>
         <div className="flex items-center gap-3">
@@ -87,15 +87,56 @@ export const Reports: FC = () => {
             placeholder="Filter by user"
           />
           <DateField
-            name="submittedDateRange"
+            name="submittedReportsDateRange"
             control={form.control}
             label=""
             required
             className="w-64"
             placeholder="Date range"
+            // TODO add mode
+            // mode="range"
           />
         </div>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col">
+          {reportsTestData.map((report: ReportsType) => {
+            const { reportName, reportDate, reportedBy } = report;
+            return (
+              <ReportsCard
+                key={report.id}
+                reportName={reportName}
+                reportDate={reportDate}
+                reportedBy={reportedBy}
+              />
+            );
+          })}
+        </div>
+      </SectionContainer>
+      <SectionContainer>
+        <div className="flex justify-between items-center">
+          <h2 className="text-p1 font-bold">Call reports</h2>
+          <span className="text-blue text-p2">Edit call reporting rules</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <SelectField
+            name="submittedBy"
+            options={usersOptions}
+            control={form.control}
+            label=""
+            className="w-64 mt-3"
+            placeholder="Filter by user"
+          />
+          <DateField
+            name="submittedClientsDateRange"
+            control={form.control}
+            label=""
+            required
+            className="w-64"
+            placeholder="Date range"
+            // TODO add mode
+            // mode="range"
+          />
+        </div>
+        <div className="flex flex-col">
           {reportsTestData.map((report: ReportsType) => {
             const { reportName, reportDate, reportedBy } = report;
             return (
