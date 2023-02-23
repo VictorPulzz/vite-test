@@ -190,13 +190,13 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
               key={index}
               className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
             >
-              <div className="flex gap-3">
-                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md">
+              <div className="flex gap-3 items-center">
+                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
                   {getFileExtension(document.file.fileName)}
                 </div>
-                <div className="flex flex-col gap-[3px]">
-                  <span className="text-p3 text-black leading-none">{document.file.fileName}</span>
-                  <span className="text-c1 text-gray-2">
+                <div className="flex flex-col gap-[5px]">
+                  <span className="text-p3 text-black leading-3">{document.file.fileName}</span>
+                  <span className="text-c1 text-gray-2 leading-4">
                     {format(new Date(String(document.createdAt)), DateFormat.PP)} •{' '}
                     {document.addedBy?.fullName}{' '}
                     {!isInternal && !withHeading && `• ${document.project?.name}`}
