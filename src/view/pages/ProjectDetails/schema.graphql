@@ -146,3 +146,52 @@ mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
     name
   }
 }
+
+query FetchDocuments(
+  $filters: DocumentFilter
+  $pagination: PaginationInput!
+  $search: String
+  $sort: [DocumentSortFieldInput!]
+) {
+  documentList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+    results {
+      id
+      project {
+        name
+      }
+      file {
+        fileName
+        url
+        size
+        __typename
+      }
+      createdAt
+      addedBy {
+        fullName
+      }
+    }
+    count
+  }
+}
+
+mutation RemoveDocument($input: IDInput!) {
+  documentDelete(data: $input) {
+    message
+  }
+}
+
+query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
+  projectsList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      value: id
+      label: name
+    }
+  }
+}
+
+query FetchAllDocumentCategories {
+  documentCategoryList {
+    value: id
+    label: name
+  }
+}

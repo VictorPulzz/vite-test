@@ -237,6 +237,10 @@ type Mutation {
   """
   documentCreateUpdate(data: DocumentInput!): DocumentType!
   """
+  Delete document
+  """
+  documentDelete(data: IDInput!): MessageType!
+  """
   Generate document
   """
   documentGenerate(data: DocumentGenerateInput!): DocumentType!
@@ -520,6 +524,10 @@ type Query {
   Getting list of users' departments
   """
   departmentsList: [DepartmentType!]!
+  """
+  Getting list of document categories
+  """
+  documentCategoryList: [DocumentCategoryType!]!
   """
   Getting list of documents
   """

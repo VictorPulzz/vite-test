@@ -1,17 +1,54 @@
+import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
 
+import { DocumentType } from '~/services/gql/__generated__/globalTypes';
+import { downloadFile } from '~/utils/downloadFile';
+import {
+  FetchDocumentsDocument,
+  useRemoveDocumentMutation,
+} from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Icon } from '~/view/ui/components/common/Icon';
 
-export const DocumentMenu: FC = () => {
+interface Props {
+  file: DocumentType['file'];
+  documentId: number;
+}
+
+export const DocumentMenu: FC<Props> = ({ file, documentId }) => {
+  const [removeDocument] = useRemoveDocumentMutation();
+
+  const downloadDocument = useCallback(() => downloadFile(file.url, file.fileName), [file]);
+
+  const removeCurrentDocument = useCallback(() => {
+    toast.promise(
+      removeDocument({
+        variables: {
+          input: { id: documentId },
+        },
+        refetchQueries: [FetchDocumentsDocument],
+      }),
+      {
+        loading: 'Deleting document...',
+        success: 'Document deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while changing status: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [documentId, removeDocument]);
+
   const options: DropdownItem[] = [
     {
-      label: 'Action 1',
-      onSelect: () => null,
+      label: 'Download',
+      onSelect: downloadDocument,
     },
     {
-      label: 'Action 2',
-      onSelect: () => null,
+      label: 'Delete',
+      onSelect: removeCurrentDocument,
+      className: 'text-red',
     },
   ];
 
