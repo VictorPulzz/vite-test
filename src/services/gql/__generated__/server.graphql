@@ -613,6 +613,14 @@ type Query {
   """
   userDetails(data: IDInput!): UserType!
   """
+  Getting project by user
+  """
+  userProjects(
+    data: IDInput!
+    filters: ProjectFilter = null
+    search: String = null
+  ): [ProjectType!]!
+  """
   Getting list of users
   """
   usersList(

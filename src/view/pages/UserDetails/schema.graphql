@@ -1,0 +1,20 @@
+query FetchUserDetails($input: IDInput!) {
+  userDetails(data: $input) {
+    id
+    fullName
+    email
+    photo {
+      url
+    }
+    department {
+      name
+    }
+    role {
+      name
+    }
+    isActive
+    contractType
+    birthDate
+    address
+  }
+}

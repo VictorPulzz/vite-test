@@ -650,6 +650,8 @@ export type Query = {
   rolesList: Array<RoleType>;
   /** Getting user by id */
   userDetails: UserType;
+  /** Getting project by user */
+  userProjects: Array<ProjectType>;
   /** Getting list of users */
   usersList: UserTypePagination;
 };
@@ -718,6 +720,12 @@ export type QueryRequestListArgs = {
 
 export type QueryUserDetailsArgs = {
   data: IdInput;
+};
+
+export type QueryUserProjectsArgs = {
+  data: IdInput;
+  filters?: InputMaybe<ProjectFilter>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUsersListArgs = {
