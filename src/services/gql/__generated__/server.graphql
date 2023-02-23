@@ -619,7 +619,7 @@ type Query {
     data: IDInput!
     filters: ProjectFilter = null
     search: String = null
-  ): [ProjectType!]!
+  ): [ProjectMemberType!]!
   """
   Getting list of users
   """

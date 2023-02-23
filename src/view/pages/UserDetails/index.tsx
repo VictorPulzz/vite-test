@@ -15,6 +15,7 @@ import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
 import { Docs } from './components/Docs';
+import { UserHistory } from './components/UserHistory';
 import styles from './styles.module.scss';
 
 export const UserDetailsPage: FC = () => {
@@ -46,7 +47,7 @@ export const UserDetailsPage: FC = () => {
           },
           {
             title: 'History',
-            element: <span>History</span>,
+            element: <UserHistory userId={userId} />,
           },
         ]}
       />

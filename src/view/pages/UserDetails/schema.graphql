@@ -18,3 +18,14 @@ query FetchUserDetails($input: IDInput!) {
     address
   }
 }
+
+query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
+  logList(filters: $filters, pagination: $pagination) {
+    results {
+      id
+      message
+      createdAt
+    }
+    count
+  }
+}

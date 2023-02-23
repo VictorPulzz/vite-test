@@ -651,7 +651,7 @@ export type Query = {
   /** Getting user by id */
   userDetails: UserType;
   /** Getting project by user */
-  userProjects: Array<ProjectType>;
+  userProjects: Array<ProjectMemberType>;
   /** Getting list of users */
   usersList: UserTypePagination;
 };
