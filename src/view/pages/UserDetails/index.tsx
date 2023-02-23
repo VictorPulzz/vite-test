@@ -1,17 +1,15 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { Tabs } from '~/view/components/Tabs';
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
-import { Icon } from '~/view/ui/components/common/Icon';
+import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
+import { Tabs } from '~/view/ui/components/common/Tabs';
 
-import { UpdateUserModal } from './components/UpdateUserModal';
-import { PROJECT_DETAILS_TABS } from './consts';
+import styles from './styles.module.scss';
 
 // TODO remove usersTestData when backend will be ready
 const usersTestData = [
@@ -33,7 +31,7 @@ const usersTestData = [
     photo: 'https://picsum.photos/26/26?random=2',
     department: 'Backend',
     email: 'grey@com',
-    isActive: false,
+    isActive: true,
     phoneNumber: '0432 032 554',
     dateOfBirth: '02/05/1989',
     address: '25 Central st, Sydney, NSW 2000',
@@ -66,12 +64,6 @@ const usersTestData = [
 ];
 
 export const UserDetailsPage: FC = () => {
-  const {
-    value: isUpdateUserModalOpen,
-    on: openUpdateUserModal,
-    off: closeUpdateUserModal,
-  } = useSwitchValue(false);
-
   const params = useParams();
   const userId = params.id ? Number(params.id) : 0;
 
@@ -87,91 +79,98 @@ export const UserDetailsPage: FC = () => {
   // TODO remove when backend will be ready
   const loading = false;
 
-  const [activeTabId, setActiveTabId] = useState<number>(1);
-
-  const handleActiveTabChange = useCallback((index: number) => setActiveTabId(index), []);
+  const UserDetailsTabs = useMemo(
+    () => (
+      <Tabs
+        className={styles['tabs']}
+        contentClassName="p-7 flex-auto"
+        items={[
+          {
+            title: 'Projects',
+            element: <span>Projects</span>,
+          },
+          {
+            title: 'Docs',
+            element: <span>Docs</span>,
+          },
+          {
+            title: 'History',
+            element: <span>History</span>,
+          },
+        ]}
+      />
+    ),
+    [],
+  );
 
   return (
     <SidebarLayout>
-      <DetailLayout title="User details">
+      <DetailLayout
+        title="User details"
+        rightHeaderElement={
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Edit user"
+            className="w-36"
+            withIcon="edit"
+            onClick={() => null}
+          />
+        }
+      >
         {loading ? (
           <span>LOADING</span>
         ) : (
           <div className="flex gap-5 p-6">
-            <div className="flex flex-col gap-5">
-              <div className="flex items-center gap-3 shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
+            <SectionContainer containerClassName="w-[382px] min-w-[382px]">
+              <div className="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
                 <Avatar uri={userById?.photo || photoPlaceholder} size={50} />
                 <div className="flex flex-col gap-2">
-                  <h2 className="text-p1 font-bold leading-none">{userById?.fullName}</h2>
-                  <span className="text-p4 text-gray-2">ID {userById?.id}</span>
+                  <h2 className="text-p1 text-primary font-bold leading-none">
+                    {userById?.fullName}
+                  </h2>
+                  <span className="text-p4 text-gray-2">ID {userById?.email}</span>
                 </div>
               </div>
-              <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px] flex-auto">
-                <div>
-                  <div className="flex gap-2 mb-3 ">
-                    <h2 className="text-p1 font-bold">User info</h2>
-                    <button
-                      type="button"
-                      className="hover:opacity-70"
-                      onClick={openUpdateUserModal}
-                    >
-                      <Icon name="pencil" size={14} className="text-blue " />
-                    </button>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Email</span>
-                      <span className="text-p3 text-blue leading-none">{userById?.email}</span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Department</span>
-                      <span className="text-p3 text-primary leading-none">
-                        {userById?.department}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Date of Birth</span>
-                      <span className="text-p3 text-primary leading-none">
-                        {userById?.dateOfBirth}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Address</span>
-                      <span className="text-p3 text-primary leading-none">{userById?.address}</span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Contract type</span>
-                      <span className="text-p3 text-primary leading-none">
-                        {userById?.contractType}
-                      </span>
-                    </div>
-                    <div className="flex flex-col gap-[2px]">
-                      <span className="text-c1 text-gray-2">Status</span>
-                      <Badge color={userById?.isActive ? BadgeColor.GREEN : BadgeColor.GRAY}>
-                        {userById?.isActive ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </div>
-                  </div>
+              <div className="flex flex-col gap-4 pt-7">
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Department</span>
+                  <span className="text-p3 text-primary leading-none">{userById?.department}</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Role</span>
+                  <span className="text-p3 text-primary leading-none">{userById?.department}</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Position</span>
+                  <span className="text-p3 text-primary leading-none">{userById?.department}</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Status</span>
+                  <span
+                    className={`text-p3 leading-none ${
+                      userById?.isActive ? 'text-green' : 'text-primary'
+                    }`}
+                  >
+                    {userById?.isActive ? 'Active' : 'Inactive'}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Contract type</span>
+                  <span className="text-p3 text-primary leading-none">
+                    {userById?.contractType}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Date of Birth</span>
+                  <span className="text-p3 text-primary leading-none">{userById?.dateOfBirth}</span>
+                </div>
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Address</span>
+                  <span className="text-p3 text-primary leading-none">{userById?.address}</span>
                 </div>
               </div>
-            </div>
-            <div className="shadow-4 bg-white rounded-md flex-auto p7">
-              <Tabs
-                activeTabId={activeTabId}
-                tabs={PROJECT_DETAILS_TABS}
-                onChange={handleActiveTabChange}
-                tabsClassName="border-b-[1px] border-solid text-gray-6 pt-7 px-7"
-                tabsPanelClassName="p-6"
-              >
-                {activeTabId === 1 && <span>Projects</span>}
-                {activeTabId === 2 && <span>Docs</span>}
-                {activeTabId === 3 && <span>Roles</span>}
-                {activeTabId === 4 && <span>Credentials</span>}
-                {activeTabId === 5 && <span>Notes</span>}
-                {activeTabId === 6 && <span>History</span>}
-              </Tabs>
-            </div>
-            <UpdateUserModal isOpen={isUpdateUserModalOpen} close={closeUpdateUserModal} />
+            </SectionContainer>
+            <div className="shadow-4 bg-white rounded-md flex-auto">{UserDetailsTabs}</div>
           </div>
         )}
       </DetailLayout>
