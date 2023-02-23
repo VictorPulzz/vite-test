@@ -204,6 +204,25 @@ export type RequestNewProjectIntegrationMutation = {
   projectIntegrationCreateUpdate: { __typename?: 'ProjectIntegrationType'; name: string };
 };
 
+export type FetchHistoryLogsQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.LogFilter>;
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchHistoryLogsQuery = {
+  __typename?: 'Query';
+  logList: {
+    __typename?: 'LogTypePagination';
+    results: Array<{
+      __typename?: 'LogType';
+      createdAt: string;
+      id: number;
+      message: string;
+      createdBy: { __typename?: 'UserType'; fullName?: string | null };
+    }>;
+  };
+};
+
 export type FetchDocumentsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.DocumentFilter>;
   pagination: Types.PaginationInput;
@@ -919,6 +938,62 @@ export type RequestNewProjectIntegrationMutationResult =
 export type RequestNewProjectIntegrationMutationOptions = Apollo.BaseMutationOptions<
   RequestNewProjectIntegrationMutation,
   RequestNewProjectIntegrationMutationVariables
+>;
+export const FetchHistoryLogsDocument = gql`
+  query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
+    logList(filters: $filters, pagination: $pagination) {
+      results {
+        createdAt
+        createdBy {
+          fullName
+        }
+        id
+        message
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchHistoryLogsQuery__
+ *
+ * To run a query within a React component, call `useFetchHistoryLogsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchHistoryLogsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchHistoryLogsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchHistoryLogsQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>(
+    FetchHistoryLogsDocument,
+    options,
+  );
+}
+export function useFetchHistoryLogsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>(
+    FetchHistoryLogsDocument,
+    options,
+  );
+}
+export type FetchHistoryLogsQueryHookResult = ReturnType<typeof useFetchHistoryLogsQuery>;
+export type FetchHistoryLogsLazyQueryHookResult = ReturnType<typeof useFetchHistoryLogsLazyQuery>;
+export type FetchHistoryLogsQueryResult = Apollo.QueryResult<
+  FetchHistoryLogsQuery,
+  FetchHistoryLogsQueryVariables
 >;
 export const FetchDocumentsDocument = gql`
   query FetchDocuments(
