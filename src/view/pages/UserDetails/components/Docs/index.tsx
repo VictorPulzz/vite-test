@@ -2,6 +2,7 @@ import { format } from 'date-fns';
 import React, { FC } from 'react';
 
 import { DateFormat } from '~/constants/dates';
+import { PAGE_SIZE } from '~/constants/pagination';
 import { DocumentFilter } from '~/services/gql/__generated__/globalTypes';
 import { getFileExtension } from '~/utils/getFileExtension';
 import { Pagination } from '~/view/components/Pagination';
@@ -17,15 +18,13 @@ interface Props {
   userId: number;
 }
 
-const USER_DOCS_PAGE_SIZE = 10;
-
 export const Docs: FC<Props> = ({ userId }) => {
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
   const { data, loading, fetchMore } = useFetchDocumentsQuery({
     variables: {
       pagination: {
-        limit: USER_DOCS_PAGE_SIZE,
+        limit: PAGE_SIZE,
         offset,
       },
       filters: {
@@ -36,7 +35,7 @@ export const Docs: FC<Props> = ({ userId }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const hasPagination = data && data.documentList.count > USER_DOCS_PAGE_SIZE;
+  const hasPagination = data && data.documentList.count > PAGE_SIZE;
   return (
     <div>
       <div className="flex items-center justify-between">
@@ -98,7 +97,7 @@ export const Docs: FC<Props> = ({ userId }) => {
               offset={offset}
               dataLength={data.documentList.results.length}
               fetchMore={fetchMore}
-              pageSize={USER_DOCS_PAGE_SIZE}
+              // pageSize={USER_DOCS_PAGE_SIZE}
             />
           )}
         </>
