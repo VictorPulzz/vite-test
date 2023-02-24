@@ -29,7 +29,6 @@ export const Projects: FC<Props> = ({ userId }) => {
 
   useEffect(() => {
     setOffset(0);
-    return () => setOffset(0);
   }, []);
 
   return (

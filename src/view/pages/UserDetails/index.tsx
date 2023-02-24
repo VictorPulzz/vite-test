@@ -1,8 +1,9 @@
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
+import { ROUTES } from '~/constants/routes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
@@ -20,6 +21,7 @@ import { UserHistory } from './components/UserHistory';
 import styles from './styles.module.scss';
 
 export const UserDetailsPage: FC = () => {
+  const navigate = useNavigate();
   const params = useParams();
   const userId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
@@ -60,6 +62,7 @@ export const UserDetailsPage: FC = () => {
     <SidebarLayout>
       <DetailLayout
         title="User details"
+        onClickBackButton={() => navigate(ROUTES.USERS)}
         rightHeaderElement={
           <Button
             variant={ButtonVariant.SECONDARY}

@@ -36,7 +36,7 @@ export const Docs: FC<Props> = ({ userId }) => {
   });
 
   useEffect(() => {
-    return () => setOffset(0);
+    setOffset(0);
   }, []);
 
   const hasPagination = data && data.documentList.count > PAGE_SIZE;

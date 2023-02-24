@@ -31,7 +31,7 @@ export const UserHistory: FC<Props> = ({ userId }) => {
   });
 
   useEffect(() => {
-    return () => setOffset(0);
+    setOffset(0);
   }, []);
 
   return (
