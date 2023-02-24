@@ -71,7 +71,7 @@ export const RepositoriesPage: FC = () => {
       </div>
       {loading && <TableLoader className="mt-10" />}
       {data && data.repositoryList.results.length === 0 && (
-        <EmptyState iconName="projects" label="No projects here yet" />
+        <EmptyState iconName="repositories" label="No repositories here yet" />
       )}
       {!loading && data && data.repositoryList.results.length > 0 && (
         <Table

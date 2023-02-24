@@ -59,7 +59,7 @@ export const History: FC = () => {
           className="w-40"
           options={filterByUserOptions}
           value={filter?.userId}
-          placeholder="Status"
+          placeholder="Filter by user"
           onChange={value => setFilter({ userId: value })}
         />
         {loading && <TableLoader className="mt-10" />}
