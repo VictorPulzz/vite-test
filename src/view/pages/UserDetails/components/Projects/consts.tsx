@@ -6,10 +6,9 @@ import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { getBadgeByProjectStatus } from '~/utils/getBadgeByProjectStatus';
 import { Badge } from '~/view/ui/components/common/Badge';
 
-// import { UserProjectsListResultType } from './types';
+import { UserProjectsListResultType } from './types';
 
-// TODO add UserProjectsListResultType  type
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<UserProjectsListResultType>();
 
 export const USERS_PROJECTS_TABLE_COLUMNS = [
   columnHelper.accessor('project.name', {

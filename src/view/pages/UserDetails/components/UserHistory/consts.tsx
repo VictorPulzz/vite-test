@@ -2,10 +2,9 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import React from 'react';
 
-// import { UserUserHistoryListResultType } from './types';
+import { UserHistoryListResultType } from './types';
 
-// TODO add UserUserHistoryListResultType  type
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<UserHistoryListResultType>();
 
 export const USERS_HISTORY_TABLE_COLUMNS = [
   columnHelper.accessor('message', {
