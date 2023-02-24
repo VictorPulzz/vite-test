@@ -567,6 +567,14 @@ export type ProjectMemberType = {
   user: UserType;
 };
 
+export type ProjectMemberTypePagination = {
+  __typename: 'ProjectMemberTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<ProjectMemberType>;
+};
+
 export enum ProjectPhaseChoice {
   DESIGN = 'DESIGN',
   DEVELOPMENT = 'DEVELOPMENT',
@@ -651,7 +659,7 @@ export type Query = {
   /** Getting user by id */
   userDetails: UserType;
   /** Getting project by user */
-  userProjects: Array<ProjectMemberType>;
+  userProjects: ProjectMemberTypePagination;
   /** Getting list of users */
   usersList: UserTypePagination;
 };
@@ -725,6 +733,7 @@ export type QueryUserDetailsArgs = {
 export type QueryUserProjectsArgs = {
   data: IdInput;
   filters?: InputMaybe<ProjectFilter>;
+  pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
 };
 
@@ -801,8 +810,8 @@ export type RepositoryParticipantTypePagination = {
 };
 
 export enum RepositoryPlatformChoice {
+  DESKTOP = 'DESKTOP',
   MOBILE = 'MOBILE',
-  WEB = 'WEB',
 }
 
 export type RepositoryType = {

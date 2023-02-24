@@ -19,6 +19,19 @@ query FetchUserDetails($input: IDInput!) {
   }
 }
 
+query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
+  userProjects(data: $input, pagination: $pagination) {
+    results {
+      project {
+        name
+        status
+      }
+      currentTeam
+    }
+    count
+  }
+}
+
 query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
   logList(filters: $filters, pagination: $pagination) {
     results {

@@ -1,10 +1,10 @@
+import { Table } from '@ui/components/common/Table';
+import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { DocumentFilter } from '~/services/gql/__generated__/globalTypes';
+import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUserHistoryListQuery } from '../../__generated__/schema';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const UserHistory: FC<Props> = ({ userId }) => {
-  const { offset, setOffset } = useListQueryParams<DocumentFilter>();
+  const { offset, setOffset } = useListQueryParams<LogFilter>();
 
   const { data, loading, fetchMore } = useFetchUserHistoryListQuery({
     variables: {
@@ -35,7 +35,9 @@ export const UserHistory: FC<Props> = ({ userId }) => {
       <h2 className="text-p1 font-bold">History</h2>
       {loading && <TableLoader className="mt-10" />}
       {data && data.logList.results.length === 0 && (
-        <EmptyState iconName="users" label="No users here yet" />
+        <div className="flex h-[70vh]">
+          <EmptyState iconName="list" label="No history here yet" />
+        </div>
       )}
       {!loading && data && data.logList.results.length > 0 && (
         <Table

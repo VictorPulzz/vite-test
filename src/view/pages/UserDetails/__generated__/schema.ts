@@ -25,6 +25,24 @@ export type FetchUserDetailsQuery = {
   };
 };
 
+export type FetchUserProjectsListQueryVariables = Types.Exact<{
+  input: Types.IdInput;
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchUserProjectsListQuery = {
+  __typename?: 'Query';
+  userProjects: {
+    __typename?: 'ProjectMemberTypePagination';
+    count: number;
+    results: Array<{
+      __typename?: 'ProjectMemberType';
+      currentTeam: boolean;
+      project: { __typename?: 'ProjectType'; name: string; status?: Types.StatusEnum | null };
+    }>;
+  };
+};
+
 export type FetchUserHistoryListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.LogFilter>;
   pagination: Types.PaginationInput;
@@ -101,6 +119,70 @@ export type FetchUserDetailsLazyQueryHookResult = ReturnType<typeof useFetchUser
 export type FetchUserDetailsQueryResult = Apollo.QueryResult<
   FetchUserDetailsQuery,
   FetchUserDetailsQueryVariables
+>;
+export const FetchUserProjectsListDocument = gql`
+  query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
+    userProjects(data: $input, pagination: $pagination) {
+      results {
+        project {
+          name
+          status
+        }
+        currentTeam
+      }
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchUserProjectsListQuery__
+ *
+ * To run a query within a React component, call `useFetchUserProjectsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchUserProjectsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchUserProjectsListQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchUserProjectsListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchUserProjectsListQuery,
+    FetchUserProjectsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchUserProjectsListQuery, FetchUserProjectsListQueryVariables>(
+    FetchUserProjectsListDocument,
+    options,
+  );
+}
+export function useFetchUserProjectsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchUserProjectsListQuery,
+    FetchUserProjectsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchUserProjectsListQuery, FetchUserProjectsListQueryVariables>(
+    FetchUserProjectsListDocument,
+    options,
+  );
+}
+export type FetchUserProjectsListQueryHookResult = ReturnType<typeof useFetchUserProjectsListQuery>;
+export type FetchUserProjectsListLazyQueryHookResult = ReturnType<
+  typeof useFetchUserProjectsListLazyQuery
+>;
+export type FetchUserProjectsListQueryResult = Apollo.QueryResult<
+  FetchUserProjectsListQuery,
+  FetchUserProjectsListQueryVariables
 >;
 export const FetchUserHistoryListDocument = gql`
   query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {

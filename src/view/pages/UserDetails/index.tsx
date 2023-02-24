@@ -15,6 +15,7 @@ import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
 import { Docs } from './components/Docs';
+import { Projects } from './components/Projects';
 import { UserHistory } from './components/UserHistory';
 import styles from './styles.module.scss';
 
@@ -39,7 +40,7 @@ export const UserDetailsPage: FC = () => {
         items={[
           {
             title: 'Projects',
-            element: <span>Projects</span>,
+            element: <Projects userId={userId} />,
           },
           {
             title: 'Docs',
