@@ -83,7 +83,7 @@ export const ProjectDetailsPage: FC = () => {
             <Button
               variant={ButtonVariant.SECONDARY}
               withIcon="left-arrow"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate(ROUTES.PROJECTS)}
             />
             <div className="flex flex-col">
               <h2 className="text-h4 font-bold">{data?.project.name}</h2>
