@@ -286,6 +286,8 @@ export type Mutation = {
   repositoryCreate: RepositoryType;
   /** Repository creation or update */
   repositoryCreateUpdate: RepositoryType;
+  /** Repository deletion */
+  repositoryDelete: MessageType;
   /** Repository participant creation or update */
   repositoryParticipantCreateUpdate: RepositoryParticipantType;
   /** Repository participant deleting */
@@ -387,6 +389,10 @@ export type MutationRepositoryCreateArgs = {
 
 export type MutationRepositoryCreateUpdateArgs = {
   data: RepositoryInput;
+};
+
+export type MutationRepositoryDeleteArgs = {
+  data: IdInput;
 };
 
 export type MutationRepositoryParticipantCreateUpdateArgs = {
