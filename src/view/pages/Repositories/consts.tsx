@@ -10,9 +10,9 @@ import { RepositoryPlatformChoice } from '~/services/gql/__generated__/globalTyp
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
-import { RepositoriesResultType } from './types';
+import { RepositoryResultType } from './types';
 
-const columnHelper = createColumnHelper<RepositoriesResultType>();
+const columnHelper = createColumnHelper<RepositoryResultType>();
 
 export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('name', {

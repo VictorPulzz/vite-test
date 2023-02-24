@@ -19,3 +19,9 @@ query FetchRepositories(
     count
   }
 }
+
+mutation RemoveRepository($input: IDInput!) {
+  repositoryDelete(data: $input) {
+    message
+  }
+}

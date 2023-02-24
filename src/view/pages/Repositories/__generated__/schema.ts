@@ -29,6 +29,15 @@ export type FetchRepositoriesQuery = {
   };
 };
 
+export type RemoveRepositoryMutationVariables = Types.Exact<{
+  input: Types.IdInput;
+}>;
+
+export type RemoveRepositoryMutation = {
+  __typename?: 'Mutation';
+  repositoryDelete: { __typename?: 'MessageType'; message: string };
+};
+
 export const FetchRepositoriesDocument = gql`
   query FetchRepositories(
     $filters: RepositoryFilter
@@ -97,4 +106,51 @@ export type FetchRepositoriesLazyQueryHookResult = ReturnType<typeof useFetchRep
 export type FetchRepositoriesQueryResult = Apollo.QueryResult<
   FetchRepositoriesQuery,
   FetchRepositoriesQueryVariables
+>;
+export const RemoveRepositoryDocument = gql`
+  mutation RemoveRepository($input: IDInput!) {
+    repositoryDelete(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveRepositoryMutationFn = Apollo.MutationFunction<
+  RemoveRepositoryMutation,
+  RemoveRepositoryMutationVariables
+>;
+
+/**
+ * __useRemoveRepositoryMutation__
+ *
+ * To run a mutation, you first call `useRemoveRepositoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveRepositoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeRepositoryMutation, { data, loading, error }] = useRemoveRepositoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveRepositoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveRepositoryMutation,
+    RemoveRepositoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveRepositoryMutation, RemoveRepositoryMutationVariables>(
+    RemoveRepositoryDocument,
+    options,
+  );
+}
+export type RemoveRepositoryMutationHookResult = ReturnType<typeof useRemoveRepositoryMutation>;
+export type RemoveRepositoryMutationResult = Apollo.MutationResult<RemoveRepositoryMutation>;
+export type RemoveRepositoryMutationOptions = Apollo.BaseMutationOptions<
+  RemoveRepositoryMutation,
+  RemoveRepositoryMutationVariables
 >;
