@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { DateFormat } from '~/constants/dates';
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -34,6 +34,10 @@ export const Docs: FC<Props> = ({ userId }) => {
     },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    return () => setOffset(0);
+  }, []);
 
   const hasPagination = data && data.documentList.count > PAGE_SIZE;
   return (

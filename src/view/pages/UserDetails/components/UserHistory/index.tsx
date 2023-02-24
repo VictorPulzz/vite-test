@@ -1,6 +1,6 @@
 import { Table } from '@ui/components/common/Table';
 import { TableLoader } from '@ui/components/common/TableLoader';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
@@ -29,6 +29,10 @@ export const UserHistory: FC<Props> = ({ userId }) => {
     },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    return () => setOffset(0);
+  }, []);
 
   return (
     <>

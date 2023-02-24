@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
@@ -26,6 +26,11 @@ export const Projects: FC<Props> = ({ userId }) => {
     },
     fetchPolicy: 'cache-and-network',
   });
+
+  useEffect(() => {
+    setOffset(0);
+    return () => setOffset(0);
+  }, []);
 
   return (
     <>
