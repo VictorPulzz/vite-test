@@ -55,9 +55,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       return (
         <Badge
           color={
-            platform?.toUpperCase() === RepositoryPlatformChoice.WEB
-              ? BadgeColor.GREEN
-              : BadgeColor.GRAY
+            platform?.toUpperCase() === RepositoryPlatformChoice.DESKTOP
+              ? BadgeColor.BLUE
+              : BadgeColor.GREEN
           }
         >
           {platform}

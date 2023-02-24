@@ -476,6 +476,13 @@ type ProjectMemberType {
   user: UserType!
 }
 
+type ProjectMemberTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectMemberType!]!
+}
+
 enum ProjectPhaseChoice {
   DESIGN
   DEVELOPMENT
@@ -618,8 +625,9 @@ type Query {
   userProjects(
     data: IDInput!
     filters: ProjectFilter = null
+    pagination: PaginationInput!
     search: String = null
-  ): [ProjectMemberType!]!
+  ): ProjectMemberTypePagination!
   """
   Getting list of users
   """
@@ -695,8 +703,8 @@ type RepositoryParticipantTypePagination {
 }
 
 enum RepositoryPlatformChoice {
+  DESKTOP
   MOBILE
-  WEB
 }
 
 type RepositoryType {

@@ -15,6 +15,7 @@ interface Props {
   totalCount: number;
   offset: number;
   dataLength: number;
+
   /* eslint-disable @typescript-eslint/no-explicit-any */
   fetchMore: (
     options: FetchMoreQueryOptions<any> & {
