@@ -5,14 +5,11 @@ import React, { FC } from 'react';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
+import { RepositoryResultType } from '../../types';
 import { DeleteRepositoryModal } from '../DeleteRepositoryModal';
 
-// TODO remove any
-export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
-  // TODO remove console.log
-  // eslint-disable-next-line no-console
-  console.log('🚀 ~ file: index.tsx:13 ~ row', row);
-
+export const MoreCell: FC<CellContext<RepositoryResultType, unknown>> = ({ row }) => {
+  const { id, name } = row.original;
   const {
     value: isDeleteRepositoryModalOpen,
     on: openDeleteRepositoryModal,
@@ -39,7 +36,9 @@ export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
       <DeleteRepositoryModal
         isOpen={isDeleteRepositoryModalOpen}
         close={closeDeleteRepositoryModal}
-        repositoryName={row.original.repositoryName}
+        id={id as number}
+        // TOD fix this later
+        name={name ?? 'Requested'}
       />
     </>
   );

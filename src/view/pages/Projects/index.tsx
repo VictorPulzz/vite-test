@@ -1,7 +1,5 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { EmptyState } from '@ui/components/common/EmptyState';
-import { Table } from '@ui/components/common/Table';
-import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -11,6 +9,8 @@ import { ProjectFilter, StatusEnum } from '~/services/gql/__generated__/globalTy
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
+import { Table } from '~/view/ui/components/common/Table';
+import { TableLoader } from '~/view/ui/components/common/TableLoader';
 import { Select } from '~/view/ui/components/form/Select';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
@@ -57,7 +57,7 @@ export const ProjectsPage: FC = () => {
         <Select
           className="w-40"
           options={statusOptions}
-          value={filter?.status as StatusEnum}
+          value={filter?.status}
           placeholder="Status"
           onChange={value => setFilter({ status: value })}
         />

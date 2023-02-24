@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
@@ -41,9 +41,16 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
 
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
-  const [project, setProject] = useState<Nullable<number>>();
-  const [category, setCategory] = useState<Nullable<number>>();
-  const [addedBy, setAddedBy] = useState<Nullable<number>>();
+  useEffect(() => {
+    setOffset(0);
+  }, [isInternal]);
+
+  const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
+    addedById: undefined,
+    categoryId: undefined,
+    projectId: projectId || undefined,
+  });
+
   const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>(OrderDirectionChoice.DESC);
 
   const { data: allProjects } = useFetchAllProjectsQuery({
@@ -69,12 +76,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
         limit: PAGE_SIZE,
         offset,
       },
-      filters: {
-        addedById: addedBy,
-        categoryId: category,
-        projectId: projectId || project,
-        internal: isInternal,
-      },
+      filters: { ...docsFilter, internal: isInternal },
       search: searchValue,
       sort: {
         direction: sortDirecion,
@@ -148,21 +150,21 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
           {!projectId && !isInternal && (
             <Select
               options={projectsOptions}
-              value={project}
-              onChange={setProject}
+              value={docsFilter.projectId}
+              onChange={value => setDocsFilter({ ...docsFilter, projectId: value })}
               placeholder="Project"
             />
           )}
           <Select
             options={categoriesOptions}
-            value={category}
-            onChange={setCategory}
+            value={docsFilter.categoryId}
+            onChange={value => setDocsFilter({ ...docsFilter, categoryId: value })}
             placeholder="Category"
           />
           <Select
             options={usersOptions}
-            value={addedBy}
-            onChange={setAddedBy}
+            value={docsFilter.addedById}
+            onChange={value => setDocsFilter({ ...docsFilter, addedById: value })}
             placeholder="Added by"
           />
           <Select

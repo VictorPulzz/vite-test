@@ -303,6 +303,10 @@ type Mutation {
   """
   repositoryCreateUpdate(data: RepositoryInput!): RepositoryType!
   """
+  Repository deletion
+  """
+  repositoryDelete(data: IDInput!): MessageType!
+  """
   Repository participant creation or update
   """
   repositoryParticipantCreateUpdate(data: RepositoryParticipantInput!): RepositoryParticipantType!

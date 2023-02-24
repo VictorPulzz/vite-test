@@ -1,13 +1,39 @@
+import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Icon } from '@ui/components/common/Icon';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
+
+import { FetchRepositoriesDocument, useRemoveRepositoryMutation } from '../../__generated__/schema';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
-  repositoryName: string;
+  id: number;
+  name: string;
 }
 
-export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, repositoryName }) => {
+export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) => {
+  const [removeDocument] = useRemoveRepositoryMutation();
+
+  const removeCurrentRepository = useCallback(() => {
+    toast.promise(
+      removeDocument({
+        variables: {
+          input: { id },
+        },
+        refetchQueries: [FetchRepositoriesDocument],
+      }),
+      {
+        loading: 'Deleting repository...',
+        success: 'Repository deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while changing status: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [id, removeDocument]);
+
   return (
     <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">
       <div className="flex flex-col items-center">
@@ -15,13 +41,11 @@ export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, repositoryName
           <Icon name="trash" size={31} className="text-primary m-auto" />
         </div>
         <h1 className="text-h4 mb-2 ">Delete repository</h1>
-        <p className="mb-6 text-center leading-6">
-          Are you sure you want to delete {repositoryName}?
-        </p>
+        <p className="mb-6 text-center leading-6">Are you sure you want to delete {name}?</p>
         <div className="flex w-full">
           <Button
             variant={ButtonVariant.SECONDARY}
-            onClick={() => null}
+            onClick={removeCurrentRepository}
             label="Yes, delete"
             className="mr-2 text-red"
           />

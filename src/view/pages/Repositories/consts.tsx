@@ -1,43 +1,40 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import { Badge, BadgeColor } from '@ui/components/common/Badge';
-import { TextLink } from '@ui/components/common/TextLink';
-// import { format } from 'date-fns';
+import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
+import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { RepositoryPlatformChoice } from '~/services/gql/__generated__/globalTypes';
+import { TextLink } from '~/view/ui/components/common/TextLink';
 
-// import { DATE_FORMAT } from '~/constants/dates';
-// import { ClientOrder } from '~/services/gql/__generated__/globalTypes';
 import { MoreCell } from './components/MoreCell';
-// import { ClientResultType } from './types';
+import { RepositoryResultType } from './types';
 
-// TODO move ProjectPlatfrom to common models later
-export enum ProjectPlatfrom {
-  WEB = 'WEB',
-  MOBILE = 'MOBILE',
-}
-
-const columnHelper = createColumnHelper<any>();
+const columnHelper = createColumnHelper<RepositoryResultType>();
 
 export const REPOSITORIES_TABLE_COLUMNS = [
-  columnHelper.accessor('repositoryName', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor('name', {
+    id: 'name',
     header: 'Name',
     cell: props => {
-      const { repositoryId } = props.row.original;
+      const { id, name } = props.row.original;
       return (
-        <TextLink
-          to={generatePath(ROUTES.REPOSITORY_DETAILS, { id: repositoryId })}
-          className="underline"
-        >
-          {props.getValue()}
-        </TextLink>
+        <div>
+          {name ? (
+            <TextLink to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })} className="underline">
+              {props.getValue()}
+            </TextLink>
+          ) : (
+            <span className="text-red">Requested</span>
+          )}
+        </div>
       );
     },
   }),
-  columnHelper.accessor('projectName', {
-    // id: ClientOrder.EMAIL,
+  columnHelper.accessor('project.name', {
+    id: 'project.name',
     header: 'Project',
     cell: props => {
       const { projectId } = props.row.original;
@@ -51,23 +48,19 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
-  columnHelper.accessor('gitUrl', {
-    // id: ClientOrder.FULL_NAME,
+  // TODO add gitUrl inside TextLink
+  columnHelper.accessor('gitRepoId', {
+    id: 'gitUrl',
     header: 'Git url',
-    cell: props => {
-      return (
-        <TextLink external to={props.getValue()} className="underline">
-          {props.getValue()}
-        </TextLink>
-      );
-    },
+    cell: props => props.getValue() ?? '-',
   }),
   columnHelper.accessor('createdAt', {
-    // id: ClientOrder.EMAIL,
+    id: 'createdAt',
     header: 'Created at',
+    cell: props => format(new Date(props.getValue()), DateFormat.PP),
   }),
   columnHelper.accessor('platform', {
-    // id: ClientOrder.STATUS,
+    id: 'platform',
     header: 'Platfrom',
     cell: ({
       row: {
@@ -77,7 +70,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       return (
         <Badge
           color={
-            platform.toUpperCase() === ProjectPlatfrom.WEB ? BadgeColor.GREEN : BadgeColor.GRAY
+            platform?.toUpperCase() === RepositoryPlatformChoice.MOBILE
+              ? BadgeColor.GREEN
+              : BadgeColor.BLUE
           }
         >
           {platform}

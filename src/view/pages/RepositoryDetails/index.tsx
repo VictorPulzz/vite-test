@@ -2,6 +2,7 @@ import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { RepositoryPlatformChoice } from '~/services/gql/__generated__/globalTypes';
 import { Tabs } from '~/view/components/Tabs';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -9,7 +10,6 @@ import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
-import { ProjectPlatfrom } from '../Repositories/consts';
 import { Participants } from './components/Partisipants';
 import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';
 // import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
@@ -135,7 +135,7 @@ export const RepositoryDetailsPage: FC = () => {
                     <span className="text-c1 text-gray-2">Platform</span>
                     <Badge
                       color={
-                        repositoryById?.platform.toUpperCase() === ProjectPlatfrom.WEB
+                        repositoryById?.platform.toUpperCase() === RepositoryPlatformChoice.DESKTOP
                           ? BadgeColor.GREEN
                           : BadgeColor.GRAY
                       }
