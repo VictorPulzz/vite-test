@@ -2,9 +2,10 @@ import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { InlineFields } from '@ui/components/form/InlineFields';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -12,22 +13,42 @@ import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
-import { useCreateUserForm } from './hooks/useCreateUserForm';
+import {
+  useFetchDepartmentsListQuery,
+  useFetchRolesListQuery,
+} from '../Users/__generated__/schema';
+import { useUserForm } from './hooks/useUserForm';
 import styles from './styles.module.scss';
 
-export enum Departments {
-  FRONT_END = 'FRONTEND',
-  BACK_END = 'BACKEND',
-}
-
-export const CreateUserPage: FC = () => {
+export const CreateOrUpdateUserPage: FC = () => {
   const navigate = useNavigate();
 
-  const { form, handleSubmit } = useCreateUserForm({
+  const { data: departmentsList } = useFetchDepartmentsListQuery();
+  const { data: rolesList } = useFetchRolesListQuery();
+
+  const { form, handleSubmit } = useUserForm({
     onSubmitSuccessful: () => navigate(-1),
   });
 
-  const departmentsOptions = enumToSelectOptions(Departments);
+  const departmentsOptions = useMemo(() => {
+    return departmentsList?.departmentsList
+      ? departmentsList?.departmentsList.map(({ id, name }) => ({
+          value: `${id}`,
+          label: name,
+        }))
+      : [];
+  }, [departmentsList?.departmentsList]);
+
+  const rolesOptions = useMemo(() => {
+    return rolesList?.rolesList
+      ? rolesList?.rolesList.map(({ id, name }) => ({
+          value: `${id}`,
+          label: name,
+        }))
+      : [];
+  }, [rolesList?.rolesList]);
+
+  const contractTypeOptions = enumToSelectOptions(ContractChoice);
 
   return (
     <SidebarLayout>
@@ -61,16 +82,19 @@ export const CreateUserPage: FC = () => {
             />
           </InlineFields>
           <InlineFields>
+            <SelectField name="role" options={rolesOptions} control={form.control} label="Role" />
             <TextField name="address" control={form.control} label="Address" />
+          </InlineFields>
+          <InlineFields>
             <SelectField
               name="contractType"
-              options={departmentsOptions}
+              options={contractTypeOptions}
               control={form.control}
               label="Contract type"
             />
+            <DateField name="birthDate" control={form.control} label="Birth date" />
           </InlineFields>
           <InlineFields>
-            <DateField name="birthDate" control={form.control} label="Birth date" />
             <Checkbox label="Active" {...form.register('isActive')} className="mt-4" />
           </InlineFields>
         </section>
