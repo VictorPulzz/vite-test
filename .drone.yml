@@ -95,39 +95,40 @@ steps:
     - push
     # - pull_request
 
-# # Production (Keep commented out before deploying on produciton)
-# - name: Build Production
-#   image: node:16
-#   commands:
-#   - npm install --quiet
-#   - npm run build
-#   environment:
-#     GOOGLE_MAPS_KEY: ''
-#   when:
-#     branch: master
-#     event:
-#     - push
-#     - pull_request
+# Production (Keep commented out before deploying on produciton)
+- name: Build Production
+  image: node:16
+  commands:
+  - npm install --quiet
+  - npm run build
+  environment:
+    API_URL: 'https://sb2.appelloproject.xyz/graphql'
+    APP_TITLE: 'SB2 (prod)'
+  when:
+    branch: master
+    event:
+    - push
+    - pull_request
 
-# - name: Deploy Production to S3 & Invalidate CloudFront Cache
-#   image: samepagelabs/awscli:latest
-#   environment:
-#     AWS_ACCESS_KEY_ID:
-#       from_secret:
-#     AWS_SECRET_ACCESS_KEY:
-#       from_secret:
-#     S3_URL: s3://
-#     CDN_DISTRIBUTION_ID:
-#   commands:
-#   - aws s3 rm $S3_URL/previous --recursive
-#   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
-#   - aws s3 sync ./build $S3_URL/latest
-#   - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"
-#   when:
-#     branch: master
-#     event:
-#     - push
-#     # - pull_request
+- name: Deploy Production to S3 & Invalidate CloudFront Cache
+  image: samepagelabs/awscli:latest
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key
+    S3_URL: s3://sb2-front-prod
+    CDN_DISTRIBUTION_ID: E1XPWK0U0BMJPS
+  commands:
+  - aws s3 rm $S3_URL/previous --recursive
+  - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
+  - aws s3 sync ./build $S3_URL/latest
+  - aws cloudfront create-invalidation --distribution-id $CDN_DISTRIBUTION_ID --paths "/*"
+  when:
+    branch: master
+    event:
+    - push
+    # - pull_request
 
 # Slack notifications
 - name: Notify Slack about success
