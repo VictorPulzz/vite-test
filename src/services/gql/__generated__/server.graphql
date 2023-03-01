@@ -55,8 +55,8 @@ type ClientType {
 }
 
 enum ContractChoice {
-  full_time
-  part_time
+  FULL_TIME
+  PART_TIME
 }
 
 """
