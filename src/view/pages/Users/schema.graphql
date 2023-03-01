@@ -23,15 +23,15 @@ query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: S
 
 query FetchRolesList {
   rolesList {
-    id
-    name
+    value: id
+    label: name
   }
 }
 
 query FetchDepartmentsList {
   departmentsList {
-    id
-    name
+    value: id
+    label: name
   }
 }
 

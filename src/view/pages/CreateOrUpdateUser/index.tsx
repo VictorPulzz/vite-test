@@ -3,8 +3,10 @@ import { InlineFields } from '@ui/components/form/InlineFields';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { ExtractRouteParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 
+import { ROUTES } from '~/constants/routes';
 import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -13,6 +15,7 @@ import { Checkbox } from '~/view/ui/components/form/Checkbox';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
+import { useFetchUserDetailsQuery } from '../UserDetails/__generated__/schema';
 import {
   useFetchDepartmentsListQuery,
   useFetchRolesListQuery,
@@ -22,43 +25,44 @@ import styles from './styles.module.scss';
 
 export const CreateOrUpdateUserPage: FC = () => {
   const navigate = useNavigate();
+  const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_USER, string>>();
+
+  const userId = useMemo(() => (params?.id ? Number(params.id) : undefined), [params]);
+
+  const { data: userInfo } = useFetchUserDetailsQuery({
+    variables: {
+      input: { id: userId ?? 0 },
+    },
+    skip: !userId,
+  });
 
   const { data: departmentsList } = useFetchDepartmentsListQuery();
   const { data: rolesList } = useFetchRolesListQuery();
 
   const { form, handleSubmit } = useUserForm({
     onSubmitSuccessful: () => navigate(-1),
+    prefilledData: userInfo?.userDetails,
+    id: userId,
   });
 
-  const departmentsOptions = useMemo(() => {
-    return departmentsList?.departmentsList
-      ? departmentsList?.departmentsList.map(({ id, name }) => ({
-          value: `${id}`,
-          label: name,
-        }))
-      : [];
-  }, [departmentsList?.departmentsList]);
+  const departmentsOptions = useMemo(
+    () => departmentsList?.departmentsList ?? [],
+    [departmentsList?.departmentsList],
+  );
 
-  const rolesOptions = useMemo(() => {
-    return rolesList?.rolesList
-      ? rolesList?.rolesList.map(({ id, name }) => ({
-          value: `${id}`,
-          label: name,
-        }))
-      : [];
-  }, [rolesList?.rolesList]);
+  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
 
   const contractTypeOptions = enumToSelectOptions(ContractChoice);
 
   return (
     <SidebarLayout>
       <DetailLayout
-        title="Add user"
+        title={`${userId ? 'Edit' : 'New'} user`}
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
             variant={ButtonVariant.PRIMARY}
-            label="Create user"
+            label={`${userId ? 'Save' : 'Create'} user`}
             className="w-36"
             onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}

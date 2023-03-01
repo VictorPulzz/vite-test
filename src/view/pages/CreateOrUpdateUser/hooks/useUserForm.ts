@@ -1,3 +1,4 @@
+import { isString } from '@appello/common/lib/utils/string/isString';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO, isPast } from 'date-fns';
 import { useCallback, useMemo } from 'react';
@@ -7,7 +8,12 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
+import { transformUserPrefilledData } from '~/view/pages/CreateOrUpdateUser/utils';
 
+import {
+  FetchUserDetailsDocument,
+  FetchUserDetailsQuery,
+} from '../../UserDetails/__generated__/schema';
 import { useCreateOrUpdateUserMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
@@ -26,8 +32,14 @@ const formSchema = z.object({
     .string()
     .email(formErrors.INVALID_EMAIL)
     .refine(value => value !== null, formErrors.REQUIRED),
-  department: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  role: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  department: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
+  role: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
   address: z.string(),
   contractType: z
     .nativeEnum(ContractChoice)
@@ -41,7 +53,7 @@ const formSchema = z.object({
   isActive: z.boolean(),
 });
 
-type UserFormValues = z.infer<typeof formSchema>;
+export type UserFormValues = z.infer<typeof formSchema>;
 
 interface UseUserFormReturn {
   form: UseFormReturn<UserFormValues>;
@@ -49,6 +61,8 @@ interface UseUserFormReturn {
 }
 
 interface UseUserFormProps {
+  prefilledData?: FetchUserDetailsQuery['userDetails'];
+  id?: number;
   onSubmitSuccessful?: () => void;
 }
 
@@ -57,17 +71,22 @@ const defaultValues: UserFormValues = {
   firstName: '',
   lastName: '',
   email: '',
-  department: '',
-  role: '',
+  department: null,
+  role: null,
   address: '',
   contractType: null,
   birthDate: null,
   isActive: false,
 };
 
-export function useUserForm({ onSubmitSuccessful }: UseUserFormProps): UseUserFormReturn {
+export function useUserForm({
+  prefilledData,
+  id,
+  onSubmitSuccessful,
+}: UseUserFormProps): UseUserFormReturn {
   const form = useForm<UserFormValues>({
     defaultValues,
+    values: prefilledData ? transformUserPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
@@ -79,16 +98,22 @@ export function useUserForm({ onSubmitSuccessful }: UseUserFormProps): UseUserFo
         await createOrUpdateUser({
           variables: {
             input: {
-              // id,
-              ...values,
-              photo: values.photo as File,
-              departmentId: +values.department,
-              roleId: +values.role,
+              id,
+              photo: !isString(values.photo) ? values.photo : undefined,
+              firstName: values.firstName,
+              lastName: values.lastName,
+              email: values.email,
+              departmentId: values.department,
+              roleId: values.role,
+              address: values.address,
+              contractType: values.contractType,
               birthDate: values.birthDate
                 ? formatISO(values.birthDate, { representation: 'date' })
                 : '',
+              isActive: values.isActive,
             },
           },
+          refetchQueries: [FetchUserDetailsDocument],
         });
         onSubmitSuccessful?.();
       } catch (e) {
@@ -108,7 +133,7 @@ export function useUserForm({ onSubmitSuccessful }: UseUserFormProps): UseUserFo
         });
       }
     },
-    [createOrUpdateUser, form.setError, onSubmitSuccessful],
+    [createOrUpdateUser, form.setError, id, onSubmitSuccessful],
   );
 
   return useMemo(

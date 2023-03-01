@@ -24,25 +24,12 @@ export const UsersFilterModal: FC<UsersFilterModalProps> = ({ isOpen, close, set
     },
   });
 
-  const rolesOptions = useMemo(() => {
-    if (rolesList?.rolesList) {
-      return rolesList?.rolesList.map(({ id, name }) => ({
-        value: String(id),
-        label: name,
-      }));
-    }
-    return [];
-  }, [rolesList?.rolesList]);
+  const departmentsOptions = useMemo(
+    () => departmentsList?.departmentsList ?? [],
+    [departmentsList?.departmentsList],
+  );
 
-  const departmentsOptions = useMemo(() => {
-    if (departmentsList?.departmentsList) {
-      return departmentsList?.departmentsList.map(({ id, name }) => ({
-        value: String(id),
-        label: name,
-      }));
-    }
-    return [];
-  }, [departmentsList?.departmentsList]);
+  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
 
   const statusOptions = [
     {

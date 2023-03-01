@@ -7,8 +7,8 @@ import { z } from 'zod';
 import { UsersFilterModalProps } from '~/view/pages/Users/components/UsersFilterModal';
 
 const formSchema = z.object({
-  role: z.string().nullable(),
-  department: z.string().nullable(),
+  role: z.number().nullable(),
+  department: z.number().nullable(),
   status: z.boolean().nullable(),
 });
 
