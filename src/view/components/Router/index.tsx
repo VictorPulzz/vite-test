@@ -4,8 +4,8 @@ import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
+import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
-import { CreateUserPage } from '~/view/pages/CreateUser';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
 import { HomePage } from '~/view/pages/Home';
@@ -68,7 +68,11 @@ const protectedRoutes: RouteObject[] = [
   },
   {
     path: ROUTES.ADD_USER,
-    element: <CreateUserPage />,
+    element: <CreateOrUpdateUserPage />,
+  },
+  {
+    path: ROUTES.EDIT_USER,
+    element: <CreateOrUpdateUserPage />,
   },
   {
     path: ROUTES.USER_DETAILS,

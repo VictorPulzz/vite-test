@@ -1,6 +1,6 @@
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
@@ -69,7 +69,7 @@ export const UserDetailsPage: FC = () => {
             label="Edit user"
             className="w-36"
             withIcon="edit"
-            onClick={() => null}
+            onClick={() => navigate(generatePath(ROUTES.EDIT_USER, { id: userId }))}
           />
         }
       >

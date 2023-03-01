@@ -14,14 +14,16 @@ export type FetchUserDetailsQuery = {
     __typename?: 'UserType';
     id?: string | null;
     fullName?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
     email: string;
     isActive?: boolean | null;
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     address?: string | null;
     photo?: { __typename?: 'ImageType'; url: string } | null;
-    department?: { __typename?: 'DepartmentType'; name: string } | null;
-    role?: { __typename?: 'RoleType'; name: string } | null;
+    department?: { __typename?: 'DepartmentType'; id: number; name: string } | null;
+    role?: { __typename?: 'RoleType'; id: number; name: string } | null;
   };
 };
 
@@ -62,14 +64,18 @@ export const FetchUserDetailsDocument = gql`
     userDetails(data: $input) {
       id
       fullName
+      firstName
+      lastName
       email
       photo {
         url
       }
       department {
+        id
         name
       }
       role {
+        id
         name
       }
       isActive

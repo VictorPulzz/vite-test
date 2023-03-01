@@ -244,6 +244,9 @@ type Mutation {
   Generate document
   """
   documentGenerate(data: DocumentGenerateInput!): DocumentType!
+  """
+  Sending reset password email
+  """
   forgotPassword(data: ForgotPasswordInput!): ForgotPasswordType!
   """
   Login
@@ -253,6 +256,9 @@ type Mutation {
   User updating himself
   """
   meUpdate(data: ProfileInput!): ProfileType!
+  """
+  Change password
+  """
   passwordChange(data: ChangePasswordInput!): MessageType!
   """
   Update permissions
@@ -322,6 +328,9 @@ type Mutation {
   Update request status
   """
   requestUpdateStatus(data: RequestUpdateStatusInput!): RequestType!
+  """
+  Reset password
+  """
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
   User creation

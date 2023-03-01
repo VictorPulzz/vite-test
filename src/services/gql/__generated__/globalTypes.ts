@@ -256,11 +256,13 @@ export type Mutation = {
   documentDelete: MessageType;
   /** Generate document */
   documentGenerate: DocumentType;
+  /** Sending reset password email */
   forgotPassword: ForgotPasswordType;
   /** Login */
   login: LoginSuccessType;
   /** User updating himself */
   meUpdate: ProfileType;
+  /** Change password */
   passwordChange: MessageType;
   /** Update permissions */
   permissionsUpdate: MessageType;
@@ -296,6 +298,7 @@ export type Mutation = {
   requestCreate: RequestType;
   /** Update request status */
   requestUpdateStatus: RequestType;
+  /** Reset password */
   resetPassword: MessageType;
   /** User creation */
   signup: MessageType;

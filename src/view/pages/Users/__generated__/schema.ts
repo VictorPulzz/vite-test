@@ -32,14 +32,14 @@ export type FetchRolesListQueryVariables = Types.Exact<{ [key: string]: never }>
 
 export type FetchRolesListQuery = {
   __typename?: 'Query';
-  rolesList: Array<{ __typename?: 'RoleType'; id: number; name: string }>;
+  rolesList: Array<{ __typename?: 'RoleType'; value: number; label: string }>;
 };
 
 export type FetchDepartmentsListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchDepartmentsListQuery = {
   __typename?: 'Query';
-  departmentsList: Array<{ __typename?: 'DepartmentType'; id: number; name: string }>;
+  departmentsList: Array<{ __typename?: 'DepartmentType'; value: number; label: string }>;
 };
 
 export type ChangeUserStatusMutationVariables = Types.Exact<{
@@ -115,8 +115,8 @@ export type FetchUsersQueryResult = Apollo.QueryResult<FetchUsersQuery, FetchUse
 export const FetchRolesListDocument = gql`
   query FetchRolesList {
     rolesList {
-      id
-      name
+      value: id
+      label: name
     }
   }
 `;
@@ -163,8 +163,8 @@ export type FetchRolesListQueryResult = Apollo.QueryResult<
 export const FetchDepartmentsListDocument = gql`
   query FetchDepartmentsList {
     departmentsList {
-      id
-      name
+      value: id
+      label: name
     }
   }
 `;
