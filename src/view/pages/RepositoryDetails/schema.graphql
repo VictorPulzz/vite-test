@@ -1,0 +1,10 @@
+query FetchRepositoryDetails($input: IDInput!) {
+  repository(data: $input) {
+    id
+    name
+    project {
+      name
+    }
+    createdAt
+  }
+}
