@@ -18,7 +18,6 @@ export const ROUTES = {
 
   REPOSITORIES: '/repositories',
   ADD_REPOSITORY: '/repositories/add',
-  EDIT_REPOSITORY: '/repositories/:id/edit',
   REPOSITORY_DETAILS: '/repositories/:id',
 
   ROLES_AND_PERMISSIONS: '/roles-and-permissions',

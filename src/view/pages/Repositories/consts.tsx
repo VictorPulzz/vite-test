@@ -1,12 +1,10 @@
 import { createColumnHelper } from '@tanstack/react-table';
-import { Badge, BadgeColor } from '@ui/components/common/Badge';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
-import { RepositoryPlatformChoice } from '~/services/gql/__generated__/globalTypes';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
@@ -58,27 +56,6 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     id: 'createdAt',
     header: 'Created at',
     cell: props => format(new Date(props.getValue()), DateFormat.PP),
-  }),
-  columnHelper.accessor('platform', {
-    id: 'platform',
-    header: 'Platfrom',
-    cell: ({
-      row: {
-        original: { platform },
-      },
-    }) => {
-      return (
-        <Badge
-          color={
-            platform?.toUpperCase() === RepositoryPlatformChoice.MOBILE
-              ? BadgeColor.GREEN
-              : BadgeColor.BLUE
-          }
-        >
-          {platform}
-        </Badge>
-      );
-    },
   }),
   columnHelper.group({
     id: 'more',

@@ -12,10 +12,10 @@ import { Checkbox } from '~/view/ui/components/form/Checkbox';
 
 import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
 import { useFetchBoilerplateListQuery } from './__generated__/schema';
-import { useRepositoryForm } from './hooks/useRepositoryForm';
+import { useCreateRepositoryForm } from './hooks/useCreateRepositoryForm';
 import styles from './styles.module.scss';
 
-export const CreateOrUpdateRepositoryPage: FC = () => {
+export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
 
   const { data: allProjects } = useFetchAllProjectsQuery({
@@ -30,7 +30,7 @@ export const CreateOrUpdateRepositoryPage: FC = () => {
   const {
     form: { register, control, formState },
     handleSubmit,
-  } = useRepositoryForm({
+  } = useCreateRepositoryForm({
     onSubmitSuccessful: () => navigate(-1),
   });
 
@@ -63,7 +63,7 @@ export const CreateOrUpdateRepositoryPage: FC = () => {
       >
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
-          <div className="flex items-end gap-4 justify-center">
+          <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
             <TextField name="name" control={control} label="Name" />
             <SelectField
               name="projectId"
@@ -81,7 +81,7 @@ export const CreateOrUpdateRepositoryPage: FC = () => {
         </section>
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Git</h2>
-          <div className="flex items-end gap-4 justify-center">
+          <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
             <SelectField
               name="boilerplateId"
               options={boilerplatesOptions}
