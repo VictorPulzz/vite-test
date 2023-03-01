@@ -76,7 +76,7 @@ const defaultValues: UserFormValues = {
   address: '',
   contractType: null,
   birthDate: null,
-  isActive: false,
+  isActive: true,
 };
 
 export function useUserForm({
