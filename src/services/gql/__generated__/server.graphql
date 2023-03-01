@@ -668,7 +668,7 @@ input RepositoryCreateInput {
   gitRepoId: String = null
   gitSlug: String = null
   name: String!
-  platform: RepositoryPlatformChoice!
+  platform: RepositoryPlatformChoice = null
   projectId: Int!
   type: RepositoryTypeChoice!
   useTerraform: Boolean = false

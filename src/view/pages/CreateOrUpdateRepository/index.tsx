@@ -1,25 +1,50 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Checkbox } from '~/view/ui/components/form/Checkbox';
 
-import { useCreateRepositoryForm } from './hooks/useCreateRepositoryForm';
+import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
+import { useFetchBoilerplateListQuery } from './__generated__/schema';
+import { useRepositoryForm } from './hooks/useRepositoryForm';
 import styles from './styles.module.scss';
 
-export const CreateRepositoryPage: FC = () => {
+export const CreateOrUpdateRepositoryPage: FC = () => {
   const navigate = useNavigate();
+
+  const { data: allProjects } = useFetchAllProjectsQuery({
+    variables: {
+      pagination: {},
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const { data: allBoilerplates } = useFetchBoilerplateListQuery();
 
   const {
     form: { register, control, formState },
     handleSubmit,
-  } = useCreateRepositoryForm({
+  } = useRepositoryForm({
     onSubmitSuccessful: () => navigate(-1),
   });
+
+  const projectsOptions = useMemo(
+    () => allProjects?.projectsList.results ?? [],
+    [allProjects?.projectsList.results],
+  );
+
+  const boilerplatesOptions = useMemo(
+    () => allBoilerplates?.boilerplateList ?? [],
+    [allBoilerplates?.boilerplateList],
+  );
+
+  const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
 
   return (
     <SidebarLayout>
@@ -40,20 +65,35 @@ export const CreateRepositoryPage: FC = () => {
           <h2 className={styles['section__heading']}>Repository info</h2>
           <div className="flex items-end gap-4 justify-center">
             <TextField name="name" control={control} label="Name" />
-            <SelectField name="project" options={[]} control={control} label="Project" />
-            <SelectField name="platform" options={[]} control={control} label="Platform" />
+            <SelectField
+              name="projectId"
+              options={projectsOptions}
+              control={control}
+              label="Project"
+            />
+            <SelectField
+              name="type"
+              options={repositoryTypeOptions}
+              control={control}
+              label="Type"
+            />
           </div>
         </section>
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Git</h2>
           <div className="flex items-end gap-4 justify-center">
-            <SelectField name="forkFrom" options={[]} control={control} label="Fork from" />
+            <SelectField
+              name="boilerplateId"
+              options={boilerplatesOptions}
+              control={control}
+              label="Boilerplate"
+            />
             <TextField name="gitRepoId" control={control} label="Git repo id" />
             <TextField name="gitSlug" control={control} label="Git slug" />
           </div>
           <div className="flex flex-col">
             <Checkbox label="Create empty" {...register('createEmpty')} className="mt-4" />
-            <Checkbox label="Use terraform" {...register('useTf')} className="mt-4" />
+            <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />
             <div className="flex flex-col gap-1">
               <Checkbox label="With relay" {...register('withRelay')} className="mt-4" />
               <span className="text-c1 text-gray-2">
@@ -65,7 +105,11 @@ export const CreateRepositoryPage: FC = () => {
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>AWS</h2>
           <div className="flex flex-col gap-1">
-            <Checkbox label="Do you need AWS secrets?" {...register('aws')} className="mt-4" />
+            <Checkbox
+              label="Do you need AWS secrets?"
+              {...register('awsSecrets')}
+              className="mt-4"
+            />
             <span className="text-c1 text-gray-2">
               Set yes for backend repository, consult frontend developer for frontend
             </span>

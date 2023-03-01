@@ -769,7 +769,7 @@ export type RepositoryCreateInput = {
   gitRepoId?: InputMaybe<Scalars['String']>;
   gitSlug?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  platform: RepositoryPlatformChoice;
+  platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type: RepositoryTypeChoice;
   useTerraform?: InputMaybe<Scalars['Boolean']>;
