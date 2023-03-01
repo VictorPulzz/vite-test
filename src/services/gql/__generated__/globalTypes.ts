@@ -70,8 +70,8 @@ export type ClientType = {
 };
 
 export enum ContractChoice {
-  FULL_TIME = 'full_time',
-  PART_TIME = 'part_time',
+  FULL_TIME = 'FULL_TIME',
+  PART_TIME = 'PART_TIME',
 }
 
 export type DepartmentType = {
