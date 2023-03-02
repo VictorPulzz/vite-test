@@ -32,7 +32,7 @@ export const RepositoryDetailsPage: FC = () => {
     },
   });
 
-  const { name, project, createdAt } = data?.repository ?? {};
+  const { name, project, createdAt, gitUrl, gitTerraformUrl } = data?.repository ?? {};
 
   const RepositoryDetailsTabs = useMemo(
     () => (
@@ -81,11 +81,20 @@ export const RepositoryDetailsPage: FC = () => {
                     <span className="text-c1 text-gray-2">Project</span>
                     <span className="text-p3 leading-none">{project?.name}</span>
                   </div>
+                  {/* TODO add TextLink */}
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Git url</span>
+                    <span className="text-p3 leading-none">{gitUrl}</span>
+                  </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Created at</span>
                     <span className="text-p3 text-primary leading-none">
                       {format(new Date(createdAt ?? ''), DateFormat.DMY)}
                     </span>
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Git Terraform url</span>
+                    <span className="text-p3 leading-none">{gitTerraformUrl}</span>
                   </div>
                   {/* TODO add fields when backend will be ready */}
                 </div>

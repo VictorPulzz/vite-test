@@ -8,13 +8,13 @@ query FetchRepositories(
       id
       name
       project {
+        id
         name
       }
-      projectId
       createdAt
       type
       platform
-      gitRepoId
+      gitUrl
     }
     count
   }

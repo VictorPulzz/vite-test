@@ -35,10 +35,10 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     id: 'project.name',
     header: 'Project',
     cell: props => {
-      const { projectId } = props.row.original;
+      const { project } = props.row.original;
       return (
         <TextLink
-          to={generatePath(ROUTES.PROJECT_DETAILS, { id: projectId })}
+          to={generatePath(ROUTES.PROJECT_DETAILS, { id: project.id })}
           className="underline"
         >
           {props.getValue()}
@@ -46,8 +46,8 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
-  // TODO add gitUrl inside TextLink
-  columnHelper.accessor('gitRepoId', {
+  // TODO add TextLink
+  columnHelper.accessor('gitUrl', {
     id: 'gitUrl',
     header: 'Git url',
     cell: props => props.getValue() ?? '-',

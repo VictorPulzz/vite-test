@@ -19,12 +19,11 @@ export type FetchRepositoriesQuery = {
       __typename?: 'RepositoryType';
       id?: number | null;
       name?: string | null;
-      projectId: number;
       createdAt: string;
       type?: Types.RepositoryTypeChoice | null;
       platform?: Types.RepositoryPlatformChoice | null;
-      gitRepoId?: string | null;
-      project: { __typename?: 'ProjectType'; name: string };
+      gitUrl?: string | null;
+      project: { __typename?: 'ProjectType'; id: number; name: string };
     }>;
   };
 };
@@ -49,13 +48,13 @@ export const FetchRepositoriesDocument = gql`
         id
         name
         project {
+          id
           name
         }
-        projectId
         createdAt
         type
         platform
-        gitRepoId
+        gitUrl
       }
       count
     }

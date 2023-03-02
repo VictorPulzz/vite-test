@@ -15,6 +15,8 @@ export type FetchRepositoryDetailsQuery = {
     id?: number | null;
     name?: string | null;
     createdAt: string;
+    gitUrl?: string | null;
+    gitTerraformUrl?: string | null;
     project: { __typename?: 'ProjectType'; name: string };
   };
 };
@@ -28,6 +30,8 @@ export const FetchRepositoryDetailsDocument = gql`
         name
       }
       createdAt
+      gitUrl
+      gitTerraformUrl
     }
   }
 `;

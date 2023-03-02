@@ -92,7 +92,6 @@ export const CreateRepositoryPage: FC = () => {
             <TextField name="gitSlug" control={control} label="Git slug" />
           </div>
           <div className="flex flex-col">
-            <Checkbox label="Create empty" {...register('createEmpty')} className="mt-4" />
             <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />
             <div className="flex flex-col gap-1">
               <Checkbox label="With relay" {...register('withRelay')} className="mt-4" />
