@@ -21,6 +21,15 @@ export type FetchRepositoryDetailsQuery = {
   };
 };
 
+export type UpdateRepositoryMutationVariables = Types.Exact<{
+  input: Types.RepositoryUpdateInput;
+}>;
+
+export type UpdateRepositoryMutation = {
+  __typename?: 'Mutation';
+  repositoryUpdate: { __typename?: 'RepositoryType'; name?: string | null };
+};
+
 export const FetchRepositoryDetailsDocument = gql`
   query FetchRepositoryDetails($input: IDInput!) {
     repository(data: $input) {
@@ -85,4 +94,51 @@ export type FetchRepositoryDetailsLazyQueryHookResult = ReturnType<
 export type FetchRepositoryDetailsQueryResult = Apollo.QueryResult<
   FetchRepositoryDetailsQuery,
   FetchRepositoryDetailsQueryVariables
+>;
+export const UpdateRepositoryDocument = gql`
+  mutation UpdateRepository($input: RepositoryUpdateInput!) {
+    repositoryUpdate(data: $input) {
+      name
+    }
+  }
+`;
+export type UpdateRepositoryMutationFn = Apollo.MutationFunction<
+  UpdateRepositoryMutation,
+  UpdateRepositoryMutationVariables
+>;
+
+/**
+ * __useUpdateRepositoryMutation__
+ *
+ * To run a mutation, you first call `useUpdateRepositoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRepositoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRepositoryMutation, { data, loading, error }] = useUpdateRepositoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateRepositoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateRepositoryMutation,
+    UpdateRepositoryMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateRepositoryMutation, UpdateRepositoryMutationVariables>(
+    UpdateRepositoryDocument,
+    options,
+  );
+}
+export type UpdateRepositoryMutationHookResult = ReturnType<typeof useUpdateRepositoryMutation>;
+export type UpdateRepositoryMutationResult = Apollo.MutationResult<UpdateRepositoryMutation>;
+export type UpdateRepositoryMutationOptions = Apollo.BaseMutationOptions<
+  UpdateRepositoryMutation,
+  UpdateRepositoryMutationVariables
 >;

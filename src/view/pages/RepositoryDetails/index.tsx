@@ -101,10 +101,13 @@ export const RepositoryDetailsPage: FC = () => {
               </div>
             </SectionContainer>
             <div className="shadow-4 bg-white rounded-md flex-auto">{RepositoryDetailsTabs}</div>
-            <UpdateRepositoryModal
-              isOpen={isUpdateRepositoryModalOpen}
-              close={closeUpdateRepositoryModal}
-            />
+            {isUpdateRepositoryModalOpen && (
+              <UpdateRepositoryModal
+                isOpen={isUpdateRepositoryModalOpen}
+                close={closeUpdateRepositoryModal}
+                repository={data.repository}
+              />
+            )}
           </div>
         )}
       </DetailLayout>

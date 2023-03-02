@@ -10,3 +10,9 @@ query FetchRepositoryDetails($input: IDInput!) {
     gitTerraformUrl
   }
 }
+
+mutation UpdateRepository($input: RepositoryUpdateInput!) {
+  repositoryUpdate(data: $input) {
+    name
+  }
+}
