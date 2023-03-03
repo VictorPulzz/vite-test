@@ -30,6 +30,28 @@ export type UpdateRepositoryMutation = {
   repositoryUpdate: { __typename?: 'RepositoryType'; name?: string | null };
 };
 
+export type FetchRepositoryParticipantsQueryVariables = Types.Exact<{
+  pagination: Types.PaginationInput;
+  filters?: Types.InputMaybe<Types.RepositoryParticipantFilter>;
+}>;
+
+export type FetchRepositoryParticipantsQuery = {
+  __typename?: 'Query';
+  repositoryParticipantList: {
+    __typename?: 'RepositoryParticipantTypePagination';
+    results: Array<{
+      __typename?: 'RepositoryParticipantType';
+      acceessLevel: Types.RepositoryAccessLevelChoice;
+      user: {
+        __typename?: 'UserType';
+        id?: string | null;
+        fullName?: string | null;
+        photo?: { __typename?: 'ImageType'; url: string } | null;
+      };
+    }>;
+  };
+};
+
 export const FetchRepositoryDetailsDocument = gql`
   query FetchRepositoryDetails($input: IDInput!) {
     repository(data: $input) {
@@ -141,4 +163,75 @@ export type UpdateRepositoryMutationResult = Apollo.MutationResult<UpdateReposit
 export type UpdateRepositoryMutationOptions = Apollo.BaseMutationOptions<
   UpdateRepositoryMutation,
   UpdateRepositoryMutationVariables
+>;
+export const FetchRepositoryParticipantsDocument = gql`
+  query FetchRepositoryParticipants(
+    $pagination: PaginationInput!
+    $filters: RepositoryParticipantFilter
+  ) {
+    repositoryParticipantList(pagination: $pagination, filters: $filters) {
+      results {
+        user {
+          id
+          photo {
+            url
+          }
+          fullName
+        }
+        acceessLevel
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchRepositoryParticipantsQuery__
+ *
+ * To run a query within a React component, call `useFetchRepositoryParticipantsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchRepositoryParticipantsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchRepositoryParticipantsQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useFetchRepositoryParticipantsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchRepositoryParticipantsQuery,
+    FetchRepositoryParticipantsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchRepositoryParticipantsQuery,
+    FetchRepositoryParticipantsQueryVariables
+  >(FetchRepositoryParticipantsDocument, options);
+}
+export function useFetchRepositoryParticipantsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchRepositoryParticipantsQuery,
+    FetchRepositoryParticipantsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchRepositoryParticipantsQuery,
+    FetchRepositoryParticipantsQueryVariables
+  >(FetchRepositoryParticipantsDocument, options);
+}
+export type FetchRepositoryParticipantsQueryHookResult = ReturnType<
+  typeof useFetchRepositoryParticipantsQuery
+>;
+export type FetchRepositoryParticipantsLazyQueryHookResult = ReturnType<
+  typeof useFetchRepositoryParticipantsLazyQuery
+>;
+export type FetchRepositoryParticipantsQueryResult = Apollo.QueryResult<
+  FetchRepositoryParticipantsQuery,
+  FetchRepositoryParticipantsQueryVariables
 >;

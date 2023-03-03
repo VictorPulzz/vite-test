@@ -2,29 +2,16 @@ import { useSwitchValue } from '@appello/common/lib/hooks';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
 
+import { UserType } from '~/services/gql/__generated__/globalTypes';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 import { DeleteParticipantModal } from '../DeleteParticipantModal';
 
-// TODO remove UserAccessLevel and Participant when backend will be ready
-interface Participant {
-  id: string;
-  fullName: string;
-  photo: string;
-  position: string;
-}
-
-export enum UserAccessLevel {
-  ADMIN = 'ADMIN',
-  MAINTAINER = 'MAINTAINER',
-  GUEST = 'GUEST',
-}
-
 interface Props {
-  participant: Participant;
+  participant: Pick<UserType, 'id' | 'fullName'>;
 }
 
-export const ParticipantMenu: FC<Props> = ({ participant }) => {
+export const ParticipantMenu: FC<Props> = ({ participant: { id, fullName } }) => {
   const {
     value: isDeleteParticipantModalOpen,
     on: openDeleteParticipantModal,
@@ -43,15 +30,15 @@ export const ParticipantMenu: FC<Props> = ({ participant }) => {
       items: [
         {
           label: 'Admin',
-          onSelect: () => participant.id,
+          onSelect: () => id,
         },
         {
           label: 'Maintainer',
-          onSelect: () => participant.id,
+          onSelect: () => id,
         },
         {
           label: 'Guest',
-          onSelect: () => participant.id,
+          onSelect: () => id,
         },
       ],
     },
@@ -69,7 +56,7 @@ export const ParticipantMenu: FC<Props> = ({ participant }) => {
       <DeleteParticipantModal
         isOpen={isDeleteParticipantModalOpen}
         close={closeDeleteParticipantModal}
-        participantName={participant.fullName}
+        participantName={fullName ?? ''}
       />
     </>
   );

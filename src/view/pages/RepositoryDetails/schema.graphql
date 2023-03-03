@@ -16,3 +16,21 @@ mutation UpdateRepository($input: RepositoryUpdateInput!) {
     name
   }
 }
+
+query FetchRepositoryParticipants(
+  $pagination: PaginationInput!
+  $filters: RepositoryParticipantFilter
+) {
+  repositoryParticipantList(pagination: $pagination, filters: $filters) {
+    results {
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+      }
+      acceessLevel
+    }
+  }
+}
