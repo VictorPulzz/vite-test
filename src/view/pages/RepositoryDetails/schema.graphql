@@ -42,3 +42,9 @@ mutation AddOrUpdateRepositoryParticipant($input: RepositoryParticipantInput!) {
     }
   }
 }
+
+mutation RemoveRepositoryParticipant($input: RepositoryParticipantInput!) {
+  repositoryParticipantDelete(data: $input) {
+    message
+  }
+}

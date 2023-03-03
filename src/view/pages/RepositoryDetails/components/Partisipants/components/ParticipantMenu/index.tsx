@@ -9,9 +9,11 @@ import { DeleteParticipantModal } from '../DeleteParticipantModal';
 
 interface Props {
   participant: Pick<UserType, 'id' | 'fullName'>;
+  repositoryId: number;
 }
 
-export const ParticipantMenu: FC<Props> = ({ participant: { id, fullName } }) => {
+export const ParticipantMenu: FC<Props> = ({ participant, repositoryId }) => {
+  const { id } = participant;
   const {
     value: isDeleteParticipantModalOpen,
     on: openDeleteParticipantModal,
@@ -56,7 +58,8 @@ export const ParticipantMenu: FC<Props> = ({ participant: { id, fullName } }) =>
       <DeleteParticipantModal
         isOpen={isDeleteParticipantModalOpen}
         close={closeDeleteParticipantModal}
-        participantName={fullName ?? ''}
+        participant={participant}
+        repositoryId={repositoryId}
       />
     </>
   );

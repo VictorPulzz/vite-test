@@ -54,19 +54,22 @@ export const Participants: FC = () => {
       )}
       {data && (
         <>
-          <div className="w-3/4 grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
+          <div className="grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
             {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
-              <div key={user.id} className="flex items-center justify-between gap-[20px]">
+              <div
+                key={user.id}
+                className="flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
+              >
                 <div className="flex gap-[10px] items-center ">
                   <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
                   <div className="flex flex-col gap-[3px]">
-                    <span className="text-p3 text-black">{user.fullName}</span>
+                    <span className="text-p3 text-black truncate">{user.fullName}</span>
                     <span className="text-c1 text-gray-1 leading-none">
                       {convertUppercaseToReadable(accessLevel)}
                     </span>
                   </div>
                 </div>
-                <ParticipantMenu participant={user} />
+                <ParticipantMenu participant={user} repositoryId={repositoryId} />
               </div>
             ))}
           </div>

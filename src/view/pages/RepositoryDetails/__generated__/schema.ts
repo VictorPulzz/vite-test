@@ -64,6 +64,15 @@ export type AddOrUpdateRepositoryParticipantMutation = {
   };
 };
 
+export type RemoveRepositoryParticipantMutationVariables = Types.Exact<{
+  input: Types.RepositoryParticipantInput;
+}>;
+
+export type RemoveRepositoryParticipantMutation = {
+  __typename?: 'Mutation';
+  repositoryParticipantDelete: { __typename?: 'MessageType'; message: string };
+};
+
 export const FetchRepositoryDetailsDocument = gql`
   query FetchRepositoryDetails($input: IDInput!) {
     repository(data: $input) {
@@ -298,4 +307,54 @@ export type AddOrUpdateRepositoryParticipantMutationResult =
 export type AddOrUpdateRepositoryParticipantMutationOptions = Apollo.BaseMutationOptions<
   AddOrUpdateRepositoryParticipantMutation,
   AddOrUpdateRepositoryParticipantMutationVariables
+>;
+export const RemoveRepositoryParticipantDocument = gql`
+  mutation RemoveRepositoryParticipant($input: RepositoryParticipantInput!) {
+    repositoryParticipantDelete(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveRepositoryParticipantMutationFn = Apollo.MutationFunction<
+  RemoveRepositoryParticipantMutation,
+  RemoveRepositoryParticipantMutationVariables
+>;
+
+/**
+ * __useRemoveRepositoryParticipantMutation__
+ *
+ * To run a mutation, you first call `useRemoveRepositoryParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveRepositoryParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeRepositoryParticipantMutation, { data, loading, error }] = useRemoveRepositoryParticipantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveRepositoryParticipantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveRepositoryParticipantMutation,
+    RemoveRepositoryParticipantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RemoveRepositoryParticipantMutation,
+    RemoveRepositoryParticipantMutationVariables
+  >(RemoveRepositoryParticipantDocument, options);
+}
+export type RemoveRepositoryParticipantMutationHookResult = ReturnType<
+  typeof useRemoveRepositoryParticipantMutation
+>;
+export type RemoveRepositoryParticipantMutationResult =
+  Apollo.MutationResult<RemoveRepositoryParticipantMutation>;
+export type RemoveRepositoryParticipantMutationOptions = Apollo.BaseMutationOptions<
+  RemoveRepositoryParticipantMutation,
+  RemoveRepositoryParticipantMutationVariables
 >;
