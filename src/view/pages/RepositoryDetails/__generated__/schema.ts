@@ -39,6 +39,7 @@ export type FetchRepositoryParticipantsQuery = {
   __typename?: 'Query';
   repositoryParticipantList: {
     __typename?: 'RepositoryParticipantTypePagination';
+    count: number;
     results: Array<{
       __typename?: 'RepositoryParticipantType';
       accessLevel: Types.RepositoryAccessLevelChoice;
@@ -201,6 +202,7 @@ export const FetchRepositoryParticipantsDocument = gql`
         }
         accessLevel
       }
+      count
     }
   }
 `;
