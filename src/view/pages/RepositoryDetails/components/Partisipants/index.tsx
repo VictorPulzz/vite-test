@@ -69,7 +69,11 @@ export const Participants: FC = () => {
                     </span>
                   </div>
                 </div>
-                <ParticipantMenu participant={user} repositoryId={repositoryId} />
+                <ParticipantMenu
+                  participant={user}
+                  repositoryId={repositoryId}
+                  accessLevel={accessLevel}
+                />
               </div>
             ))}
           </div>

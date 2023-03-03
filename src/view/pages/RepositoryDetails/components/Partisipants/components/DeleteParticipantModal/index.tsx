@@ -22,11 +22,11 @@ export const DeleteParticipantModal: FC<Props> = ({
   participant: { id, fullName },
   repositoryId,
 }) => {
-  const [removeParticipant] = useRemoveRepositoryParticipantMutation();
+  const [removeRepositoryParticipant] = useRemoveRepositoryParticipantMutation();
 
-  const removeCurrentParticipant = useCallback(() => {
+  const removeCurrentRepositoryParticipant = useCallback(() => {
     toast.promise(
-      removeParticipant({
+      removeRepositoryParticipant({
         variables: {
           input: { userId: Number(id), repositoryId },
         },
@@ -41,7 +41,7 @@ export const DeleteParticipantModal: FC<Props> = ({
         },
       },
     );
-  }, [id, removeParticipant, repositoryId]);
+  }, [id, removeRepositoryParticipant, repositoryId]);
 
   return (
     <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">
@@ -56,7 +56,7 @@ export const DeleteParticipantModal: FC<Props> = ({
         <div className="flex w-full">
           <Button
             variant={ButtonVariant.SECONDARY}
-            onClick={removeCurrentParticipant}
+            onClick={removeCurrentRepositoryParticipant}
             label="Yes, delete"
             className="mr-2 text-red"
           />
