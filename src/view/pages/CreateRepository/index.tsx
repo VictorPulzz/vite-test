@@ -20,7 +20,7 @@ export const CreateRepositoryPage: FC = () => {
 
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
   });

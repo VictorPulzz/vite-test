@@ -4,7 +4,8 @@ import React, { FC, useMemo } from 'react';
 
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { useAddNewMemberForm } from '~/view/pages/ProjectDetails/hooks/useAddNewMemberForm';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
+import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
@@ -24,7 +25,7 @@ export const AddNewMemberModal: FC<Props> = ({
 
   const { data } = useFetchAllUsersQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -34,15 +35,10 @@ export const AddNewMemberModal: FC<Props> = ({
     [data?.usersList.results, projectMembersListIds],
   );
 
-  const usersOptions = useMemo(() => {
-    if (outsideProjectTeamUsers) {
-      return outsideProjectTeamUsers.map(({ id, fullName }) => ({
-        value: `${id}`,
-        label: fullName ?? '',
-      }));
-    }
-    return [];
-  }, [outsideProjectTeamUsers]);
+  const usersOptions = useSelectOptions(outsideProjectTeamUsers, {
+    value: 'id',
+    label: 'fullName',
+  }) as SelectOption<string>[];
 
   return (
     <Modal

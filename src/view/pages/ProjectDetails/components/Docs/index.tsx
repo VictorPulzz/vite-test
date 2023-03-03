@@ -55,7 +55,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
 
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
     skip: !!projectId,
@@ -65,7 +65,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
 
   const { data: allUsers } = useFetchAllUsersQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -87,33 +87,31 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
   });
 
   const projectsOptions = useMemo(
-    () =>
-      allProjects?.projectsList.results
-        ? [ALL_SELECT_OPTION, ...allProjects.projectsList.results]
-        : [],
-    [allProjects?.projectsList.results],
+    () => (allProjects && [ALL_SELECT_OPTION, ...allProjects.projectsList.results]) ?? [],
+    [allProjects],
   );
 
   const categoriesOptions = useMemo(
     () =>
-      allDocumentCategories?.documentCategoryList
-        ? [ALL_SELECT_OPTION, ...allDocumentCategories.documentCategoryList]
-        : [],
-    [allDocumentCategories?.documentCategoryList],
+      (allDocumentCategories && [
+        ALL_SELECT_OPTION,
+        ...allDocumentCategories.documentCategoryList,
+      ]) ??
+      [],
+    [allDocumentCategories],
   );
 
   const usersOptions = useMemo(
     () =>
-      allUsers?.usersList?.results
-        ? [
-            ALL_SELECT_OPTION,
-            ...allUsers.usersList.results.map(({ id, fullName }) => ({
-              value: Number(id),
-              label: fullName ?? '',
-            })),
-          ]
-        : [],
-    [allUsers?.usersList.results],
+      (allUsers && [
+        ALL_SELECT_OPTION,
+        ...allUsers.usersList.results.map(({ id, fullName }) => ({
+          value: Number(id),
+          label: fullName ?? '',
+        })),
+      ]) ??
+      [],
+    [allUsers],
   );
 
   const sortingOptions = enumToSelectOptions(OrderDirectionChoice);

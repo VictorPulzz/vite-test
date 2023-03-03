@@ -1,10 +1,11 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { useGetReportsForm } from '~/view/pages/ProjectDetails/hooks/useGetReportsForm';
 import { DateField } from '~/view/ui/components/form/DateField';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
+import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { ReportsCard } from './components/ReportCard';
 
@@ -55,20 +56,15 @@ export const Reports: FC = () => {
 
   const { data } = useFetchAllUsersQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useMemo(() => {
-    if (data?.usersList.results) {
-      return data?.usersList.results.map(({ id, fullName }) => ({
-        value: String(id),
-        label: fullName ?? '',
-      }));
-    }
-    return [];
-  }, [data?.usersList.results]);
+  const usersOptions = useSelectOptions(data?.usersList.results, {
+    value: 'id',
+    label: 'fullName',
+  }) as SelectOption<string>[];
 
   return (
     <div className="flex flex-col gap-5">

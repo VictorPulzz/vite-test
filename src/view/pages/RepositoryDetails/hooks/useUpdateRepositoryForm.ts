@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import {
@@ -12,7 +13,10 @@ import {
 } from '../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z
+    .string()
+    .trim()
+    .refine(value => value !== '', formErrors.REQUIRED),
 });
 
 type UpdateRepositoryFormValues = z.infer<typeof formSchema>;

@@ -35,6 +35,11 @@ export const Participants: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
+  const repositoryParticipantsIds = useMemo(
+    () => data?.repositoryParticipantList.results.map(participant => participant.user.id),
+    [data?.repositoryParticipantList.results],
+  );
+
   return (
     <div>
       {!data && loading && (
@@ -50,14 +55,14 @@ export const Participants: FC = () => {
       {data && (
         <>
           <div className="w-3/4 grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
-            {data?.repositoryParticipantList.results.map(({ user, acceessLevel }) => (
+            {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
               <div key={user.id} className="flex items-center justify-between gap-[20px]">
                 <div className="flex gap-[10px] items-center ">
                   <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
                   <div className="flex flex-col gap-[3px]">
                     <span className="text-p3 text-black">{user.fullName}</span>
                     <span className="text-c1 text-gray-1 leading-none">
-                      {convertUppercaseToReadable(acceessLevel)}
+                      {convertUppercaseToReadable(accessLevel)}
                     </span>
                   </div>
                 </div>
@@ -73,7 +78,12 @@ export const Participants: FC = () => {
           />
         </>
       )}
-      <AddParticipantModal isOpen={isAddParticipantModalOpen} close={closeAddParticipantModal} />
+      <AddParticipantModal
+        isOpen={isAddParticipantModalOpen}
+        close={closeAddParticipantModal}
+        repositoryId={repositoryId}
+        repositoryParticipantsIds={repositoryParticipantsIds as string[]}
+      />
     </div>
   );
 };

@@ -783,20 +783,20 @@ export type RepositoryFilter = {
 };
 
 export type RepositoryParticipantFilter = {
-  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  accessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
   repositoryId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
 
 export type RepositoryParticipantInput = {
-  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  accessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
   repositoryId: Scalars['Int'];
   userId: Scalars['Int'];
 };
 
 export type RepositoryParticipantType = {
   __typename: 'RepositoryParticipantType';
-  acceessLevel: RepositoryAccessLevelChoice;
+  accessLevel: RepositoryAccessLevelChoice;
   repository: RepositoryType;
   user: UserType;
 };

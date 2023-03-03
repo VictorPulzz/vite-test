@@ -41,7 +41,7 @@ export type FetchRepositoryParticipantsQuery = {
     __typename?: 'RepositoryParticipantTypePagination';
     results: Array<{
       __typename?: 'RepositoryParticipantType';
-      acceessLevel: Types.RepositoryAccessLevelChoice;
+      accessLevel: Types.RepositoryAccessLevelChoice;
       user: {
         __typename?: 'UserType';
         id?: string | null;
@@ -49,6 +49,18 @@ export type FetchRepositoryParticipantsQuery = {
         photo?: { __typename?: 'ImageType'; url: string } | null;
       };
     }>;
+  };
+};
+
+export type AddOrUpdateRepositoryParticipantMutationVariables = Types.Exact<{
+  input: Types.RepositoryParticipantInput;
+}>;
+
+export type AddOrUpdateRepositoryParticipantMutation = {
+  __typename?: 'Mutation';
+  repositoryParticipantCreateUpdate: {
+    __typename?: 'RepositoryParticipantType';
+    user: { __typename?: 'UserType'; fullName?: string | null };
   };
 };
 
@@ -178,7 +190,7 @@ export const FetchRepositoryParticipantsDocument = gql`
           }
           fullName
         }
-        acceessLevel
+        accessLevel
       }
     }
   }
@@ -234,4 +246,56 @@ export type FetchRepositoryParticipantsLazyQueryHookResult = ReturnType<
 export type FetchRepositoryParticipantsQueryResult = Apollo.QueryResult<
   FetchRepositoryParticipantsQuery,
   FetchRepositoryParticipantsQueryVariables
+>;
+export const AddOrUpdateRepositoryParticipantDocument = gql`
+  mutation AddOrUpdateRepositoryParticipant($input: RepositoryParticipantInput!) {
+    repositoryParticipantCreateUpdate(data: $input) {
+      user {
+        fullName
+      }
+    }
+  }
+`;
+export type AddOrUpdateRepositoryParticipantMutationFn = Apollo.MutationFunction<
+  AddOrUpdateRepositoryParticipantMutation,
+  AddOrUpdateRepositoryParticipantMutationVariables
+>;
+
+/**
+ * __useAddOrUpdateRepositoryParticipantMutation__
+ *
+ * To run a mutation, you first call `useAddOrUpdateRepositoryParticipantMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddOrUpdateRepositoryParticipantMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addOrUpdateRepositoryParticipantMutation, { data, loading, error }] = useAddOrUpdateRepositoryParticipantMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddOrUpdateRepositoryParticipantMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddOrUpdateRepositoryParticipantMutation,
+    AddOrUpdateRepositoryParticipantMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    AddOrUpdateRepositoryParticipantMutation,
+    AddOrUpdateRepositoryParticipantMutationVariables
+  >(AddOrUpdateRepositoryParticipantDocument, options);
+}
+export type AddOrUpdateRepositoryParticipantMutationHookResult = ReturnType<
+  typeof useAddOrUpdateRepositoryParticipantMutation
+>;
+export type AddOrUpdateRepositoryParticipantMutationResult =
+  Apollo.MutationResult<AddOrUpdateRepositoryParticipantMutation>;
+export type AddOrUpdateRepositoryParticipantMutationOptions = Apollo.BaseMutationOptions<
+  AddOrUpdateRepositoryParticipantMutation,
+  AddOrUpdateRepositoryParticipantMutationVariables
 >;

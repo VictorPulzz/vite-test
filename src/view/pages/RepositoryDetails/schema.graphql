@@ -30,7 +30,15 @@ query FetchRepositoryParticipants(
         }
         fullName
       }
-      acceessLevel
+      accessLevel
+    }
+  }
+}
+
+mutation AddOrUpdateRepositoryParticipant($input: RepositoryParticipantInput!) {
+  repositoryParticipantCreateUpdate(data: $input) {
+    user {
+      fullName
     }
   }
 }

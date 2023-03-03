@@ -1,41 +1,62 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
+import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { SelectOption } from '~/view/ui/components/form/Select';
 import { SelectField } from '~/view/ui/components/form/SelectField';
+import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useAddParticipantForm } from '../../../../hooks/useAddParticipantForm';
 
-interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
-
-// TODO remove repositoriesTestData when backend will be ready
-export enum UserAccessLevel {
-  ADMIN = 'ADMIN',
-  MAINTAINER = 'MAINTAINER',
-  GUEST = 'GUEST',
+interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
+  repositoryId: number;
+  repositoryParticipantsIds: string[];
 }
 
-export const AddParticipantModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit } = useAddParticipantForm({
+export const AddParticipantModal: FC<Props> = ({
+  isOpen,
+  close,
+  repositoryId,
+  repositoryParticipantsIds,
+}) => {
+  const { form, handleSubmit, resetForm } = useAddParticipantForm({
     onSubmitSuccessful: () => close(),
+    repositoryId,
   });
 
-  // TODO remove usersOptions when backend will be ready
-  const usersOptions = [
-    { value: '1', label: 'Emma Stone' ?? '' },
-    { value: '2', label: 'John Stone' ?? '' },
-    { value: '3', label: 'Bruce Stone' ?? '' },
-    { value: '4', label: 'Ann Stone' ?? '' },
-  ];
+  const { data: allUsers } = useFetchAllUsersQuery({
+    variables: {
+      pagination: {
+        limit: 0,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const accessLevelOptions = enumToSelectOptions(UserAccessLevel);
+  const outsideRepositoryUsers = useMemo(
+    () =>
+      allUsers?.usersList.results.filter(
+        user => !repositoryParticipantsIds?.includes(user.id ?? ''),
+      ),
+    [allUsers?.usersList.results, repositoryParticipantsIds],
+  );
+
+  const usersOptions = useSelectOptions(outsideRepositoryUsers, {
+    value: 'id',
+    label: 'fullName',
+  }) as SelectOption<string>[];
+
+  const accessLevelOptions = enumToSelectOptions(RepositoryAccessLevelChoice);
 
   return (
     <Modal
       withCloseButton
       isOpen={isOpen}
       close={close}
+      onAfterClose={resetForm}
       contentClassName="w-[22.18rem]"
       title="Add participant"
     >
@@ -48,7 +69,13 @@ export const AddParticipantModal: FC<Props> = ({ isOpen, close }) => {
           label="Access level"
         />
       </div>
-      <Button variant={ButtonVariant.PRIMARY} onClick={handleSubmit} label="Add" className="mt-6" />
+      <Button
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
+        label="Add"
+        className="mt-6"
+        isLoading={form.formState.isSubmitting}
+      />
     </Modal>
   );
 };

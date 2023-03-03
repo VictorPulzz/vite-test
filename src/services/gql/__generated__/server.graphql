@@ -682,19 +682,19 @@ input RepositoryFilter {
 }
 
 input RepositoryParticipantFilter {
-  acceessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice = null
   repositoryId: Int = null
   userId: Int = null
 }
 
 input RepositoryParticipantInput {
-  acceessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice = null
   repositoryId: Int!
   userId: Int!
 }
 
 type RepositoryParticipantType {
-  acceessLevel: RepositoryAccessLevelChoice!
+  accessLevel: RepositoryAccessLevelChoice!
   repository: RepositoryType!
   user: UserType!
 }

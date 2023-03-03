@@ -20,7 +20,7 @@ export const History: FC = () => {
 
   const { data } = useFetchAllUsersQuery({
     variables: {
-      pagination: {},
+      pagination: { limit: 0 },
     },
     fetchPolicy: 'cache-and-network',
   });
