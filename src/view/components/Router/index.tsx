@@ -86,6 +86,7 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.ADD_REPOSITORY,
     element: <CreateRepositoryPage />,
   },
+
   {
     path: ROUTES.REPOSITORY_DETAILS,
     element: <RepositoryDetailsPage />,

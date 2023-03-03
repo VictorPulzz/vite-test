@@ -1,0 +1,12 @@
+query FetchBoilerplateList {
+  boilerplateList {
+    value: id
+    label: name
+  }
+}
+
+mutation CreateRepository($input: RepositoryCreateInput!) {
+  repositoryCreate(data: $input) {
+    name
+  }
+}

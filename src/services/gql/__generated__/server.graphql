@@ -305,10 +305,6 @@ type Mutation {
   """
   repositoryCreate(data: RepositoryCreateInput!): RepositoryType!
   """
-  Repository creation or update
-  """
-  repositoryCreateUpdate(data: RepositoryInput!): RepositoryType!
-  """
   Repository deletion
   """
   repositoryDelete(data: IDInput!): MessageType!
@@ -320,6 +316,10 @@ type Mutation {
   Repository participant deleting
   """
   repositoryParticipantDelete(data: RepositoryParticipantInput!): MessageType!
+  """
+  Repository update
+  """
+  repositoryUpdate(data: RepositoryUpdateInput!): RepositoryType!
   """
   Create requests
   """
@@ -664,11 +664,10 @@ enum RepositoryAccessLevelChoice {
 input RepositoryCreateInput {
   awsSecrets: Boolean = false
   boilerplateId: Int = null
-  createEmpty: Boolean = false
   gitRepoId: String = null
   gitSlug: String = null
   name: String!
-  platform: RepositoryPlatformChoice!
+  platform: RepositoryPlatformChoice = null
   projectId: Int!
   type: RepositoryTypeChoice!
   useTerraform: Boolean = false
@@ -682,28 +681,20 @@ input RepositoryFilter {
   type: RepositoryTypeChoice = null
 }
 
-input RepositoryInput {
-  id: Int = null
-  name: String = null
-  platform: RepositoryPlatformChoice = null
-  projectId: Int!
-  type: RepositoryTypeChoice = null
-}
-
 input RepositoryParticipantFilter {
-  acceessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice = null
   repositoryId: Int = null
   userId: Int = null
 }
 
 input RepositoryParticipantInput {
-  acceessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice = null
   repositoryId: Int!
   userId: Int!
 }
 
 type RepositoryParticipantType {
-  acceessLevel: RepositoryAccessLevelChoice!
+  accessLevel: RepositoryAccessLevelChoice!
   repository: RepositoryType!
   user: UserType!
 }
@@ -726,11 +717,13 @@ type RepositoryType {
   createdBy: UserType
   gitRepoId: String
   gitSlug: String
+  gitTerraformRepoId: String
+  gitTerraformUrl: String
+  gitUrl: String
   id: Int
   name: String
   platform: RepositoryPlatformChoice
   project: ProjectType!
-  projectId: Int!
   type: RepositoryTypeChoice
   useTerraform: Boolean
 }
@@ -745,6 +738,13 @@ type RepositoryTypePagination {
   limit: Int!
   offset: Int!
   results: [RepositoryType!]!
+}
+
+input RepositoryUpdateInput {
+  gitSlug: String = null
+  id: Int = null
+  name: String = null
+  platform: RepositoryPlatformChoice = null
 }
 
 input RequestFilter {

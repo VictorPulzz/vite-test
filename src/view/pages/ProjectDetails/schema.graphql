@@ -95,8 +95,8 @@ query FetchProjectRepositoriesList($data: IDInput!) {
   }
 }
 
-mutation RequestNewProjectRepository($input: RepositoryInput!) {
-  repositoryCreateUpdate(data: $input) {
+mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
+  repositoryUpdate(data: $input) {
     platform
     type
   }

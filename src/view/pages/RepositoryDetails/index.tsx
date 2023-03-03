@@ -1,44 +1,20 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import { format } from 'date-fns';
+import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { RepositoryPlatformChoice } from '~/services/gql/__generated__/globalTypes';
-import { Tabs } from '~/view/components/Tabs';
+import { DateFormat } from '~/constants/dates';
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { Icon } from '~/view/ui/components/common/Icon';
-import { TextLink } from '~/view/ui/components/common/TextLink';
+import { Loader } from '~/view/ui/components/common/Loader';
+import { Tabs } from '~/view/ui/components/common/Tabs';
 
+import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
 import { Participants } from './components/Partisipants';
 import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';
-// import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
-import { REPOSITORY_DETAILS_TABS } from './consts';
 import styles from './styles.module.scss';
-
-// TODO remove repositoriesTestData when backend will be ready
-const repositoriesTestData = [
-  {
-    projectId: 2,
-    repositoryId: 1,
-    repositoryName: 'Pic-up-web-frontend',
-    projectName: 'PicUp',
-    gitUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
-    gitTerraformUrl: 'https://bitbucket.org/appello/pic-up-web-frontend',
-    createdAt: '28/10/2022',
-    platform: 'Web',
-  },
-  {
-    projectId: 4,
-    repositoryId: 2,
-    repositoryName: 'Pic-up-customer-mobile',
-    projectName: 'PicUp',
-    gitUrl: 'https://bitbucket.org/appello/pic-up-customer-mobile',
-    gitTerraformUrl: null,
-    createdAt: '29/10/2022',
-    platform: 'Mobile',
-  },
-];
 
 export const RepositoryDetailsPage: FC = () => {
   const {
@@ -48,35 +24,43 @@ export const RepositoryDetailsPage: FC = () => {
   } = useSwitchValue(false);
 
   const params = useParams();
-  const repositoryId = params.id ? Number(params.id) : 0;
+  const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
-  // TODO remove employeeById when backend will be ready
-  const repositoryById = useMemo(
-    () => repositoriesTestData.find(repository => repository.repositoryId === repositoryId),
-    [repositoryId],
+  const { data, loading } = useFetchRepositoryDetailsQuery({
+    variables: {
+      input: { id: repositoryId },
+    },
+  });
+
+  const { name, project, createdAt, gitUrl, gitTerraformUrl } = data?.repository ?? {};
+
+  const RepositoryDetailsTabs = useMemo(
+    () => (
+      <Tabs
+        className={styles['tabs']}
+        contentClassName="p-7 flex-auto"
+        items={[
+          {
+            title: 'Partisipants',
+            element: <Participants />,
+          },
+        ]}
+      />
+    ),
+    [],
   );
-
-  // const { data, loading } = useFetchRepositoryDetailsQuery({
-  //   variables: {
-  //     data: { id: repositoryId },
-  //   },
-  // });
-
-  // TODO remove when backend will be ready
-  const loading = false;
-
-  const [activeTabId, setActiveTabId] = useState<number>(1);
-
-  const handleActiveTabChange = useCallback((index: number) => setActiveTabId(index), []);
 
   return (
     <SidebarLayout>
       <DetailLayout title="Repository details">
-        {loading ? (
-          <span>LOADING</span>
-        ) : (
-          <div className="flex gap-5 p-6">
-            <div className="shadow-4 bg-white rounded-md p-7 w-[382px] min-w-[382px]">
+        {loading && (
+          <div className="pt-6">
+            <Loader full colorful />
+          </div>
+        )}
+        {data && (
+          <div className="flex gap-5 p-6 min-h-[calc(90vh+2rem)]">
+            <SectionContainer containerClassName="w-[382px] min-w-[382px]">
               <div className={styles['section']}>
                 <div className="flex gap-2 mb-3 ">
                   <h2 className="text-p1 font-bold">Info</h2>
@@ -91,76 +75,39 @@ export const RepositoryDetailsPage: FC = () => {
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Name</span>
-                    <span className="text-p3 text-blue leading-none">
-                      {repositoryById?.repositoryName}
-                    </span>
+                    <span className="text-p3 leading-none">{name}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Project</span>
-                    <span className="text-p3 text-blue leading-none">
-                      {repositoryById?.projectName}
-                    </span>
+                    <span className="text-p3 leading-none">{project?.name}</span>
                   </div>
+                  {/* TODO add TextLink */}
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Git url</span>
-                    <TextLink
-                      external
-                      to={repositoryById?.gitUrl}
-                      className="text-p3 text-blue leading-none hover:underline"
-                    >
-                      {repositoryById?.gitUrl}
-                    </TextLink>
+                    <span className="text-p3 leading-none">{gitUrl ?? '-'}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Created at</span>
                     <span className="text-p3 text-primary leading-none">
-                      {repositoryById?.createdAt}
+                      {format(new Date(createdAt ?? ''), DateFormat.DMY)}
                     </span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Git Terraform url</span>
-                    {repositoryById?.gitTerraformUrl ? (
-                      <TextLink
-                        external
-                        to={repositoryById?.gitTerraformUrl}
-                        className="text-p3 text-blue leading-none hover:underline"
-                      >
-                        {repositoryById?.gitTerraformUrl ?? '-'}
-                      </TextLink>
-                    ) : (
-                      <span className="text-p3 text-primary leading-none">-</span>
-                    )}
+                    <span className="text-p3 leading-none">{gitTerraformUrl ?? '-'}</span>
                   </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Platform</span>
-                    <Badge
-                      color={
-                        repositoryById?.platform.toUpperCase() === RepositoryPlatformChoice.DESKTOP
-                          ? BadgeColor.GREEN
-                          : BadgeColor.GRAY
-                      }
-                    >
-                      {repositoryById?.platform}
-                    </Badge>
-                  </div>
+                  {/* TODO add fields when backend will be ready */}
                 </div>
               </div>
-            </div>
-            <div className="shadow-4 bg-white rounded-md flex-auto p7">
-              <Tabs
-                activeTabId={activeTabId}
-                tabs={REPOSITORY_DETAILS_TABS}
-                onChange={handleActiveTabChange}
-                tabsClassName="border-b-[1px] border-solid text-gray-6 pt-7 px-7"
-                tabsPanelClassName="p-6"
-              >
-                {activeTabId === 1 && <Participants />}
-              </Tabs>
-            </div>
-            <UpdateRepositoryModal
-              isOpen={isUpdateRepositoryModalOpen}
-              close={closeUpdateRepositoryModal}
-            />
+            </SectionContainer>
+            <div className="shadow-4 bg-white rounded-md flex-auto">{RepositoryDetailsTabs}</div>
+            {isUpdateRepositoryModalOpen && (
+              <UpdateRepositoryModal
+                isOpen={isUpdateRepositoryModalOpen}
+                close={closeUpdateRepositoryModal}
+                repository={data.repository}
+              />
+            )}
           </div>
         )}
       </DetailLayout>

@@ -17,6 +17,7 @@ import {
 } from '../__generated__/schema';
 
 const formSchema = z.object({
+  // todo fix fields during the requestCreate mutation connection
   platform: z
     .nativeEnum(RepositoryPlatformChoice)
     .nullable()
@@ -54,7 +55,7 @@ export function useRequestNewRepositoryForm({
   });
   const params = useParams();
   const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
-
+  // TODO change requestNewProjectRepository to requestCreate mutation
   const [requestNewProjectRepository] = useRequestNewProjectRepositoryMutation();
 
   const handleSubmit = useCallback(
@@ -63,9 +64,8 @@ export function useRequestNewRepositoryForm({
         await requestNewProjectRepository({
           variables: {
             input: {
-              projectId,
+              id: projectId,
               platform: values.platform,
-              type: values.type,
             },
           },
           refetchQueries: [FetchProjectRepositoriesListDocument],

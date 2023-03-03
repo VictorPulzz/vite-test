@@ -3,11 +3,21 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
+import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
+import {
+  FetchRepositoryParticipantsDocument,
+  useAddOrUpdateRepositoryParticipantMutation,
+} from '../__generated__/schema';
+
 const formSchema = z.object({
-  user: z.string(),
-  accessLevel: z.string(),
+  user: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  accessLevel: z
+    .nativeEnum(RepositoryAccessLevelChoice)
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
 });
 
 type AddParticipantFormValues = z.infer<typeof formSchema>;
@@ -15,40 +25,43 @@ type AddParticipantFormValues = z.infer<typeof formSchema>;
 interface UseAddParticipantFormReturn {
   form: UseFormReturn<AddParticipantFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<AddParticipantFormValues>>;
+  resetForm?(): void;
 }
 
 interface UseAddParticipantFormProps {
-  onSubmitSuccessful?: () => void;
+  onSubmitSuccessful?(): void;
+  repositoryId: number;
 }
 
 const defaultValues: AddParticipantFormValues = {
   user: '',
-  accessLevel: '',
+  accessLevel: null,
 };
 
 export function useAddParticipantForm({
   onSubmitSuccessful,
+  repositoryId,
 }: UseAddParticipantFormProps): UseAddParticipantFormReturn {
   const form = useForm<AddParticipantFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [addRepositoryParticipant] = useAddRepositoryParticipantMutation();
+  const [addRepositoryParticipant] = useAddOrUpdateRepositoryParticipantMutation();
 
   const handleSubmit = useCallback(
     async (values: AddParticipantFormValues) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useProjectForm.ts:138 ~ values', values);
-        // await addRepositoryParticipant({
-        //   variables: {
-        //     input: {
-        //       user: values.user,
-        //       accessLevel: values.accessLevel,
-        //     },
-        //   },
-        // });
+        await addRepositoryParticipant({
+          variables: {
+            input: {
+              userId: +values.user,
+              accessLevel: values.accessLevel as RepositoryAccessLevelChoice,
+              repositoryId,
+            },
+          },
+          refetchQueries: [FetchRepositoryParticipantsDocument],
+        });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<AddParticipantFormValues>(e, {
@@ -57,11 +70,15 @@ export function useAddParticipantForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful],
+    [addRepositoryParticipant, form.setError, onSubmitSuccessful, repositoryId],
   );
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit) }),
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      resetForm: () => form.reset(defaultValues),
+    }),
     [form, handleSubmit],
   );
 }

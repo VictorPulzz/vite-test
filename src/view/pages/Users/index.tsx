@@ -43,7 +43,7 @@ export const UsersPage: FC = () => {
         <div>
           <h1 className="text-h4">Users</h1>
           <p className="text-c1 text-gray-2">
-            {(data && data.usersList.results.length) ?? 0} users in total
+            {(data && data.usersList.count) ?? 0} users in total
           </p>
         </div>
         <Button

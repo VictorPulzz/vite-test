@@ -34,7 +34,7 @@ export const DocumentMenu: FC<Props> = ({ file, documentId }) => {
         success: 'Document deleted',
         error: e => {
           const errors = getGqlError(e?.graphQLErrors);
-          return `Error while changing status: ${JSON.stringify(errors)}`;
+          return `Error while deleting document: ${JSON.stringify(errors)}`;
         },
       },
     );

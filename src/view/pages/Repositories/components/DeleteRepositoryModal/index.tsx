@@ -28,7 +28,7 @@ export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) =>
         success: 'Repository deleted',
         error: e => {
           const errors = getGqlError(e?.graphQLErrors);
-          return `Error while changing status: ${JSON.stringify(errors)}`;
+          return `Error while deleting repository: ${JSON.stringify(errors)}`;
         },
       },
     );

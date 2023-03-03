@@ -286,14 +286,14 @@ export type Mutation = {
   projectIntegrationDelete: MessageType;
   /** Repository creation */
   repositoryCreate: RepositoryType;
-  /** Repository creation or update */
-  repositoryCreateUpdate: RepositoryType;
   /** Repository deletion */
   repositoryDelete: MessageType;
   /** Repository participant creation or update */
   repositoryParticipantCreateUpdate: RepositoryParticipantType;
   /** Repository participant deleting */
   repositoryParticipantDelete: MessageType;
+  /** Repository update */
+  repositoryUpdate: RepositoryType;
   /** Create requests */
   requestCreate: RequestType;
   /** Update request status */
@@ -390,10 +390,6 @@ export type MutationRepositoryCreateArgs = {
   data: RepositoryCreateInput;
 };
 
-export type MutationRepositoryCreateUpdateArgs = {
-  data: RepositoryInput;
-};
-
 export type MutationRepositoryDeleteArgs = {
   data: IdInput;
 };
@@ -404,6 +400,10 @@ export type MutationRepositoryParticipantCreateUpdateArgs = {
 
 export type MutationRepositoryParticipantDeleteArgs = {
   data: RepositoryParticipantInput;
+};
+
+export type MutationRepositoryUpdateArgs = {
+  data: RepositoryUpdateInput;
 };
 
 export type MutationRequestCreateArgs = {
@@ -765,11 +765,10 @@ export enum RepositoryAccessLevelChoice {
 export type RepositoryCreateInput = {
   awsSecrets?: InputMaybe<Scalars['Boolean']>;
   boilerplateId?: InputMaybe<Scalars['Int']>;
-  createEmpty?: InputMaybe<Scalars['Boolean']>;
   gitRepoId?: InputMaybe<Scalars['String']>;
   gitSlug?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  platform: RepositoryPlatformChoice;
+  platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
   type: RepositoryTypeChoice;
   useTerraform?: InputMaybe<Scalars['Boolean']>;
@@ -783,29 +782,21 @@ export type RepositoryFilter = {
   type?: InputMaybe<RepositoryTypeChoice>;
 };
 
-export type RepositoryInput = {
-  id?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<RepositoryPlatformChoice>;
-  projectId: Scalars['Int'];
-  type?: InputMaybe<RepositoryTypeChoice>;
-};
-
 export type RepositoryParticipantFilter = {
-  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  accessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
   repositoryId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
 
 export type RepositoryParticipantInput = {
-  acceessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
+  accessLevel?: InputMaybe<RepositoryAccessLevelChoice>;
   repositoryId: Scalars['Int'];
   userId: Scalars['Int'];
 };
 
 export type RepositoryParticipantType = {
   __typename: 'RepositoryParticipantType';
-  acceessLevel: RepositoryAccessLevelChoice;
+  accessLevel: RepositoryAccessLevelChoice;
   repository: RepositoryType;
   user: UserType;
 };
@@ -830,11 +821,13 @@ export type RepositoryType = {
   createdBy?: Maybe<UserType>;
   gitRepoId?: Maybe<Scalars['String']>;
   gitSlug?: Maybe<Scalars['String']>;
+  gitTerraformRepoId?: Maybe<Scalars['String']>;
+  gitTerraformUrl?: Maybe<Scalars['String']>;
+  gitUrl?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   platform?: Maybe<RepositoryPlatformChoice>;
   project: ProjectType;
-  projectId: Scalars['Int'];
   type?: Maybe<RepositoryTypeChoice>;
   useTerraform?: Maybe<Scalars['Boolean']>;
 };
@@ -850,6 +843,13 @@ export type RepositoryTypePagination = {
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   results: Array<RepositoryType>;
+};
+
+export type RepositoryUpdateInput = {
+  gitSlug?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+  platform?: InputMaybe<RepositoryPlatformChoice>;
 };
 
 export type RequestFilter = {

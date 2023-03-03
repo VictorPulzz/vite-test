@@ -123,12 +123,12 @@ export type FetchProjectRepositoriesListQuery = {
 };
 
 export type RequestNewProjectRepositoryMutationVariables = Types.Exact<{
-  input: Types.RepositoryInput;
+  input: Types.RepositoryUpdateInput;
 }>;
 
 export type RequestNewProjectRepositoryMutation = {
   __typename?: 'Mutation';
-  repositoryCreateUpdate: {
+  repositoryUpdate: {
     __typename?: 'RepositoryType';
     platform?: Types.RepositoryPlatformChoice | null;
     type?: Types.RepositoryTypeChoice | null;
@@ -652,8 +652,8 @@ export type FetchProjectRepositoriesListQueryResult = Apollo.QueryResult<
   FetchProjectRepositoriesListQueryVariables
 >;
 export const RequestNewProjectRepositoryDocument = gql`
-  mutation RequestNewProjectRepository($input: RepositoryInput!) {
-    repositoryCreateUpdate(data: $input) {
+  mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
+    repositoryUpdate(data: $input) {
       platform
       type
     }

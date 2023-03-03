@@ -3,12 +3,20 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-// import { FetchRepositoryDetailsQuery } from '../__generated__/schema';
+import {
+  FetchRepositoryDetailsDocument,
+  FetchRepositoryDetailsQuery,
+  useUpdateRepositoryMutation,
+} from '../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z
+    .string()
+    .trim()
+    .refine(value => value !== '', formErrors.REQUIRED),
 });
 
 type UpdateRepositoryFormValues = z.infer<typeof formSchema>;
@@ -16,51 +24,41 @@ type UpdateRepositoryFormValues = z.infer<typeof formSchema>;
 interface UseUpdateRepositoryFormReturn {
   form: UseFormReturn<UpdateRepositoryFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<UpdateRepositoryFormValues>>;
+  resetForm?: () => void;
 }
 
 interface UseUpdateRepositoryFormProps {
   onSubmitSuccessful?: () => void;
-  // prefilledData: FetchRepositoryDetailsQuery['repository'];
-  id?: number;
+  repository: FetchRepositoryDetailsQuery['repository'];
 }
-// TODO remove when backend will be ready
-const defaultValues: UpdateRepositoryFormValues = {
-  name: '',
-};
 
 export function useUpdateRepositoryForm({
   onSubmitSuccessful,
-  id,
+  repository,
 }: UseUpdateRepositoryFormProps): UseUpdateRepositoryFormReturn {
-  // TODO set this defaultValues when backend will be ready
-  // const defaultValues: UpdateProjectFormValues = useMemo(() => {
-  //   return {
-  //     name: prefilledData.name ?? '',
-  //   };
-  // }, []);
+  const defaultValues = useMemo(() => {
+    return { name: repository.name ?? '' };
+  }, [repository.name]);
 
   const form = useForm<UpdateRepositoryFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  // const [updateRepository] = useUpdateRepositoryMutation();
+  const [updateRepository] = useUpdateRepositoryMutation();
 
   const handleSubmit = useCallback(
     async (values: UpdateRepositoryFormValues) => {
-      // eslint-disable-next-line prettier/prettier, no-console
-      console.log('🚀 ~ file: useUpdateRepositoryForm.ts:88 ~ values', values);
-      // eslint-disable-next-line no-console
-      console.log('🚀 ~ file: useUpdateRepositoryForm.ts:62 ~ id', id);
       try {
-        // await updateRepository({
-        //   variables: {
-        //     input: {
-        //       id,
-        //       name: values.name,
-        //     },
-        //   },
-        // });
+        await updateRepository({
+          variables: {
+            input: {
+              id: repository.id,
+              ...values,
+            },
+          },
+          refetchQueries: [FetchRepositoryDetailsDocument],
+        });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<UpdateRepositoryFormValues>(e, {
@@ -69,11 +67,15 @@ export function useUpdateRepositoryForm({
         });
       }
     },
-    [form.setError, id, onSubmitSuccessful],
+    [form.setError, onSubmitSuccessful, repository.id, updateRepository],
   );
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit) }),
-    [form, handleSubmit],
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      resetForm: () => form.reset(defaultValues),
+    }),
+    [defaultValues, form, handleSubmit],
   );
 }

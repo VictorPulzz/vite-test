@@ -3,20 +3,32 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-// import { useCreateRepositoryMutation } from '~/view/pages/CreateProject/__generated__/schema';
+
+import { useCreateRepositoryMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string(),
-  project: z.string(),
-  platform: z.string(),
-  forkFrom: z.string(),
-  gitRepoId: z.string(),
-  gitSlug: z.string(),
-  createEmpty: z.boolean(),
-  useTf: z.boolean(),
+  name: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  projectId: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
+  type: z
+    .nativeEnum(RepositoryTypeChoice)
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
+
+  boilerplateId: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
+  gitRepoId: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  gitSlug: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  useTerraform: z.boolean(),
   withRelay: z.boolean(),
-  aws: z.boolean(),
+  awsSecrets: z.boolean(),
 });
 
 type CreateRepositoryFormValues = z.infer<typeof formSchema>;
@@ -32,15 +44,14 @@ interface UseCreateRepositoryFormProps {
 
 const defaultValues: CreateRepositoryFormValues = {
   name: '',
-  project: '',
-  platform: '',
-  forkFrom: '',
+  projectId: null,
+  type: null,
+  boilerplateId: null,
   gitRepoId: '',
   gitSlug: '',
-  createEmpty: false,
-  useTf: false,
+  useTerraform: false,
   withRelay: false,
-  aws: false,
+  awsSecrets: false,
 };
 
 export function useCreateRepositoryForm({
@@ -51,20 +62,20 @@ export function useCreateRepositoryForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  //   const [createRepository] = useCreateRepositoryMutation();
+  const [createRepository] = useCreateRepositoryMutation();
 
   const handleSubmit = useCallback(
     async (values: CreateRepositoryFormValues) => {
       try {
-        // eslint-disable-next-line prettier/prettier, no-console
-        console.log('🚀 ~ file: useCreateRepositoryForm.ts:58 ~ values', values);
-        // await createRepository({
-        //   variables: {
-        //     input: {
-        //       name: values.name,
-        //     },
-        //   },
-        // });
+        await createRepository({
+          variables: {
+            input: {
+              ...values,
+              projectId: values.projectId as number,
+              type: values.type as RepositoryTypeChoice,
+            },
+          },
+        });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<CreateRepositoryFormValues>(e, {
@@ -73,7 +84,7 @@ export function useCreateRepositoryForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful],
+    [createRepository, form.setError, onSubmitSuccessful],
   );
 
   return useMemo(

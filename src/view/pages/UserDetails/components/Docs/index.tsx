@@ -61,7 +61,7 @@ export const Docs: FC<Props> = ({ userId }) => {
         placeholder="Search documents"
         className="flex-auto mt-5"
       />
-      {loading && (
+      {!data && loading && (
         <div className="mt-6">
           <Loader full colorful />
         </div>
