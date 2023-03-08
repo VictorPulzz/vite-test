@@ -1,19 +1,17 @@
-import { CellContext } from '@tanstack/table-core';
 import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
-// TODO remove any
-export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
+export const EnvironmentsListItemMenu: FC = () => {
   const options: DropdownItem[] = [
     {
       label: 'Action 1',
-      onSelect: () => row,
+      onSelect: () => null,
     },
     {
       label: 'Action 2',
-      onSelect: () => row,
+      onSelect: () => null,
     },
   ];
 
