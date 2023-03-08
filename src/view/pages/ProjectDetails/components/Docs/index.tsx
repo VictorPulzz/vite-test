@@ -144,7 +144,11 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
           placeholder="Search documents"
           className="flex-auto"
         />
-        <div className="flex items-end justify-end gap-3">
+        <div
+          className={`grid ${
+            isInternal || projectId ? 'grid-cols-3' : 'grid-cols-4'
+          } items-end gap-3`}
+        >
           {!projectId && !isInternal && (
             <Select
               options={projectsOptions}
