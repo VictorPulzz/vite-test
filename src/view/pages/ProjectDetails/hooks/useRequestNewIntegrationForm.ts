@@ -14,46 +14,51 @@ import {
 } from '../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string(),
+  name: z.string().refine(value => value !== '', formErrors.REQUIRED),
   environment: z
     .nativeEnum(ProjectEnvironmentChoice)
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
   credential: z.object({
-    name: z.string(),
     url: z.string(),
     login: z.string(),
     password: z.string(),
   }),
+  keys: z
+    .object({
+      title: z.string().refine(value => value !== '', formErrors.REQUIRED),
+      value: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    })
+    .array(),
 });
 
-type RequestNewIntegrationFormValues = z.infer<typeof formSchema>;
+type CreateNewIntegrationFormValues = z.infer<typeof formSchema>;
 
-interface UseRequestNewIntegrationFormReturn {
-  form: UseFormReturn<RequestNewIntegrationFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<RequestNewIntegrationFormValues>>;
+interface UseCreateNewIntegrationFormReturn {
+  form: UseFormReturn<CreateNewIntegrationFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<CreateNewIntegrationFormValues>>;
   resetForm?(): void;
 }
 
-interface UseRequestNewIntegrationFormProps {
+interface UseCreateNewIntegrationFormProps {
   onSubmitSuccessful?(): void;
 }
 
-const defaultValues: RequestNewIntegrationFormValues = {
+const defaultValues: CreateNewIntegrationFormValues = {
   name: '',
   environment: null,
   credential: {
-    name: '',
     url: '',
     login: '',
     password: '',
   },
+  keys: [],
 };
 
 export function useRequestNewIntegrationForm({
   onSubmitSuccessful,
-}: UseRequestNewIntegrationFormProps): UseRequestNewIntegrationFormReturn {
-  const form = useForm<RequestNewIntegrationFormValues>({
+}: UseCreateNewIntegrationFormProps): UseCreateNewIntegrationFormReturn {
+  const form = useForm<CreateNewIntegrationFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -64,28 +69,20 @@ export function useRequestNewIntegrationForm({
   const [requestNewProjectIntegration] = useRequestNewProjectIntegrationMutation();
 
   const handleSubmit = useCallback(
-    async (values: RequestNewIntegrationFormValues) => {
+    async (values: CreateNewIntegrationFormValues) => {
       try {
         await requestNewProjectIntegration({
           variables: {
             input: {
               projectId,
-              name: values.name,
-              environment: values.environment,
-              credential: {
-                name: values.credential.name,
-                url: values.credential.url,
-                login: values.credential.login,
-                password: values.credential.password,
-              },
-              keys: [{ title: 'someTitle', value: '777DFD3223DSDF555' }],
+              ...values,
             },
           },
           refetchQueries: [FetchProjectIntegrationsListDocument],
         });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<RequestNewIntegrationFormValues>(e, {
+        processGqlErrorResponse<CreateNewIntegrationFormValues>(e, {
           fields: ['name'],
           setFormError: form.setError,
         });

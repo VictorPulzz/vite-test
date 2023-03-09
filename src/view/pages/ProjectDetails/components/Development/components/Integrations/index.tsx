@@ -6,8 +6,8 @@ import { FetchProjectIntegrationsListQuery } from '~/view/pages/ProjectDetails/_
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 
+import { CreateNewIntegrationModal } from './components/CreateNewIntegrationModal';
 import { IntegrationsList } from './components/IntegrationsList';
-import { RequestNewIntegrationModal } from './components/RequestNewIntegrationModal';
 
 interface Props {
   integrations: FetchProjectIntegrationsListQuery['projectIntegrationList'];
@@ -15,9 +15,9 @@ interface Props {
 
 export const DevelopmentIntegrations: FC<Props> = ({ integrations }) => {
   const {
-    value: isRequestNewIntegrationModalOpen,
-    on: openRequestNewIntegrationModal,
-    off: closeRequestNewIntegrationModal,
+    value: isCreateNewIntegrationModalOpen,
+    on: openCreateNewIntegrationModal,
+    off: closeCreateNewIntegrationModal,
   } = useSwitchValue(false);
 
   return (
@@ -31,12 +31,12 @@ export const DevelopmentIntegrations: FC<Props> = ({ integrations }) => {
           variant={ButtonVariant.SECONDARY}
           label="Create new integration"
           className="mt-6 w-[180px]"
-          onClick={openRequestNewIntegrationModal}
+          onClick={openCreateNewIntegrationModal}
         />
       </SectionContainer>
-      <RequestNewIntegrationModal
-        isOpen={isRequestNewIntegrationModalOpen}
-        close={closeRequestNewIntegrationModal}
+      <CreateNewIntegrationModal
+        isOpen={isCreateNewIntegrationModalOpen}
+        close={closeCreateNewIntegrationModal}
       />
     </div>
   );
