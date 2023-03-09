@@ -6,8 +6,8 @@ import { FetchProjectEnvironmentsListQuery } from '~/view/pages/ProjectDetails/_
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 
+import { CreateNewEnvironmentModal } from './components/CreateNewEnvironmentModal';
 import { EnvironmentsList } from './components/EnvironmentsList';
-import { RequestNewEnvironmentModal } from './components/RequestNewEnvironmentModal';
 
 interface Props {
   environments: FetchProjectEnvironmentsListQuery['projectEnvironmentList'];
@@ -15,9 +15,9 @@ interface Props {
 
 export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
   const {
-    value: isRequestNewEnvironmentModalOpen,
-    on: openRequestNewEnvironmentModal,
-    off: closeRequestNewEnvironmentModal,
+    value: isCreateNewEnvironmentModalOpen,
+    on: openCreateNewEnvironmentModal,
+    off: closeCreateNewEnvironmentModal,
   } = useSwitchValue(false);
 
   return (
@@ -31,12 +31,12 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
           variant={ButtonVariant.SECONDARY}
           label="Create new environment"
           className="mt-6 w-[180px]"
-          onClick={openRequestNewEnvironmentModal}
+          onClick={openCreateNewEnvironmentModal}
         />
       </SectionContainer>
-      <RequestNewEnvironmentModal
-        isOpen={isRequestNewEnvironmentModalOpen}
-        close={closeRequestNewEnvironmentModal}
+      <CreateNewEnvironmentModal
+        isOpen={isCreateNewEnvironmentModalOpen}
+        close={closeCreateNewEnvironmentModal}
       />
     </div>
   );

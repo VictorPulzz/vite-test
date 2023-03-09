@@ -55,7 +55,7 @@ const defaultValues: CreateNewIntegrationFormValues = {
   keys: [],
 };
 
-export function useRequestNewIntegrationForm({
+export function useCreateNewIntegrationForm({
   onSubmitSuccessful,
 }: UseCreateNewIntegrationFormProps): UseCreateNewIntegrationFormReturn {
   const form = useForm<CreateNewIntegrationFormValues>({

@@ -7,12 +7,12 @@ import React, { FC } from 'react';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useRequestNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewEnvironmentForm';
+import { useCreateNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useCreateNewEnvironmentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
-export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
-  const { form, handleSubmit, resetForm } = useRequestNewEnvironmentForm({
+export const CreateNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
+  const { form, handleSubmit, resetForm } = useCreateNewEnvironmentForm({
     onSubmitSuccessful: () => close(),
   });
 
@@ -24,7 +24,7 @@ export const RequestNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
       isOpen={isOpen}
       close={close}
       contentClassName="w-5/9"
-      title="Request new environment"
+      title="Create new environment"
       onAfterClose={resetForm}
     >
       <div>

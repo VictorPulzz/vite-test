@@ -9,7 +9,7 @@ import { useFieldArray } from 'react-hook-form';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useRequestNewIntegrationForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewIntegrationForm';
+import { useCreateNewIntegrationForm } from '~/view/pages/ProjectDetails/hooks/useCreateNewIntegrationForm';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 
@@ -20,7 +20,7 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
     form: { control, formState },
     handleSubmit,
     resetForm,
-  } = useRequestNewIntegrationForm({
+  } = useCreateNewIntegrationForm({
     onSubmitSuccessful: () => close(),
   });
 

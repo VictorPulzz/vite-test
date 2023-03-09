@@ -30,19 +30,19 @@ const formSchema = z.object({
   }),
 });
 
-type RequestNewEnvironmentFormValues = z.infer<typeof formSchema>;
+type CreateNewEnvironmentFormValues = z.infer<typeof formSchema>;
 
-interface UseRequestNewEnvironmentFormReturn {
-  form: UseFormReturn<RequestNewEnvironmentFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<RequestNewEnvironmentFormValues>>;
+interface UseCreateNewEnvironmentFormReturn {
+  form: UseFormReturn<CreateNewEnvironmentFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<CreateNewEnvironmentFormValues>>;
   resetForm?: () => void;
 }
 
-interface UseRequestNewEnvironmentFormProps {
+interface UseCreateNewEnvironmentFormProps {
   onSubmitSuccessful?: () => void;
 }
 
-const defaultValues: RequestNewEnvironmentFormValues = {
+const defaultValues: CreateNewEnvironmentFormValues = {
   environment: null,
   frontendCredentials: {
     url: '',
@@ -56,10 +56,10 @@ const defaultValues: RequestNewEnvironmentFormValues = {
   },
 };
 
-export function useRequestNewEnvironmentForm({
+export function useCreateNewEnvironmentForm({
   onSubmitSuccessful,
-}: UseRequestNewEnvironmentFormProps): UseRequestNewEnvironmentFormReturn {
-  const form = useForm<RequestNewEnvironmentFormValues>({
+}: UseCreateNewEnvironmentFormProps): UseCreateNewEnvironmentFormReturn {
+  const form = useForm<CreateNewEnvironmentFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
@@ -70,7 +70,7 @@ export function useRequestNewEnvironmentForm({
   const [requestNewProjectEnvironment] = useRequestNewProjectEnvironmentMutation();
 
   const handleSubmit = useCallback(
-    async (values: RequestNewEnvironmentFormValues) => {
+    async (values: CreateNewEnvironmentFormValues) => {
       try {
         await requestNewProjectEnvironment({
           variables: {
@@ -93,7 +93,7 @@ export function useRequestNewEnvironmentForm({
         });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<RequestNewEnvironmentFormValues>(e, {
+        processGqlErrorResponse<CreateNewEnvironmentFormValues>(e, {
           fields: ['environment'],
           setFormError: form.setError,
         });

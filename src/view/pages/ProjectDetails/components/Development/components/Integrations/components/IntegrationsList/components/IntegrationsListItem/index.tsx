@@ -20,9 +20,11 @@ export const IntegrationsListItem: FC<Props> = ({ integration }) => {
     [integration],
   );
 
-  const isEmptyMainIntegrationCredential = Object.values(
-    mainIntegrationCredentialsData || {},
-  ).every(credential => credential === '');
+  const isEmptyMainIntegrationCredential = useMemo(
+    () =>
+      Object.values(mainIntegrationCredentialsData || {}).every(credential => credential === ''),
+    [mainIntegrationCredentialsData],
+  );
 
   return (
     <div className="p-5 border-solid border border-gray-5 rounded-xl">
