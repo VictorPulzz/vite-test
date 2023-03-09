@@ -207,6 +207,19 @@ export type IntegrationCredentialsType = {
   url?: Maybe<Scalars['String']>;
 };
 
+export type IntegrationKeyInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  title: Scalars['String'];
+  value: Scalars['String'];
+};
+
+export type IntegrationKeyType = {
+  __typename: 'IntegrationKeyType';
+  id?: Maybe<Scalars['Int']>;
+  title: Scalars['String'];
+  value: Scalars['String'];
+};
+
 export type LogFilter = {
   createdById?: InputMaybe<Scalars['Int']>;
   projectId?: InputMaybe<Scalars['Int']>;
@@ -543,16 +556,20 @@ export type ProjectFilter = {
 };
 
 export type ProjectIntegrationInput = {
-  credentials?: InputMaybe<Array<IntegrationCredentialsInput>>;
+  credential?: InputMaybe<IntegrationCredentialsInput>;
+  environment?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
+  keys?: InputMaybe<Array<IntegrationKeyInput>>;
   name: Scalars['String'];
   projectId: Scalars['Int'];
 };
 
 export type ProjectIntegrationType = {
   __typename: 'ProjectIntegrationType';
-  credentials?: Maybe<Array<IntegrationCredentialsType>>;
+  credential?: Maybe<IntegrationCredentialsType>;
+  environment?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
+  keys?: Maybe<Array<IntegrationKeyType>>;
   name: Scalars['String'];
   projectId: Scalars['Int'];
 };

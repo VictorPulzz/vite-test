@@ -192,6 +192,18 @@ type IntegrationCredentialsType {
   url: String
 }
 
+input IntegrationKeyInput {
+  id: Int = null
+  title: String!
+  value: String!
+}
+
+type IntegrationKeyType {
+  id: Int
+  title: String!
+  value: String!
+}
+
 input LogFilter {
   createdById: Int = null
   projectId: Int = null
@@ -459,15 +471,19 @@ input ProjectFilter {
 }
 
 input ProjectIntegrationInput {
-  credentials: [IntegrationCredentialsInput!]
+  credential: IntegrationCredentialsInput
+  environment: String = null
   id: Int = null
+  keys: [IntegrationKeyInput!]
   name: String!
   projectId: Int!
 }
 
 type ProjectIntegrationType {
-  credentials: [IntegrationCredentialsType!]
+  credential: IntegrationCredentialsType
+  environment: String
   id: Int
+  keys: [IntegrationKeyType!]
   name: String!
   projectId: Int!
 }

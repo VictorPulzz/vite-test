@@ -29,7 +29,7 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
         {!!environments.length && <EnvironmentsList environments={environments} />}
         <Button
           variant={ButtonVariant.SECONDARY}
-          label="Request new environment"
+          label="Create new environment"
           className="mt-6 w-[180px]"
           onClick={openRequestNewEnvironmentModal}
         />

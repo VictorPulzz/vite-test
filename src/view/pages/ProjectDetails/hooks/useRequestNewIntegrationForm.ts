@@ -4,6 +4,8 @@ import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
+import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import {
@@ -13,12 +15,15 @@ import {
 
 const formSchema = z.object({
   name: z.string(),
-  credentials: z.object({
+  environment: z
+    .nativeEnum(ProjectEnvironmentChoice)
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
+  credential: z.object({
     name: z.string(),
     url: z.string(),
     login: z.string(),
     password: z.string(),
-    key: z.string(),
   }),
 });
 
@@ -36,12 +41,12 @@ interface UseRequestNewIntegrationFormProps {
 
 const defaultValues: RequestNewIntegrationFormValues = {
   name: '',
-  credentials: {
+  environment: null,
+  credential: {
     name: '',
     url: '',
     login: '',
     password: '',
-    key: '',
   },
 };
 
@@ -66,15 +71,14 @@ export function useRequestNewIntegrationForm({
             input: {
               projectId,
               name: values.name,
-              credentials: [
-                {
-                  name: values.credentials.name,
-                  url: values.credentials.url,
-                  login: values.credentials.login,
-                  password: values.credentials.password,
-                  key: values.credentials.key,
-                },
-              ],
+              environment: values.environment,
+              credential: {
+                name: values.credential.name,
+                url: values.credential.url,
+                login: values.credential.login,
+                password: values.credential.password,
+              },
+              keys: [{ title: 'someTitle', value: '777DFD3223DSDF555' }],
             },
           },
           refetchQueries: [FetchProjectIntegrationsListDocument],

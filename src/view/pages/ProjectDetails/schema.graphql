@@ -131,12 +131,16 @@ query FetchProjectIntegrationsList($data: IDInput!) {
     id
     name
     projectId
-    credentials {
+    environment
+    keys {
+      id
+      title
+      value
+    }
+    credential {
       url
       login
       password
-      key
-      name
     }
   }
 }

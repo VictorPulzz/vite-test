@@ -184,14 +184,19 @@ export type FetchProjectIntegrationsListQuery = {
     id?: number | null;
     name: string;
     projectId: number;
-    credentials?: Array<{
+    environment?: string | null;
+    keys?: Array<{
+      __typename?: 'IntegrationKeyType';
+      id?: number | null;
+      title: string;
+      value: string;
+    }> | null;
+    credential?: {
       __typename?: 'IntegrationCredentialsType';
       url?: string | null;
       login?: string | null;
       password?: string | null;
-      key?: string | null;
-      name?: string | null;
-    }> | null;
+    } | null;
   }>;
 };
 
@@ -828,12 +833,16 @@ export const FetchProjectIntegrationsListDocument = gql`
       id
       name
       projectId
-      credentials {
+      environment
+      keys {
+        id
+        title
+        value
+      }
+      credential {
         url
         login
         password
-        key
-        name
       }
     }
   }
