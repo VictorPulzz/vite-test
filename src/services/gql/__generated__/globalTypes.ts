@@ -268,7 +268,7 @@ export type Mutation = {
   /** Delete document */
   documentDelete: MessageType;
   /** Generate document */
-  documentGenerate: DocumentType;
+  documentGenerate: Array<DocumentType>;
   /** Sending reset password email */
   forgotPassword: ForgotPasswordType;
   /** Login */
@@ -340,7 +340,7 @@ export type MutationDocumentDeleteArgs = {
 };
 
 export type MutationDocumentGenerateArgs = {
-  data: DocumentGenerateInput;
+  data: Array<DocumentGenerateInput>;
 };
 
 export type MutationForgotPasswordArgs = {
@@ -557,7 +557,7 @@ export type ProjectFilter = {
 
 export type ProjectIntegrationInput = {
   credential?: InputMaybe<IntegrationCredentialsInput>;
-  environment?: InputMaybe<Scalars['String']>;
+  environment?: InputMaybe<ProjectEnvironmentChoice>;
   id?: InputMaybe<Scalars['Int']>;
   keys?: InputMaybe<Array<IntegrationKeyInput>>;
   name: Scalars['String'];
@@ -567,7 +567,7 @@ export type ProjectIntegrationInput = {
 export type ProjectIntegrationType = {
   __typename: 'ProjectIntegrationType';
   credential?: Maybe<IntegrationCredentialsType>;
-  environment?: Maybe<Scalars['String']>;
+  environment?: Maybe<ProjectEnvironmentChoice>;
   id?: Maybe<Scalars['Int']>;
   keys?: Maybe<Array<IntegrationKeyType>>;
   name: Scalars['String'];

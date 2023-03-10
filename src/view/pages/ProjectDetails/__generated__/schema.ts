@@ -184,7 +184,7 @@ export type FetchProjectIntegrationsListQuery = {
     id?: number | null;
     name: string;
     projectId: number;
-    environment?: string | null;
+    environment?: Types.ProjectEnvironmentChoice | null;
     keys?: Array<{
       __typename?: 'IntegrationKeyType';
       id?: number | null;

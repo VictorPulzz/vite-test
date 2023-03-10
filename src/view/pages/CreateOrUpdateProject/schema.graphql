@@ -54,7 +54,7 @@ query FetchDocumentTemplateList {
   }
 }
 
-mutation DocumentGenerate($input: DocumentGenerateInput!) {
+mutation DocumentGenerate($input: [DocumentGenerateInput!]!) {
   documentGenerate(data: $input) {
     createdAt
   }

@@ -255,7 +255,7 @@ type Mutation {
   """
   Generate document
   """
-  documentGenerate(data: DocumentGenerateInput!): DocumentType!
+  documentGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Sending reset password email
   """
@@ -472,7 +472,7 @@ input ProjectFilter {
 
 input ProjectIntegrationInput {
   credential: IntegrationCredentialsInput
-  environment: String = null
+  environment: ProjectEnvironmentChoice = null
   id: Int = null
   keys: [IntegrationKeyInput!]
   name: String!
@@ -481,7 +481,7 @@ input ProjectIntegrationInput {
 
 type ProjectIntegrationType {
   credential: IntegrationCredentialsType
-  environment: String
+  environment: ProjectEnvironmentChoice
   id: Int
   keys: [IntegrationKeyType!]
   name: String!

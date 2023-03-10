@@ -24,7 +24,8 @@ export function transformProjectPrefilledData(
     roadmap: data.roadmap ?? '',
     notes: data.notes ?? '',
     phase: data.phase,
-    clientTeamMembers: data.clientTeam as ClientTeamMember[],
+    documentTemplate: [],
+    clientTeam: data.clientTeam as ClientTeamMember[],
   };
 }
 
