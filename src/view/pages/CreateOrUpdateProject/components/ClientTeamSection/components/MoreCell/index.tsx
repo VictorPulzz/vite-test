@@ -22,7 +22,7 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
 
   const { remove, update } = useFieldArray({
     control,
-    name: 'clientTeamMembers',
+    name: 'clientTeam',
   });
 
   const togglePointOfContact = useCallback(

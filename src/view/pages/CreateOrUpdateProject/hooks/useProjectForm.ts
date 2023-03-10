@@ -1,16 +1,28 @@
+import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO } from 'date-fns';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import { generatePath, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
-import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { ROUTES } from '~/constants/routes';
+import {
+  DocumentTemplateType,
+  ProjectPhaseChoice,
+  StatusEnum,
+} from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
-import { FetchProjectQuery, useCreateOrUpdateProjectMutation } from '../__generated__/schema';
+import {
+  FetchProjectQuery,
+  useCreateOrUpdateProjectMutation,
+  useDocumentGenerateMutation,
+} from '../__generated__/schema';
 
 const formSchema = z
   .object({
@@ -31,7 +43,19 @@ const formSchema = z
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
-    clientTeamMembers: z
+    documentTemplate: z
+      .object({
+        isOpen: z.boolean(),
+        templateId: z.number().nullable(),
+        templateFields: z
+          .object({
+            value: z.string(),
+            name: z.string(),
+          })
+          .array(),
+      })
+      .array(),
+    clientTeam: z
       .object({
         fullName: z.string(),
         email: z.string(),
@@ -59,12 +83,13 @@ export type ProjectFormValues = z.infer<typeof formSchema>;
 interface UseProjectFormReturn {
   form: UseFormReturn<ProjectFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<ProjectFormValues>>;
+  isLoading: boolean;
 }
 
 interface UseProjectFormProps {
-  onSubmitSuccessful?: () => void;
   prefilledData?: FetchProjectQuery['project'];
   id?: number;
+  templates: DocumentTemplateType[];
 }
 
 const defaultValues: ProjectFormValues = {
@@ -76,13 +101,14 @@ const defaultValues: ProjectFormValues = {
   design: '',
   roadmap: '',
   notes: '',
-  clientTeamMembers: [],
+  documentTemplate: [],
+  clientTeam: [],
 };
 
 export function useProjectForm({
-  onSubmitSuccessful,
   prefilledData,
   id,
+  templates,
 }: UseProjectFormProps): UseProjectFormReturn {
   const form = useForm<ProjectFormValues>({
     defaultValues,
@@ -90,7 +116,32 @@ export function useProjectForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-  const [projectCreateUpdate] = useCreateOrUpdateProjectMutation();
+  const navigate = useNavigate();
+
+  const templatesIds = useMemo(() => templates?.map(template => template.id), [templates]);
+
+  const templateFields = useMemo(
+    () =>
+      templates?.map(template => template?.fields?.map(field => ({ value: '', name: field.name }))),
+    [templates],
+  );
+
+  const documentTemplateList = useMemo(
+    () =>
+      templateFields?.map((i, index) => {
+        return { isOpen: false, templateId: templatesIds[index], templateFields: i };
+      }),
+    [templateFields, templatesIds],
+  );
+
+  useEffect(() => {
+    form.setValue('documentTemplate', documentTemplateList as []);
+  }, [documentTemplateList, form]);
+
+  const [projectCreateUpdate, { loading: loadingProjectCreateUpdate }] =
+    useCreateOrUpdateProjectMutation();
+
+  const [documentGenerate, { loading: loadingDocumentGenerate }] = useDocumentGenerateMutation();
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
@@ -110,11 +161,43 @@ export function useProjectForm({
               notes: values.notes,
               phase: ProjectPhaseChoice.PRE_SIGNED,
               status: StatusEnum.IN_PROGRESS,
-              clientTeam: values.clientTeamMembers ?? [],
+              clientTeam: values.clientTeam ?? [],
             },
           },
+        }).then(response => {
+          const newProjectId = response.data?.projectCreateUpdate.id as number;
+          const isEmptyDocsList = !!values.documentTemplate.filter(template => !!template.isOpen)
+            .length;
+
+          if (!id && isEmptyDocsList) {
+            const documentGenerateValues = values.documentTemplate
+              .filter(template => !!template.isOpen)
+              .map(({ templateId, templateFields }) => ({
+                projectId: newProjectId,
+                templateId: templateId as number,
+                fields: templateFields,
+              }));
+            toast.promise(
+              documentGenerate({
+                variables: {
+                  input: documentGenerateValues,
+                },
+              }).then(() => navigate(generatePath(ROUTES.PROJECT_DETAILS, { id: newProjectId }))),
+              {
+                loading: 'Generating documents...',
+                success: 'Documents generation is successful',
+                error: e => {
+                  const errors = getGqlError(e?.graphQLErrors);
+                  return `Error while generating project documents: ${JSON.stringify(errors)}`;
+                },
+              },
+            );
+          } else navigate(generatePath(ROUTES.PROJECT_DETAILS, { id: newProjectId }));
+
+          if (id) {
+            navigate(generatePath(ROUTES.PROJECT_DETAILS, { id }));
+          }
         });
-        onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
           fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],
@@ -122,11 +205,15 @@ export function useProjectForm({
         });
       }
     },
-    [projectCreateUpdate, form.setError, id, onSubmitSuccessful],
+    [projectCreateUpdate, id, navigate, documentGenerate, form.setError],
   );
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit) }),
-    [form, handleSubmit],
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      isLoading: loadingProjectCreateUpdate || loadingDocumentGenerate,
+    }),
+    [form, handleSubmit, loadingDocumentGenerate, loadingProjectCreateUpdate],
   );
 }

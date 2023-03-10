@@ -64,7 +64,7 @@ export function useAddOrEditClientTeamMemberForm({
 
   const { append, update } = useFieldArray({
     control,
-    name: 'clientTeamMembers',
+    name: 'clientTeam',
   });
 
   const handleSubmit = useCallback(

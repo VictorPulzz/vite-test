@@ -80,12 +80,12 @@ export type FetchDocumentTemplateListQuery = {
 };
 
 export type DocumentGenerateMutationVariables = Types.Exact<{
-  input: Types.DocumentGenerateInput;
+  input: Array<Types.DocumentGenerateInput> | Types.DocumentGenerateInput;
 }>;
 
 export type DocumentGenerateMutation = {
   __typename?: 'Mutation';
-  documentGenerate: { __typename?: 'DocumentType'; createdAt: string };
+  documentGenerate: Array<{ __typename?: 'DocumentType'; createdAt: string }>;
 };
 
 export const FetchProjectDocument = gql`
@@ -282,7 +282,7 @@ export type FetchDocumentTemplateListQueryResult = Apollo.QueryResult<
   FetchDocumentTemplateListQueryVariables
 >;
 export const DocumentGenerateDocument = gql`
-  mutation DocumentGenerate($input: DocumentGenerateInput!) {
+  mutation DocumentGenerate($input: [DocumentGenerateInput!]!) {
     documentGenerate(data: $input) {
       createdAt
     }
