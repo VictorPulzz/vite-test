@@ -141,12 +141,12 @@ export function useProjectForm({
   const [projectCreateUpdate, { loading: loadingProjectCreateUpdate }] =
     useCreateOrUpdateProjectMutation();
 
-  const [documentGenerate, { loading: loadingDocumentGenerate }] = useDocumentGenerateMutation();
+  const [documentGenerate] = useDocumentGenerateMutation();
 
   const handleSubmit = useCallback(
-    async (values: ProjectFormValues) => {
+    (values: ProjectFormValues) => {
       try {
-        await projectCreateUpdate({
+        projectCreateUpdate({
           variables: {
             input: {
               id,
@@ -169,6 +169,12 @@ export function useProjectForm({
           const isEmptyDocsList = !!values.documentTemplate.filter(template => !!template.isOpen)
             .length;
 
+          navigate(
+            generatePath(ROUTES.PROJECT_DETAILS, {
+              id: id || newProjectId,
+            }),
+          );
+
           if (!id && isEmptyDocsList) {
             const documentGenerateValues = values.documentTemplate
               .filter(template => !!template.isOpen)
@@ -177,25 +183,26 @@ export function useProjectForm({
                 templateId: templateId as number,
                 fields: templateFields,
               }));
-            toast.promise(
-              documentGenerate({
-                variables: {
-                  input: documentGenerateValues,
-                },
-              }).then(() => navigate(generatePath(ROUTES.PROJECT_DETAILS, { id: newProjectId }))),
-              {
-                loading: 'Generating documents...',
-                success: 'Documents generation is successful',
-                error: e => {
-                  const errors = getGqlError(e?.graphQLErrors);
-                  return `Error while generating project documents: ${JSON.stringify(errors)}`;
-                },
-              },
-            );
-          } else navigate(generatePath(ROUTES.PROJECT_DETAILS, { id: newProjectId }));
 
-          if (id) {
-            navigate(generatePath(ROUTES.PROJECT_DETAILS, { id }));
+            setTimeout(
+              () =>
+                toast.promise(
+                  documentGenerate({
+                    variables: {
+                      input: documentGenerateValues,
+                    },
+                  }),
+                  {
+                    loading: 'Generating documents...',
+                    success: 'Documents generation is successful',
+                    error: e => {
+                      const errors = getGqlError(e?.graphQLErrors);
+                      return `Error while generating project documents: ${JSON.stringify(errors)}`;
+                    },
+                  },
+                ),
+              500,
+            );
           }
         });
       } catch (e) {
@@ -205,15 +212,15 @@ export function useProjectForm({
         });
       }
     },
-    [projectCreateUpdate, id, navigate, documentGenerate, form.setError],
+    [documentGenerate, form.setError, id, navigate, projectCreateUpdate],
   );
 
   return useMemo(
     () => ({
       form,
       handleSubmit: form.handleSubmit(handleSubmit),
-      isLoading: loadingProjectCreateUpdate || loadingDocumentGenerate,
+      isLoading: loadingProjectCreateUpdate,
     }),
-    [form, handleSubmit, loadingDocumentGenerate, loadingProjectCreateUpdate],
+    [form, handleSubmit, loadingProjectCreateUpdate],
   );
 }

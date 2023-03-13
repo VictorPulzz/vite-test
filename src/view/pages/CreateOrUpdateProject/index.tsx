@@ -19,11 +19,11 @@ import { GenerateDocumentsSection } from './components/GenerateDocumentsSection'
 export const CreateOrUpdateProject: FC = () => {
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
 
-  const projectId = useMemo(() => (params?.id ? Number(params.id) : undefined), [params]);
+  const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
   const { data: projectInfo } = useFetchProjectQuery({
     variables: {
-      data: { id: projectId ?? 0 },
+      data: { id: projectId },
     },
     skip: !projectId,
   });

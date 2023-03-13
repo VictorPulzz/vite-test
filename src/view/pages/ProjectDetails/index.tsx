@@ -76,32 +76,35 @@ export const ProjectDetailsPage: FC = () => {
   );
 
   return (
-    <TabLayout tabs={DocumentTabs}>
-      <div className="bg-white">
-        <div className="flex items-center justify-between px-7 pt-7">
-          <div className="flex items-center gap-4">
+    <TabLayout tabs={loading || DocumentTabs}>
+      {loading && <Loader full colorful />}
+      {data && (
+        <div className="bg-white">
+          <div className="flex items-center justify-between px-7 pt-7">
+            <div className="flex items-center gap-4">
+              <Button
+                variant={ButtonVariant.SECONDARY}
+                withIcon="left-arrow"
+                onClick={() => navigate(ROUTES.PROJECTS)}
+              />
+              <div className="flex flex-col">
+                <h2 className="text-h4 font-bold">{data?.project.name}</h2>
+                <span className="text-c1 text-gray-2 leading-none">
+                  Created {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.PP)} •
+                  by {data?.project.createdBy?.fullName}
+                </span>
+              </div>
+            </div>
             <Button
               variant={ButtonVariant.SECONDARY}
-              withIcon="left-arrow"
-              onClick={() => navigate(ROUTES.PROJECTS)}
+              label="Edit project"
+              withIcon="edit"
+              onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
+              className="w-[140px]"
             />
-            <div className="flex flex-col">
-              <h2 className="text-h4 font-bold">{data?.project.name}</h2>
-              <span className="text-c1 text-gray-2 leading-none">
-                Created {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.PP)} •
-                by {data?.project.createdBy?.fullName}
-              </span>
-            </div>
           </div>
-          <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Edit project"
-            withIcon="edit"
-            onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
-            className="w-[140px]"
-          />
         </div>
-      </div>
+      )}
     </TabLayout>
   );
 };
