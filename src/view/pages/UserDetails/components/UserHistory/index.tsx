@@ -24,7 +24,7 @@ export const UserHistory: FC<Props> = ({ userId }) => {
         offset,
       },
       filters: {
-        createdById: userId,
+        userId,
       },
     },
     fetchPolicy: 'cache-and-network',

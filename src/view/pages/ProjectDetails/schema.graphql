@@ -159,6 +159,7 @@ query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
       id
       message
     }
+    count
   }
 }
 

@@ -213,6 +213,7 @@ export type FetchHistoryLogsQuery = {
   __typename?: 'Query';
   logList: {
     __typename?: 'LogTypePagination';
+    count: number;
     results: Array<{
       __typename?: 'LogType';
       createdAt: string;
@@ -952,6 +953,7 @@ export const FetchHistoryLogsDocument = gql`
         id
         message
       }
+      count
     }
   }
 `;

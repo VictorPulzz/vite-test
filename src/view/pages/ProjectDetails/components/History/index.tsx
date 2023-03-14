@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { ALL_SELECT_OPTION } from '~/constants/select';
@@ -8,6 +8,7 @@ import {
   useFetchAllUsersQuery,
   useFetchHistoryLogsQuery,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 import { TableLoader } from '~/view/ui/components/common/TableLoader';
 import { Select } from '~/view/ui/components/form/Select';
@@ -15,7 +16,11 @@ import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { HISTORY_TABLE_COLUMNS } from './consts';
 
-export const History: FC = () => {
+interface Props {
+  projectId: number;
+}
+
+export const History: FC<Props> = ({ projectId }) => {
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
   const { data } = useFetchAllUsersQuery({
@@ -45,12 +50,16 @@ export const History: FC = () => {
         limit: PAGE_SIZE,
         offset,
       },
-      filters: filter,
+      filters: { ...filter, projectId },
     },
     fetchPolicy: 'cache-and-network',
   });
 
   const filterByUserOptions = [ALL_SELECT_OPTION, ...usersOptions];
+
+  useEffect(() => {
+    setOffset(0);
+  }, []);
 
   return (
     <div className="flex flex-col gap-5">
@@ -58,11 +67,16 @@ export const History: FC = () => {
         <Select
           className="w-40"
           options={filterByUserOptions}
-          value={filter?.userId}
+          value={filter?.createdById}
           placeholder="Filter by user"
-          onChange={value => setFilter({ userId: value })}
+          onChange={value => setFilter({ createdById: value })}
         />
         {loading && <TableLoader className="mt-10" />}
+        {tableData && tableData.logList.results.length === 0 && (
+          <div className="flex h-[67vh]">
+            <EmptyState iconName="list" label="No history here yet" />
+          </div>
+        )}
         {!loading && tableData && tableData.logList.results.length > 0 && (
           <Table
             className="mt-4"
@@ -71,6 +85,7 @@ export const History: FC = () => {
             setOffset={setOffset}
             offset={offset}
             fetchMore={fetchMore}
+            totalCount={tableData.logList.count}
           />
         )}
       </SectionContainer>
