@@ -117,7 +117,6 @@ export type FetchProjectRepositoriesListQuery = {
     id?: number | null;
     name?: string | null;
     type?: Types.RepositoryTypeChoice | null;
-    platform?: Types.RepositoryPlatformChoice | null;
     createdAt: string;
   }>;
 };
@@ -128,11 +127,7 @@ export type RequestNewProjectRepositoryMutationVariables = Types.Exact<{
 
 export type RequestNewProjectRepositoryMutation = {
   __typename?: 'Mutation';
-  repositoryUpdate: {
-    __typename?: 'RepositoryType';
-    platform?: Types.RepositoryPlatformChoice | null;
-    type?: Types.RepositoryTypeChoice | null;
-  };
+  repositoryUpdate: { __typename?: 'RepositoryType'; type?: Types.RepositoryTypeChoice | null };
 };
 
 export type FetchProjectEnvironmentsListQueryVariables = Types.Exact<{
@@ -218,6 +213,7 @@ export type FetchHistoryLogsQuery = {
   __typename?: 'Query';
   logList: {
     __typename?: 'LogTypePagination';
+    count: number;
     results: Array<{
       __typename?: 'LogType';
       createdAt: string;
@@ -600,7 +596,6 @@ export const FetchProjectRepositoriesListDocument = gql`
       id
       name
       type
-      platform
       createdAt
     }
   }
@@ -659,7 +654,6 @@ export type FetchProjectRepositoriesListQueryResult = Apollo.QueryResult<
 export const RequestNewProjectRepositoryDocument = gql`
   mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
     repositoryUpdate(data: $input) {
-      platform
       type
     }
   }
@@ -959,6 +953,7 @@ export const FetchHistoryLogsDocument = gql`
         id
         message
       }
+      count
     }
   }
 `;

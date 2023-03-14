@@ -67,12 +67,12 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'History',
-            element: <History />,
+            element: <History projectId={projectId} />,
           },
         ]}
       />
     ),
-    [data, loading],
+    [data, loading, projectId],
   );
 
   return (

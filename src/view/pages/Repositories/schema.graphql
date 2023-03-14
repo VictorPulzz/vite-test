@@ -13,7 +13,6 @@ query FetchRepositories(
       }
       createdAt
       type
-      platform
       gitUrl
     }
     count

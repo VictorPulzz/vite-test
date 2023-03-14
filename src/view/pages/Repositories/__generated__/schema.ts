@@ -21,7 +21,6 @@ export type FetchRepositoriesQuery = {
       name?: string | null;
       createdAt: string;
       type?: Types.RepositoryTypeChoice | null;
-      platform?: Types.RepositoryPlatformChoice | null;
       gitUrl?: string | null;
       project: { __typename?: 'ProjectType'; id: number; name: string };
     }>;
@@ -53,7 +52,6 @@ export const FetchRepositoriesDocument = gql`
         }
         createdAt
         type
-        platform
         gitUrl
       }
       count
