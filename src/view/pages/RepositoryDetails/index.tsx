@@ -1,9 +1,10 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
+import { ROUTES } from '~/constants/routes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -24,6 +25,7 @@ export const RepositoryDetailsPage: FC = () => {
   } = useSwitchValue(false);
 
   const params = useParams();
+  const navigate = useNavigate();
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
   const { data, loading } = useFetchRepositoryDetailsQuery({
@@ -53,7 +55,10 @@ export const RepositoryDetailsPage: FC = () => {
 
   return (
     <SidebarLayout>
-      <DetailLayout title="Repository details">
+      <DetailLayout
+        title="Repository details"
+        onClickBackButton={() => navigate(ROUTES.REPOSITORIES)}
+      >
         {loading && (
           <div className="pt-6">
             <Loader full colorful />

@@ -76,7 +76,7 @@ export const RepositoriesPage: FC = () => {
       {!loading && data && data.repositoryList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.repositoryList.results}
+          data={data.repositoryList.results.slice().reverse()}
           columns={REPOSITORIES_TABLE_COLUMNS}
           setOffset={setOffset}
           offset={offset}
