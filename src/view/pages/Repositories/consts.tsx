@@ -46,6 +46,21 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
+  columnHelper.accessor('technologies', {
+    id: 'technologies',
+    header: 'Technologies',
+    cell: props => {
+      const { technologies } = props.row.original;
+      return (
+        <div>
+          {technologies?.map(({ id, name }, index) => [
+            index > 0 && ', ',
+            <span key={id}>{name}</span>,
+          ])}
+        </div>
+      );
+    },
+  }),
   // TODO add TextLink
   columnHelper.accessor('gitUrl', {
     id: 'gitUrl',

@@ -23,6 +23,7 @@ export type FetchRepositoriesQuery = {
       type?: Types.RepositoryTypeChoice | null;
       gitUrl?: string | null;
       project: { __typename?: 'ProjectType'; id: number; name: string };
+      technologies?: Array<{ __typename?: 'TechnologyType'; id: number; name: string }> | null;
     }>;
   };
 };
@@ -52,6 +53,10 @@ export const FetchRepositoriesDocument = gql`
         }
         createdAt
         type
+        technologies {
+          id
+          name
+        }
         gitUrl
       }
       count

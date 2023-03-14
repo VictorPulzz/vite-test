@@ -9,9 +9,13 @@ import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Checkbox } from '~/view/ui/components/form/Checkbox';
+import { InlineFields } from '~/view/ui/components/form/InlineFields';
 
 import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
-import { useFetchBoilerplateListQuery } from './__generated__/schema';
+import {
+  useFetchBoilerplateListQuery,
+  useFetchTechnologiesListQuery,
+} from './__generated__/schema';
 import { useCreateRepositoryForm } from './hooks/useCreateRepositoryForm';
 import styles from './styles.module.scss';
 
@@ -19,6 +23,13 @@ export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
 
   const { data: allProjects } = useFetchAllProjectsQuery({
+    variables: {
+      pagination: { limit: 0 },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const { data: allTechnologies } = useFetchTechnologiesListQuery({
     variables: {
       pagination: { limit: 0 },
     },
@@ -37,6 +48,11 @@ export const CreateRepositoryPage: FC = () => {
   const projectsOptions = useMemo(
     () => allProjects?.projectsList.results ?? [],
     [allProjects?.projectsList.results],
+  );
+
+  const technologiesOptions = useMemo(
+    () => allTechnologies?.technologyList.results ?? [],
+    [allTechnologies],
   );
 
   const boilerplatesOptions = useMemo(
@@ -63,7 +79,7 @@ export const CreateRepositoryPage: FC = () => {
       >
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
-          <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
+          <InlineFields>
             <TextField name="name" control={control} label="Name" />
             <SelectField
               name="projectId"
@@ -71,13 +87,22 @@ export const CreateRepositoryPage: FC = () => {
               control={control}
               label="Project"
             />
+          </InlineFields>
+          <InlineFields>
             <SelectField
               name="type"
               options={repositoryTypeOptions}
               control={control}
               label="Type"
             />
-          </div>
+            <SelectField
+              name="technologies"
+              options={technologiesOptions}
+              control={control}
+              label="Technologies"
+              isMulti
+            />
+          </InlineFields>
         </section>
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Git</h2>

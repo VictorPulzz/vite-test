@@ -4,6 +4,18 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
+export type FetchTechnologiesListQueryVariables = Types.Exact<{
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchTechnologiesListQuery = {
+  __typename?: 'Query';
+  technologyList: {
+    __typename?: 'TechnologyTypePagination';
+    results: Array<{ __typename?: 'TechnologyType'; value: number; label: string }>;
+  };
+};
+
 export type FetchBoilerplateListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchBoilerplateListQuery = {
@@ -20,6 +32,65 @@ export type CreateRepositoryMutation = {
   repositoryCreate: { __typename?: 'RepositoryType'; name?: string | null };
 };
 
+export const FetchTechnologiesListDocument = gql`
+  query FetchTechnologiesList($pagination: PaginationInput!) {
+    technologyList(pagination: $pagination) {
+      results {
+        value: id
+        label: name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchTechnologiesListQuery__
+ *
+ * To run a query within a React component, call `useFetchTechnologiesListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchTechnologiesListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchTechnologiesListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchTechnologiesListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchTechnologiesListQuery,
+    FetchTechnologiesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchTechnologiesListQuery, FetchTechnologiesListQueryVariables>(
+    FetchTechnologiesListDocument,
+    options,
+  );
+}
+export function useFetchTechnologiesListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchTechnologiesListQuery,
+    FetchTechnologiesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchTechnologiesListQuery, FetchTechnologiesListQueryVariables>(
+    FetchTechnologiesListDocument,
+    options,
+  );
+}
+export type FetchTechnologiesListQueryHookResult = ReturnType<typeof useFetchTechnologiesListQuery>;
+export type FetchTechnologiesListLazyQueryHookResult = ReturnType<
+  typeof useFetchTechnologiesListLazyQuery
+>;
+export type FetchTechnologiesListQueryResult = Apollo.QueryResult<
+  FetchTechnologiesListQuery,
+  FetchTechnologiesListQueryVariables
+>;
 export const FetchBoilerplateListDocument = gql`
   query FetchBoilerplateList {
     boilerplateList {
