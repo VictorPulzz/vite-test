@@ -39,6 +39,21 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       <span>{convertUppercaseToReadable(props.getValue() as RepositoryTypeChoice)}</span>
     ),
   }),
+  columnHelper.accessor('technologies', {
+    id: 'technologies',
+    header: 'Technologies',
+    cell: props => {
+      const { technologies } = props.row.original;
+      return (
+        <div>
+          {technologies?.map(({ id, name }, index) => [
+            index > 0 && ', ',
+            <span key={id}>{name}</span>,
+          ])}
+        </div>
+      );
+    },
+  }),
   columnHelper.accessor('createdAt', {
     id: 'createdAt',
     header: 'Created at',

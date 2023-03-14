@@ -32,7 +32,8 @@ export const RepositoryDetailsPage: FC = () => {
     },
   });
 
-  const { name, project, createdAt, gitUrl, gitTerraformUrl } = data?.repository ?? {};
+  const { name, project, technologies, createdAt, gitUrl, gitTerraformUrl } =
+    data?.repository ?? {};
 
   const RepositoryDetailsTabs = useMemo(
     () => (
@@ -81,7 +82,18 @@ export const RepositoryDetailsPage: FC = () => {
                     <span className="text-c1 text-gray-2">Project</span>
                     <span className="text-p3 leading-none">{project?.name}</span>
                   </div>
-                  {/* TODO add TextLink */}
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Technologies</span>
+                    <div>
+                      {technologies?.map(({ id, name }, index) => [
+                        index > 0 && ', ',
+                        <span key={id} className="text-p3 leading-none">
+                          {name}
+                        </span>,
+                      ])}
+                    </div>
+                  </div>
+                  {/* TODO add TextLink Git url */}
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Git url</span>
                     <span className="text-p3 leading-none">{gitUrl ?? '-'}</span>

@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
+import { isNil } from '~/utils/isNil';
 
 import { useCreateRepositoryMutation } from '../__generated__/schema';
 
@@ -19,7 +20,7 @@ const formSchema = z.object({
     .nativeEnum(RepositoryTypeChoice)
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
-
+  technologies: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
   boilerplateId: z
     .number()
     .nullable()
@@ -46,6 +47,7 @@ const defaultValues: CreateRepositoryFormValues = {
   name: '',
   projectId: null,
   type: null,
+  technologies: [],
   boilerplateId: null,
   gitRepoId: '',
   gitSlug: '',
@@ -72,6 +74,7 @@ export function useCreateRepositoryForm({
             input: {
               ...values,
               projectId: values.projectId as number,
+              technologies: !isNil(values.technologies) ? values.technologies : [],
               type: values.type as RepositoryTypeChoice,
             },
           },

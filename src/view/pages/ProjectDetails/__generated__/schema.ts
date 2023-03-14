@@ -118,6 +118,7 @@ export type FetchProjectRepositoriesListQuery = {
     name?: string | null;
     type?: Types.RepositoryTypeChoice | null;
     createdAt: string;
+    technologies?: Array<{ __typename?: 'TechnologyType'; id: number; name: string }> | null;
   }>;
 };
 
@@ -596,6 +597,10 @@ export const FetchProjectRepositoriesListDocument = gql`
       id
       name
       type
+      technologies {
+        id
+        name
+      }
       createdAt
     }
   }

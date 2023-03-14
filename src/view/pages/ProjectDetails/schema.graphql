@@ -90,6 +90,10 @@ query FetchProjectRepositoriesList($data: IDInput!) {
     id
     name
     type
+    technologies {
+      id
+      name
+    }
     createdAt
   }
 }
