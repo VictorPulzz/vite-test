@@ -6,13 +6,8 @@ import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
-import {
-  RepositoryPlatformChoice,
-  RepositoryType,
-  RepositoryTypeChoice,
-} from '~/services/gql/__generated__/globalTypes';
+import { RepositoryType, RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 
@@ -43,27 +38,6 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     cell: props => (
       <span>{convertUppercaseToReadable(props.getValue() as RepositoryTypeChoice)}</span>
     ),
-  }),
-  columnHelper.accessor('platform', {
-    id: 'platform',
-    header: 'Platfrom',
-    cell: ({
-      row: {
-        original: { platform },
-      },
-    }) => {
-      return (
-        <Badge
-          color={
-            platform?.toUpperCase() === RepositoryPlatformChoice.DESKTOP
-              ? BadgeColor.BLUE
-              : BadgeColor.GREEN
-          }
-        >
-          {platform}
-        </Badge>
-      );
-    },
   }),
   columnHelper.accessor('createdAt', {
     id: 'createdAt',

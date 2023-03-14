@@ -278,7 +278,7 @@ export type Mutation = {
   /** Change password */
   passwordChange: MessageType;
   /** Update permissions */
-  permissionsUpdate: MessageType;
+  permissionsUpdate: Array<PermissionType>;
   /** Project add member */
   projectAddMember: ProjectMemberType;
   /** Project change status */
@@ -475,22 +475,30 @@ export type PaginationInput = {
 };
 
 export type PermissionInput = {
-  addParticipant: Scalars['Boolean'];
-  createEditProject: Scalars['Boolean'];
-  createEditRepository: Scalars['Boolean'];
-  createEditUser: Scalars['Boolean'];
-  editRolesPermissions: Scalars['Boolean'];
-  roleId: Scalars['Int'];
+  id: Scalars['Int'];
+  roles: Array<Scalars['Int']>;
 };
 
 export type PermissionType = {
   __typename: 'PermissionType';
-  addParticipant: Scalars['Boolean'];
-  createEditProject: Scalars['Boolean'];
-  createEditRepository: Scalars['Boolean'];
-  createEditUser: Scalars['Boolean'];
-  editRolesPermissions: Scalars['Boolean'];
-  role: RoleType;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  roles?: Maybe<Array<RoleType>>;
+  rolesList?: Maybe<Array<Scalars['String']>>;
+};
+
+export type PlatformType = {
+  __typename: 'PlatformType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type PlatformTypePagination = {
+  __typename: 'PlatformTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<PlatformType>;
 };
 
 export type ProfileInput = {
@@ -506,12 +514,14 @@ export type ProfileType = {
   __typename: 'ProfileType';
   address?: Maybe<Scalars['String']>;
   birthDate?: Maybe<Scalars['Date']>;
+  department?: Maybe<DepartmentType>;
   email: Scalars['String'];
   firstName?: Maybe<Scalars['String']>;
   fullName?: Maybe<Scalars['String']>;
   lastName?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<ImageType>;
+  role?: Maybe<RoleType>;
 };
 
 export type ProjectCreateInput = {
@@ -523,6 +533,7 @@ export type ProjectCreateInput = {
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   phase: ProjectPhaseChoice;
+  platforms?: InputMaybe<Array<Scalars['Int']>>;
   roadmap?: InputMaybe<Scalars['String']>;
   startDate: Scalars['Date'];
   status?: InputMaybe<StatusEnum>;
@@ -629,6 +640,7 @@ export type ProjectType = {
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
   phase: ProjectPhaseChoice;
+  platforms?: Maybe<Array<PlatformType>>;
   roadmap?: Maybe<Scalars['String']>;
   startDate: Scalars['Date'];
   status?: Maybe<StatusEnum>;
@@ -660,6 +672,8 @@ export type Query = {
   me: ProfileType;
   /** Getting list of roles and permissions */
   permissionsList: Array<PermissionType>;
+  /** Getting platform list */
+  platformList: PlatformTypePagination;
   /** Getting project by id */
   project: ProjectType;
   /** Getting environments for project by id */
@@ -682,6 +696,8 @@ export type Query = {
   requestList: RequestTypePagination;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
+  /** Getting technologies list */
+  technologyList: TechnologyTypePagination;
   /** Getting user by id */
   userDetails: UserType;
   /** Getting project by user */
@@ -703,6 +719,10 @@ export type QueryDocumentListArgs = {
 
 export type QueryLogListArgs = {
   filters?: InputMaybe<LogFilter>;
+  pagination: PaginationInput;
+};
+
+export type QueryPlatformListArgs = {
   pagination: PaginationInput;
 };
 
@@ -752,6 +772,10 @@ export type QueryRequestListArgs = {
   pagination: PaginationInput;
 };
 
+export type QueryTechnologyListArgs = {
+  pagination: PaginationInput;
+};
+
 export type QueryUserDetailsArgs = {
   data: IdInput;
 };
@@ -785,8 +809,8 @@ export type RepositoryCreateInput = {
   gitRepoId?: InputMaybe<Scalars['String']>;
   gitSlug?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
-  platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId: Scalars['Int'];
+  technologies?: InputMaybe<Array<Scalars['Int']>>;
   type: RepositoryTypeChoice;
   useTerraform?: InputMaybe<Scalars['Boolean']>;
   withRelay?: InputMaybe<Scalars['Boolean']>;
@@ -843,8 +867,8 @@ export type RepositoryType = {
   gitUrl?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
-  platform?: Maybe<RepositoryPlatformChoice>;
   project: ProjectType;
+  technologies?: Maybe<Array<TechnologyType>>;
   type?: Maybe<RepositoryTypeChoice>;
   useTerraform?: Maybe<Scalars['Boolean']>;
 };
@@ -866,7 +890,6 @@ export type RepositoryUpdateInput = {
   gitSlug?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<RepositoryPlatformChoice>;
 };
 
 export type RequestFilter = {
@@ -922,6 +945,8 @@ export type RoleType = {
   __typename: 'RoleType';
   id: Scalars['Int'];
   name: Scalars['String'];
+  permissions: Array<PermissionType>;
+  permissionsList: Array<Scalars['String']>;
 };
 
 export enum StatusEnum {
@@ -930,6 +955,20 @@ export enum StatusEnum {
   STOPPED = 'STOPPED',
   WAITING = 'WAITING',
 }
+
+export type TechnologyType = {
+  __typename: 'TechnologyType';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export type TechnologyTypePagination = {
+  __typename: 'TechnologyTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<TechnologyType>;
+};
 
 export type UserFilter = {
   departmentId?: InputMaybe<Array<Scalars['Int']>>;

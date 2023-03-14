@@ -5,10 +5,7 @@ import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
-import {
-  RepositoryPlatformChoice,
-  RepositoryTypeChoice,
-} from '~/services/gql/__generated__/globalTypes';
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import {
@@ -17,11 +14,6 @@ import {
 } from '../__generated__/schema';
 
 const formSchema = z.object({
-  // todo fix fields during the requestCreate mutation connection
-  platform: z
-    .nativeEnum(RepositoryPlatformChoice)
-    .nullable()
-    .refine(value => value !== null, formErrors.REQUIRED),
   type: z
     .nativeEnum(RepositoryTypeChoice)
     .nullable()
@@ -41,7 +33,6 @@ interface UseRequestNewRepositoryFormProps {
 }
 
 const defaultValues: RequestNewRepositoryFormValues = {
-  platform: null,
   type: null,
 };
 
@@ -61,11 +52,13 @@ export function useRequestNewRepositoryForm({
   const handleSubmit = useCallback(
     async (values: RequestNewRepositoryFormValues) => {
       try {
+        // eslint-disable-next-line no-console
+        console.log('🚀 ~ file: useRequestNewRepositoryForm.ts:54 ~ values:', values);
         await requestNewProjectRepository({
           variables: {
             input: {
               id: projectId,
-              platform: values.platform,
+              // platform: values.platform,
             },
           },
           refetchQueries: [FetchProjectRepositoriesListDocument],
@@ -73,7 +66,7 @@ export function useRequestNewRepositoryForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<RequestNewRepositoryFormValues>(e, {
-          fields: ['platform', 'type'],
+          fields: ['type'],
           setFormError: form.setError,
         });
       }

@@ -90,14 +90,12 @@ query FetchProjectRepositoriesList($data: IDInput!) {
     id
     name
     type
-    platform
     createdAt
   }
 }
 
 mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
   repositoryUpdate(data: $input) {
-    platform
     type
   }
 }
