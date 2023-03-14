@@ -52,7 +52,21 @@ const formSchema = z
             value: z.string(),
             name: z.string(),
           })
+
           .array(),
+      })
+      .superRefine((value, ctx) => {
+        if (value.isOpen) {
+          value.templateFields.forEach((field, index) => {
+            if (field.value === '') {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: formErrors.REQUIRED,
+                path: ['templateFields', index, 'value'],
+              });
+            }
+          });
+        }
       })
       .array(),
     clientTeam: z
@@ -184,24 +198,20 @@ export function useProjectForm({
                 fields: templateFields,
               }));
 
-            setTimeout(
-              () =>
-                toast.promise(
-                  documentGenerate({
-                    variables: {
-                      input: documentGenerateValues,
-                    },
-                  }),
-                  {
-                    loading: 'Generating documents...',
-                    success: 'Documents generation is successful',
-                    error: e => {
-                      const errors = getGqlError(e?.graphQLErrors);
-                      return `Error while generating project documents: ${JSON.stringify(errors)}`;
-                    },
-                  },
-                ),
-              500,
+            toast.promise(
+              documentGenerate({
+                variables: {
+                  input: documentGenerateValues,
+                },
+              }),
+              {
+                loading: 'Generating documents...',
+                success: 'Documents generation is successful',
+                error: e => {
+                  const errors = getGqlError(e?.graphQLErrors);
+                  return `Error while generating project documents: ${JSON.stringify(errors)}`;
+                },
+              },
             );
           }
         });
