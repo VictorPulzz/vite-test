@@ -1,21 +1,42 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { InlineFields } from '~/view/ui/components/form/InlineFields';
+import { SelectField } from '~/view/ui/components/form/SelectField';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 import { TextField } from '~/view/ui/components/form/TextField';
+
+import { useFetchPlatformsListQuery } from '../../__generated__/schema';
 
 export const GeneralSection: FC = () => {
   const { control, watch } = useFormContext();
 
+  const { data: platforms } = useFetchPlatformsListQuery({
+    variables: {
+      pagination: { limit: 0 },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const platformsOptions = useMemo(() => platforms?.platformList.results ?? [], [platforms]);
+
   return (
     <SectionContainer title="General">
       <InlineFields>
-        <TextField name="name" control={control} label="Project name" required />
-        <TextField name="hoursEstimated" control={control} label="Hours estimated" required />
+        <InlineFields>
+          <TextField name="name" control={control} label="Project name" required />
+          <TextField name="hoursEstimated" control={control} label="Hours estimated" required />
+        </InlineFields>
+        <SelectField
+          name="platforms"
+          options={platformsOptions}
+          control={control}
+          label="Platforms"
+          isMulti
+        />
       </InlineFields>
       <InlineFields>
         <InlineFields>

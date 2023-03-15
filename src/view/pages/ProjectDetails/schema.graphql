@@ -21,6 +21,10 @@ query FetchProjectDetails($data: IDInput!) {
       notes
       pointContact
     }
+    platforms {
+      id
+      name
+    }
   }
 }
 

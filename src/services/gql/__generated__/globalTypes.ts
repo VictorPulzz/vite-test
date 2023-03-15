@@ -485,6 +485,7 @@ export type PermissionType = {
   name: Scalars['String'];
   roles?: Maybe<Array<RoleType>>;
   rolesList?: Maybe<Array<Scalars['String']>>;
+  title?: Maybe<Scalars['String']>;
 };
 
 export type PlatformType = {
@@ -635,6 +636,9 @@ export type ProjectType = {
   createdBy?: Maybe<UserType>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
+  gitGroupId?: Maybe<Scalars['String']>;
+  gitSlug?: Maybe<Scalars['String']>;
+  gitUrl?: Maybe<Scalars['String']>;
   hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
   name: Scalars['String'];

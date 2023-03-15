@@ -32,6 +32,7 @@ export type FetchProjectDetailsQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
   };
 };
 
@@ -305,6 +306,10 @@ export const FetchProjectDetailsDocument = gql`
         position
         notes
         pointContact
+      }
+      platforms {
+        id
+        name
       }
     }
   }

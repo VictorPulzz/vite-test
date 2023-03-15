@@ -20,7 +20,7 @@ interface Props {
 }
 
 export const Info: FC<Props> = ({
-  projectInfo: { status, startDate, endDate, phase, design, roadmap, notes, clientTeam },
+  projectInfo: { status, startDate, endDate, phase, design, roadmap, notes, clientTeam, platforms },
 }) => {
   const isPastEndDate = useMemo(() => isPast(new Date(endDate as string)), [endDate]);
 
@@ -49,6 +49,17 @@ export const Info: FC<Props> = ({
             </Badge>
           </div>
           <div className="flex flex-col gap-[2px]">
+            <span className="text-c1 text-gray-2 leading-none">Platforms</span>
+            <div>
+              {platforms?.map(({ id, name }, index) => [
+                index > 0 && ', ',
+                <span key={id} className="text-p3 leading-none">
+                  {name}
+                </span>,
+              ])}
+            </div>
+          </div>
+          <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Start date</span>
             <span className="text-p3 leading-none">
               {format(new Date(startDate), DateFormat.PP)}
@@ -61,12 +72,7 @@ export const Info: FC<Props> = ({
               <span className="text-gray-2">{!isPastEndDate && `(in ${durationToEndDate})`}</span>
             </span>
           </div>
-          <div className="flex flex-col gap-[2px]">
-            <span className="text-c1 text-gray-2">Current phase</span>
-            <span className="text-p3 leading-none">
-              {convertUppercaseToReadable(phase as ProjectPhaseChoice)}
-            </span>
-          </div>
+
           <div className="flex flex-col gap-[2px] break-words">
             <span className="text-c1 text-gray-2">Design link</span>
             <TextLink
@@ -92,8 +98,14 @@ export const Info: FC<Props> = ({
             </TextLink>
           </div>
           <div className="flex flex-col gap-[2px]">
+            <span className="text-c1 text-gray-2">Current phase</span>
+            <span className="text-p3 leading-none">
+              {convertUppercaseToReadable(phase as ProjectPhaseChoice)}
+            </span>
+          </div>
+          <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2 leading-none">Notes</span>
-            <span className="text-p3 w-3/4 leading-5">{notes}</span>
+            <span className="text-p3 w-3/4 leading-5">{notes || '-'}</span>
           </div>
         </div>
       </SectionContainer>
