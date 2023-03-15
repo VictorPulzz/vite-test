@@ -65,9 +65,9 @@ export const Participants: FC = () => {
   const hasPagination = data && data.repositoryParticipantList.count > PAGE_SIZE;
 
   return (
-    <div>
+    <div className="flex flex-col justify-between min-h-[70vh]">
       {loading && (
-        <div className="mt-3">
+        <div className="flex h-[50vh]">
           <Loader full colorful />
         </div>
       )}
@@ -77,11 +77,11 @@ export const Participants: FC = () => {
         </div>
       )}
       {!loading && data && data.repositoryParticipantList.results.length > 0 && (
-        <div className="grid grid-cols-3 gap-x-[50px] gap-y-[20px] px-2">
+        <div className="flex flex-wrap gap-4 mt-6 gap-[20px] px-2">
           {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
             <div
               key={user.id}
-              className="flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
+              className="w-60 flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
             >
               <div className="flex gap-[10px] items-center ">
                 <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
@@ -101,21 +101,23 @@ export const Participants: FC = () => {
           ))}
         </div>
       )}
-      {hasPagination && (
-        <Pagination
-          setOffset={setOffset}
-          totalCount={data.repositoryParticipantList.count}
-          offset={offset}
-          dataLength={data.repositoryParticipantList.results.length}
-          fetchMore={fetchMore}
+      <div>
+        {hasPagination && (
+          <Pagination
+            setOffset={setOffset}
+            totalCount={data.repositoryParticipantList.count}
+            offset={offset}
+            dataLength={data.repositoryParticipantList.results.length}
+            fetchMore={fetchMore}
+          />
+        )}
+        <Button
+          variant={ButtonVariant.SECONDARY}
+          label="Add participant"
+          className="mt-10 w-[136px]"
+          onClick={openAddParticipantModal}
         />
-      )}
-      <Button
-        variant={ButtonVariant.SECONDARY}
-        label="Add participant"
-        className="mt-10 w-[136px]"
-        onClick={openAddParticipantModal}
-      />
+      </div>
       <AddParticipantModal
         isOpen={isAddParticipantModalOpen}
         close={closeAddParticipantModal}
