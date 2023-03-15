@@ -14,7 +14,6 @@ import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { getFileExtension } from '~/utils/getFileExtension';
 import { Pagination } from '~/view/components/Pagination';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -27,6 +26,7 @@ import {
   useFetchAllUsersQuery,
   useFetchDocumentsQuery,
 } from '../../__generated__/schema';
+import { AddDocumentButton } from './components/AddDocumentButton';
 import { DocumentMenu } from './components/DocumentMenu';
 
 interface DocsProps {
@@ -126,15 +126,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
             <h2 className="text-p1 font-bold">Documents</h2>
           </div>
         )}
-        {(isInternal || withHeading) && (
-          <Button
-            variant={ButtonVariant.PRIMARY}
-            label="Upload new"
-            withIcon="add"
-            className="w-36"
-            onClick={() => null}
-          />
-        )}
+        {(isInternal || withHeading) && <AddDocumentButton />}
       </div>
 
       <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
