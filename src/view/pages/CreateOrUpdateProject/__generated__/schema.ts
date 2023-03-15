@@ -30,6 +30,7 @@ export type FetchProjectQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
   };
 };
 
@@ -39,27 +40,18 @@ export type CreateOrUpdateProjectMutationVariables = Types.Exact<{
 
 export type CreateOrUpdateProjectMutation = {
   __typename?: 'Mutation';
-  projectCreateUpdate: {
-    __typename?: 'ProjectType';
-    id: number;
-    name: string;
-    hoursEstimated?: number | null;
-    startDate: string;
-    endDate?: string | null;
-    design?: string | null;
-    roadmap?: string | null;
-    notes?: string | null;
-    phase: Types.ProjectPhaseChoice;
-    status?: Types.StatusEnum | null;
-    clientTeam?: Array<{
-      __typename?: 'ClientType';
-      fullName: string;
-      email: string;
-      phone?: string | null;
-      position?: string | null;
-      notes?: string | null;
-      pointContact?: boolean | null;
-    }> | null;
+  projectCreateUpdate: { __typename?: 'ProjectType'; id: number };
+};
+
+export type FetchPlatformsListQueryVariables = Types.Exact<{
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchPlatformsListQuery = {
+  __typename?: 'Query';
+  platformList: {
+    __typename?: 'PlatformTypePagination';
+    results: Array<{ __typename?: 'PlatformType'; value: number; label: string }>;
   };
 };
 
@@ -107,6 +99,10 @@ export const FetchProjectDocument = gql`
         position
         notes
         pointContact
+      }
+      platforms {
+        id
+        name
       }
     }
   }
@@ -156,23 +152,6 @@ export const CreateOrUpdateProjectDocument = gql`
   mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
     projectCreateUpdate(data: $input) {
       id
-      name
-      hoursEstimated
-      startDate
-      endDate
-      design
-      roadmap
-      notes
-      phase
-      status
-      clientTeam {
-        fullName
-        email
-        phone
-        position
-        notes
-        pointContact
-      }
     }
   }
 `;
@@ -218,6 +197,62 @@ export type CreateOrUpdateProjectMutationResult =
 export type CreateOrUpdateProjectMutationOptions = Apollo.BaseMutationOptions<
   CreateOrUpdateProjectMutation,
   CreateOrUpdateProjectMutationVariables
+>;
+export const FetchPlatformsListDocument = gql`
+  query FetchPlatformsList($pagination: PaginationInput!) {
+    platformList(pagination: $pagination) {
+      results {
+        value: id
+        label: name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchPlatformsListQuery__
+ *
+ * To run a query within a React component, call `useFetchPlatformsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchPlatformsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchPlatformsListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchPlatformsListQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>(
+    FetchPlatformsListDocument,
+    options,
+  );
+}
+export function useFetchPlatformsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchPlatformsListQuery,
+    FetchPlatformsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>(
+    FetchPlatformsListDocument,
+    options,
+  );
+}
+export type FetchPlatformsListQueryHookResult = ReturnType<typeof useFetchPlatformsListQuery>;
+export type FetchPlatformsListLazyQueryHookResult = ReturnType<
+  typeof useFetchPlatformsListLazyQuery
+>;
+export type FetchPlatformsListQueryResult = Apollo.QueryResult<
+  FetchPlatformsListQuery,
+  FetchPlatformsListQueryVariables
 >;
 export const FetchDocumentTemplateListDocument = gql`
   query FetchDocumentTemplateList {

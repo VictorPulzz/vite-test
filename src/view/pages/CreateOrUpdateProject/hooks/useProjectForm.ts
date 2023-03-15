@@ -1,4 +1,5 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { isNil } from '@appello/common/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO } from 'date-fns';
 import { useCallback, useEffect, useMemo } from 'react';
@@ -19,6 +20,7 @@ import { numberValidation } from '~/utils/validations';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
 import {
+  FetchProjectDocument,
   FetchProjectQuery,
   useCreateOrUpdateProjectMutation,
   useDocumentGenerateMutation,
@@ -32,6 +34,7 @@ const formSchema = z
       .string()
       .refine(value => value !== '', formErrors.REQUIRED)
       .and(numberValidation),
+    platforms: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
     startDate: z
       .date()
       .nullable()
@@ -110,6 +113,7 @@ const defaultValues: ProjectFormValues = {
   name: '',
   phase: '',
   hoursEstimated: '',
+  platforms: [],
   startDate: null,
   endDate: null,
   design: '',
@@ -166,6 +170,7 @@ export function useProjectForm({
               id,
               name: values.name,
               hoursEstimated: +values.hoursEstimated,
+              platforms: !isNil(values.platforms) ? (values.platforms as number[]) : undefined,
               startDate: values.startDate
                 ? formatISO(values.startDate, { representation: 'date' })
                 : '',
@@ -178,6 +183,7 @@ export function useProjectForm({
               clientTeam: values.clientTeam ?? [],
             },
           },
+          refetchQueries: [FetchProjectDocument],
         }).then(response => {
           const newProjectId = response.data?.projectCreateUpdate.id as number;
           const isEmptyDocsList = !!values.documentTemplate.filter(template => !!template.isOpen)

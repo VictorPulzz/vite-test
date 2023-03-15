@@ -402,6 +402,7 @@ type PermissionType {
   name: String!
   roles: [RoleType!]
   rolesList: [String!]
+  title: String
 }
 
 type PlatformType {
@@ -543,6 +544,9 @@ type ProjectType {
   createdBy: UserType
   design: String
   endDate: Date
+  gitGroupId: String
+  gitSlug: String
+  gitUrl: String
   hoursEstimated: Int
   id: Int!
   name: String!

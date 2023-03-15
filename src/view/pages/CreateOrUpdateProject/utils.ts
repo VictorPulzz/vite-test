@@ -17,7 +17,7 @@ export function transformProjectPrefilledData(
 ): ProjectFormValues {
   return {
     name: data.name,
-    hoursEstimated: isNumber(data?.hoursEstimated) ? Number(data.hoursEstimated).toString() : '',
+    hoursEstimated: isNumber(data.hoursEstimated) ? Number(data.hoursEstimated).toString() : '',
     startDate: data.startDate ? new Date(data.startDate) : null,
     endDate: data.endDate ? new Date(data.endDate) : null,
     design: data.design ?? '',
@@ -25,6 +25,7 @@ export function transformProjectPrefilledData(
     notes: data.notes ?? '',
     phase: data.phase,
     documentTemplate: [],
+    platforms: data.platforms?.map(({ id }) => id) ?? [],
     clientTeam: data.clientTeam as ClientTeamMember[],
   };
 }
@@ -41,3 +42,7 @@ export function transformClientTeamMemberPrefilledData(
     pointContact: !!data.pointContact,
   };
 }
+// platforms: data.platforms?.map(({ id, name }) => ({
+//   value: id,
+//   label: name,
+// })) as SelectOption<number>[]
