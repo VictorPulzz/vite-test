@@ -32,18 +32,16 @@ import { DocumentMenu } from './components/DocumentMenu';
 interface DocsProps {
   withHeading?: boolean;
   isInternal?: boolean;
+  setDocsCount?(count: number): void;
+  setIsInternal?(isInternal: boolean): void;
 }
 
-export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
+export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, setIsInternal }) => {
   const params = useParams();
 
   const projectId = params.id ? Number(params.id) : 0;
 
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
-
-  useEffect(() => {
-    setOffset(0);
-  }, [isInternal]);
 
   const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
     addedById: undefined,
@@ -86,6 +84,22 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
     fetchPolicy: 'cache-and-network',
   });
 
+  useEffect(() => {
+    setOffset(0);
+  }, [isInternal, setOffset]);
+
+  useEffect(() => {
+    if (data && setDocsCount) {
+      setDocsCount(data.documentList.count);
+    }
+  }, [data, setDocsCount]);
+
+  useEffect(() => {
+    if (setIsInternal) {
+      setIsInternal(!!isInternal);
+    }
+  }, [isInternal, setIsInternal]);
+
   const projectsOptions = useMemo(
     () => (allProjects && [ALL_SELECT_OPTION, ...allProjects.projectsList.results]) ?? [],
     [allProjects],
@@ -122,11 +136,16 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
     <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
       <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
         {withHeading && (
-          <div className="flex flex-col gap-[2px]">
-            <h2 className="text-p1 font-bold">Documents</h2>
-          </div>
+          <>
+            <div className="flex flex-col gap-[2px]">
+              <h2 className="text-p1 font-bold">Documents</h2>
+              <p className="text-c1 text-gray-2">
+                {(data && data.documentList.count) ?? 0} docs in total
+              </p>
+            </div>
+            <AddDocumentButton projectId={projectId} />
+          </>
         )}
-        {(isInternal || withHeading) && <AddDocumentButton projectId={projectId} />}
       </div>
 
       <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
@@ -186,12 +205,14 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
               key={id}
               className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
             >
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 items-center min-w-0">
                 <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
                   {getFileExtension(file.fileName)}
                 </div>
-                <div className="flex flex-col gap-[5px]">
-                  <span className="text-p3 text-black leading-3">{file.fileName}</span>
+                <div className="flex flex-col gap-[5px] truncate">
+                  <span className="text-p3 text-black leading-4 truncate">
+                    {file.fileName.split('.').slice(0, -1).join('.')}
+                  </span>
                   <span className="text-c1 text-gray-2 leading-4">
                     {format(new Date(String(createdAt)), DateFormat.PP)} • {addedBy?.fullName}{' '}
                     {!isInternal && !withHeading && `• ${project?.name}`}

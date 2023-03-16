@@ -8,7 +8,7 @@ import { GenerateDocumentModal } from './components/GenerateDocumentModal';
 import { UploadDocumentModal } from './components/UploadDocumentModal';
 
 interface Props {
-  projectId: number;
+  projectId?: number;
 }
 
 export const AddDocumentButton: FC<Props> = ({ projectId }) => {
@@ -41,8 +41,8 @@ export const AddDocumentButton: FC<Props> = ({ projectId }) => {
         {({ onClick }) => (
           <Button
             variant={ButtonVariant.PRIMARY}
-            label="Add document"
-            withIcon="add"
+            label="New document"
+            withIcon="plus"
             className="w-36"
             onClick={onClick}
           />
@@ -51,12 +51,12 @@ export const AddDocumentButton: FC<Props> = ({ projectId }) => {
       <UploadDocumentModal
         isOpen={isUploadDocumentModalOpen}
         close={closeUploadDocumentModal}
-        projectId={projectId}
+        projectId={projectId as number}
       />
       <GenerateDocumentModal
         isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}
-        projectId={projectId}
+        projectId={projectId as number}
       />
     </>
   );

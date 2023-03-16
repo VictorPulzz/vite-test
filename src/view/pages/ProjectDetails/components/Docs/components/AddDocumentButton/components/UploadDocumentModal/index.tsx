@@ -58,31 +58,35 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId }) => 
         render={({ field: { onChange }, fieldState: { error } }) => (
           <>
             {fileName && (
-              <div className="mt-5 flex items-center justify-between gap-5">
+              <div className="mt-5 flex items-center justify-between gap-5 p-3 border border-solid border-gray-5 rounded-md">
                 <div className="flex items-center gap-2 min-w-0">
                   <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
                     {getFileExtension(fileName)}
                   </div>
                   <span className="text-p3 text-black truncate">{fileName}</span>
                 </div>
-                <button type="button" onClick={removeFile} className="flex items-center w-[30px]">
+                <button type="button" onClick={removeFile} className="flex items-center">
                   <Icon name="close" size={18} />
                 </button>
               </div>
             )}
-            <FileUpload onUpload={onChange}>
-              {({ onClick }) => (
-                <Button
-                  onClick={onClick}
-                  variant={error ? ButtonVariant.NEGATIVE : ButtonVariant.SECONDARY}
-                  size={ButtonSize.MEDIUM}
-                  label="Upload"
-                  withIcon="upload"
-                  className="mt-5"
-                />
-              )}
-            </FileUpload>
-            <FieldErrorMessage error={error} />
+            {!fileName && (
+              <>
+                <FileUpload onUpload={onChange}>
+                  {({ onClick }) => (
+                    <Button
+                      onClick={onClick}
+                      variant={error ? ButtonVariant.NEGATIVE : ButtonVariant.SECONDARY}
+                      size={ButtonSize.MEDIUM}
+                      label="Upload"
+                      withIcon="upload"
+                      className="mt-5"
+                    />
+                  )}
+                </FileUpload>
+                <FieldErrorMessage error={error} />
+              </>
+            )}
           </>
         )}
       />
