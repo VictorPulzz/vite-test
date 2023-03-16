@@ -51,7 +51,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
     projectId: projectId || undefined,
   });
 
-  const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>(OrderDirectionChoice.DESC);
+  const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>();
 
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
@@ -79,7 +79,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
       filters: { ...docsFilter, internal: isInternal },
       search: searchValue,
       sort: {
-        direction: sortDirecion,
+        direction: sortDirecion ?? OrderDirectionChoice.DESC,
         field: DocumentSort.CREATED_AT,
       },
     },
