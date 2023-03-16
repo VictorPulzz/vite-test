@@ -59,7 +59,7 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId }) =
       withCloseButton
       isOpen={isOpen}
       close={close}
-      contentClassName="w-5/9"
+      contentClassName="w-1/3"
       title="Generate document"
       onAfterClose={resetForm}
     >

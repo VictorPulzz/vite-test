@@ -5,6 +5,7 @@ import React, { FC } from 'react';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
 import { GenerateDocumentModal } from './components/GenerateDocumentModal';
+import { UploadDocumentModal } from './components/UploadDocumentModal';
 
 interface Props {
   projectId: number;
@@ -12,14 +13,21 @@ interface Props {
 
 export const AddDocumentButton: FC<Props> = ({ projectId }) => {
   const {
+    value: isUploadDocumentModalOpen,
+    on: openUploadDocumentModal,
+    off: closeUploadDocumentModal,
+  } = useSwitchValue(false);
+
+  const {
     value: isGenerateDocumentModalOpen,
     on: openGenerateDocumentModal,
     off: closeGenerateDocumentModal,
   } = useSwitchValue(false);
+
   const options: DropdownItem[] = [
     {
       label: 'Upload',
-      onSelect: () => null,
+      onSelect: openUploadDocumentModal,
     },
     {
       label: 'Generate',
@@ -40,6 +48,11 @@ export const AddDocumentButton: FC<Props> = ({ projectId }) => {
           />
         )}
       </Dropdown>
+      <UploadDocumentModal
+        isOpen={isUploadDocumentModalOpen}
+        close={closeUploadDocumentModal}
+        projectId={projectId}
+      />
       <GenerateDocumentModal
         isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}

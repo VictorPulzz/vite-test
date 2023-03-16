@@ -49,7 +49,7 @@ interface UseGenerateDocumentFormReturn {
   resetForm?: () => void;
 }
 
-interface UseAddNewMemberFormProps {
+interface UseGenerateDocumentFormProps {
   onSubmitSuccessful?: () => void;
   template: DocumentTemplateType;
   projectId?: number;
@@ -58,14 +58,14 @@ interface UseAddNewMemberFormProps {
 const defaultValues: GenerateDocumentFormValues = {
   templateId: null,
   categoryId: null,
-  templateFields: [{ value: '', name: '' }],
+  templateFields: [],
 };
 
 export function useGenerateDocumentForm({
   onSubmitSuccessful,
   template,
   projectId,
-}: UseAddNewMemberFormProps): UseGenerateDocumentFormReturn {
+}: UseGenerateDocumentFormProps): UseGenerateDocumentFormReturn {
   const form = useForm<GenerateDocumentFormValues>({
     defaultValues,
     mode: 'onChange',
