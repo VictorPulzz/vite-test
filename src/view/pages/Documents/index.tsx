@@ -1,11 +1,15 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
+import { AddDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/AddDocumentButton';
 import styles from '~/view/pages/ProjectDetails/styles.module.scss';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 export const DocumentsPage: FC = () => {
+  const [docsCount, setDocsCount] = useState<number>(0);
+  const [isInternal, setIsInternal] = useState<boolean>(false);
+
   const DocumentTabs = useMemo(
     () => (
       <Tabs
@@ -14,11 +18,13 @@ export const DocumentsPage: FC = () => {
         items={[
           {
             title: 'Internal',
-            element: <Docs isInternal />,
+            element: <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />,
           },
           {
-            title: 'Clients',
-            element: <Docs isInternal={false} />,
+            title: 'Client',
+            element: (
+              <Docs isInternal={false} setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
+            ),
           },
         ]}
       />
@@ -27,8 +33,12 @@ export const DocumentsPage: FC = () => {
   );
   return (
     <TabLayout tabs={DocumentTabs}>
-      <div className="bg-white">
-        <h2 className="text-h4 font-bold ml-6 mt-2">Documents</h2>
+      <div className="flex items-end justify-between px-6 pt-6 bg-white">
+        <div className="flex flex-col gap-[2px]">
+          <h2 className="text-h4 font-bold">Documents</h2>
+          <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
+        </div>
+        {isInternal && <AddDocumentButton />}
       </div>
     </TabLayout>
   );
