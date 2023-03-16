@@ -99,8 +99,9 @@ export type DocumentGenerateFieldInput = {
 };
 
 export type DocumentGenerateInput = {
+  categoryId?: InputMaybe<Scalars['Int']>;
   fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
-  projectId: Scalars['Int'];
+  projectId?: InputMaybe<Scalars['Int']>;
   templateId: Scalars['Int'];
 };
 
@@ -824,6 +825,7 @@ export type RepositoryFilter = {
   createdById?: InputMaybe<Scalars['Int']>;
   platform?: InputMaybe<RepositoryPlatformChoice>;
   projectId?: InputMaybe<Scalars['Int']>;
+  technologies?: InputMaybe<Array<Scalars['Int']>>;
   type?: InputMaybe<RepositoryTypeChoice>;
 };
 

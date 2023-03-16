@@ -4,9 +4,13 @@ import React, { FC } from 'react';
 
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
-import { GenerateDocumentModal } from '../GenerateDocumentModal';
+import { GenerateDocumentModal } from './components/GenerateDocumentModal';
 
-export const AddDocumentButton: FC = () => {
+interface Props {
+  projectId: number;
+}
+
+export const AddDocumentButton: FC<Props> = ({ projectId }) => {
   const {
     value: isGenerateDocumentModalOpen,
     on: openGenerateDocumentModal,
@@ -39,6 +43,7 @@ export const AddDocumentButton: FC = () => {
       <GenerateDocumentModal
         isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}
+        projectId={projectId}
       />
     </>
   );

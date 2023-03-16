@@ -126,7 +126,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal }) => {
             <h2 className="text-p1 font-bold">Documents</h2>
           </div>
         )}
-        {(isInternal || withHeading) && <AddDocumentButton />}
+        {(isInternal || withHeading) && <AddDocumentButton projectId={projectId} />}
       </div>
 
       <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
