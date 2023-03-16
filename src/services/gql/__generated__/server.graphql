@@ -92,8 +92,9 @@ input DocumentGenerateFieldInput {
 }
 
 input DocumentGenerateInput {
+  categoryId: Int = null
   fields: [DocumentGenerateFieldInput!] = null
-  projectId: Int!
+  projectId: Int = null
   templateId: Int!
 }
 
@@ -716,6 +717,7 @@ input RepositoryFilter {
   createdById: Int = null
   platform: RepositoryPlatformChoice = null
   projectId: Int = null
+  technologies: [Int!] = null
   type: RepositoryTypeChoice = null
 }
 

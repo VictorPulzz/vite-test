@@ -249,6 +249,15 @@ export type FetchDocumentsQuery = {
   };
 };
 
+export type UploadDocumentMutationVariables = Types.Exact<{
+  input: Types.DocumentInput;
+}>;
+
+export type UploadDocumentMutation = {
+  __typename?: 'Mutation';
+  documentCreateUpdate: { __typename?: 'DocumentType'; id: number };
+};
+
 export type RemoveDocumentMutationVariables = Types.Exact<{
   input: Types.IdInput;
 }>;
@@ -1080,6 +1089,50 @@ export type FetchDocumentsLazyQueryHookResult = ReturnType<typeof useFetchDocume
 export type FetchDocumentsQueryResult = Apollo.QueryResult<
   FetchDocumentsQuery,
   FetchDocumentsQueryVariables
+>;
+export const UploadDocumentDocument = gql`
+  mutation UploadDocument($input: DocumentInput!) {
+    documentCreateUpdate(data: $input) {
+      id
+    }
+  }
+`;
+export type UploadDocumentMutationFn = Apollo.MutationFunction<
+  UploadDocumentMutation,
+  UploadDocumentMutationVariables
+>;
+
+/**
+ * __useUploadDocumentMutation__
+ *
+ * To run a mutation, you first call `useUploadDocumentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadDocumentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [uploadDocumentMutation, { data, loading, error }] = useUploadDocumentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUploadDocumentMutation(
+  baseOptions?: Apollo.MutationHookOptions<UploadDocumentMutation, UploadDocumentMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UploadDocumentMutation, UploadDocumentMutationVariables>(
+    UploadDocumentDocument,
+    options,
+  );
+}
+export type UploadDocumentMutationHookResult = ReturnType<typeof useUploadDocumentMutation>;
+export type UploadDocumentMutationResult = Apollo.MutationResult<UploadDocumentMutation>;
+export type UploadDocumentMutationOptions = Apollo.BaseMutationOptions<
+  UploadDocumentMutation,
+  UploadDocumentMutationVariables
 >;
 export const RemoveDocumentDocument = gql`
   mutation RemoveDocument($input: IDInput!) {

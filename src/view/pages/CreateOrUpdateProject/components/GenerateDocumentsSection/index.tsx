@@ -48,6 +48,7 @@ export const GenerateDocumentsSection: FC<Props> = ({ templates }) => {
                       name={`documentTemplate.${templateIndex}.templateFields.${fieldIndex}.value`}
                       control={control}
                       label={field.description ?? ''}
+                      required
                     />
                   </div>
                 ))}
