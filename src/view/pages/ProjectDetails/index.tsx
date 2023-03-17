@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import comingSoon from '~/view/assets/images/coming-soon.svg';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
@@ -39,7 +40,11 @@ export const ProjectDetailsPage: FC = () => {
         items={[
           {
             title: 'Overview',
-            element: <div>Overview</div>,
+            element: (
+              <div className="flex justify-center items-center h-[calc(70vh+2rem)]">
+                <img src={comingSoon} alt="feature" />
+              </div>
+            ),
           },
           {
             title: 'Info',
