@@ -19,6 +19,7 @@ import { USERS_TABLE_COLUMNS } from './consts';
 export const UsersPage: FC = () => {
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter, filtersCount } =
     useListQueryParams<UserFilter>();
+
   const {
     value: isFilterModalOpen,
     on: openFilterModal,

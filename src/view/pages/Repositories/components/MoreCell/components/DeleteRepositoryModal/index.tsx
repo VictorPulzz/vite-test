@@ -5,7 +5,10 @@ import { Modal, ModalProps } from '@ui/components/common/Modal';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
-import { FetchRepositoriesDocument, useRemoveRepositoryMutation } from '../../__generated__/schema';
+import {
+  FetchRepositoriesDocument,
+  useRemoveRepositoryMutation,
+} from '../../../../__generated__/schema';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   id: number;

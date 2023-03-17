@@ -62,13 +62,13 @@ export const Info: FC<Props> = ({
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Start date</span>
             <span className="text-p3 leading-none">
-              {format(new Date(startDate), DateFormat.PP)}
+              {format(new Date(startDate), DateFormat.D_MMM_Y)}
             </span>
           </div>
           <div className="flex flex-col gap-[2px]">
             <span className="text-c1 text-gray-2">Estimated end date</span>
             <span className="text-p3 leading-none">
-              {format(new Date(String(endDate)), DateFormat.PP)}{' '}
+              {format(new Date(String(endDate)), DateFormat.D_MMM_Y)}{' '}
               <span className="text-gray-2">{!isPastEndDate && `(in ${durationToEndDate})`}</span>
             </span>
           </div>

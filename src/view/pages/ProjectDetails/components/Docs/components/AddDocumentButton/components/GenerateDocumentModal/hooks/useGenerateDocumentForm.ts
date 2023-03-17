@@ -7,8 +7,8 @@ import { formErrors } from '~/constants/form';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-import { useDocumentGenerateMutation } from '../../CreateOrUpdateProject/__generated__/schema';
-import { FetchDocumentsDocument } from '../__generated__/schema';
+import { useDocumentGenerateMutation } from '../../../../../../../../CreateOrUpdateProject/__generated__/schema';
+import { FetchDocumentsDocument } from '../../../../../../../__generated__/schema';
 
 const formSchema = z
   .object({

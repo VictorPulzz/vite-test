@@ -10,7 +10,7 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 import {
   FetchRepositoryParticipantsDocument,
   useAddOrUpdateRepositoryParticipantMutation,
-} from '../__generated__/schema';
+} from '../../../../../__generated__/schema';
 
 const formSchema = z.object({
   user: z.string().refine(value => value !== '', formErrors.REQUIRED),

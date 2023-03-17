@@ -4,13 +4,14 @@ import { Controller } from 'react-hook-form';
 
 import { getFileExtension } from '~/utils/getFileExtension';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { useUploadDocumentForm } from '~/view/pages/ProjectDetails/hooks/useUploadDocumentForm';
 import { FileUpload } from '~/view/ui/components/common/FileUpload';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 import { FieldErrorMessage } from '~/view/ui/components/form/FieldErrorMessage';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
+
+import { useUploadDocumentForm } from './hooks/useUploadDocumentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;

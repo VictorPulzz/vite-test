@@ -57,7 +57,7 @@ export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('createdAt', {
     id: 'createdAt',
     header: 'Created at',
-    cell: props => <span>{format(new Date(props.getValue()), DateFormat.PP)}</span>,
+    cell: props => <span>{format(new Date(props.getValue()), DateFormat.D_MMM_Y)}</span>,
   }),
   columnHelper.group({
     id: 'more',

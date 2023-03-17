@@ -6,7 +6,10 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-import { FetchProjectMembersDocument, useAddProjectMemberMutation } from '../__generated__/schema';
+import {
+  FetchProjectMembersDocument,
+  useAddProjectMemberMutation,
+} from '../../../../../__generated__/schema';
 
 const formSchema = z.object({
   user: z.string().refine(value => value !== '', formErrors.REQUIRED),

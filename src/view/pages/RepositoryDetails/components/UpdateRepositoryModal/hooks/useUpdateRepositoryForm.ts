@@ -10,7 +10,7 @@ import {
   FetchRepositoryDetailsDocument,
   FetchRepositoryDetailsQuery,
   useUpdateRepositoryMutation,
-} from '../__generated__/schema';
+} from '../../../__generated__/schema';
 
 const formSchema = z.object({
   name: z

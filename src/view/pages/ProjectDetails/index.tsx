@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
@@ -59,7 +60,11 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Docs',
-            element: <Docs withHeading />,
+            element: (
+              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+                <Docs withHeading projectId={projectId} />
+              </SectionContainer>
+            ),
           },
           {
             title: 'Reports',
@@ -90,8 +95,9 @@ export const ProjectDetailsPage: FC = () => {
               <div className="flex flex-col">
                 <h2 className="text-h4 font-bold">{data?.project.name}</h2>
                 <span className="text-c1 text-gray-2 leading-none">
-                  Created {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.PP)} •
-                  by {data?.project.createdBy?.fullName}
+                  Created{' '}
+                  {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.D_MMM_Y)} • by{' '}
+                  {data?.project.createdBy?.fullName}
                 </span>
               </div>
             </div>

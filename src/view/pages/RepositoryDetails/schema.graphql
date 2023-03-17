@@ -8,6 +8,7 @@ query FetchRepositoryDetails($input: IDInput!) {
     createdAt
     gitUrl
     gitTerraformUrl
+    type
     technologies {
       id
       name

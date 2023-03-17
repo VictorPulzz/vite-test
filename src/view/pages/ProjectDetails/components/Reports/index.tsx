@@ -2,12 +2,12 @@ import React, { FC } from 'react';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { useGetReportsForm } from '~/view/pages/ProjectDetails/hooks/useGetReportsForm';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
 import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { ReportsCard } from './components/ReportCard';
+import { useGetReportsForm } from './hooks/useGetReportsForm';
 
 // TODO remove HistoryUsersType when backend will be ready
 export type ReportsType = {

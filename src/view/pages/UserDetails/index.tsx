@@ -10,12 +10,12 @@ import { Avatar } from '~/view/components/Avatar';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
+import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
-import { Docs } from './components/Docs';
 import { Projects } from './components/Projects';
 import { UserHistory } from './components/UserHistory';
 import styles from './styles.module.scss';

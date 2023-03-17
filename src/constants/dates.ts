@@ -4,6 +4,7 @@ export enum DateFormat {
   DMY = 'dd/MM/yyyy',
   PP = 'PP',
   PP_P = 'PPp',
+  D_MMM_Y = 'd MMM, yyyy',
 }
 
 export enum DayPickerMode {

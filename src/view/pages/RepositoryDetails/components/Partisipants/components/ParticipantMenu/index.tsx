@@ -12,7 +12,7 @@ import {
 } from '~/view/pages/RepositoryDetails/__generated__/schema';
 import { Icon } from '~/view/ui/components/common/Icon';
 
-import { DeleteParticipantModal } from '../DeleteParticipantModal';
+import { DeleteParticipantModal } from './components/DeleteParticipantModal';
 
 interface Props {
   participant: Pick<UserType, 'id' | 'fullName'>;

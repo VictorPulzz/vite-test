@@ -5,7 +5,8 @@ import React, { FC } from 'react';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useRequestNewRepositoryForm } from '~/view/pages/ProjectDetails/hooks/useRequestNewRepositoryForm';
+
+import { useRequestNewRepositoryForm } from './hooks/useRequestNewRepositoryForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 

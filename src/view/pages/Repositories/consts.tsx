@@ -5,6 +5,8 @@ import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
@@ -65,12 +67,16 @@ export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('gitUrl', {
     id: 'gitUrl',
     header: 'Git url',
-    cell: props => props.getValue() ?? '-',
+  }),
+  columnHelper.accessor('type', {
+    id: 'type',
+    header: 'Type',
+    cell: props => convertUppercaseToReadable(props.getValue() as RepositoryTypeChoice),
   }),
   columnHelper.accessor('createdAt', {
     id: 'createdAt',
     header: 'Created at',
-    cell: props => format(new Date(props.getValue()), DateFormat.PP),
+    cell: props => format(new Date(props.getValue()), DateFormat.D_MMM_Y),
   }),
   columnHelper.group({
     id: 'more',

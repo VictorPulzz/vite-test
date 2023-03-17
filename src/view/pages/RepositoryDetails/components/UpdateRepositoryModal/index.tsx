@@ -5,7 +5,7 @@ import React, { FC } from 'react';
 import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 
 import { FetchRepositoryDetailsQuery } from '../../__generated__/schema';
-import { useUpdateRepositoryForm } from '../../hooks/useUpdateRepositoryForm';
+import { useUpdateRepositoryForm } from './hooks/useUpdateRepositoryForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   repository: FetchRepositoryDetailsQuery['repository'];

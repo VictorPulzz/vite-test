@@ -7,7 +7,8 @@ import React, { FC } from 'react';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useCreateNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useCreateNewEnvironmentForm';
+
+import { useCreateNewEnvironmentForm } from './hooks/useCreateNewEnvironmentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 

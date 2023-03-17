@@ -8,13 +8,13 @@ import { ROUTES } from '~/constants/routes';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
 import { Loader } from '~/view/ui/components/common/Loader';
 
 import { useFetchDocumentTemplateListQuery, useFetchProjectQuery } from './__generated__/schema';
 import { ClientTeamSection } from './components/ClientTeamSection';
 import { GeneralSection } from './components/GeneralSection';
 import { GenerateDocumentsSection } from './components/GenerateDocumentsSection';
+import { useProjectForm } from './hooks/useProjectForm';
 
 export const CreateOrUpdateProject: FC = () => {
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();

@@ -6,7 +6,10 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-import { FetchDocumentsDocument, useUploadDocumentMutation } from '../__generated__/schema';
+import {
+  FetchDocumentsDocument,
+  useUploadDocumentMutation,
+} from '../../../../../../../__generated__/schema';
 
 const formSchema = z.object({
   categoryId: z

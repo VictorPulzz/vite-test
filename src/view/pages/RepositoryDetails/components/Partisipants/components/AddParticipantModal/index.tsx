@@ -9,7 +9,7 @@ import { SelectOption } from '~/view/ui/components/form/Select';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
-import { useAddParticipantForm } from '../../../../hooks/useAddParticipantForm';
+import { useAddParticipantForm } from './hooks/useAddParticipantForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   repositoryId: number;

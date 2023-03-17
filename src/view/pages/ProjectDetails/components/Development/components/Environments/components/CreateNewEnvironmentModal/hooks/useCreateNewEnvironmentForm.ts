@@ -11,7 +11,7 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 import {
   FetchProjectEnvironmentsListDocument,
   useRequestNewProjectEnvironmentMutation,
-} from '../__generated__/schema';
+} from '../../../../../../../__generated__/schema';
 
 const formSchema = z.object({
   environment: z

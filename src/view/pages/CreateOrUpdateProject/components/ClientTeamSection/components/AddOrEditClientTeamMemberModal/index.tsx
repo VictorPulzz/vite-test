@@ -8,7 +8,7 @@ import React, { FC } from 'react';
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
-import { useAddOrEditClientTeamMemberForm } from '../../../../hooks/useAddOrEditClientTeamMemberForm';
+import { useAddOrEditClientTeamMemberForm } from './hooks/useAddOrEditClientTeamMemberForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   isEditMode: boolean;

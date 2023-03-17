@@ -1,6 +1,5 @@
 import { format } from 'date-fns';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -13,7 +12,6 @@ import {
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { getFileExtension } from '~/utils/getFileExtension';
 import { Pagination } from '~/view/components/Pagination';
-import { SectionContainer } from '~/view/components/SectionContainer';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -32,19 +30,24 @@ import { DocumentMenu } from './components/DocumentMenu';
 interface DocsProps {
   withHeading?: boolean;
   isInternal?: boolean;
+  projectId?: number;
+  userId?: number;
   setDocsCount?(count: number): void;
   setIsInternal?(isInternal: boolean): void;
 }
 
-export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, setIsInternal }) => {
-  const params = useParams();
-
-  const projectId = params.id ? Number(params.id) : 0;
-
+export const Docs: FC<DocsProps> = ({
+  withHeading,
+  isInternal,
+  projectId,
+  userId,
+  setDocsCount,
+  setIsInternal,
+}) => {
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
   const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
-    addedById: undefined,
+    addedById: userId || undefined,
     categoryId: undefined,
     projectId: projectId || undefined,
   });
@@ -133,9 +136,9 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, set
   const hasPagination = data && data.documentList.count > PAGE_SIZE;
 
   return (
-    <SectionContainer containerClassName="min-h-[calc(100vh-12rem)] relative">
+    <>
       <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
-        {withHeading && (
+        {(withHeading || userId) && (
           <>
             <div className="flex flex-col gap-[2px]">
               <h2 className="text-p1 font-bold">Documents</h2>
@@ -147,46 +150,47 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, set
           </>
         )}
       </div>
-
-      <div className="grid grid-cols-2 items-end mt-3 gap-x-3">
+      <div className={`grid ${userId ? 'grid-cols-1' : 'grid-cols-2'} items-end mt-3 gap-x-3`}>
         <SearchInput
           onChange={setSearchValue}
           defaultValue={searchValue}
           placeholder="Search documents"
           className="flex-auto"
         />
-        <div
-          className={`grid ${
-            isInternal || projectId ? 'grid-cols-3' : 'grid-cols-4'
-          } items-end gap-3`}
-        >
-          {!projectId && !isInternal && (
+        {!userId && (
+          <div
+            className={`grid ${
+              isInternal || projectId ? 'grid-cols-3' : 'grid-cols-4'
+            } items-end gap-3`}
+          >
+            {!projectId && !isInternal && (
+              <Select
+                options={projectsOptions}
+                value={docsFilter.projectId}
+                onChange={value => setDocsFilter({ ...docsFilter, projectId: value })}
+                placeholder="Project"
+              />
+            )}
             <Select
-              options={projectsOptions}
-              value={docsFilter.projectId}
-              onChange={value => setDocsFilter({ ...docsFilter, projectId: value })}
-              placeholder="Project"
+              options={categoriesOptions}
+              value={docsFilter.categoryId}
+              onChange={value => setDocsFilter({ ...docsFilter, categoryId: value })}
+              placeholder="Category"
             />
-          )}
-          <Select
-            options={categoriesOptions}
-            value={docsFilter.categoryId}
-            onChange={value => setDocsFilter({ ...docsFilter, categoryId: value })}
-            placeholder="Category"
-          />
-          <Select
-            options={usersOptions}
-            value={docsFilter.addedById}
-            onChange={value => setDocsFilter({ ...docsFilter, addedById: value })}
-            placeholder="Added by"
-          />
-          <Select
-            options={sortingOptions}
-            value={sortDirecion}
-            placeholder="Sort"
-            onChange={setSortDirecion}
-          />
-        </div>
+            <Select
+              options={usersOptions}
+              value={docsFilter.addedById}
+              onChange={value => setDocsFilter({ ...docsFilter, addedById: value })}
+              placeholder="Added by"
+            />
+            <Select
+              options={sortingOptions}
+              value={sortDirecion}
+              placeholder="Sort"
+              onChange={setSortDirecion}
+            />
+          </div>
+        )}
       </div>
       {loading && (
         <div className="flex h-[60vh]">
@@ -199,7 +203,7 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, set
         </div>
       )}
       {!loading && data && data.documentList.results.length > 0 && (
-        <div className="grid grid-cols-3 gap-4 mt-6">
+        <div className={`grid ${userId ? 'grid-cols-2' : 'grid-cols-3'} gap-4 mt-6`}>
           {data.documentList.results.map(({ id, file, createdAt, addedBy, project }) => (
             <div
               key={id}
@@ -213,8 +217,8 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, set
                   <span className="text-p3 text-black leading-4 truncate">
                     {file.fileName.split('.').slice(0, -1).join('.')}
                   </span>
-                  <span className="text-c1 text-gray-2 leading-4">
-                    {format(new Date(String(createdAt)), DateFormat.PP)} • {addedBy?.fullName}{' '}
+                  <span className="text-c1 text-gray-2 leading-4 truncate">
+                    {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} • {addedBy?.fullName}{' '}
                     {!isInternal && !withHeading && `• ${project?.name}`}
                   </span>
                 </div>
@@ -233,6 +237,6 @@ export const Docs: FC<DocsProps> = ({ withHeading, isInternal, setDocsCount, set
           fetchMore={fetchMore}
         />
       )}
-    </SectionContainer>
+    </>
   );
 };

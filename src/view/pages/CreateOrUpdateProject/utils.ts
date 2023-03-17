@@ -2,7 +2,7 @@ import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { isNumber } from '~/utils/isNumber';
 
 import { FetchProjectQuery } from './__generated__/schema';
-import { AddOrEditClientTeamMemberFormValues } from './hooks/useAddOrEditClientTeamMemberForm';
+import { AddOrEditClientTeamMemberFormValues } from './components/ClientTeamSection/components/AddOrEditClientTeamMemberModal/hooks/useAddOrEditClientTeamMemberForm';
 import { ProjectFormValues } from './hooks/useProjectForm';
 
 interface ClientTeamMember extends Pick<ClientType, 'fullName' | 'email'> {

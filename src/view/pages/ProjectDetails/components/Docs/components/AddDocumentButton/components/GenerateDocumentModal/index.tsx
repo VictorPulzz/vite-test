@@ -5,13 +5,14 @@ import { Controller } from 'react-hook-form';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { useFetchDocumentTemplateListQuery } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { useGenerateDocumentForm } from '~/view/pages/ProjectDetails/hooks/useGenerateDocumentForm';
 import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 import { Field } from '~/view/ui/components/form/Field';
 import { InlineFields } from '~/view/ui/components/form/InlineFields';
 import { SelectField } from '~/view/ui/components/form/SelectField';
 import { TextInput } from '~/view/ui/components/form/TextInput';
 import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
+
+import { useGenerateDocumentForm } from './hooks/useGenerateDocumentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;

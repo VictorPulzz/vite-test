@@ -3,9 +3,10 @@ import { Modal, ModalProps } from '@ui/components/common/Modal';
 import React, { FC, useMemo } from 'react';
 
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { useAddNewMemberForm } from '~/view/pages/ProjectDetails/hooks/useAddNewMemberForm';
 import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
 import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
+
+import { useAddNewMemberForm } from './hooks/useAddNewMemberForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;

@@ -5,6 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -34,7 +36,7 @@ export const RepositoryDetailsPage: FC = () => {
     },
   });
 
-  const { name, project, technologies, createdAt, gitUrl, gitTerraformUrl } =
+  const { name, project, technologies, createdAt, gitUrl, gitTerraformUrl, type } =
     data?.repository ?? {};
 
   const RepositoryDetailsTabs = useMemo(
@@ -86,6 +88,12 @@ export const RepositoryDetailsPage: FC = () => {
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Project</span>
                     <span className="text-p3 leading-none">{project?.name}</span>
+                  </div>
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Type</span>
+                    <span className="text-p3 leading-none">
+                      {convertUppercaseToReadable(type as RepositoryTypeChoice)}
+                    </span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Technologies</span>

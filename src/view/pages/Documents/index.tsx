@@ -1,5 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 
+import { SectionContainer } from '~/view/components/SectionContainer';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { AddDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/AddDocumentButton';
@@ -18,12 +19,22 @@ export const DocumentsPage: FC = () => {
         items={[
           {
             title: 'Internal',
-            element: <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />,
+            element: (
+              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+                <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
+              </SectionContainer>
+            ),
           },
           {
             title: 'Client',
             element: (
-              <Docs isInternal={false} setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
+              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+                <Docs
+                  isInternal={false}
+                  setDocsCount={setDocsCount}
+                  setIsInternal={setIsInternal}
+                />
+              </SectionContainer>
             ),
           },
         ]}

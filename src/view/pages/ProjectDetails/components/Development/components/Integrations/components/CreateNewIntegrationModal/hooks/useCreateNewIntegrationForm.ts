@@ -11,7 +11,7 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 import {
   FetchProjectIntegrationsListDocument,
   useRequestNewProjectIntegrationMutation,
-} from '../__generated__/schema';
+} from '../../../../../../../__generated__/schema';
 
 const formSchema = z.object({
   name: z.string().refine(value => value !== '', formErrors.REQUIRED),
