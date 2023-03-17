@@ -72,15 +72,9 @@ export const SettingsGeneralPage: React.FC = () => {
         />
       </InlineFields>
       <InlineFields>
-        <TextField
-          name="address"
-          control={form.control}
-          label="Address"
-          size={InputSize.LARGE}
-          required
-        />
+        <TextField name="address" control={form.control} label="Address" size={InputSize.LARGE} />
       </InlineFields>
-      <div className="mt-7 pt-7 border-t border-solid border-t-gray-6">
+      <div className="mt-7">
         <Button
           onClick={openLogoutModal}
           withIcon="logout"

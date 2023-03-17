@@ -63,7 +63,7 @@ export const useSecuritySettingsForm = (): UseChangePasswordFormFormReturn => {
         form.reset(defaultValues);
       } catch (e) {
         processGqlErrorResponse<ChangePasswordFormValues>(e, {
-          fields: ['oldPassword'],
+          fields: ['newPassword', 'oldPassword'],
           setFormError: form.setError,
         });
       }

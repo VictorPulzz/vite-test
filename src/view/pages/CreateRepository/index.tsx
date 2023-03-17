@@ -80,12 +80,13 @@ export const CreateRepositoryPage: FC = () => {
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
           <InlineFields>
-            <TextField name="name" control={control} label="Name*" />
+            <TextField name="name" control={control} label="Name" required />
             <SelectField
               name="projectId"
               options={projectsOptions}
               control={control}
-              label="Project*"
+              label="Project"
+              required
             />
           </InlineFields>
           <InlineFields>
@@ -93,7 +94,8 @@ export const CreateRepositoryPage: FC = () => {
               name="type"
               options={repositoryTypeOptions}
               control={control}
-              label="Type*"
+              label="Type"
+              required
             />
             <SelectField
               name="technologies"
@@ -111,10 +113,11 @@ export const CreateRepositoryPage: FC = () => {
               name="boilerplateId"
               options={boilerplatesOptions}
               control={control}
-              label="Boilerplate*"
+              label="Boilerplate"
+              required
             />
-            <TextField name="gitRepoId" control={control} label="Git repo id*" />
-            <TextField name="gitSlug" control={control} label="Git slug*" />
+            <TextField name="gitRepoId" control={control} label="Git repo id" required />
+            <TextField name="gitSlug" control={control} label="Git slug" required />
           </div>
           <div className="flex flex-col">
             <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />

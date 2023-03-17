@@ -13,7 +13,6 @@ export const SettingsSecurityPage: React.FC = () => {
   return (
     <SidebarLayout contentClassName="p-6">
       <h1 className="text-h4 mb-5">Security</h1>
-      <p className="text-p1 font-semibold mb-2.5">Change password</p>
       <form onSubmit={handleSubmit}>
         <InlineFields>
           <PasswordField
@@ -39,7 +38,7 @@ export const SettingsSecurityPage: React.FC = () => {
             control={form.control}
             label="Confirm new password"
             size={InputSize.LARGE}
-            placeholder="Confirm new password"
+            placeholder="New password"
             autoFocus
             autoComplete="new-password"
             className="mb-4"
@@ -49,7 +48,7 @@ export const SettingsSecurityPage: React.FC = () => {
           isLoading={form.formState.isSubmitting}
           disabled={!form.formState.isValid}
           onClick={handleSubmit}
-          variant={ButtonVariant.PRIMARY}
+          variant={ButtonVariant.SECONDARY}
           className="w-40"
           label="Change password"
         />
