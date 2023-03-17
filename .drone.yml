@@ -26,12 +26,8 @@ steps:
   image: node:16
   commands:
   - git submodule update --init --recursive
-  - git submodule update --remote
   - npm install --quiet
-  - npm run build
-  environment:
-    API_URL: 'https://appello-internal-back-dev.appelloproject.xyz/graphql'
-    APP_TITLE: 'SB2 (dev)'
+  - npm run build-dev
   when:
     branch: dev
     event:
@@ -63,12 +59,8 @@ steps:
   image: node:16
   commands:
   - git submodule update --init --recursive
-  - git submodule update --remote
   - npm install --quiet
-  - npm run build
-  environment:
-    API_URL: 'https://appello-internal-back-dev.appelloproject.xyz/graphql'
-    APP_TITLE: 'SB2 (stage)'
+  - npm run build-stage
   when:
     branch: stage
     event:
@@ -100,10 +92,7 @@ steps:
   image: node:16
   commands:
   - npm install --quiet
-  - npm run build
-  environment:
-    API_URL: 'https://sb2.appelloproject.xyz/graphql'
-    APP_TITLE: 'SB2 (prod)'
+  - npm run build-prod
   when:
     branch: master
     event:
