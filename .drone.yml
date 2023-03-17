@@ -91,6 +91,7 @@ steps:
 - name: Build Production
   image: node:16
   commands:
+  - git submodule update --init --recursive
   - npm install --quiet
   - npm run build-prod
   when:
