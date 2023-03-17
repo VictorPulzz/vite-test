@@ -1,6 +1,12 @@
 fragment AuthorizedUser on UserType {
+  id
   email
   firstName
   lastName
-  phone
+  fullName
+  photo {
+    fileName
+    size
+    url
+  }
 }

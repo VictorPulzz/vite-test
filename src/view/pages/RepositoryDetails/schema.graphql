@@ -1,0 +1,55 @@
+query FetchRepositoryDetails($input: IDInput!) {
+  repository(data: $input) {
+    id
+    name
+    project {
+      name
+    }
+    createdAt
+    gitUrl
+    gitTerraformUrl
+    technologies {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateRepository($input: RepositoryUpdateInput!) {
+  repositoryUpdate(data: $input) {
+    name
+  }
+}
+
+query FetchRepositoryParticipants(
+  $pagination: PaginationInput!
+  $filters: RepositoryParticipantFilter
+) {
+  repositoryParticipantList(pagination: $pagination, filters: $filters) {
+    results {
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+      }
+      accessLevel
+    }
+    count
+  }
+}
+
+mutation AddOrUpdateRepositoryParticipant($input: RepositoryParticipantInput!) {
+  repositoryParticipantCreateUpdate(data: $input) {
+    user {
+      fullName
+    }
+  }
+}
+
+mutation RemoveRepositoryParticipant($input: RepositoryParticipantInput!) {
+  repositoryParticipantDelete(data: $input) {
+    message
+  }
+}

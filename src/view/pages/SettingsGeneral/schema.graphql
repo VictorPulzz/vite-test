@@ -1,0 +1,29 @@
+query Me {
+  me {
+    firstName
+    lastName
+    email
+    phone
+    address
+    photo {
+      url
+      fileName
+      size
+    }
+  }
+}
+
+mutation ProfileUpdate($data: ProfileInput!) {
+  meUpdate(data: $data) {
+    firstName
+    lastName
+    email
+    phone
+    address
+    photo {
+      url
+      fileName
+      size
+    }
+  }
+}

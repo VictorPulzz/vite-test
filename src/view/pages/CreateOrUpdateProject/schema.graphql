@@ -1,0 +1,57 @@
+query FetchProject($data: IDInput!) {
+  project(data: $data) {
+    id
+    name
+    hoursEstimated
+    startDate
+    endDate
+    design
+    roadmap
+    notes
+    phase
+    clientTeam {
+      fullName
+      email
+      phone
+      position
+      notes
+      pointContact
+    }
+    platforms {
+      id
+      name
+    }
+  }
+}
+
+mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
+  projectCreateUpdate(data: $input) {
+    id
+  }
+}
+
+query FetchPlatformsList($pagination: PaginationInput!) {
+  platformList(pagination: $pagination) {
+    results {
+      value: id
+      label: name
+    }
+  }
+}
+
+query FetchDocumentTemplateList {
+  documentTemplateList {
+    id
+    name
+    fields {
+      name
+      description
+    }
+  }
+}
+
+mutation DocumentGenerate($input: [DocumentGenerateInput!]!) {
+  documentGenerate(data: $input) {
+    createdAt
+  }
+}

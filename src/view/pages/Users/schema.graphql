@@ -1,0 +1,43 @@
+query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+  usersList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      id
+      fullName
+      photo {
+        url
+      }
+      email
+      isActive
+      department {
+        id
+        name
+      }
+      role {
+        id
+        name
+      }
+    }
+    count
+  }
+}
+
+query FetchRolesList {
+  rolesList {
+    value: id
+    label: name
+  }
+}
+
+query FetchDepartmentsList {
+  departmentsList {
+    value: id
+    label: name
+  }
+}
+
+mutation ChangeUserStatus($input: ActiveInput!) {
+  userChangeStatus(data: $input) {
+    id
+    isActive
+  }
+}

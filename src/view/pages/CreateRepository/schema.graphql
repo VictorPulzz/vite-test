@@ -1,0 +1,21 @@
+query FetchTechnologiesList($pagination: PaginationInput!) {
+  technologyList(pagination: $pagination) {
+    results {
+      value: id
+      label: name
+    }
+  }
+}
+
+query FetchBoilerplateList {
+  boilerplateList {
+    value: id
+    label: name
+  }
+}
+
+mutation CreateRepository($input: RepositoryCreateInput!) {
+  repositoryCreate(data: $input) {
+    name
+  }
+}

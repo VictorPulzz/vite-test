@@ -10,12 +10,12 @@ export type RefreshTokensMutationVariables = Types.Exact<{
 
 export type RefreshTokensMutation = {
   __typename?: 'Mutation';
-  tokens: { __typename?: 'Login'; access: string; refresh: string };
+  tokens: { __typename?: 'LoginSuccessType'; access: string; refresh: string };
 };
 
 export const RefreshTokensDocument = gql`
   mutation RefreshTokens($input: RefreshTokenInput!) {
-    tokens: refreshToken(data: $input) {
+    tokens: tokenRefresh(data: $input) {
       access: accessToken
       refresh: refreshToken
     }

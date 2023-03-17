@@ -4,6 +4,12 @@
 
 @import './reset.scss';
 @import './fonts.scss';
+@import '../ui/styles/index.scss';
+
+@function pxToRem($value) {
+  $remValue: ($value / 16) + rem;
+  @return $remValue;
+}
 
 :root {
   --accent-color: 209 78% 48%;
@@ -23,36 +29,37 @@
 
   --red-color: 0 84% 61%;
   --green-color: 145 63% 42%;
+  --blue-color: 208 79% 51%;
 
-  --h1-font-size: 2.26rem;
-  --h1-line-height: 3.2rem;
+  --h1-font-size: #{pxToRem(34)};
+  --h1-line-height: #{pxToRem(48)};
 
-  --h2-font-size: 1.93rem;
-  --h2-line-height: 2.8rem;
+  --h2-font-size: #{pxToRem(29)};
+  --h2-line-height: #{pxToRem(42)};
 
-  --h3-font-size: 1.66rem;
-  --h3-line-height: 2.4rem;
+  --h3-font-size: #{pxToRem(25)};
+  --h3-line-height: #{pxToRem(36)};
 
-  --h4-font-size: 1.33rem;
-  --h4-line-height: 2.13rem;
+  --h4-font-size: #{pxToRem(20)};
+  --h4-line-height: #{pxToRem(32)};
 
-  --p1-font-size: 1rem;
-  --p1-line-height: 1.6rem;
+  --p1-font-size: #{pxToRem(15)};
+  --p1-line-height: #{pxToRem(24)};
 
-  --p2-font-size: 0.93rem;
-  --p2-line-height: 1.53rem;
+  --p2-font-size: #{pxToRem(14)};
+  --p2-line-height: #{pxToRem(23)};
 
-  --p3-font-size: 0.86rem;
-  --p3-line-height: 1.53rem;
+  --p3-font-size: #{pxToRem(13)};
+  --p3-line-height: #{pxToRem(23)};
 
-  --p4-font-size: 0.8rem;
-  --p4-line-height: 1.46rem;
+  --p4-font-size: #{pxToRem(12)};
+  --p4-line-height: #{pxToRem(18)};
 
-  --c1-font-size: 0.73rem;
-  --c1-line-height: 1.26rem;
+  --c1-font-size: #{pxToRem(11)};
+  --c1-line-height: #{pxToRem(19)};
 
-  --c2-font-size: 0.66rem;
-  --c2-line-height: 1.06rem;
+  --c2-font-size: #{pxToRem(10)};
+  --c2-line-height: #{pxToRem(16)};
 }
 
 html {
@@ -62,7 +69,7 @@ html {
 body {
   width: 100%;
   min-width: 1180px;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 1rem;
   color: hsl(var(--black-1-color));
@@ -79,6 +86,10 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+  }
+
+  .section-container {
+    @apply shadow-4 rounded-md bg-white p-7;
   }
 }
 

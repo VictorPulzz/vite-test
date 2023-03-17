@@ -1,0 +1,16 @@
+mutation SignIn($data: LoginInput!) {
+  login(data: $data) {
+    accessToken
+    refreshToken
+    user {
+      id
+      email
+      fullName
+      photo {
+        fileName
+        size
+        url
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+mutation ForgotPassword($input: ForgotPasswordInput!) {
+  forgotPassword(data: $input) {
+    message
+  }
+}

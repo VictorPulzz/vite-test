@@ -10,6 +10,7 @@ module.exports = {
       primary: 'hsl(var(--primary-color) / <alpha-value>)',
       red: 'hsl(var(--red-color) / <alpha-value>)',
       green: 'hsl(var(--green-color) / <alpha-value>)',
+      blue: 'hsl(var(--blue-color) / <alpha-value>)',
       white: 'hsl(var(--white-color) / <alpha-value>)',
       'black-1': 'hsl(var(--black-1-color) / <alpha-value>)',
       'black-2': 'hsl(var(--black-2-color) / <alpha-value>)',

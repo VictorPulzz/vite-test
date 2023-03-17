@@ -10,7 +10,7 @@ const appDirectory = fs.realpathSync(process.cwd());
 const resolvePath = relativePath => path.resolve(appDirectory, relativePath);
 
 const paths = {
-  env: resolvePath('.env'),
+  env: resolvePath(process.env.DOTENV_CONFIG_PATH || '.env'),
   root: resolvePath('.'),
   build: resolvePath('build'),
   public: resolvePath('public'),

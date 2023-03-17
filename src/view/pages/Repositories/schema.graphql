@@ -1,0 +1,30 @@
+query FetchRepositories(
+  $filters: RepositoryFilter
+  $pagination: PaginationInput!
+  $search: String
+) {
+  repositoryList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      id
+      name
+      project {
+        id
+        name
+      }
+      createdAt
+      type
+      technologies {
+        id
+        name
+      }
+      gitUrl
+    }
+    count
+  }
+}
+
+mutation RemoveRepository($input: IDInput!) {
+  repositoryDelete(data: $input) {
+    message
+  }
+}

@@ -1,0 +1,23 @@
+mutation CreateOrUpdateUser($input: UserInput!) {
+  userCreateUpdate(data: $input) {
+    id
+    photo {
+      url
+    }
+    firstName
+    lastName
+    email
+    department {
+      id
+      name
+    }
+    role {
+      id
+      name
+    }
+    address
+    contractType
+    birthDate
+    isActive
+  }
+}

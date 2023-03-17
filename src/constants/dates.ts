@@ -1,4 +1,12 @@
-// date formats: https://www.unicode.org/reports/tr35/tr35-dates.html#Date_Field_Symbol_Table
-
-// 09/11/2022
 export const DATE_FORMAT = 'dd/MM/yyyy';
+
+export enum DateFormat {
+  DMY = 'dd/MM/yyyy',
+  PP = 'PP',
+  PP_P = 'PPp',
+}
+
+export enum DayPickerMode {
+  RANGE = 'range',
+  SINGLE = 'single',
+}

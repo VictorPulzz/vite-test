@@ -1,4 +1,4 @@
 [submodule "src/view/ui"]
 	path = src/view/ui
-	url = git@bitbucket.org:appello/web-ui-kit.git
+	url = ../web-ui-kit.git
 	branch = main
