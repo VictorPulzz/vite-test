@@ -19,7 +19,8 @@ export const HISTORY_TABLE_COLUMNS = [
     id: 'id',
     header: 'Made by',
     cell: props => {
-      const { id, createdBy } = props.row.original;
+      const { createdBy } = props.row.original;
+      const { id } = createdBy;
       return (
         <div className="flex gap-3 items-center">
           <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">

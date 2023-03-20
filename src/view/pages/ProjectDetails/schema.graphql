@@ -163,6 +163,7 @@ query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
       createdAt
       createdBy {
         fullName
+        id
       }
       id
       message

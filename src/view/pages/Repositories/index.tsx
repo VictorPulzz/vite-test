@@ -73,10 +73,10 @@ export const RepositoriesPage: FC = () => {
       {data && data.repositoryList.results.length === 0 && (
         <EmptyState iconName="repositories" label="No repositories here yet" />
       )}
-      {!loading && data && data.repositoryList.results.length > 0 && (
+      {!loading && data && data.repositoryList.results?.length > 0 && (
         <Table
           className="mt-6"
-          data={data.repositoryList.results.slice().reverse()}
+          data={data?.repositoryList.results}
           columns={REPOSITORIES_TABLE_COLUMNS}
           setOffset={setOffset}
           offset={offset}

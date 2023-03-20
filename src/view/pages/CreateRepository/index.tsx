@@ -113,6 +113,7 @@ export const CreateRepositoryPage: FC = () => {
               control={control}
               label="Technologies"
               isMulti
+              required
             />
           </InlineFields>
         </section>

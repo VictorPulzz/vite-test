@@ -221,7 +221,7 @@ export type FetchHistoryLogsQuery = {
       createdAt: string;
       id: number;
       message: string;
-      createdBy: { __typename?: 'UserType'; fullName?: string | null };
+      createdBy: { __typename?: 'UserType'; fullName?: string | null; id?: string | null };
     }>;
   };
 };
@@ -968,6 +968,7 @@ export const FetchHistoryLogsDocument = gql`
         createdAt
         createdBy {
           fullName
+          id
         }
         id
         message
