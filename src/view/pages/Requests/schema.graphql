@@ -1,0 +1,10 @@
+query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!, $search: String) {
+  requestList(filters: $filters, pagination: $pagination, search: $search) {
+    results {
+      createdAt
+      createdBy
+      type
+    }
+    count
+  }
+}

@@ -39,6 +39,11 @@ const navItems = [
     link: ROUTES.REPOSITORIES,
   },
   {
+    title: 'Requests',
+    icon: 'requests',
+    link: ROUTES.REQUESTS,
+  },
+  {
     title: 'Roles & Pemissions',
     icon: 'key',
     link: ROUTES.ROLES_AND_PERMISSIONS,

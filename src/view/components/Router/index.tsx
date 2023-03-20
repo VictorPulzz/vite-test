@@ -14,6 +14,7 @@ import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
 import { RepositoryDetailsPage } from '~/view/pages/RepositoryDetails';
+import { RequestsPage } from '~/view/pages/Requests';
 import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
@@ -81,6 +82,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.REPOSITORIES,
     element: <RepositoriesPage />,
+  },
+  {
+    path: ROUTES.REQUESTS,
+    element: <RequestsPage />,
   },
   {
     path: ROUTES.ADD_REPOSITORY,
