@@ -94,6 +94,7 @@ input DocumentGenerateFieldInput {
 input DocumentGenerateInput {
   categoryId: Int = null
   fields: [DocumentGenerateFieldInput!] = null
+  internal: Boolean = null
   projectId: Int = null
   templateId: Int!
 }

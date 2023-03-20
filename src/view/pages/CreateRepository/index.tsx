@@ -1,7 +1,8 @@
+import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
@@ -22,6 +23,8 @@ import styles from './styles.module.scss';
 export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
 
+  const searchParams = useSearchParams();
+
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
       pagination: { limit: 0 },
@@ -39,11 +42,17 @@ export const CreateRepositoryPage: FC = () => {
   const { data: allBoilerplates } = useFetchBoilerplateListQuery();
 
   const {
-    form: { register, control, formState },
+    form: { register, control, formState, setValue },
     handleSubmit,
   } = useCreateRepositoryForm({
     onSubmitSuccessful: () => navigate(-1),
   });
+
+  useEffect(() => {
+    if (searchParams.projectId) {
+      setValue('projectId', +searchParams.projectId);
+    }
+  }, [searchParams.projectId, setValue]);
 
   const projectsOptions = useMemo(
     () => allProjects?.projectsList.results ?? [],
@@ -87,6 +96,7 @@ export const CreateRepositoryPage: FC = () => {
               control={control}
               label="Project"
               required
+              // TODO add disabled if searchParams.projectId===true
             />
           </InlineFields>
           <InlineFields>

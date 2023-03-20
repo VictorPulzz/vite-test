@@ -93,8 +93,7 @@ export function useGenerateDocumentForm({
               templateId: values.templateId as number,
               fields: values.templateFields,
               projectId: projectId || undefined,
-              // TODO add internal field
-              // internal: !projectId,
+              internal: !projectId,
             },
           },
           refetchQueries: [FetchDocumentsDocument],

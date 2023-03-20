@@ -1,6 +1,5 @@
-// import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { makeQueryString } from '@appello/common/lib/utils';
 import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { RepositoryType } from '~/services/gql/__generated__/globalTypes';
@@ -15,17 +14,16 @@ import { REPOSITORIES_TABLE_COLUMNS } from './consts';
 
 interface Props {
   repositories: FetchProjectRepositoriesListQuery['projectRepositoryList'];
+  projectId: number;
 }
 
-export const DevelopmentRepositories: FC<Props> = ({ repositories }) => {
+export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) => {
   // TODO Remove comments when requests functionality will be ready
   // const {
   //   value: isRequestNewRepositoryModalOpen,
   //   on: openRequestNewRepositoryModal,
   //   off: closeRequestNewRepositoryModal,
   // } = useSwitchValue(false);
-
-  const navigate = useNavigate();
 
   return (
     <div>
@@ -44,7 +42,7 @@ export const DevelopmentRepositories: FC<Props> = ({ repositories }) => {
           variant={ButtonVariant.SECONDARY}
           label="Create new repo"
           className="mt-3 w-[140px]"
-          onClick={() => navigate(ROUTES.ADD_REPOSITORY)}
+          to={`${ROUTES.ADD_REPOSITORY}${makeQueryString({ projectId })}`}
         />
       </SectionContainer>
       {/* <RequestNewRepositoryModal

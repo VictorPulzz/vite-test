@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react';
 
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { copyTextValue } from '~/utils/copyTextValue';
 import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/components/RequestCard';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 import { Icon } from '~/view/ui/components/common/Icon';
@@ -43,14 +44,20 @@ export const EnvironmentsListItem: FC<Props> = ({
             </div>
             <EnvironmentsListItemMenu />
           </div>
-          <div className="mt-3 flex items-center justify-between">
+          <div className="mt-3 grid grid-cols-2 justify-between gap-10">
             <div>
               <span className="text-c1 text-gray-1">Backend</span>
               <div className="mt-2 flex flex-col gap-3">
                 {Object.entries(backendCredentialsData || {})?.map(([key, value]) => (
                   <div key={key} className="flex items-center gap-1">
-                    <Icon name={key} size={18} color="#6F6F75" />
-                    <span className="text-c1">{value}</span>
+                    <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
+                    <button
+                      type="button"
+                      onClick={() => copyTextValue(value)}
+                      className="text-c1 truncate hover:underline cursor-pointer"
+                    >
+                      {value}
+                    </button>
                   </div>
                 ))}
               </div>
@@ -60,8 +67,14 @@ export const EnvironmentsListItem: FC<Props> = ({
               <div className="mt-2 flex flex-col gap-3">
                 {Object.entries(frontendCredentialsData || {})?.map(([key, value]) => (
                   <div key={key} className="flex items-center gap-1">
-                    <Icon name={key} size={18} color="#6F6F75" />
-                    <span className="text-c1">{value}</span>
+                    <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
+                    <button
+                      type="button"
+                      onClick={() => copyTextValue(value)}
+                      className="text-c1 truncate hover:underline cursor-pointer"
+                    >
+                      {value}
+                    </button>
                   </div>
                 ))}
               </div>

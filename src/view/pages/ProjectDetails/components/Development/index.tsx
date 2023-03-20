@@ -21,6 +21,7 @@ export const Development: FC = () => {
       variables: {
         data: { id: projectId },
       },
+      fetchPolicy: 'cache-and-network',
     });
 
   const { data: environmentsList, loading: isProjectEnvironmentsListLoading } =
@@ -45,7 +46,10 @@ export const Development: FC = () => {
         <Loader full colorful />
       ) : (
         <div className="flex flex-col gap-5">
-          <DevelopmentRepositories repositories={repositoriesList?.projectRepositoryList ?? []} />
+          <DevelopmentRepositories
+            repositories={repositoriesList?.projectRepositoryList ?? []}
+            projectId={projectId}
+          />
           <DevelopmentEnvironments environments={environmentsList?.projectEnvironmentList ?? []} />
           <DevelopmentIntegrations integrations={integrationsList?.projectIntegrationList ?? []} />
         </div>

@@ -101,6 +101,7 @@ export type DocumentGenerateFieldInput = {
 export type DocumentGenerateInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
   fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
+  internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
   templateId: Scalars['Int'];
 };
