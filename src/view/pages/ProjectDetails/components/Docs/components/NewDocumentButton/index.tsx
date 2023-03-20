@@ -9,9 +9,10 @@ import { UploadDocumentModal } from './components/UploadDocumentModal';
 
 interface Props {
   projectId?: number;
+  userId?: number;
 }
 
-export const AddDocumentButton: FC<Props> = ({ projectId }) => {
+export const NewDocumentButton: FC<Props> = ({ projectId, userId }) => {
   const {
     value: isUploadDocumentModalOpen,
     on: openUploadDocumentModal,
@@ -52,11 +53,13 @@ export const AddDocumentButton: FC<Props> = ({ projectId }) => {
         isOpen={isUploadDocumentModalOpen}
         close={closeUploadDocumentModal}
         projectId={projectId as number}
+        userId={userId as number}
       />
       <GenerateDocumentModal
         isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}
         projectId={projectId as number}
+        userId={userId as number}
       />
     </>
   );

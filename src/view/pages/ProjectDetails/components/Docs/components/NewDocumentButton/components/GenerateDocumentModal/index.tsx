@@ -16,9 +16,10 @@ import { useGenerateDocumentForm } from './hooks/useGenerateDocumentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
+  userId: number;
 }
 
-export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId }) => {
+export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId }) => {
   const { data: documentTemplates } = useFetchDocumentTemplateListQuery();
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
@@ -32,6 +33,7 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId }) =
     onSubmitSuccessful: () => close(),
     template: template as DocumentTemplateType,
     projectId,
+    userId,
   });
 
   const documentTemplatesOptions = useSelectOptions(documentTemplates?.documentTemplateList, {

@@ -91,6 +91,7 @@ export type DocumentFilter = {
   categoryId?: InputMaybe<Scalars['Int']>;
   internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 export type DocumentGenerateFieldInput = {
@@ -104,6 +105,7 @@ export type DocumentGenerateInput = {
   internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
   templateId: Scalars['Int'];
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 export type DocumentInput = {
@@ -112,6 +114,7 @@ export type DocumentInput = {
   id?: InputMaybe<Scalars['Int']>;
   internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
+  userId?: InputMaybe<Scalars['Int']>;
 };
 
 export enum DocumentSort {
@@ -146,6 +149,7 @@ export type DocumentType = {
   id: Scalars['Int'];
   internal: Scalars['Boolean'];
   project?: Maybe<ProjectType>;
+  user?: Maybe<UserType>;
 };
 
 export type DocumentTypePagination = {

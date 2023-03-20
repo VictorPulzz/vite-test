@@ -5,11 +5,10 @@ import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-
 import {
   FetchDocumentsDocument,
   useUploadDocumentMutation,
-} from '../../../../../../../__generated__/schema';
+} from '~/view/pages/ProjectDetails/__generated__/schema';
 
 const formSchema = z.object({
   categoryId: z
@@ -33,6 +32,7 @@ interface UseUploadDocumentFormReturn {
 interface UseUploadDocumentFormProps {
   onSubmitSuccessful?: () => void;
   projectId?: number;
+  userId?: number;
 }
 
 const defaultValues: UploadDocumentFormValues = {
@@ -43,6 +43,7 @@ const defaultValues: UploadDocumentFormValues = {
 export function useUploadDocumentForm({
   onSubmitSuccessful,
   projectId,
+  userId,
 }: UseUploadDocumentFormProps): UseUploadDocumentFormReturn {
   const form = useForm<UploadDocumentFormValues>({
     defaultValues,
@@ -61,6 +62,7 @@ export function useUploadDocumentForm({
               categoryId: values.categoryId,
               file: values.document,
               projectId: projectId || undefined,
+              userId: userId || undefined,
               internal: !projectId,
             },
           },
@@ -74,7 +76,7 @@ export function useUploadDocumentForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful, projectId, uploadDocument],
+    [form.setError, onSubmitSuccessful, projectId, uploadDocument, userId],
   );
 
   return useMemo(

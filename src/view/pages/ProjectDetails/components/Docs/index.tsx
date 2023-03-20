@@ -1,8 +1,10 @@
 import { format } from 'date-fns';
 import React, { FC, useEffect, useMemo, useState } from 'react';
+import { matchPath, useLocation } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { PAGE_SIZE } from '~/constants/pagination';
+import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import {
   DocumentFilter,
@@ -24,8 +26,8 @@ import {
   useFetchAllUsersQuery,
   useFetchDocumentsQuery,
 } from '../../__generated__/schema';
-import { AddDocumentButton } from './components/AddDocumentButton';
 import { DocumentMenu } from './components/DocumentMenu';
+import { NewDocumentButton } from './components/NewDocumentButton';
 
 interface DocsProps {
   withHeading?: boolean;
@@ -44,10 +46,15 @@ export const Docs: FC<DocsProps> = ({
   setDocsCount,
   setIsInternal,
 }) => {
+  const location = useLocation();
+
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
 
+  const isUserDetailsPage = !!matchPath(ROUTES.USER_DETAILS, location?.pathname);
+
   const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
-    addedById: userId || undefined,
+    addedById: (!isUserDetailsPage && userId) || undefined,
+    userId: (isUserDetailsPage && userId) || undefined,
     categoryId: undefined,
     projectId: projectId || undefined,
   });
@@ -146,7 +153,7 @@ export const Docs: FC<DocsProps> = ({
                 {(data && data.documentList.count) ?? 0} docs in total
               </p>
             </div>
-            <AddDocumentButton projectId={projectId} />
+            <NewDocumentButton projectId={projectId} userId={userId} />
           </>
         )}
       </div>
@@ -219,7 +226,7 @@ export const Docs: FC<DocsProps> = ({
                   </span>
                   <span className="text-c1 text-gray-2 leading-4 truncate">
                     {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} • {addedBy?.fullName}{' '}
-                    {!isInternal && !withHeading && `• ${project?.name}`}
+                    {!isInternal && !withHeading && !isUserDetailsPage && `• ${project?.name}`}
                   </span>
                 </div>
               </div>

@@ -84,6 +84,7 @@ input DocumentFilter {
   categoryId: Int = null
   internal: Boolean = null
   projectId: Int = null
+  userId: Int = null
 }
 
 input DocumentGenerateFieldInput {
@@ -97,6 +98,7 @@ input DocumentGenerateInput {
   internal: Boolean = null
   projectId: Int = null
   templateId: Int!
+  userId: Int = null
 }
 
 input DocumentInput {
@@ -105,6 +107,7 @@ input DocumentInput {
   id: Int = null
   internal: Boolean = null
   projectId: Int = null
+  userId: Int = null
 }
 
 enum DocumentSort {
@@ -136,6 +139,7 @@ type DocumentType {
   id: Int!
   internal: Boolean!
   project: ProjectType
+  user: UserType
 }
 
 type DocumentTypePagination {

@@ -15,9 +15,10 @@ import { useUploadDocumentForm } from './hooks/useUploadDocumentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
+  userId: number;
 }
 
-export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId }) => {
+export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId }) => {
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
   const {
@@ -27,6 +28,7 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId }) => 
   } = useUploadDocumentForm({
     onSubmitSuccessful: () => close(),
     projectId,
+    userId,
   });
 
   const documentCategoriesOptions = useSelectOptions(documentCategories?.documentCategoryList, {

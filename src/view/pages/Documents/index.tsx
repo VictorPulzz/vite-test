@@ -3,7 +3,7 @@ import React, { FC, useMemo, useState } from 'react';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
-import { AddDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/AddDocumentButton';
+import { NewDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/NewDocumentButton';
 import styles from '~/view/pages/ProjectDetails/styles.module.scss';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
@@ -49,7 +49,7 @@ export const DocumentsPage: FC = () => {
           <h2 className="text-h4 font-bold">Documents</h2>
           <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
         </div>
-        {isInternal && <AddDocumentButton />}
+        {isInternal && <NewDocumentButton />}
       </div>
     </TabLayout>
   );

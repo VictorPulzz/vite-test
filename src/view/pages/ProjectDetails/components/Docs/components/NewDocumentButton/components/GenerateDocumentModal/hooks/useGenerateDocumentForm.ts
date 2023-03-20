@@ -6,9 +6,8 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-
-import { useDocumentGenerateMutation } from '../../../../../../../../CreateOrUpdateProject/__generated__/schema';
-import { FetchDocumentsDocument } from '../../../../../../../__generated__/schema';
+import { useDocumentGenerateMutation } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
+import { FetchDocumentsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 const formSchema = z
   .object({
@@ -53,6 +52,7 @@ interface UseGenerateDocumentFormProps {
   onSubmitSuccessful?: () => void;
   template: DocumentTemplateType;
   projectId?: number;
+  userId?: number;
 }
 
 const defaultValues: GenerateDocumentFormValues = {
@@ -65,6 +65,7 @@ export function useGenerateDocumentForm({
   onSubmitSuccessful,
   template,
   projectId,
+  userId,
 }: UseGenerateDocumentFormProps): UseGenerateDocumentFormReturn {
   const form = useForm<GenerateDocumentFormValues>({
     defaultValues,
@@ -93,6 +94,7 @@ export function useGenerateDocumentForm({
               templateId: values.templateId as number,
               fields: values.templateFields,
               projectId: projectId || undefined,
+              userId: userId || undefined,
               internal: !projectId,
             },
           },
@@ -106,7 +108,7 @@ export function useGenerateDocumentForm({
         });
       }
     },
-    [documentGenerate, form.setError, onSubmitSuccessful, projectId],
+    [documentGenerate, form.setError, onSubmitSuccessful, projectId, userId],
   );
 
   return useMemo(
