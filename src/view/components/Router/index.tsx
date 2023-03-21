@@ -32,10 +32,6 @@ const authRoutes: RouteObject[] = [
     path: ROUTES.FORGOT_PASSWORD,
     element: <ForgotPasswordPage />,
   },
-  {
-    path: ROUTES.RESET_PASSWORD,
-    element: <ResetPasswordPage />,
-  },
 ];
 
 const protectedRoutes: RouteObject[] = [
@@ -121,6 +117,10 @@ export const Router: FC = () => {
     {
       children: authRoutes,
       element: isAuthorized ? <Navigate to={ROUTES.HOME} /> : undefined,
+    },
+    {
+      path: ROUTES.RESET_PASSWORD,
+      element: <ResetPasswordPage />,
     },
     {
       path: '*',
