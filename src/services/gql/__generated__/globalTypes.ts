@@ -539,10 +539,10 @@ export type ProjectCreateInput = {
   id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
-  phase: ProjectPhaseChoice;
+  phase?: InputMaybe<ProjectPhaseChoice>;
   platforms?: InputMaybe<Array<Scalars['Int']>>;
   roadmap?: InputMaybe<Scalars['String']>;
-  startDate: Scalars['Date'];
+  startDate?: InputMaybe<Scalars['Date']>;
   status?: InputMaybe<StatusEnum>;
 };
 
@@ -649,10 +649,10 @@ export type ProjectType = {
   id: Scalars['Int'];
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
-  phase: ProjectPhaseChoice;
+  phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
   roadmap?: Maybe<Scalars['String']>;
-  startDate: Scalars['Date'];
+  startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<StatusEnum>;
 };
 

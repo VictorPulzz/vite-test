@@ -19,9 +19,9 @@ import { transformClientTeamMemberPrefilledData } from '~/view/pages/CreateOrUpd
 const formSchema = z.object({
   fullName: z.string().refine(value => value !== '', formErrors.REQUIRED),
   email: z.string().email(formErrors.INVALID_EMAIL),
-  phone: z.string().min(1).and(phoneNumberValidation),
-  position: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  notes: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  phone: z.string().and(phoneNumberValidation),
+  position: z.string(),
+  notes: z.string(),
   pointContact: z.boolean(),
 });
 

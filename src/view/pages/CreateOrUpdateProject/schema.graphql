@@ -9,6 +9,7 @@ query FetchProject($data: IDInput!) {
     roadmap
     notes
     phase
+    status
     clientTeam {
       fullName
       email

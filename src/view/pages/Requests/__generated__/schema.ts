@@ -7,7 +7,6 @@ const defaultOptions = {} as const;
 export type FetchRequestsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RequestFilter>;
   pagination: Types.PaginationInput;
-  search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 export type FetchRequestsQuery = {
@@ -18,18 +17,21 @@ export type FetchRequestsQuery = {
     results: Array<{
       __typename?: 'RequestType';
       createdAt: string;
-      createdBy: { __typename?: 'UserType'; fullName?: string | null };
       type: string;
+      createdBy: { __typename?: 'UserType'; id?: string | null; fullName?: string | null };
     }>;
   };
 };
 
 export const FetchRequestsDocument = gql`
-  query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!, $search: String) {
-    requestList(filters: $filters, pagination: $pagination, search: $search) {
+  query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!) {
+    requestList(filters: $filters, pagination: $pagination) {
       results {
         createdAt
-        createdBy
+        createdBy {
+          id
+          fullName
+        }
         type
       }
       count
@@ -51,7 +53,6 @@ export const FetchRequestsDocument = gql`
  *   variables: {
  *      filters: // value for 'filters'
  *      pagination: // value for 'pagination'
- *      search: // value for 'search'
  *   },
  * });
  */

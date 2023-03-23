@@ -29,20 +29,12 @@ import {
 const formSchema = z
   .object({
     name: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    phase: z.string(),
-    hoursEstimated: z
-      .string()
-      .refine(value => value !== '', formErrors.REQUIRED)
-      .and(numberValidation),
-    platforms: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
-    startDate: z
-      .date()
-      .nullable()
-      .refine(value => value !== null, formErrors.REQUIRED),
-    endDate: z
-      .date()
-      .nullable()
-      .refine(value => value !== null, formErrors.REQUIRED),
+    phase: z.nativeEnum(ProjectPhaseChoice),
+    status: z.nativeEnum(StatusEnum),
+    hoursEstimated: z.string().and(numberValidation),
+    platforms: z.array(z.number()),
+    startDate: z.date().nullable(),
+    endDate: z.date().nullable(),
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
@@ -111,7 +103,8 @@ interface UseProjectFormProps {
 
 const defaultValues: ProjectFormValues = {
   name: '',
-  phase: '',
+  phase: ProjectPhaseChoice.PRE_SIGNED,
+  status: StatusEnum.WAITING,
   hoursEstimated: '',
   platforms: [],
   startDate: null,
@@ -173,20 +166,22 @@ export function useProjectForm({
               platforms: !isNil(values.platforms) ? (values.platforms as number[]) : undefined,
               startDate: values.startDate
                 ? formatISO(values.startDate, { representation: 'date' })
-                : '',
-              endDate: values.endDate ? formatISO(values.endDate, { representation: 'date' }) : '',
+                : null,
+              endDate: values.endDate
+                ? formatISO(values.endDate, { representation: 'date' })
+                : null,
               design: values.design,
               roadmap: values.roadmap,
               notes: values.notes,
               phase: ProjectPhaseChoice.PRE_SIGNED,
-              status: StatusEnum.IN_PROGRESS,
+              status: values.status,
               clientTeam: values.clientTeam ?? [],
             },
           },
           refetchQueries: [FetchProjectDocument],
         }).then(response => {
           const newProjectId = response.data?.projectCreateUpdate.id as number;
-          const isEmptyDocsList = !!values.documentTemplate.filter(template => !!template.isOpen)
+          const isEmptyDocsList = !!values.documentTemplate.filter(template => template.isOpen)
             .length;
 
           navigate(

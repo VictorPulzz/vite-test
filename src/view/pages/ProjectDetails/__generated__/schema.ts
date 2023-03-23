@@ -16,9 +16,9 @@ export type FetchProjectDetailsQuery = {
     name: string;
     createdAt: string;
     status?: Types.StatusEnum | null;
-    startDate: string;
+    startDate?: string | null;
     endDate?: string | null;
-    phase: Types.ProjectPhaseChoice;
+    phase?: Types.ProjectPhaseChoice | null;
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;

@@ -1,8 +1,12 @@
-import { ClientType } from '~/services/gql/__generated__/globalTypes';
+import {
+  ClientType,
+  ProjectPhaseChoice,
+  StatusEnum,
+} from '~/services/gql/__generated__/globalTypes';
 import { isNumber } from '~/utils/isNumber';
 
 import { FetchProjectQuery } from './__generated__/schema';
-import { AddOrEditClientTeamMemberFormValues } from './components/ClientTeamSection/components/AddOrEditClientTeamMemberModal/hooks/useAddOrEditClientTeamMemberForm';
+import { AddOrEditClientTeamMemberFormValues } from './components/ClientTeamSection/components/AddOrEditModal/hooks/useAddOrEditClientTeamMemberForm';
 import { ProjectFormValues } from './hooks/useProjectForm';
 
 interface ClientTeamMember extends Pick<ClientType, 'fullName' | 'email'> {
@@ -23,7 +27,8 @@ export function transformProjectPrefilledData(
     design: data.design ?? '',
     roadmap: data.roadmap ?? '',
     notes: data.notes ?? '',
-    phase: data.phase,
+    phase: data.phase ?? ProjectPhaseChoice.PRE_SIGNED,
+    status: data.status ?? StatusEnum.WAITING,
     documentTemplate: [],
     platforms: data.platforms?.map(({ id }) => id) ?? [],
     clientTeam: data.clientTeam as ClientTeamMember[],

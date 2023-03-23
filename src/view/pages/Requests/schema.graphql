@@ -1,8 +1,11 @@
-query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!, $search: String) {
-  requestList(filters: $filters, pagination: $pagination, search: $search) {
+query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!) {
+  requestList(filters: $filters, pagination: $pagination) {
     results {
       createdAt
-      createdBy
+      createdBy {
+        id
+        fullName
+      }
       type
     }
     count

@@ -55,7 +55,7 @@ export const CreateOrUpdateProject: FC = () => {
           {loading && <Loader full colorful />}
           {!loading && (
             <div className="flex flex-col gap-4">
-              <GeneralSection />
+              <GeneralSection projectId={projectId} />
               {!projectId && documentTemplates?.documentTemplateList.length !== 0 && (
                 <GenerateDocumentsSection
                   templates={documentTemplates?.documentTemplateList as DocumentTemplateType[]}

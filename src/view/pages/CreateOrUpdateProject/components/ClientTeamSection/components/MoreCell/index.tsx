@@ -5,9 +5,8 @@ import React, { FC, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
+import { AddOrEditModal } from '~/view/pages/CreateOrUpdateProject/components/ClientTeamSection/components/AddOrEditModal';
 import { Icon } from '~/view/ui/components/common/Icon';
-
-import { AddOrEditClientTeamMemberModal } from '../AddOrEditClientTeamMemberModal';
 
 export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
   const { pointContact } = row.original;
@@ -60,7 +59,7 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
           </button>
         )}
       </Dropdown>
-      <AddOrEditClientTeamMemberModal
+      <AddOrEditModal
         isOpen={isAddOrEditClientTeamMemberModalOpen}
         close={closeAddOrEditClientTeamMemberModal}
         clientTeamMemberRow={row}

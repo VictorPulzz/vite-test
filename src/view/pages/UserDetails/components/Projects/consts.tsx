@@ -1,9 +1,9 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
+import { PROJECT_STATUS_BADGES } from '~/constants/projectStatusBadges';
 import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { getBadgeByProjectStatus } from '~/utils/getBadgeByProjectStatus';
 import { Badge } from '~/view/ui/components/common/Badge';
 
 import { UserProjectsListResultType } from './types';
@@ -24,8 +24,10 @@ export const USERS_PROJECTS_TABLE_COLUMNS = [
     id: 'status',
     header: 'Status',
     cell: props => {
-      const value = convertUppercaseToReadable(props.getValue() as StatusEnum);
-      return <Badge color={getBadgeByProjectStatus(props.getValue() as StatusEnum)}>{value}</Badge>;
+      const value = convertUppercaseToReadable(props.getValue() ?? StatusEnum.WAITING);
+      return (
+        <Badge color={PROJECT_STATUS_BADGES[props.getValue() ?? StatusEnum.WAITING]}>{value}</Badge>
+      );
     },
   }),
 ];

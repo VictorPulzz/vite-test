@@ -453,11 +453,11 @@ input ProjectCreateInput {
   id: Int = null
   name: String!
   notes: String = null
-  phase: ProjectPhaseChoice!
+  phase: ProjectPhaseChoice = null
   platforms: [Int!]
   roadmap: String = null
-  startDate: Date!
-  status: StatusEnum
+  startDate: Date = null
+  status: StatusEnum = null
 }
 
 enum ProjectEnvironmentChoice {
@@ -557,10 +557,10 @@ type ProjectType {
   id: Int!
   name: String!
   notes: String
-  phase: ProjectPhaseChoice!
+  phase: ProjectPhaseChoice
   platforms: [PlatformType!]
   roadmap: String
-  startDate: Date!
+  startDate: Date
   status: StatusEnum
 }
 

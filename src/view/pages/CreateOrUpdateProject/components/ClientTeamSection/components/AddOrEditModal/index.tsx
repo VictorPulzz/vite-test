@@ -15,12 +15,7 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   clientTeamMemberRow?: Row<ClientType>;
 }
 
-export const AddOrEditClientTeamMemberModal: FC<Props> = ({
-  isOpen,
-  close,
-  isEditMode,
-  clientTeamMemberRow,
-}) => {
+export const AddOrEditModal: FC<Props> = ({ isOpen, close, isEditMode, clientTeamMemberRow }) => {
   const { form, handleSubmit, resetForm } = useAddOrEditClientTeamMemberForm({
     onSubmitSuccessful: () => close(),
     prefilledData: clientTeamMemberRow,
@@ -38,8 +33,8 @@ export const AddOrEditClientTeamMemberModal: FC<Props> = ({
     >
       <div className="flex flex-col">
         <InlineFields>
-          <TextField name="fullName" control={form.control} label="Name" />
-          <TextField name="email" control={form.control} label="Email" />
+          <TextField name="fullName" control={form.control} label="Name" required />
+          <TextField name="email" control={form.control} label="Email" required />
         </InlineFields>
         <InlineFields>
           <TextField name="phone" control={form.control} label="Phone" />

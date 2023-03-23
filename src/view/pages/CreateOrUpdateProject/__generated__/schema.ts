@@ -15,12 +15,13 @@ export type FetchProjectQuery = {
     id: number;
     name: string;
     hoursEstimated?: number | null;
-    startDate: string;
+    startDate?: string | null;
     endDate?: string | null;
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
-    phase: Types.ProjectPhaseChoice;
+    phase?: Types.ProjectPhaseChoice | null;
+    status?: Types.StatusEnum | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -92,6 +93,7 @@ export const FetchProjectDocument = gql`
       roadmap
       notes
       phase
+      status
       clientTeam {
         fullName
         email
