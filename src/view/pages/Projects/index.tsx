@@ -8,6 +8,7 @@ import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { ProjectFilter, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -20,6 +21,7 @@ import { useFetchProjectsQuery } from './__generated__/schema';
 import { PROJECTS_TABLE_COLUMNS } from './consts';
 
 export const ProjectsPage: FC = () => {
+  const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
   const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
 
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter } =
@@ -34,6 +36,7 @@ export const ProjectsPage: FC = () => {
       search: searchValue,
       filters: filter,
     },
+    skip: !canReadProjectsList,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -41,47 +44,58 @@ export const ProjectsPage: FC = () => {
 
   return (
     <SidebarLayout contentClassName="p-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-h4">Projects</h1>
-          <p className="text-c1 text-gray-2">
-            {(data && data.projectsList.count) ?? 0} projects in total
-          </p>
-        </div>
-        {canCreateProject && (
-          <Button
-            label="New project"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
-            className="w-40"
-            to={ROUTES.ADD_PROJECT}
-          />
-        )}
-      </div>
-      <div className="mt-5 flex gap-3">
-        <SearchInput onChange={setSearchValue} placeholder="Search projects" className="flex-1" />
-        <Select
-          className="w-40"
-          options={statusOptions}
-          value={filter?.status}
-          placeholder="Status"
-          onChange={value => setFilter({ status: value })}
-        />
-      </div>
-      {loading && <TableLoader className="mt-10" />}
-      {data && data.projectsList.results.length === 0 && (
-        <EmptyState iconName="projects" label="No projects here yet" />
-      )}
-      {!loading && data && data.projectsList.results.length > 0 && (
-        <Table
-          className="mt-6"
-          data={data.projectsList.results}
-          columns={PROJECTS_TABLE_COLUMNS}
-          setOffset={setOffset}
-          offset={offset}
-          fetchMore={fetchMore}
-          totalCount={data.projectsList.count}
-        />
+      {canReadProjectsList ? (
+        <>
+          {' '}
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-h4">Projects</h1>
+              <p className="text-c1 text-gray-2">
+                {(data && data.projectsList.count) ?? 0} projects in total
+              </p>
+            </div>
+            {canCreateProject && (
+              <Button
+                label="New project"
+                withIcon="plus"
+                variant={ButtonVariant.PRIMARY}
+                className="w-40"
+                to={ROUTES.ADD_PROJECT}
+              />
+            )}
+          </div>
+          <div className="mt-5 flex gap-3">
+            <SearchInput
+              onChange={setSearchValue}
+              placeholder="Search projects"
+              className="flex-1"
+            />
+            <Select
+              className="w-40"
+              options={statusOptions}
+              value={filter?.status}
+              placeholder="Status"
+              onChange={value => setFilter({ status: value })}
+            />
+          </div>
+          {loading && <TableLoader className="mt-10" />}
+          {data && data.projectsList.results.length === 0 && (
+            <EmptyState iconName="projects" label="No projects here yet" />
+          )}
+          {!loading && data && data.projectsList.results.length > 0 && (
+            <Table
+              className="mt-6"
+              data={data.projectsList.results}
+              columns={PROJECTS_TABLE_COLUMNS}
+              setOffset={setOffset}
+              offset={offset}
+              fetchMore={fetchMore}
+              totalCount={data.projectsList.count}
+            />
+          )}
+        </>
+      ) : (
+        <NoAccessMessage className="flex-auto bg-white" />
       )}
     </SidebarLayout>
   );

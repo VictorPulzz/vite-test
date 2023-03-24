@@ -24,4 +24,7 @@ export enum Permission {
   READ_PROJECT_DOCS = 'readProjectDocs',
   ADD_PROJECT_DOCS = 'addProjectDocs',
   READ_PROJECT_HISTORY = 'readProjectHistory',
+  READ_USERS_LIST = 'readUsersList',
+  READ_PROJECTS_LIST = 'readProjectsList',
+  READ_REPOS_LIST = 'readReposList',
 }

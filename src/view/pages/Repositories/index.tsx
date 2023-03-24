@@ -7,6 +7,7 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -19,6 +20,7 @@ import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
 import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';
 
 export const RepositoriesPage: FC = () => {
+  const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
   const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
   const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
 
@@ -40,64 +42,73 @@ export const RepositoriesPage: FC = () => {
       search: searchValue,
       filters: filter,
     },
+    skip: !canReadReposList,
     fetchPolicy: 'cache-and-network',
   });
 
   return (
     <SidebarLayout contentClassName="p-6">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-h4">Repositories</h1>
-          <p className="text-c1 text-gray-2">
-            {(data && data.repositoryList.count) ?? 0} repositories in total
-          </p>
-        </div>
-        {canCreateRepository && (
-          <Button
-            label="Add repository"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
-            className="w-40"
-            to={ROUTES.ADD_REPOSITORY}
+      {canReadReposList ? (
+        <>
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-h4">Repositories</h1>
+              <p className="text-c1 text-gray-2">
+                {(data && data.repositoryList.count) ?? 0} repositories in total
+              </p>
+            </div>
+            {canCreateRepository && (
+              <Button
+                label="Add repository"
+                withIcon="plus"
+                variant={ButtonVariant.PRIMARY}
+                className="w-40"
+                to={ROUTES.ADD_REPOSITORY}
+              />
+            )}
+          </div>
+          <div className="mt-5 flex gap-3 items-start">
+            <SearchInput
+              onChange={setSearchValue}
+              placeholder="Search repositories"
+              className="flex-1"
+            />
+            <Button
+              variant={ButtonVariant.SECONDARY}
+              label="Filter"
+              className="w-28"
+              onClick={openFilterModal}
+              count={filtersCount || undefined}
+            />
+          </div>
+          {loading && <TableLoader className="mt-10" />}
+          {data && data.repositoryList.results.length === 0 && (
+            <EmptyState iconName="repositories" label="No repositories here yet" />
+          )}
+          {!loading && data && data.repositoryList.results?.length > 0 && (
+            <Table
+              className="mt-6"
+              data={data?.repositoryList.results}
+              columns={
+                canReadRepoDetails
+                  ? REPOSITORIES_TABLE_COLUMNS
+                  : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
+              }
+              setOffset={setOffset}
+              offset={offset}
+              fetchMore={fetchMore}
+              totalCount={data.repositoryList.count}
+            />
+          )}
+          <RepositoriesFilterModal
+            isOpen={isFilterModalOpen}
+            close={closeFilterModal}
+            setFilter={setFilter}
           />
-        )}
-      </div>
-      <div className="mt-5 flex gap-3 items-start">
-        <SearchInput
-          onChange={setSearchValue}
-          placeholder="Search repositories"
-          className="flex-1"
-        />
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Filter"
-          className="w-28"
-          onClick={openFilterModal}
-          count={filtersCount || undefined}
-        />
-      </div>
-      {loading && <TableLoader className="mt-10" />}
-      {data && data.repositoryList.results.length === 0 && (
-        <EmptyState iconName="repositories" label="No repositories here yet" />
+        </>
+      ) : (
+        <NoAccessMessage className="flex-auto bg-white" />
       )}
-      {!loading && data && data.repositoryList.results?.length > 0 && (
-        <Table
-          className="mt-6"
-          data={data?.repositoryList.results}
-          columns={
-            canReadRepoDetails ? REPOSITORIES_TABLE_COLUMNS : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
-          }
-          setOffset={setOffset}
-          offset={offset}
-          fetchMore={fetchMore}
-          totalCount={data.repositoryList.count}
-        />
-      )}
-      <RepositoriesFilterModal
-        isOpen={isFilterModalOpen}
-        close={closeFilterModal}
-        setFilter={setFilter}
-      />
     </SidebarLayout>
   );
 };
