@@ -1,3 +1,4 @@
+const fs = require('node:fs');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -20,6 +21,15 @@ const {
   createImageLoader,
   createFontLoader,
 } = require('./loaders');
+
+let isRawIconsExists;
+
+try {
+  const files = fs.readdirSync('src/view/assets/icons/raw');
+  isRawIconsExists = files.length > 0;
+} catch (e) {
+  isRawIconsExists = false;
+}
 
 /**
  * Webpack common config
@@ -89,11 +99,13 @@ module.exports = function (env) {
           filename: 'icons/spritemap.svg',
         },
       }),
-      new SVGSpritemapPlugin('src/view/assets/icons/raw/*.svg', {
-        output: {
-          filename: 'icons/raw-spritemap.svg',
-        },
-      }),
+      isRawIconsExists
+        ? new SVGSpritemapPlugin('src/view/assets/icons/raw/*.svg', {
+            output: {
+              filename: 'icons/raw-spritemap.svg',
+            },
+          })
+        : false,
       new InterpolateHtmlPlugin(HtmlWebpackPlugin, JSON.stringify(process.env)),
       new webpack.DefinePlugin({
         'process.env': JSON.stringify(process.env),
