@@ -8,6 +8,7 @@ import { ROUTES } from '~/constants/routes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -15,7 +16,7 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { Loader } from '~/view/ui/components/common/Loader';
-import { Tab, Tabs } from '~/view/ui/components/common/Tabs';
+import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
 import { Projects } from './components/Projects';
@@ -25,7 +26,6 @@ import styles from './styles.module.scss';
 export const UserDetailsPage: FC = () => {
   const canEditUser = useHasAccess(Permission.EDIT_USER);
   const canReadUserDocs = useHasAccess(Permission.READ_USER_DOCS);
-  const canReadUserHistory = useHasAccess(Permission.READ_USER_HISTORY);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -40,34 +40,32 @@ export const UserDetailsPage: FC = () => {
   const { photo, fullName, email, department, role, isActive, contractType, birthDate, address } =
     data?.userDetails ?? {};
 
-  const tabsItems = useMemo(
-    () =>
-      [
-        {
-          title: 'Projects',
-          element: <Projects userId={userId} />,
-        },
-        canReadUserDocs && {
-          title: 'Docs',
-          element: <Docs userId={userId} />,
-        },
-        canReadUserHistory && {
-          title: 'History',
-          element: <UserHistory userId={userId} />,
-        },
-      ].filter(Boolean),
-    [canReadUserDocs, canReadUserHistory, userId],
-  );
-
   const UserDetailsTabs = useMemo(
     () => (
       <Tabs
         className={styles['tabs']}
         contentClassName="p-7 flex-auto"
-        items={tabsItems as Tab[]}
+        items={[
+          {
+            title: 'Projects',
+            element: <Projects userId={userId} />,
+          },
+          {
+            title: 'Docs',
+            element: canReadUserDocs ? (
+              <Docs userId={userId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
+          },
+          {
+            title: 'History',
+            element: <UserHistory userId={userId} />,
+          },
+        ]}
       />
     ),
-    [tabsItems],
+    [canReadUserDocs, userId],
   );
 
   return (

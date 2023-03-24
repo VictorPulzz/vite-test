@@ -41,7 +41,10 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.HOME,
     element: <HomePage />,
   },
-
+  {
+    path: ROUTES.DOCUMENTS,
+    element: <DocumentsPage />,
+  },
   {
     path: ROUTES.PROJECTS,
     element: <ProjectsPage />,
@@ -106,16 +109,11 @@ export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
 
   const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
-  const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
 
   return useRoutes([
     {
       children: [
         ...protectedRoutes,
-        {
-          path: ROUTES.DOCUMENTS,
-          element: canReadDocuments ? <DocumentsPage /> : <Navigate to={ROUTES.HOME} />,
-        },
         {
           path: ROUTES.ROLES_AND_PERMISSIONS,
           element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,

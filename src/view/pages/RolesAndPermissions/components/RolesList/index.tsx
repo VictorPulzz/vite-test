@@ -15,6 +15,8 @@ interface Props {
   featureRow: PermissionType;
 }
 
+const ADMIN_ROLE = 'Admin';
+
 export const RolesList: FC<Props> = ({ roles, featureRow }) => {
   const [updatePermissions] = useUpdatePermissionsListMutation();
 
@@ -55,13 +57,15 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
           style={{ backgroundColor: color ?? undefined }}
         >
           <span className="text-c1 font-medium">{name}</span>
-          <button
-            type="button"
-            onClick={() => removeRole(featureRow.id, id)}
-            className="absolute right-[-5px] top-[-5px] bg-gray-6 p-1 rounded-xl hidden group-hover:block"
-          >
-            <Icon name="close" size={10} />
-          </button>
+          {name !== ADMIN_ROLE && (
+            <button
+              type="button"
+              onClick={() => removeRole(featureRow.id, id)}
+              className="absolute right-[-5px] top-[-5px] bg-gray-6 p-1 rounded-xl hidden group-hover:block"
+            >
+              <Icon name="close" size={10} />
+            </button>
+          )}
         </div>
       ))}
       <AddRolePopup featureRow={featureRow} />

@@ -1,6 +1,7 @@
 import React, { FC, useMemo, useState } from 'react';
 
 import { Permission } from '~/constants/permissions';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
@@ -10,6 +11,7 @@ import styles from '~/view/pages/ProjectDetails/styles.module.scss';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 export const DocumentsPage: FC = () => {
+  const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
   const canAddInternalDocs = useHasAccess(Permission.ADD_INTERNAL_DOCS);
 
   const [docsCount, setDocsCount] = useState<number>(0);
@@ -47,14 +49,18 @@ export const DocumentsPage: FC = () => {
     [],
   );
   return (
-    <TabLayout tabs={DocumentTabs}>
-      <div className="flex items-end justify-between px-6 pt-6 bg-white">
-        <div className="flex flex-col gap-[2px]">
-          <h2 className="text-h4 font-bold">Documents</h2>
-          <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
+    <TabLayout tabs={canReadDocuments ? DocumentTabs : []}>
+      {canReadDocuments ? (
+        <div className="flex items-end justify-between px-6 pt-6 bg-white">
+          <div className="flex flex-col gap-[2px]">
+            <h2 className="text-h4 font-bold">Documents</h2>
+            <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
+          </div>
+          {isInternal && canAddInternalDocs && <NewDocumentButton />}
         </div>
-        {isInternal && canAddInternalDocs && <NewDocumentButton />}
-      </div>
+      ) : (
+        <NoAccessMessage className="flex-auto bg-white" />
+      )}
     </TabLayout>
   );
 };

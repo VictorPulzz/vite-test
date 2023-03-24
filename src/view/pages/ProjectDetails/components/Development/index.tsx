@@ -1,6 +1,9 @@
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Permission } from '~/constants/permissions';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { Loader } from '~/view/ui/components/common/Loader';
 
 import {
@@ -13,6 +16,8 @@ import { DevelopmentIntegrations } from './components/Integrations';
 import { DevelopmentRepositories } from './components/Repositories';
 
 export const Development: FC = () => {
+  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
+
   const params = useParams();
   const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
@@ -40,19 +45,29 @@ export const Development: FC = () => {
 
   return (
     <div>
-      {isProjectRepositoriesListLoading ||
-      isProjectEnvironmentsListLoading ||
-      isProjectIntegrationsListLoading ? (
-        <Loader full colorful />
-      ) : (
-        <div className="flex flex-col gap-5">
-          <DevelopmentRepositories
-            repositories={repositoriesList?.projectRepositoryList ?? []}
-            projectId={projectId}
-          />
-          <DevelopmentEnvironments environments={environmentsList?.projectEnvironmentList ?? []} />
-          <DevelopmentIntegrations integrations={integrationsList?.projectIntegrationList ?? []} />
+      {canReadProjectDevelopment ? (
+        <div>
+          {isProjectRepositoriesListLoading ||
+          isProjectEnvironmentsListLoading ||
+          isProjectIntegrationsListLoading ? (
+            <Loader full colorful />
+          ) : (
+            <div className="flex flex-col gap-5">
+              <DevelopmentRepositories
+                repositories={repositoriesList?.projectRepositoryList ?? []}
+                projectId={projectId}
+              />
+              <DevelopmentEnvironments
+                environments={environmentsList?.projectEnvironmentList ?? []}
+              />
+              <DevelopmentIntegrations
+                integrations={integrationsList?.projectIntegrationList ?? []}
+              />
+            </div>
+          )}
         </div>
+      ) : (
+        <NoAccessMessage className="h-[70vh]" />
       )}
     </div>
   );

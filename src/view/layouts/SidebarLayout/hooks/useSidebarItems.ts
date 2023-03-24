@@ -6,16 +6,11 @@ import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarItem } from '~/view/ui/components/common/Sidebar';
 
 export function useSidebarItems(): SidebarItem[] {
-  const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
   const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
 
   const hiddenRoutes = useMemo(
-    () =>
-      [
-        !canReadDocuments && ROUTES.DOCUMENTS,
-        !canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS,
-      ].filter(Boolean),
-    [canEditPermissions, canReadDocuments],
+    () => [!canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS].filter(Boolean),
+    [canEditPermissions],
   );
 
   const navItems = useMemo(
@@ -51,7 +46,7 @@ export function useSidebarItems(): SidebarItem[] {
         link: ROUTES.REQUESTS,
       },
       {
-        title: 'Roles & Pemissions',
+        title: 'Roles & Permissions',
         icon: 'key',
         link: ROUTES.ROLES_AND_PERMISSIONS,
       },

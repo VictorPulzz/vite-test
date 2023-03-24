@@ -7,18 +7,19 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import comingSoon from '~/view/assets/images/coming-soon.svg';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
-import { Tab, Tabs } from '~/view/ui/components/common/Tabs';
+import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
 import { Development } from './components/Development';
 import { Docs } from './components/Docs';
 import { History } from './components/History';
 import { Info } from './components/Info';
+import { Overview } from './components/Overview';
 import { Reports } from './components/Reports';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
@@ -26,11 +27,10 @@ import styles from './styles.module.scss';
 export const ProjectDetailsPage: FC = () => {
   const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
   const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
-  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
-  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
-  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
+  // TODO add canReadProjectInfo
+  // const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
+
   const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
-  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -42,73 +42,59 @@ export const ProjectDetailsPage: FC = () => {
     },
   });
 
-  const tabsItems = useMemo(
-    () =>
-      [
-        canReadProjectOverview && {
-          title: 'Overview',
-          element: (
-            <div className="flex justify-center items-center h-[calc(70vh+2rem)]">
-              <img src={comingSoon} alt="feature" />
-            </div>
-          ),
-        },
-        canReadProjectInfo && {
-          title: 'Info',
-          element: (
-            <>
-              {loading && <Loader full colorful />}
-              {data && <Info projectInfo={data.project} />}
-            </>
-          ),
-        },
-        canReadProjectTeam && {
-          title: 'Team',
-          element: <Team />,
-        },
-        canReadProjectDevelopment && {
-          title: 'Development',
-          element: <Development />,
-        },
-        canReadProjectDocs && {
-          title: 'Docs',
-          element: (
-            <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-              <Docs isProjectDetailsPage projectId={projectId} />
-            </SectionContainer>
-          ),
-        },
-        {
-          title: 'Reports',
-          element: <Reports />,
-        },
-        canReadProjectHistory && {
-          title: 'History',
-          element: <History projectId={projectId} />,
-        },
-      ].filter(Boolean),
-    [
-      canReadProjectDevelopment,
-      canReadProjectDocs,
-      canReadProjectHistory,
-      canReadProjectInfo,
-      canReadProjectOverview,
-      canReadProjectTeam,
-      data,
-      loading,
-      projectId,
-    ],
-  );
-
   const DocumentTabs = useMemo(
     () => (
       <Tabs
         className={styles['tabs']}
         contentClassName="bg-gray-7 p-7 flex-auto"
-        items={tabsItems as Tab[]}
+        items={[
+          {
+            title: 'Overview',
+            element: canReadProjectOverview ? (
+              <Overview />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
+          },
+          {
+            title: 'Info',
+            element: (
+              <>
+                {loading && <Loader full colorful />}
+                {data && <Info projectInfo={data.project} />}
+              </>
+            ),
+          },
+          {
+            title: 'Team',
+            element: <Team />,
+          },
+          {
+            title: 'Development',
+            element: <Development />,
+          },
+          {
+            title: 'Docs',
+            element: canReadProjectDocs ? (
+              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+                <Docs isProjectDetailsPage projectId={projectId} />
+              </SectionContainer>
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
+          },
+          {
+            title: 'Reports',
+            element: <Reports />,
+          },
+          {
+            title: 'History',
+            element: <History projectId={projectId} />,
+          },
+        ]}
       />
     ),
-    [tabsItems],
+    [canReadProjectDocs, canReadProjectOverview, data, loading, projectId],
   );
 
   return (

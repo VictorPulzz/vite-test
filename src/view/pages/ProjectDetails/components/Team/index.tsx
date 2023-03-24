@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
 import { UserType } from '~/services/gql/__generated__/globalTypes';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
@@ -22,6 +23,7 @@ import {
 } from './consts';
 
 export const Team: FC = () => {
+  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
   const canEditProjectTeam = useHasAccess(Permission.EDIT_PROJECT_TEAM);
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
@@ -66,53 +68,59 @@ export const Team: FC = () => {
 
   return (
     <div>
-      {loading && <Loader full colorful />}
-      {data && (
-        <div className="flex flex-col gap-5">
-          <SectionContainer title="Current team">
-            {data && !!data?.projectMemberList.currentTeam.length ? (
-              <Table
-                className="mt-3"
-                data={data?.projectMemberList.currentTeam as UserType[]}
-                columns={getTableColumns(
-                  CURRENT_TEAM_TABLE_COLUMNS,
-                  CURRENT_TEAM_TABLE_COLUMNS_NO_DETAILS,
+      {canReadProjectTeam ? (
+        <div>
+          {loading && <Loader full colorful />}
+          {data && (
+            <div className="flex flex-col gap-5">
+              <SectionContainer title="Current team">
+                {data && !!data?.projectMemberList.currentTeam.length ? (
+                  <Table
+                    className="mt-3"
+                    data={data?.projectMemberList.currentTeam as UserType[]}
+                    columns={getTableColumns(
+                      CURRENT_TEAM_TABLE_COLUMNS,
+                      CURRENT_TEAM_TABLE_COLUMNS_NO_DETAILS,
+                    )}
+                  />
+                ) : (
+                  <EmptyState iconName="users" label="No contributors here yet" />
                 )}
-              />
-            ) : (
-              <EmptyState iconName="users" label="No contributors here yet" />
-            )}
-            {canEditProjectTeam && (
-              <Button
-                variant={ButtonVariant.SECONDARY}
-                label="Add new member"
-                withIcon="add"
-                className="mt-3 w-[170px]"
-                onClick={openAddNewMemberModalModal}
-              />
-            )}
-          </SectionContainer>
-          {!!data?.projectMemberList.otherContrubutors.length && (
-            <SectionContainer title="Other contributors">
-              <Table
-                className="mt-3"
-                data={data.projectMemberList.otherContrubutors as UserType[]}
-                columns={getTableColumns(
-                  OTHER_CONTRIBUTORS_TABLE_COLUMNS,
-                  OTHER_CONTRIBUTORS_TABLE_COLUMNS_NO_DETAILS,
+                {canEditProjectTeam && (
+                  <Button
+                    variant={ButtonVariant.SECONDARY}
+                    label="Add new member"
+                    withIcon="add"
+                    className="mt-3 w-[170px]"
+                    onClick={openAddNewMemberModalModal}
+                  />
                 )}
-              />
-            </SectionContainer>
+              </SectionContainer>
+              {!!data?.projectMemberList.otherContrubutors.length && (
+                <SectionContainer title="Other contributors">
+                  <Table
+                    className="mt-3"
+                    data={data.projectMemberList.otherContrubutors as UserType[]}
+                    columns={getTableColumns(
+                      OTHER_CONTRIBUTORS_TABLE_COLUMNS,
+                      OTHER_CONTRIBUTORS_TABLE_COLUMNS_NO_DETAILS,
+                    )}
+                  />
+                </SectionContainer>
+              )}
+            </div>
           )}
+          <AddNewMemberModal
+            isOpen={isAddNewMemberModalOpen}
+            close={closeAddNewMemberModalModal}
+            projectId={projectId}
+            projectMembersListIds={projectMembersListIds as string[]}
+            canEditProjectTeam={canEditProjectTeam}
+          />
         </div>
+      ) : (
+        <NoAccessMessage className="h-[70vh]" />
       )}
-      <AddNewMemberModal
-        isOpen={isAddNewMemberModalOpen}
-        close={closeAddNewMemberModalModal}
-        projectId={projectId}
-        projectMembersListIds={projectMembersListIds as string[]}
-        canEditProjectTeam={canEditProjectTeam}
-      />
     </div>
   );
 };
