@@ -106,6 +106,7 @@ export const useSettingsGeneralForm = ({
             email: data?.meUpdate.email ?? '',
             fullName: `${data?.meUpdate.firstName} ${data?.meUpdate.lastName}` ?? '',
             photo: data?.meUpdate.photo,
+            role: data?.meUpdate.role,
           }),
         );
         toast.success('Profile updated');

@@ -1,6 +1,8 @@
 import React, { FC, useMemo, useState } from 'react';
 
+import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { NewDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/NewDocumentButton';
@@ -8,6 +10,8 @@ import styles from '~/view/pages/ProjectDetails/styles.module.scss';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
 export const DocumentsPage: FC = () => {
+  const canAddInternalDocs = useHasAccess(Permission.ADD_INTERNAL_DOCS);
+
   const [docsCount, setDocsCount] = useState<number>(0);
   const [isInternal, setIsInternal] = useState<boolean>(false);
 
@@ -49,7 +53,7 @@ export const DocumentsPage: FC = () => {
           <h2 className="text-h4 font-bold">Documents</h2>
           <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
         </div>
-        {isInternal && <NewDocumentButton />}
+        {isInternal && canAddInternalDocs && <NewDocumentButton />}
       </div>
     </TabLayout>
   );

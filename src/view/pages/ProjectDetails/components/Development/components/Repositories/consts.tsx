@@ -67,3 +67,19 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     },
   }),
 ];
+
+export const REPOSITORIES_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('name', {
+    id: 'name',
+    header: 'Name',
+    cell: props => {
+      const { name } = props.row.original;
+      return (
+        <div>
+          {name ? <span>{props.getValue()}</span> : <span className="text-red">Requested</span>}
+        </div>
+      );
+    },
+  }),
+  ...REPOSITORIES_TABLE_COLUMNS.slice(1, REPOSITORIES_TABLE_COLUMNS.length),
+];

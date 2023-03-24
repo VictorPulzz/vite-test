@@ -1,4 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -36,3 +36,16 @@ export const HISTORY_TABLE_COLUMNS = [
     cell: props => <span>{format(new Date(props.getValue()), DateFormat.PP_P)}</span>,
   }),
 ];
+
+const historyTableColumns = [...HISTORY_TABLE_COLUMNS];
+
+historyTableColumns.splice(
+  1,
+  1,
+  columnHelper.accessor('createdBy.fullName', {
+    id: 'id',
+    header: 'Made by',
+  }) as ColumnDef<LogsResultType>,
+);
+
+export const HISTORY_TABLE_COLUMNS_NO_USER_DETAILS = historyTableColumns;

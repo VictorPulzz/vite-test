@@ -6,17 +6,22 @@ import { TableLoader } from '@ui/components/common/TableLoader';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { UserFilter } from '~/services/gql/__generated__/globalTypes';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUsersQuery } from './__generated__/schema';
 import { UsersFilterModal } from './components/UsersFilterModal';
-import { USERS_TABLE_COLUMNS } from './consts';
+import { USERS_TABLE_COLUMNS, USERS_TABLE_COLUMNS_NO_DETAILS } from './consts';
 
 export const UsersPage: FC = () => {
+  const canCreateUser = useHasAccess(Permission.CREATE_USER);
+  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter, filtersCount } =
     useListQueryParams<UserFilter>();
 
@@ -47,13 +52,15 @@ export const UsersPage: FC = () => {
             {(data && data.usersList.count) ?? 0} users in total
           </p>
         </div>
-        <Button
-          label="Add user"
-          withIcon="plus"
-          variant={ButtonVariant.PRIMARY}
-          className="w-40"
-          to={ROUTES.ADD_USER}
-        />
+        {canCreateUser && (
+          <Button
+            label="Add user"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_USER}
+          />
+        )}
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput onChange={setSearchValue} placeholder="Search users" className="flex-1" />
@@ -73,7 +80,7 @@ export const UsersPage: FC = () => {
         <Table
           className="mt-6"
           data={data.usersList.results}
-          columns={USERS_TABLE_COLUMNS}
+          columns={canReadUserDetails ? USERS_TABLE_COLUMNS : USERS_TABLE_COLUMNS_NO_DETAILS}
           setOffset={setOffset}
           offset={offset}
           fetchMore={fetchMore}

@@ -4,8 +4,10 @@ import { EmptyState } from '@ui/components/common/EmptyState';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { Table } from '~/view/ui/components/common/Table';
@@ -14,9 +16,12 @@ import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchRepositoriesQuery } from './__generated__/schema';
 import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
-import { REPOSITORIES_TABLE_COLUMNS } from './consts';
+import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';
 
 export const RepositoriesPage: FC = () => {
+  const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
+  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter, filtersCount } =
     useListQueryParams<RepositoryFilter>();
 
@@ -47,13 +52,15 @@ export const RepositoriesPage: FC = () => {
             {(data && data.repositoryList.count) ?? 0} repositories in total
           </p>
         </div>
-        <Button
-          label="Add repository"
-          withIcon="plus"
-          variant={ButtonVariant.PRIMARY}
-          className="w-40"
-          to={ROUTES.ADD_REPOSITORY}
-        />
+        {canCreateRepository && (
+          <Button
+            label="Add repository"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_REPOSITORY}
+          />
+        )}
       </div>
       <div className="mt-5 flex gap-3 items-start">
         <SearchInput
@@ -77,7 +84,9 @@ export const RepositoriesPage: FC = () => {
         <Table
           className="mt-6"
           data={data?.repositoryList.results}
-          columns={REPOSITORIES_TABLE_COLUMNS}
+          columns={
+            canReadRepoDetails ? REPOSITORIES_TABLE_COLUMNS : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
+          }
           setOffset={setOffset}
           offset={offset}
           fetchMore={fetchMore}

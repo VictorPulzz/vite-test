@@ -3,10 +3,12 @@ import React, { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Pagination } from '~/view/components/Pagination';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
@@ -17,6 +19,8 @@ import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
 
 export const Participants: FC = () => {
+  const canEditRepoParticipants = useHasAccess(Permission.EDIT_REPO_PARTICIPANTS);
+
   const { offset, setOffset } = useListQueryParams();
 
   const {
@@ -77,7 +81,7 @@ export const Participants: FC = () => {
         </div>
       )}
       {!loading && data && data.repositoryParticipantList.results.length > 0 && (
-        <div className="flex flex-wrap gap-4 mt-6 gap-[20px] px-2">
+        <div className="flex flex-wrap mt-6 gap-[20px] px-2">
           {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
             <div
               key={user.id}
@@ -92,11 +96,13 @@ export const Participants: FC = () => {
                   </span>
                 </div>
               </div>
-              <ParticipantMenu
-                participant={user}
-                repositoryId={repositoryId}
-                accessLevel={accessLevel}
-              />
+              {canEditRepoParticipants && (
+                <ParticipantMenu
+                  participant={user}
+                  repositoryId={repositoryId}
+                  accessLevel={accessLevel}
+                />
+              )}
             </div>
           ))}
         </div>
@@ -111,12 +117,14 @@ export const Participants: FC = () => {
             fetchMore={fetchMore}
           />
         )}
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Add participant"
-          className="mt-10 w-[136px]"
-          onClick={openAddParticipantModal}
-        />
+        {canEditRepoParticipants && (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Add participant"
+            className="mt-10 w-[136px]"
+            onClick={openAddParticipantModal}
+          />
+        )}
       </div>
       <AddParticipantModal
         isOpen={isAddParticipantModalOpen}

@@ -10,6 +10,7 @@ export type AuthorizedUserFragment = {
   lastName?: string | null;
   fullName?: string | null;
   photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
+  role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
 };
 
 export const AuthorizedUserFragmentDoc = gql`
@@ -23,6 +24,10 @@ export const AuthorizedUserFragmentDoc = gql`
       fileName
       size
       url
+    }
+    role {
+      name
+      permissionsList
     }
   }
 `;

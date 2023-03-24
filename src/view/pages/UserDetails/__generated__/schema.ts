@@ -40,7 +40,12 @@ export type FetchUserProjectsListQuery = {
     results: Array<{
       __typename?: 'ProjectMemberType';
       currentTeam: boolean;
-      project: { __typename?: 'ProjectType'; name: string; status?: Types.StatusEnum | null };
+      project: {
+        __typename?: 'ProjectType';
+        id: number;
+        name: string;
+        status?: Types.StatusEnum | null;
+      };
     }>;
   };
 };
@@ -131,6 +136,7 @@ export const FetchUserProjectsListDocument = gql`
     userProjects(data: $input, pagination: $pagination) {
       results {
         project {
+          id
           name
           status
         }

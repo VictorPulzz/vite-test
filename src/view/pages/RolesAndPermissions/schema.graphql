@@ -1,0 +1,18 @@
+query FetchPermissionsList {
+  permissionsList {
+    id
+    name
+    roles {
+      id
+      name
+    }
+    rolesList
+    title
+  }
+}
+
+mutation UpdatePermissionsList($input: [PermissionInput!]!) {
+  permissionsUpdate(data: $input) {
+    name
+  }
+}

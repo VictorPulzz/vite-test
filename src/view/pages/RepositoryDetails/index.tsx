@@ -4,10 +4,12 @@ import React, { FC, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Icon } from '~/view/ui/components/common/Icon';
@@ -20,6 +22,8 @@ import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';
 import styles from './styles.module.scss';
 
 export const RepositoryDetailsPage: FC = () => {
+  const canEditRepository = useHasAccess(Permission.EDIT_REPOSITORY);
+
   const {
     value: isUpdateRepositoryModalOpen,
     on: openUpdateRepositoryModal,
@@ -72,13 +76,15 @@ export const RepositoryDetailsPage: FC = () => {
               <div className={styles['section']}>
                 <div className="flex gap-2 mb-3 ">
                   <h2 className="text-p1 font-bold">Info</h2>
-                  <button
-                    type="button"
-                    className="hover:opacity-70"
-                    onClick={openUpdateRepositoryModal}
-                  >
-                    <Icon name="pencil" size={14} className="text-blue " />
-                  </button>
+                  {canEditRepository && (
+                    <button
+                      type="button"
+                      className="hover:opacity-70"
+                      onClick={openUpdateRepositoryModal}
+                    >
+                      <Icon name="pencil" size={14} className="text-blue " />
+                    </button>
+                  )}
                 </div>
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">

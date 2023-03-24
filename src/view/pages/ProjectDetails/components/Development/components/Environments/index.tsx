@@ -1,7 +1,9 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
 
+import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { FetchProjectEnvironmentsListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
@@ -14,6 +16,8 @@ interface Props {
 }
 
 export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
+  const canCreateProjectEnvs = useHasAccess(Permission.CREATE_PROJECT_ENVS);
+
   const {
     value: isCreateNewEnvironmentModalOpen,
     on: openCreateNewEnvironmentModal,
@@ -27,12 +31,14 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments }) => {
           <EmptyState iconName="repositories" label="No environments here yet" />
         )}
         {!!environments.length && <EnvironmentsList environments={environments} />}
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Create new environment"
-          className="mt-6 w-[180px]"
-          onClick={openCreateNewEnvironmentModal}
-        />
+        {canCreateProjectEnvs && (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Create new environment"
+            className="mt-6 w-[180px]"
+            onClick={openCreateNewEnvironmentModal}
+          />
+        )}
       </SectionContainer>
       <CreateNewEnvironmentModal
         isOpen={isCreateNewEnvironmentModalOpen}

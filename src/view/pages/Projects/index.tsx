@@ -3,10 +3,12 @@ import { EmptyState } from '@ui/components/common/EmptyState';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { ProjectFilter, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { Table } from '~/view/ui/components/common/Table';
@@ -18,6 +20,8 @@ import { useFetchProjectsQuery } from './__generated__/schema';
 import { PROJECTS_TABLE_COLUMNS } from './consts';
 
 export const ProjectsPage: FC = () => {
+  const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
+
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter } =
     useListQueryParams<ProjectFilter>();
 
@@ -44,13 +48,15 @@ export const ProjectsPage: FC = () => {
             {(data && data.projectsList.count) ?? 0} projects in total
           </p>
         </div>
-        <Button
-          label="New project"
-          withIcon="plus"
-          variant={ButtonVariant.PRIMARY}
-          className="w-40"
-          to={ROUTES.ADD_PROJECT}
-        />
+        {canCreateProject && (
+          <Button
+            label="New project"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_PROJECT}
+          />
+        )}
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput onChange={setSearchValue} placeholder="Search projects" className="flex-1" />

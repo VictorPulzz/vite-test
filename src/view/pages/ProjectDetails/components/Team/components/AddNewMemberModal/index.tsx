@@ -11,6 +11,7 @@ import { useAddNewMemberForm } from './hooks/useAddNewMemberForm';
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
   projectMembersListIds: string[];
+  canEditProjectTeam: boolean;
 }
 
 export const AddNewMemberModal: FC<Props> = ({
@@ -18,6 +19,7 @@ export const AddNewMemberModal: FC<Props> = ({
   close,
   projectId,
   projectMembersListIds,
+  canEditProjectTeam,
 }) => {
   const { form, handleSubmit, resetForm } = useAddNewMemberForm({
     onSubmitSuccessful: () => close(),
@@ -28,6 +30,7 @@ export const AddNewMemberModal: FC<Props> = ({
     variables: {
       pagination: { limit: 0 },
     },
+    skip: !canEditProjectTeam,
     fetchPolicy: 'cache-and-network',
   });
 

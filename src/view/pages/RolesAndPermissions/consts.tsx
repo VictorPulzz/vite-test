@@ -1,26 +1,23 @@
-export enum UserRoles {
-  ENGINEER = 'ENGINEER',
-  PM = 'PM',
-  LEAD = 'LEAD',
-  HR = 'HR',
-  SALES = 'SALES',
-  ADMIN = 'ADMIN',
-}
+import { createColumnHelper } from '@tanstack/react-table';
+import React from 'react';
 
-export const USER_ROLES = {
-  [UserRoles.ENGINEER]: 'Engineer',
-  [UserRoles.PM]: 'PM',
-  [UserRoles.LEAD]: 'Lead',
-  [UserRoles.HR]: 'HR',
-  [UserRoles.SALES]: 'Sales',
-  [UserRoles.ADMIN]: 'Admin',
-};
+import { PermissionType } from '~/services/gql/__generated__/globalTypes';
 
-export const USER_ROLES_FORM_FIELDS = {
-  [UserRoles.ENGINEER]: 'engineer',
-  [UserRoles.PM]: 'pm',
-  [UserRoles.LEAD]: 'lead',
-  [UserRoles.HR]: 'hr',
-  [UserRoles.SALES]: 'sales',
-  [UserRoles.ADMIN]: 'admin',
-};
+import { RolesList } from './components/RolesList';
+
+const columnHelper = createColumnHelper<PermissionType>();
+
+export const ROLES_AND_PERMISSIONS_TABLE_COLUMNS = [
+  columnHelper.accessor('title', {
+    id: 'title',
+    header: 'Feature',
+  }),
+  columnHelper.accessor('roles', {
+    id: 'role',
+    header: 'Roles',
+    cell: props => {
+      const roles = props.getValue();
+      return <RolesList roles={roles ?? []} featureRow={props.row.original} />;
+    },
+  }),
+];

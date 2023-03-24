@@ -27,6 +27,7 @@ query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
   userProjects(data: $input, pagination: $pagination) {
     results {
       project {
+        id
         name
         status
       }

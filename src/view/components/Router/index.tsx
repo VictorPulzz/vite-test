@@ -1,8 +1,10 @@
 import React, { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
@@ -39,10 +41,7 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.HOME,
     element: <HomePage />,
   },
-  {
-    path: ROUTES.DOCUMENTS,
-    element: <DocumentsPage />,
-  },
+
   {
     path: ROUTES.PROJECTS,
     element: <ProjectsPage />,
@@ -92,10 +91,7 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.REPOSITORY_DETAILS,
     element: <RepositoryDetailsPage />,
   },
-  {
-    path: ROUTES.ROLES_AND_PERMISSIONS,
-    element: <RolesAndPermissionsPage />,
-  },
+
   {
     path: ROUTES.SETTINGS,
     element: <SettingsGeneralPage />,
@@ -109,9 +105,22 @@ const protectedRoutes: RouteObject[] = [
 export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
 
+  const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
+  const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
+
   return useRoutes([
     {
-      children: protectedRoutes,
+      children: [
+        ...protectedRoutes,
+        {
+          path: ROUTES.DOCUMENTS,
+          element: canReadDocuments ? <DocumentsPage /> : <Navigate to={ROUTES.HOME} />,
+        },
+        {
+          path: ROUTES.ROLES_AND_PERMISSIONS,
+          element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,
+        },
+      ],
       element: !isAuthorized ? <Navigate to={ROUTES.SIGN_IN} /> : undefined,
     },
     {

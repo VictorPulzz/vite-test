@@ -5,12 +5,14 @@ import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import comingSoon from '~/view/assets/images/coming-soon.svg';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
-import { Tabs } from '~/view/ui/components/common/Tabs';
+import { Tab, Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectDetailsQuery } from './__generated__/schema';
 import { Development } from './components/Development';
@@ -22,6 +24,14 @@ import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
+  const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
+  const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
+  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
+  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
+  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
+  const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
+  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
+
   const navigate = useNavigate();
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
@@ -32,57 +42,73 @@ export const ProjectDetailsPage: FC = () => {
     },
   });
 
+  const tabsItems = useMemo(
+    () =>
+      [
+        canReadProjectOverview && {
+          title: 'Overview',
+          element: (
+            <div className="flex justify-center items-center h-[calc(70vh+2rem)]">
+              <img src={comingSoon} alt="feature" />
+            </div>
+          ),
+        },
+        canReadProjectInfo && {
+          title: 'Info',
+          element: (
+            <>
+              {loading && <Loader full colorful />}
+              {data && <Info projectInfo={data.project} />}
+            </>
+          ),
+        },
+        canReadProjectTeam && {
+          title: 'Team',
+          element: <Team />,
+        },
+        canReadProjectDevelopment && {
+          title: 'Development',
+          element: <Development />,
+        },
+        canReadProjectDocs && {
+          title: 'Docs',
+          element: (
+            <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
+              <Docs isProjectDetailsPage projectId={projectId} />
+            </SectionContainer>
+          ),
+        },
+        {
+          title: 'Reports',
+          element: <Reports />,
+        },
+        canReadProjectHistory && {
+          title: 'History',
+          element: <History projectId={projectId} />,
+        },
+      ].filter(Boolean),
+    [
+      canReadProjectDevelopment,
+      canReadProjectDocs,
+      canReadProjectHistory,
+      canReadProjectInfo,
+      canReadProjectOverview,
+      canReadProjectTeam,
+      data,
+      loading,
+      projectId,
+    ],
+  );
+
   const DocumentTabs = useMemo(
     () => (
       <Tabs
         className={styles['tabs']}
         contentClassName="bg-gray-7 p-7 flex-auto"
-        items={[
-          {
-            title: 'Overview',
-            element: (
-              <div className="flex justify-center items-center h-[calc(70vh+2rem)]">
-                <img src={comingSoon} alt="feature" />
-              </div>
-            ),
-          },
-          {
-            title: 'Info',
-            element: (
-              <>
-                {loading && <Loader full colorful />}
-                {data && <Info projectInfo={data.project} />}
-              </>
-            ),
-          },
-          {
-            title: 'Team',
-            element: <Team />,
-          },
-          {
-            title: 'Development',
-            element: <Development />,
-          },
-          {
-            title: 'Docs',
-            element: (
-              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-                <Docs withHeading projectId={projectId} />
-              </SectionContainer>
-            ),
-          },
-          {
-            title: 'Reports',
-            element: <Reports />,
-          },
-          {
-            title: 'History',
-            element: <History projectId={projectId} />,
-          },
-        ]}
+        items={tabsItems as Tab[]}
       />
     ),
-    [data, loading, projectId],
+    [tabsItems],
   );
 
   return (
@@ -106,13 +132,15 @@ export const ProjectDetailsPage: FC = () => {
                 </span>
               </div>
             </div>
-            <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Edit project"
-              withIcon="edit"
-              onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
-              className="w-[140px]"
-            />
+            {canEditProject && (
+              <Button
+                variant={ButtonVariant.SECONDARY}
+                label="Edit project"
+                withIcon="edit"
+                onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
+                className="w-[140px]"
+              />
+            )}
           </div>
         </div>
       )}

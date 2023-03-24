@@ -1,16 +1,18 @@
 import { makeQueryString } from '@appello/common/lib/utils';
 import React, { FC } from 'react';
 
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { FetchProjectRepositoriesListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
 // import { RequestNewRepositoryModal } from './components/RequestNewRepositoryModal';
-import { REPOSITORIES_TABLE_COLUMNS } from './consts';
+import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';
 
 interface Props {
   repositories: FetchProjectRepositoriesListQuery['projectRepositoryList'];
@@ -18,6 +20,9 @@ interface Props {
 }
 
 export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) => {
+  const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
+  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+
   // TODO Remove comments when requests functionality will be ready
   // const {
   //   value: isRequestNewRepositoryModalOpen,
@@ -35,15 +40,21 @@ export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) 
           <Table
             className="mt-3"
             data={repositories as RepositoryType[]}
-            columns={REPOSITORIES_TABLE_COLUMNS}
+            columns={
+              canReadRepoDetails
+                ? REPOSITORIES_TABLE_COLUMNS
+                : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
+            }
           />
         )}
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Create new repo"
-          className="mt-3 w-[140px]"
-          to={`${ROUTES.ADD_REPOSITORY}${makeQueryString({ projectId })}`}
-        />
+        {canCreateRepository && (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Create new repo"
+            className="mt-3 w-[140px]"
+            to={`${ROUTES.ADD_REPOSITORY}${makeQueryString({ projectId })}`}
+          />
+        )}
       </SectionContainer>
       {/* <RequestNewRepositoryModal
         isOpen={isRequestNewRepositoryModalOpen}

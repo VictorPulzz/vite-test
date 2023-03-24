@@ -63,7 +63,7 @@ export const CURRENT_TEAM_TABLE_COLUMNS = [
   }),
 ];
 
-export const OTHER_CONTRUBUTORS_TABLE_COLUMNS = [
+export const OTHER_CONTRIBUTORS_TABLE_COLUMNS = [
   ...CURRENT_TEAM_TABLE_COLUMNS.slice(0, CURRENT_TEAM_TABLE_COLUMNS.length - 1),
   columnHelper.group({
     id: 'more',
@@ -72,4 +72,36 @@ export const OTHER_CONTRUBUTORS_TABLE_COLUMNS = [
       className: 'w-0',
     },
   }),
+];
+
+export const CURRENT_TEAM_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('fullName', {
+    id: 'fullName',
+    header: 'Name',
+    cell: props => {
+      const { fullName } = props.row.original;
+      return (
+        <div>
+          {fullName ? <span>{props.getValue()}</span> : <span className="text-red">Requested</span>}
+        </div>
+      );
+    },
+  }),
+  ...CURRENT_TEAM_TABLE_COLUMNS.slice(1, CURRENT_TEAM_TABLE_COLUMNS.length),
+];
+
+export const OTHER_CONTRIBUTORS_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('fullName', {
+    id: 'fullName',
+    header: 'Name',
+    cell: props => {
+      const { fullName } = props.row.original;
+      return (
+        <div>
+          {fullName ? <span>{props.getValue()}</span> : <span className="text-red">Requested</span>}
+        </div>
+      );
+    },
+  }),
+  ...OTHER_CONTRIBUTORS_TABLE_COLUMNS.slice(1, OTHER_CONTRIBUTORS_TABLE_COLUMNS.length),
 ];

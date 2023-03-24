@@ -1,9 +1,10 @@
 import { format } from 'date-fns';
-import React, { FC, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import {
@@ -14,6 +15,7 @@ import {
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { getFileExtension } from '~/utils/getFileExtension';
 import { Pagination } from '~/view/components/Pagination';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
@@ -30,7 +32,7 @@ import { DocumentMenu } from './components/DocumentMenu';
 import { NewDocumentButton } from './components/NewDocumentButton';
 
 interface DocsProps {
-  withHeading?: boolean;
+  isProjectDetailsPage?: boolean;
   isInternal?: boolean;
   projectId?: number;
   userId?: number;
@@ -39,13 +41,16 @@ interface DocsProps {
 }
 
 export const Docs: FC<DocsProps> = ({
-  withHeading,
+  isProjectDetailsPage,
   isInternal,
   projectId,
   userId,
   setDocsCount,
   setIsInternal,
 }) => {
+  const canAddProjectDocs = useHasAccess(Permission.ADD_PROJECT_DOCS);
+  const canAddUserDocs = useHasAccess(Permission.ADD_USER_DOCS);
+
   const location = useLocation();
 
   const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
@@ -59,7 +64,7 @@ export const Docs: FC<DocsProps> = ({
     projectId: projectId || undefined,
   });
 
-  const [sortDirecion, setSortDirecion] = useState<OrderDirectionChoice>();
+  const [sortDirection, setSortDirection] = useState<OrderDirectionChoice>();
 
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
@@ -87,7 +92,7 @@ export const Docs: FC<DocsProps> = ({
       filters: { ...docsFilter, internal: isInternal },
       search: searchValue,
       sort: {
-        direction: sortDirecion ?? OrderDirectionChoice.DESC,
+        direction: sortDirection ?? OrderDirectionChoice.DESC,
         field: DocumentSort.CREATED_AT,
       },
     },
@@ -142,20 +147,28 @@ export const Docs: FC<DocsProps> = ({
 
   const hasPagination = data && data.documentList.count > PAGE_SIZE;
 
+  const getDocsSectionHeader = useCallback(
+    (isVisibleNewDocBtn: boolean) => {
+      return (
+        <>
+          <div className="flex flex-col gap-[2px]">
+            <h2 className="text-p1 font-bold">Documents</h2>
+            <p className="text-c1 text-gray-2">
+              {(data && data.documentList.count) ?? 0} docs in total
+            </p>
+          </div>
+          {isVisibleNewDocBtn && <NewDocumentButton projectId={projectId} userId={userId} />}
+        </>
+      );
+    },
+    [data, projectId, userId],
+  );
+
   return (
     <>
       <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
-        {(withHeading || userId) && (
-          <>
-            <div className="flex flex-col gap-[2px]">
-              <h2 className="text-p1 font-bold">Documents</h2>
-              <p className="text-c1 text-gray-2">
-                {(data && data.documentList.count) ?? 0} docs in total
-              </p>
-            </div>
-            <NewDocumentButton projectId={projectId} userId={userId} />
-          </>
-        )}
+        {isProjectDetailsPage && getDocsSectionHeader(canAddProjectDocs)}
+        {userId && getDocsSectionHeader(canAddUserDocs)}
       </div>
       <div className={`grid ${userId ? 'grid-cols-1' : 'grid-cols-2'} items-end mt-3 gap-x-3`}>
         <SearchInput
@@ -192,9 +205,9 @@ export const Docs: FC<DocsProps> = ({
             />
             <Select
               options={sortingOptions}
-              value={sortDirecion}
+              value={sortDirection}
               placeholder="Sort"
-              onChange={setSortDirecion}
+              onChange={setSortDirection}
             />
           </div>
         )}
@@ -226,7 +239,10 @@ export const Docs: FC<DocsProps> = ({
                   </span>
                   <span className="text-c1 text-gray-2 leading-4 truncate">
                     {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} • {addedBy?.fullName}{' '}
-                    {!isInternal && !withHeading && !isUserDetailsPage && `• ${project?.name}`}
+                    {!isInternal &&
+                      !isProjectDetailsPage &&
+                      !isUserDetailsPage &&
+                      `• ${project?.name}`}
                   </span>
                 </div>
               </div>
