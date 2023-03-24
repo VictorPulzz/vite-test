@@ -14,7 +14,12 @@ export type FetchPermissionsListQuery = {
     name: string;
     rolesList?: Array<string> | null;
     title?: string | null;
-    roles?: Array<{ __typename?: 'RoleType'; id: number; name: string }> | null;
+    roles?: Array<{
+      __typename?: 'RoleType';
+      id: number;
+      name: string;
+      color?: string | null;
+    }> | null;
   }>;
 };
 
@@ -35,6 +40,7 @@ export const FetchPermissionsListDocument = gql`
       roles {
         id
         name
+        color
       }
       rolesList
       title

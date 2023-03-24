@@ -11,6 +11,10 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
         fullName
       }
       status
+      platforms {
+        id
+        name
+      }
     }
     count
   }

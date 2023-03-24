@@ -26,6 +26,7 @@ export type FetchProjectsQuery = {
         fullName?: string | null;
         photo?: { __typename?: 'ImageType'; url: string } | null;
       }> | null;
+      platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
     }>;
   };
 };
@@ -53,6 +54,10 @@ export const FetchProjectsDocument = gql`
           fullName
         }
         status
+        platforms {
+          id
+          name
+        }
       }
       count
     }

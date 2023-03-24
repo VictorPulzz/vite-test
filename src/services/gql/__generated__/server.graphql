@@ -839,6 +839,7 @@ input ResetPasswordInput {
 }
 
 type RoleType {
+  color: String
   id: Int!
   name: String!
   permissions: [PermissionType!]!

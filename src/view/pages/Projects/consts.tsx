@@ -9,7 +9,7 @@ import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { Badge } from '~/view/ui/components/common/Badge';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 import { ProjectResultType } from './types';
@@ -66,6 +66,22 @@ export const PROJECTS_TABLE_COLUMNS = [
       const value = convertUppercaseToReadable(props.getValue() ?? StatusEnum.WAITING);
       return (
         <Badge color={PROJECT_STATUS_BADGES[props.getValue() ?? StatusEnum.WAITING]}>{value}</Badge>
+      );
+    },
+  }),
+  columnHelper.accessor('platforms', {
+    id: 'platforms',
+    header: 'Platform',
+    cell: props => {
+      const platforms = props.getValue() ?? [];
+      return (
+        <div className="flex gap-2">
+          {platforms.map(platform => (
+            <Badge key={platform.id} color={BadgeColor.BLUE}>
+              {platform.name}
+            </Badge>
+          ))}
+        </div>
       );
     },
   }),

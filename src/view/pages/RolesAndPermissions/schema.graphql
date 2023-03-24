@@ -5,6 +5,7 @@ query FetchPermissionsList {
     roles {
       id
       name
+      color
     }
     rolesList
     title

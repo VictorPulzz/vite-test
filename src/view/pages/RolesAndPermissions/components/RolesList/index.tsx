@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { PermissionType, RoleType } from '~/services/gql/__generated__/globalTypes';
@@ -44,8 +45,15 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
   );
   return (
     <div className="flex items-center gap-3">
-      {roles.map(({ id, name }) => (
-        <div key={id} className="group relative bg-blue/5 px-3 py-1 rounded-lg cursor-pointer">
+      {roles.map(({ id, name, color }) => (
+        <div
+          key={id}
+          className={clsx(
+            `group relative px-3 py-1 rounded-lg cursor-pointer`,
+            !color && 'border-gray-7',
+          )}
+          style={{ backgroundColor: color ?? undefined }}
+        >
           <span className="text-c1 font-medium">{name}</span>
           <button
             type="button"

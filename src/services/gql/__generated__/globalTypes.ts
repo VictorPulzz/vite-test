@@ -954,6 +954,7 @@ export type ResetPasswordInput = {
 
 export type RoleType = {
   __typename: 'RoleType';
+  color?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
   permissions: Array<PermissionType>;
