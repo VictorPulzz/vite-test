@@ -629,6 +629,14 @@ export enum ProjectPhaseChoice {
   SUPPORT = 'SUPPORT',
 }
 
+export type ProjectPreviewType = {
+  __typename: 'ProjectPreviewType';
+  createdAt: Scalars['DateTime'];
+  createdBy?: Maybe<UserType>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
 export type ProjectStatusInput = {
   id: Scalars['Int'];
   status: StatusEnum;
@@ -692,6 +700,8 @@ export type Query = {
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting member for project by id */
   projectMemberList: ProjectMemberListType;
+  /** Getting project preview by id */
+  projectPreview: ProjectPreviewType;
   /** Getting repositories for project by id */
   projectRepositoryList: Array<RepositoryType>;
   /** Getting list of projects */
@@ -749,6 +759,10 @@ export type QueryProjectIntegrationListArgs = {
 };
 
 export type QueryProjectMemberListArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectPreviewArgs = {
   data: IdInput;
 };
 

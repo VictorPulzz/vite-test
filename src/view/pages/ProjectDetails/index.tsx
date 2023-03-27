@@ -14,7 +14,7 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
-import { useFetchProjectDetailsQuery } from './__generated__/schema';
+import { useFetchProjectPreviewQuery } from './__generated__/schema';
 import { Development } from './components/Development';
 import { Docs } from './components/Docs';
 import { History } from './components/History';
@@ -27,16 +27,14 @@ import styles from './styles.module.scss';
 export const ProjectDetailsPage: FC = () => {
   const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
   const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
-  // TODO add canReadProjectInfo
-  // const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
-
+  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
   const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
 
   const navigate = useNavigate();
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { data, loading } = useFetchProjectDetailsQuery({
+  const { data, loading } = useFetchProjectPreviewQuery({
     variables: {
       data: { id: projectId },
     },
@@ -58,11 +56,10 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Info',
-            element: (
-              <>
-                {loading && <Loader full colorful />}
-                {data && <Info projectInfo={data.project} />}
-              </>
+            element: canReadProjectInfo ? (
+              <Info projectId={projectId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
             ),
           },
           {
@@ -94,7 +91,7 @@ export const ProjectDetailsPage: FC = () => {
         ]}
       />
     ),
-    [canReadProjectDocs, canReadProjectOverview, data, loading, projectId],
+    [canReadProjectDocs, canReadProjectInfo, canReadProjectOverview, projectId],
   );
 
   return (
@@ -110,11 +107,14 @@ export const ProjectDetailsPage: FC = () => {
                 onClick={() => navigate(ROUTES.PROJECTS)}
               />
               <div className="flex flex-col">
-                <h2 className="text-h4 font-bold">{data?.project.name}</h2>
+                <h2 className="text-h4 font-bold">{data?.projectPreview.name}</h2>
                 <span className="text-c1 text-gray-2 leading-none">
                   Created{' '}
-                  {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.D_MMM_Y)} • by{' '}
-                  {data?.project.createdBy?.fullName}
+                  {format(
+                    new Date(data?.projectPreview.createdAt ?? new Date()),
+                    DateFormat.D_MMM_Y,
+                  )}{' '}
+                  • by {data?.projectPreview.createdBy?.fullName}
                 </span>
               </div>
             </div>

@@ -1,4 +1,15 @@
-query FetchProjectDetails($data: IDInput!) {
+query FetchProjectPreview($data: IDInput!) {
+  projectPreview(data: $data) {
+    id
+    name
+    createdAt
+    createdBy {
+      fullName
+    }
+  }
+}
+
+query FetchProjectInfo($data: IDInput!) {
   project(data: $data) {
     id
     name

@@ -538,6 +538,13 @@ enum ProjectPhaseChoice {
   SUPPORT
 }
 
+type ProjectPreviewType {
+  createdAt: DateTime!
+  createdBy: UserType
+  id: Int!
+  name: String!
+}
+
 input ProjectStatusInput {
   id: Int!
   status: StatusEnum!
@@ -629,6 +636,10 @@ type Query {
   Getting member for project by id
   """
   projectMemberList(data: IDInput!): ProjectMemberListType!
+  """
+  Getting project preview by id
+  """
+  projectPreview(data: IDInput!): ProjectPreviewType!
   """
   Getting repositories for project by id
   """
