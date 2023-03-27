@@ -293,7 +293,7 @@ type Mutation {
   """
   Project creation
   """
-  projectCreateUpdate(data: ProjectCreateInput!): ProjectType!
+  projectCreate(data: ProjectCreateInput!): ProjectType!
   """
   Project deletion
   """
@@ -318,6 +318,10 @@ type Mutation {
   Project delete integration
   """
   projectIntegrationDelete(data: IDInput!): MessageType!
+  """
+  Project update
+  """
+  projectUpdate(data: ProjectCreateInput!): ProjectType!
   """
   Repository creation
   """
@@ -350,6 +354,10 @@ type Mutation {
   Reset password
   """
   resetPassword(data: ResetPasswordInput!): MessageType!
+  """
+  Repository's secrets creation/updating
+  """
+  secretsAddUpdate(data: RepositorySecretsInput!): MessageType!
   """
   User creation
   """
@@ -765,6 +773,13 @@ type RepositoryParticipantTypePagination {
 enum RepositoryPlatformChoice {
   DESKTOP
   MOBILE
+}
+
+input RepositorySecretsInput {
+  environment: ProjectEnvironmentChoice!
+  key: String!
+  repositoryId: Int!
+  value: String = ""
 }
 
 type RepositoryType {

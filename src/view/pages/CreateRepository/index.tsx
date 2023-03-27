@@ -125,10 +125,9 @@ export const CreateRepositoryPage: FC = () => {
               options={boilerplatesOptions}
               control={control}
               label="Boilerplate"
-              required
             />
-            <TextField name="gitRepoId" control={control} label="Git repo id" required />
-            <TextField name="gitSlug" control={control} label="Git slug" required />
+            <TextField name="gitRepoId" control={control} label="Git repo id" />
+            <TextField name="gitSlug" control={control} label="Git slug" />
           </div>
           <div className="flex flex-col">
             <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />

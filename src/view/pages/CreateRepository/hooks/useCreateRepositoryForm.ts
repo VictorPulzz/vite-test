@@ -22,12 +22,9 @@ const formSchema = z.object({
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
   technologies: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
-  boilerplateId: z
-    .number()
-    .nullable()
-    .refine(value => value !== null, formErrors.REQUIRED),
-  gitRepoId: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  gitSlug: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  boilerplateId: z.number().nullable(),
+  gitRepoId: z.string(),
+  gitSlug: z.string(),
   useTerraform: z.boolean(),
   withRelay: z.boolean(),
   awsSecrets: z.boolean(),
