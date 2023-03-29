@@ -1,5 +1,4 @@
-fragment AuthorizedUser on UserType {
-  id
+fragment AuthorizedUser on ProfileType {
   email
   firstName
   lastName

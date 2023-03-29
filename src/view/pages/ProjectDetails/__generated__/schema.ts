@@ -9,7 +9,6 @@ export type FetchProjectPreviewQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectPreviewQuery = {
-  project: any;
   __typename?: 'Query';
   projectPreview: {
     __typename?: 'ProjectPreviewType';
