@@ -74,8 +74,8 @@ steps:
       from_secret: aws_access_key_id
     AWS_SECRET_ACCESS_KEY:
       from_secret: aws_secret_access_key
-    S3_URL: s3://
-    CDN_DISTRIBUTION_ID:
+    S3_URL: s3://sb2-front-stage
+    CDN_DISTRIBUTION_ID: E165F51WMC5NWC
   commands:
   - aws s3 rm $S3_URL/previous --recursive
   - aws s3 mv $S3_URL/latest $S3_URL/previous --recursive
