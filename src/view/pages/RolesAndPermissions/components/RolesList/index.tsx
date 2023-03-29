@@ -56,7 +56,7 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
           )}
           style={{ backgroundColor: color ?? undefined }}
         >
-          <span className="text-c1 font-medium">{name}</span>
+          <span className=" text-c1 font-medium">{name}</span>
           {name !== ADMIN_ROLE && (
             <button
               type="button"

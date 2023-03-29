@@ -18,11 +18,12 @@ import { Select } from '~/view/ui/components/form/Select';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchProjectsQuery } from './__generated__/schema';
-import { PROJECTS_TABLE_COLUMNS } from './consts';
+import { PROJECTS_TABLE_COLUMNS, PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
 
 export const ProjectsPage: FC = () => {
   const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
   const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
+  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter } =
     useListQueryParams<ProjectFilter>();
@@ -86,7 +87,9 @@ export const ProjectsPage: FC = () => {
             <Table
               className="mt-6"
               data={data.projectsList.results}
-              columns={PROJECTS_TABLE_COLUMNS}
+              columns={
+                canReadUserDetails ? PROJECTS_TABLE_COLUMNS : PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS
+              }
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

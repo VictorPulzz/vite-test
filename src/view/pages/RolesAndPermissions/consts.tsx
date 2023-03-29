@@ -11,6 +11,9 @@ export const ROLES_AND_PERMISSIONS_TABLE_COLUMNS = [
   columnHelper.accessor('title', {
     id: 'title',
     header: 'Feature',
+    meta: {
+      className: 'w-[280px]',
+    },
   }),
   columnHelper.accessor('roles', {
     id: 'role',

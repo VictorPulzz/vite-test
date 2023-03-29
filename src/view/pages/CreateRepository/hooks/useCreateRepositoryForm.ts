@@ -81,7 +81,7 @@ export function useCreateRepositoryForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<CreateRepositoryFormValues>(e, {
-          fields: ['name'],
+          fields: ['name', 'type', 'technologies', 'gitRepoId', 'gitSlug'],
           setFormError: form.setError,
         });
       }

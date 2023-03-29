@@ -38,6 +38,7 @@ export const ProjectDetailsPage: FC = () => {
     variables: {
       data: { id: projectId },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const DocumentTabs = useMemo(

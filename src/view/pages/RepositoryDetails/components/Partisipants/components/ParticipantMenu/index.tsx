@@ -79,7 +79,7 @@ export const ParticipantMenu: FC<Props> = ({ participant, repositoryId, accessLe
     <>
       <Dropdown items={options} containerWidth="14.93rem">
         {({ onClick }) => (
-          <button type="button" onClick={onClick}>
+          <button type="button" onClick={onClick} className="flex-shrink-1">
             <Icon name="menu" size={16} />
           </button>
         )}

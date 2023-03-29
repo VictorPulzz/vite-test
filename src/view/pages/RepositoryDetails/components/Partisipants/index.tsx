@@ -69,42 +69,46 @@ export const Participants: FC = () => {
   const hasPagination = data && data.repositoryParticipantList.count > PAGE_SIZE;
 
   return (
-    <div className="flex flex-col justify-between min-h-[70vh]">
+    <div className="flex flex-col h-full p-7">
       {loading && (
-        <div className="flex h-[50vh]">
+        <div className="flex h-full items-center">
           <Loader full colorful />
         </div>
       )}
       {data && data.repositoryParticipantList.results.length === 0 && (
-        <div className="flex h-[65vh]">
+        <div className="flex h-full items-center justify-center">
           <EmptyState iconName="users" label="No participants here yet" />
         </div>
       )}
       {!loading && data && data.repositoryParticipantList.results.length > 0 && (
-        <div className="flex flex-wrap mt-6 gap-[20px] px-2">
-          {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
-            <div
-              key={user.id}
-              className="w-60 flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
-            >
-              <div className="flex gap-[10px] items-center ">
-                <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
-                <div className="flex flex-col gap-[3px]">
-                  <span className="text-p3 text-black truncate">{user.fullName}</span>
-                  <span className="text-c1 text-gray-1 leading-none">
-                    {convertUppercaseToReadable(accessLevel)}
-                  </span>
+        <div className="flex-auto">
+          <div className="grid grid-cols-3 gap-[20px]">
+            {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
+              <div
+                key={user.id}
+                className="flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
+              >
+                <div className="flex gap-[15px] items-center">
+                  <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
+                  <div className="flex flex-col gap-[3px] truncate">
+                    <span className="block max-w-[120px] text-p3 text-black truncate flex-grow-0">
+                      {user.fullName}
+                    </span>
+                    <span className="text-c1 text-gray-1 leading-none">
+                      {convertUppercaseToReadable(accessLevel)}
+                    </span>
+                  </div>
                 </div>
+                {canEditRepoParticipants && (
+                  <ParticipantMenu
+                    participant={user}
+                    repositoryId={repositoryId}
+                    accessLevel={accessLevel}
+                  />
+                )}
               </div>
-              {canEditRepoParticipants && (
-                <ParticipantMenu
-                  participant={user}
-                  repositoryId={repositoryId}
-                  accessLevel={accessLevel}
-                />
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
       <div>
@@ -121,7 +125,7 @@ export const Participants: FC = () => {
           <Button
             variant={ButtonVariant.SECONDARY}
             label="Add participant"
-            className="mt-10 w-[136px]"
+            className="mt-6 w-[136px]"
             onClick={openAddParticipantModal}
           />
         )}
