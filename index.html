@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+  <title>%VITE_APP_TITLE%</title>
 
   <!-- generate your icons with https://realfavicongenerator.net/ -->
   <!-- icons section -->
@@ -20,5 +20,6 @@
 <body>
 <div id="root"></div>
 <div id="modal-root"></div>
+<script type="module" src="/src/index.tsx"></script>
 </body>
 </html>
