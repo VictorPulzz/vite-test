@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
@@ -30,6 +30,7 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
 
   const platformsOptions = useMemo(() => platforms?.platformList.results ?? [], [platforms]);
   const statusOptions = [...enumToSelectOptions(StatusEnum)];
+  const phasesOptions = [...enumToSelectOptions(ProjectPhaseChoice)];
 
   return (
     <SectionContainer title="General">
@@ -73,6 +74,7 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
           </InlineFields>
         </InlineFields>
       )}
+      <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
       <TextAreaField name="notes" control={control} label="Notes" />
     </SectionContainer>
   );

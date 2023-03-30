@@ -49,14 +49,14 @@ export const Info: FC<Props> = ({ projectId }) => {
   return (
     <>
       {loading && (
-        <div className="pt-6">
+        <div className="flex h-full items-center">
           <Loader full colorful />
         </div>
       )}
       {data && (
         <div className="flex flex-col gap-5">
           <SectionContainer title="General">
-            <div className="grid grid-cols-2 gap-y-[15px] mt-3">
+            <div className="grid grid-cols-2 gap-4 mt-3">
               <div className="flex flex-col gap-[2px]">
                 <span className="text-c1 text-gray-2">Project status</span>
                 <Badge color={PROJECT_STATUS_BADGES[status ?? StatusEnum.WAITING]}>
@@ -132,7 +132,7 @@ export const Info: FC<Props> = ({ projectId }) => {
               {notes && (
                 <div className="flex flex-col gap-[2px]">
                   <span className="text-c1 text-gray-2 leading-none">Notes</span>
-                  <span className="text-p3 w-3/4 leading-5">{notes}</span>
+                  <span className="text-p3 w-3/4 leading-5 break-words">{notes}</span>
                 </div>
               )}
             </div>

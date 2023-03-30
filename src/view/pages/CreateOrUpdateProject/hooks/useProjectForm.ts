@@ -19,11 +19,13 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 import { numberValidation } from '~/utils/validations';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
+import { FetchProjectPreviewDocument } from '../../ProjectDetails/__generated__/schema';
 import {
   FetchProjectDocument,
   FetchProjectQuery,
-  useCreateOrUpdateProjectMutation,
+  useCreateProjectMutation,
   useDocumentGenerateMutation,
+  useUpdateProjectMutation,
 } from '../__generated__/schema';
 
 const formSchema = z
@@ -127,70 +129,86 @@ export function useProjectForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
+
+  const isEditMode = !!id;
   const navigate = useNavigate();
 
-  const templatesIds = useMemo(() => templates?.map(template => template.id), [templates]);
-
-  const templateFields = useMemo(
-    () =>
-      templates?.map(template => template?.fields?.map(field => ({ value: '', name: field.name }))),
-    [templates],
-  );
-
-  const documentTemplateList = useMemo(
-    () =>
-      templateFields?.map((i, index) => {
-        return { isOpen: false, templateId: templatesIds[index], templateFields: i };
-      }),
-    [templateFields, templatesIds],
-  );
-
   useEffect(() => {
-    form.setValue('documentTemplate', documentTemplateList as []);
-  }, [documentTemplateList, form]);
+    const templatesIds = templates?.map(template => template.id);
+    const templateFields = templates?.map(template =>
+      template?.fields?.map(field => ({ value: '', name: field.name })),
+    );
+    const documentTemplateList = templateFields?.map((i, index) => {
+      return { isOpen: false, templateId: templatesIds[index], templateFields: i };
+    });
 
-  const [projectCreateUpdate, { loading: loadingProjectCreateUpdate }] =
-    useCreateOrUpdateProjectMutation();
+    form.setValue('documentTemplate', documentTemplateList as []);
+  }, [form, templates]);
+
+  const [projectCreate, { loading: loadingProjectCreate }] = useCreateProjectMutation();
+  const [projectUpdate, { loading: loadingProjectUpdate }] = useUpdateProjectMutation();
 
   const [documentGenerate] = useDocumentGenerateMutation();
 
   const handleSubmit = useCallback(
-    (values: ProjectFormValues) => {
+    async (values: ProjectFormValues) => {
       try {
-        projectCreateUpdate({
-          variables: {
-            input: {
-              id,
-              name: values.name,
-              hoursEstimated: +values.hoursEstimated,
-              platforms: !isNil(values.platforms) ? (values.platforms as number[]) : undefined,
-              startDate: values.startDate
-                ? formatISO(values.startDate, { representation: 'date' })
-                : null,
-              endDate: values.endDate
-                ? formatISO(values.endDate, { representation: 'date' })
-                : null,
-              design: values.design,
-              roadmap: values.roadmap,
-              notes: values.notes,
-              phase: ProjectPhaseChoice.PRE_SIGNED,
-              status: values.status,
-              clientTeam: values.clientTeam ?? [],
+        if (isEditMode) {
+          await projectUpdate({
+            variables: {
+              input: {
+                id,
+                name: values.name,
+                hoursEstimated: +values.hoursEstimated,
+                platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
+                status: values.status,
+                startDate: values.startDate
+                  ? formatISO(values.startDate, { representation: 'date' })
+                  : null,
+                endDate: values.endDate
+                  ? formatISO(values.endDate, { representation: 'date' })
+                  : null,
+                design: values.design,
+                roadmap: values.roadmap,
+                notes: values.notes,
+                phase: values.phase,
+                clientTeam: values.clientTeam ?? [],
+              },
             },
-          },
-          refetchQueries: [FetchProjectDocument],
-        }).then(response => {
-          const newProjectId = response.data?.projectCreateUpdate.id as number;
-          const isEmptyDocsList = !!values.documentTemplate.filter(template => template.isOpen)
-            .length;
+            refetchQueries: [FetchProjectPreviewDocument, FetchProjectDocument],
+          });
 
           navigate(
             generatePath(ROUTES.PROJECT_DETAILS, {
-              id: id || newProjectId,
+              id,
+            }),
+          );
+        } else {
+          const { data } = await projectCreate({
+            variables: {
+              input: {
+                name: values.name,
+                hoursEstimated: +values.hoursEstimated,
+                platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
+                status: values.status,
+                notes: values.notes,
+                phase: ProjectPhaseChoice.PRE_SIGNED,
+                clientTeam: values.clientTeam ?? [],
+              },
+            },
+            refetchQueries: [FetchProjectDocument],
+          });
+
+          const newProjectId = data?.projectCreate.id as number;
+          const isDocsList = !!values.documentTemplate.filter(template => template.isOpen).length;
+
+          navigate(
+            generatePath(ROUTES.PROJECT_DETAILS, {
+              id: newProjectId,
             }),
           );
 
-          if (!id && isEmptyDocsList) {
+          if (isDocsList) {
             const documentGenerateValues = values.documentTemplate
               .filter(template => !!template.isOpen)
               .map(({ templateId, templateFields }) => ({
@@ -215,7 +233,7 @@ export function useProjectForm({
               },
             );
           }
-        });
+        }
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
           fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],
@@ -223,15 +241,15 @@ export function useProjectForm({
         });
       }
     },
-    [documentGenerate, form.setError, id, navigate, projectCreateUpdate],
+    [documentGenerate, form.setError, id, isEditMode, navigate, projectCreate, projectUpdate],
   );
 
   return useMemo(
     () => ({
       form,
       handleSubmit: form.handleSubmit(handleSubmit),
-      isLoading: loadingProjectCreateUpdate,
+      isLoading: loadingProjectCreate || loadingProjectUpdate,
     }),
-    [form, handleSubmit, loadingProjectCreateUpdate],
+    [form, handleSubmit, loadingProjectCreate, loadingProjectUpdate],
   );
 }

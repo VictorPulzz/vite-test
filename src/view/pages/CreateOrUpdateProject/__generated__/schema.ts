@@ -35,13 +35,22 @@ export type FetchProjectQuery = {
   };
 };
 
-export type CreateOrUpdateProjectMutationVariables = Types.Exact<{
+export type CreateProjectMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
 }>;
 
-export type CreateOrUpdateProjectMutation = {
+export type CreateProjectMutation = {
   __typename?: 'Mutation';
-  projectCreateUpdate: { __typename?: 'ProjectType'; id: number };
+  projectCreate: { __typename?: 'ProjectType'; id: number };
+};
+
+export type UpdateProjectMutationVariables = Types.Exact<{
+  input: Types.ProjectCreateInput;
+}>;
+
+export type UpdateProjectMutation = {
+  __typename?: 'Mutation';
+  projectUpdate: { __typename?: 'ProjectType'; id: number };
 };
 
 export type FetchPlatformsListQueryVariables = Types.Exact<{
@@ -150,55 +159,93 @@ export type FetchProjectQueryResult = Apollo.QueryResult<
   FetchProjectQuery,
   FetchProjectQueryVariables
 >;
-export const CreateOrUpdateProjectDocument = gql`
-  mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
-    projectCreateUpdate(data: $input) {
+export const CreateProjectDocument = gql`
+  mutation CreateProject($input: ProjectCreateInput!) {
+    projectCreate(data: $input) {
       id
     }
   }
 `;
-export type CreateOrUpdateProjectMutationFn = Apollo.MutationFunction<
-  CreateOrUpdateProjectMutation,
-  CreateOrUpdateProjectMutationVariables
+export type CreateProjectMutationFn = Apollo.MutationFunction<
+  CreateProjectMutation,
+  CreateProjectMutationVariables
 >;
 
 /**
- * __useCreateOrUpdateProjectMutation__
+ * __useCreateProjectMutation__
  *
- * To run a mutation, you first call `useCreateOrUpdateProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOrUpdateProjectMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createOrUpdateProjectMutation, { data, loading, error }] = useCreateOrUpdateProjectMutation({
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateOrUpdateProjectMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateOrUpdateProjectMutation,
-    CreateOrUpdateProjectMutationVariables
-  >,
+export function useCreateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateOrUpdateProjectMutation, CreateOrUpdateProjectMutationVariables>(
-    CreateOrUpdateProjectDocument,
+  return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(
+    CreateProjectDocument,
     options,
   );
 }
-export type CreateOrUpdateProjectMutationHookResult = ReturnType<
-  typeof useCreateOrUpdateProjectMutation
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<
+  CreateProjectMutation,
+  CreateProjectMutationVariables
 >;
-export type CreateOrUpdateProjectMutationResult =
-  Apollo.MutationResult<CreateOrUpdateProjectMutation>;
-export type CreateOrUpdateProjectMutationOptions = Apollo.BaseMutationOptions<
-  CreateOrUpdateProjectMutation,
-  CreateOrUpdateProjectMutationVariables
+export const UpdateProjectDocument = gql`
+  mutation UpdateProject($input: ProjectCreateInput!) {
+    projectUpdate(data: $input) {
+      id
+    }
+  }
+`;
+export type UpdateProjectMutationFn = Apollo.MutationFunction<
+  UpdateProjectMutation,
+  UpdateProjectMutationVariables
+>;
+
+/**
+ * __useUpdateProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectMutation, { data, loading, error }] = useUpdateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(
+    UpdateProjectDocument,
+    options,
+  );
+}
+export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
+export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
+export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProjectMutation,
+  UpdateProjectMutationVariables
 >;
 export const FetchPlatformsListDocument = gql`
   query FetchPlatformsList($pagination: PaginationInput!) {

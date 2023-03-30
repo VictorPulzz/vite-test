@@ -7,6 +7,7 @@ import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
@@ -71,7 +72,14 @@ export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('type', {
     id: 'type',
     header: 'Type',
-    cell: props => convertUppercaseToReadable(props.getValue() as RepositoryTypeChoice),
+    cell: props => {
+      const type = props.getValue();
+      return (
+        <Badge color={type === RepositoryTypeChoice.FRONTEND ? BadgeColor.BLUE : BadgeColor.GREEN}>
+          {convertUppercaseToReadable(type ?? '')}
+        </Badge>
+      );
+    },
   }),
   columnHelper.accessor('createdAt', {
     id: 'createdAt',

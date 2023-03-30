@@ -165,7 +165,7 @@ export const Docs: FC<DocsProps> = ({
   );
 
   return (
-    <>
+    <div className="flex flex-1 flex-col h-full">
       <div className={`flex items-center ${isInternal ? 'justify-end' : 'justify-between'}`}>
         {isProjectDetailsPage && getDocsSectionHeader(canAddProjectDocs)}
         {userId && getDocsSectionHeader(canAddUserDocs)}
@@ -212,54 +212,63 @@ export const Docs: FC<DocsProps> = ({
           </div>
         )}
       </div>
-      {loading && (
-        <div className="flex h-[60vh]">
-          <Loader full colorful />
-        </div>
-      )}
-      {data && data.documentList.results.length === 0 && (
-        <div className="flex h-[60vh]">
-          <EmptyState iconName="documents" label="No documents here yet" />
-        </div>
-      )}
-      {!loading && data && data.documentList.results.length > 0 && (
-        <div className={`grid ${userId ? 'grid-cols-2' : 'grid-cols-3'} gap-4 mt-6`}>
-          {data.documentList.results.map(({ id, file, createdAt, addedBy, project }) => (
-            <div
-              key={id}
-              className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
-            >
-              <div className="flex gap-3 items-center min-w-0">
-                <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
-                  {getFileExtension(file.fileName)}
-                </div>
-                <div className="flex flex-col gap-[5px] truncate">
-                  <span className="text-p3 text-black leading-4 truncate">
-                    {file.fileName.split('.').slice(0, -1).join('.')}
-                  </span>
-                  <span className="text-c1 text-gray-2 leading-4 truncate">
-                    {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} • {addedBy?.fullName}{' '}
-                    {!isInternal &&
-                      !isProjectDetailsPage &&
-                      !isUserDetailsPage &&
-                      `• ${project?.name}`}
-                  </span>
-                </div>
+      <div className="flex-auto">
+        {loading && (
+          <div className="flex h-full items-center">
+            <Loader full colorful />
+          </div>
+        )}
+        {data && data.documentList.results.length === 0 && (
+          <div className="flex h-full items-center justify-center">
+            <EmptyState iconName="documents" label="No documents here yet" />
+          </div>
+        )}
+        {!loading && data && data.documentList.results.length > 0 && (
+          <div className="h-full flex flex-col">
+            <div className="flex-auto">
+              <div className={`grid ${userId ? 'grid-cols-2' : 'grid-cols-3'} gap-4 mt-6`}>
+                {data.documentList.results.map(({ id, file, createdAt, addedBy, project }) => (
+                  <div
+                    key={id}
+                    className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+                  >
+                    <div className="flex gap-3 items-center min-w-0">
+                      <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
+                        {getFileExtension(file.fileName)}
+                      </div>
+                      <div className="flex flex-col gap-[5px] truncate">
+                        <span className="text-p3 text-black leading-4 truncate">
+                          {file.fileName.split('.').slice(0, -1).join('.')}
+                        </span>
+                        <span className="text-c1 text-gray-2 leading-4 truncate">
+                          {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} •{' '}
+                          {addedBy?.fullName}{' '}
+                          {!isInternal &&
+                            !isProjectDetailsPage &&
+                            !isUserDetailsPage &&
+                            `• ${project?.name}`}
+                        </span>
+                      </div>
+                    </div>
+                    <DocumentMenu file={file} documentId={id} />
+                  </div>
+                ))}
               </div>
-              <DocumentMenu file={file} documentId={id} />
             </div>
-          ))}
-        </div>
-      )}
-      {hasPagination && (
-        <Pagination
-          setOffset={setOffset}
-          totalCount={data.documentList.count}
-          offset={offset}
-          dataLength={data.documentList.results.length}
-          fetchMore={fetchMore}
-        />
-      )}
-    </>
+            <div>
+              {hasPagination && (
+                <Pagination
+                  setOffset={setOffset}
+                  totalCount={data.documentList.count}
+                  offset={offset}
+                  dataLength={data.documentList.results.length}
+                  fetchMore={fetchMore}
+                />
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };

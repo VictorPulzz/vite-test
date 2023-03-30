@@ -28,7 +28,10 @@ export const ProjectDetailsPage: FC = () => {
   const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
   const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
   const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
+  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
+  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
   const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
+  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -38,6 +41,7 @@ export const ProjectDetailsPage: FC = () => {
     variables: {
       data: { id: projectId },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const DocumentTabs = useMemo(
@@ -64,18 +68,24 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Team',
-            element: <Team />,
+            element: canReadProjectTeam ? <Team /> : <NoAccessMessage className="h-[70vh]" />,
           },
           {
             title: 'Development',
-            element: <Development />,
+            element: canReadProjectDevelopment ? (
+              <Development />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
           {
             title: 'Docs',
             element: canReadProjectDocs ? (
-              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-                <Docs isProjectDetailsPage projectId={projectId} />
-              </SectionContainer>
+              <div className="h-full">
+                <SectionContainer containerClassName="h-full">
+                  <Docs isProjectDetailsPage projectId={projectId} />
+                </SectionContainer>
+              </div>
             ) : (
               <NoAccessMessage className="h-[70vh]" />
             ),
@@ -86,29 +96,43 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'History',
-            element: <History projectId={projectId} />,
+            element: canReadProjectHistory ? (
+              <History projectId={projectId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
         ]}
       />
     ),
-    [canReadProjectDocs, canReadProjectInfo, canReadProjectOverview, projectId],
+    [
+      canReadProjectDevelopment,
+      canReadProjectDocs,
+      canReadProjectHistory,
+      canReadProjectInfo,
+      canReadProjectOverview,
+      canReadProjectTeam,
+      projectId,
+    ],
   );
 
   return (
     <TabLayout tabs={loading || DocumentTabs}>
       {loading && <Loader full colorful />}
-      {data && (
+      {!loading && data && (
         <div className="bg-white">
-          <div className="flex items-center justify-between px-7 pt-7">
+          <div className="flex items-center justify-between px-7 pt-7 gap-6">
             <div className="flex items-center gap-4">
               <Button
                 variant={ButtonVariant.SECONDARY}
                 withIcon="left-arrow"
                 onClick={() => navigate(ROUTES.PROJECTS)}
               />
-              <div className="flex flex-col">
-                <h2 className="text-h4 font-bold">{data?.projectPreview.name}</h2>
-                <span className="text-c1 text-gray-2 leading-none">
+              <div className="flex flex-col w-[65vw]">
+                <h2 className="text-h4 font-bold break-words leading-6">
+                  {data?.projectPreview.name}
+                </h2>
+                <span className="text-c1 text-gray-2">
                   Created{' '}
                   {format(
                     new Date(data?.projectPreview.createdAt ?? new Date()),

@@ -1,4 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -29,6 +29,9 @@ export const PROJECTS_TABLE_COLUMNS = [
           </TextLink>
         </div>
       );
+    },
+    meta: {
+      className: 'w-[400px]',
     },
   }),
   columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
@@ -93,3 +96,28 @@ export const PROJECTS_TABLE_COLUMNS = [
     },
   }),
 ];
+
+const projectTableColumns = [...PROJECTS_TABLE_COLUMNS];
+
+projectTableColumns.splice(
+  1,
+  1,
+  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
+    id: 'PM',
+    header: 'PM',
+    cell: props => {
+      return (
+        <div>
+          {props.row.original.PM?.map(pm => (
+            <div key={pm.id} className="flex gap-3 items-center">
+              <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
+              <span>{pm.fullName}</span>
+            </div>
+          ))}
+        </div>
+      );
+    },
+  }) as ColumnDef<ProjectResultType>,
+);
+
+export const PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS = projectTableColumns;

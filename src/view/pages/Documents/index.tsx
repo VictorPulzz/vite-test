@@ -7,8 +7,9 @@ import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { NewDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/NewDocumentButton';
-import styles from '~/view/pages/ProjectDetails/styles.module.scss';
 import { Tabs } from '~/view/ui/components/common/Tabs';
+
+import styles from './styles.module.scss';
 
 export const DocumentsPage: FC = () => {
   const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
@@ -21,26 +22,30 @@ export const DocumentsPage: FC = () => {
     () => (
       <Tabs
         className={styles['tabs']}
-        contentClassName="bg-gray-7 p-7 flex-auto"
+        contentClassName={styles['tabs__body']}
         items={[
           {
             title: 'Internal',
             element: (
-              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-                <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
-              </SectionContainer>
+              <div className="h-full p-7">
+                <SectionContainer containerClassName="h-full">
+                  <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
+                </SectionContainer>
+              </div>
             ),
           },
           {
             title: 'Client',
             element: (
-              <SectionContainer containerClassName="min-h-[calc(100vh-12rem)]">
-                <Docs
-                  isInternal={false}
-                  setDocsCount={setDocsCount}
-                  setIsInternal={setIsInternal}
-                />
-              </SectionContainer>
+              <div className="h-full p-7">
+                <SectionContainer containerClassName="h-full">
+                  <Docs
+                    isInternal={false}
+                    setDocsCount={setDocsCount}
+                    setIsInternal={setIsInternal}
+                  />
+                </SectionContainer>
+              </div>
             ),
           },
         ]}

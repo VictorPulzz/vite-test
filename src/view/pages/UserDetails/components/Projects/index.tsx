@@ -35,7 +35,7 @@ export const Projects: FC<Props> = ({ userId }) => {
     <>
       {loading && <TableLoader className="mt-10" />}
       {data && data.userProjects.results.length === 0 && (
-        <div className="flex h-[70vh]">
+        <div className="flex h-full items-center">
           <EmptyState iconName="projects" label="No projects here yet" />
         </div>
       )}

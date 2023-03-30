@@ -41,7 +41,7 @@ export const CreateOrUpdateProject: FC = () => {
       <SidebarLayout>
         <DetailLayout
           title={`${projectId ? 'Edit' : 'New'} project`}
-          contentClassName="my-4 mx-6"
+          contentClassName="my-4 mx-6 flex-auto"
           rightHeaderElement={
             <Button
               variant={ButtonVariant.PRIMARY}
@@ -52,7 +52,11 @@ export const CreateOrUpdateProject: FC = () => {
             />
           }
         >
-          {loading && <Loader full colorful />}
+          {loading && (
+            <div className="flex h-full items-center">
+              <Loader full colorful />
+            </div>
+          )}
           {!loading && (
             <div className="flex flex-col gap-4">
               <GeneralSection projectId={projectId} />

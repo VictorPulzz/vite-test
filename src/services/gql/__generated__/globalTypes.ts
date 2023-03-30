@@ -290,7 +290,7 @@ export type Mutation = {
   /** Project change status */
   projectChangeStatus: ProjectType;
   /** Project creation */
-  projectCreateUpdate: ProjectType;
+  projectCreate: ProjectType;
   /** Project deletion */
   projectDelete: MessageType;
   /** Project delete member */
@@ -303,6 +303,8 @@ export type Mutation = {
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Project delete integration */
   projectIntegrationDelete: MessageType;
+  /** Project update */
+  projectUpdate: ProjectType;
   /** Repository creation */
   repositoryCreate: RepositoryType;
   /** Repository deletion */
@@ -319,6 +321,8 @@ export type Mutation = {
   requestUpdateStatus: RequestType;
   /** Reset password */
   resetPassword: MessageType;
+  /** Repository's secrets creation/updating */
+  secretsAddUpdate: MessageType;
   /** User creation */
   signup: MessageType;
   /** Refreshing of tokens */
@@ -377,7 +381,7 @@ export type MutationProjectChangeStatusArgs = {
   data: ProjectStatusInput;
 };
 
-export type MutationProjectCreateUpdateArgs = {
+export type MutationProjectCreateArgs = {
   data: ProjectCreateInput;
 };
 
@@ -403,6 +407,10 @@ export type MutationProjectIntegrationCreateUpdateArgs = {
 
 export type MutationProjectIntegrationDeleteArgs = {
   data: IdInput;
+};
+
+export type MutationProjectUpdateArgs = {
+  data: ProjectCreateInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -435,6 +443,10 @@ export type MutationRequestUpdateStatusArgs = {
 
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput;
+};
+
+export type MutationSecretsAddUpdateArgs = {
+  data: RepositorySecretsInput;
 };
 
 export type MutationSignupArgs = {
@@ -879,6 +891,13 @@ export enum RepositoryPlatformChoice {
   DESKTOP = 'DESKTOP',
   MOBILE = 'MOBILE',
 }
+
+export type RepositorySecretsInput = {
+  environment: ProjectEnvironmentChoice;
+  key: Scalars['String'];
+  repositoryId: Scalars['Int'];
+  value?: InputMaybe<Scalars['String']>;
+};
 
 export type RepositoryType = {
   __typename: 'RepositoryType';

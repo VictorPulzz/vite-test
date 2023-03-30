@@ -8,6 +8,7 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+// import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -15,6 +16,7 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
+import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
 import { Participants } from './components/Partisipants';
@@ -47,7 +49,7 @@ export const RepositoryDetailsPage: FC = () => {
     () => (
       <Tabs
         className={styles['tabs']}
-        contentClassName="p-7 flex-auto"
+        contentClassName={styles['tabs__body']}
         items={[
           {
             title: 'Partisipants',
@@ -64,15 +66,16 @@ export const RepositoryDetailsPage: FC = () => {
       <DetailLayout
         title="Repository details"
         onClickBackButton={() => navigate(ROUTES.REPOSITORIES)}
+        contentClassName="flex-auto"
       >
         {loading && (
-          <div className="pt-6">
+          <div className="flex h-full items-center">
             <Loader full colorful />
           </div>
         )}
         {data && (
-          <div className="flex gap-5 p-6 min-h-[calc(90vh+2rem)]">
-            <SectionContainer containerClassName="w-[382px] min-w-[382px]">
+          <div className="flex gap-5 p-6 h-full">
+            <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
               <div className={styles['section']}>
                 <div className="flex gap-2 mb-3 ">
                   <h2 className="text-p1 font-bold">Info</h2>
@@ -89,11 +92,11 @@ export const RepositoryDetailsPage: FC = () => {
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Name</span>
-                    <span className="text-p3 leading-none">{name}</span>
+                    <span className="text-p3 leading-none break-words">{name}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Project</span>
-                    <span className="text-p3 leading-none">{project?.name}</span>
+                    <span className="text-p3 break-words leading-4">{project?.name}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Type</span>
@@ -112,22 +115,30 @@ export const RepositoryDetailsPage: FC = () => {
                       ])}
                     </div>
                   </div>
-                  {/* TODO add TextLink Git url */}
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Git url</span>
-                    <span className="text-p3 leading-none">{gitUrl ?? '-'}</span>
-                  </div>
+                  {gitUrl && (
+                    <div className="flex flex-col gap-[2px]">
+                      <span className="text-c1 text-gray-2">Git url</span>
+                      <TextLink
+                        external
+                        to={gitUrl}
+                        className="text-p3 text-blue leading-none hover:underline"
+                      >
+                        Git url
+                      </TextLink>
+                    </div>
+                  )}
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Created at</span>
                     <span className="text-p3 text-primary leading-none">
                       {format(new Date(createdAt ?? ''), DateFormat.DMY)}
                     </span>
                   </div>
-                  <div className="flex flex-col gap-[2px]">
-                    <span className="text-c1 text-gray-2">Git Terraform url</span>
-                    <span className="text-p3 leading-none">{gitTerraformUrl ?? '-'}</span>
-                  </div>
-                  {/* TODO add fields when backend will be ready */}
+                  {gitTerraformUrl && (
+                    <div className="flex flex-col gap-[2px]">
+                      <span className="text-c1 text-gray-2">Git Terraform url</span>
+                      <span className="text-p3 leading-none">{gitTerraformUrl}</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </SectionContainer>
