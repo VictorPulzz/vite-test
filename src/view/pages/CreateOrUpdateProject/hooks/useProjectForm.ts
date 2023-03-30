@@ -151,10 +151,10 @@ export function useProjectForm({
   const [documentGenerate] = useDocumentGenerateMutation();
 
   const handleSubmit = useCallback(
-    (values: ProjectFormValues) => {
+    async (values: ProjectFormValues) => {
       try {
         if (isEditMode) {
-          projectUpdate({
+          await projectUpdate({
             variables: {
               input: {
                 id,
@@ -171,20 +171,20 @@ export function useProjectForm({
                 design: values.design,
                 roadmap: values.roadmap,
                 notes: values.notes,
-                phase: ProjectPhaseChoice.PRE_SIGNED,
+                phase: values.phase,
                 clientTeam: values.clientTeam ?? [],
               },
             },
             refetchQueries: [FetchProjectPreviewDocument, FetchProjectDocument],
-          }).then(() =>
-            navigate(
-              generatePath(ROUTES.PROJECT_DETAILS, {
-                id,
-              }),
-            ),
+          });
+
+          navigate(
+            generatePath(ROUTES.PROJECT_DETAILS, {
+              id,
+            }),
           );
-        } else
-          projectCreate({
+        } else {
+          const { data } = await projectCreate({
             variables: {
               input: {
                 name: values.name,
@@ -197,42 +197,43 @@ export function useProjectForm({
               },
             },
             refetchQueries: [FetchProjectDocument],
-          }).then(response => {
-            const newProjectId = response.data?.projectCreate.id as number;
-            const isDocsList = !!values.documentTemplate.filter(template => template.isOpen).length;
-
-            navigate(
-              generatePath(ROUTES.PROJECT_DETAILS, {
-                id: newProjectId,
-              }),
-            );
-
-            if (isDocsList) {
-              const documentGenerateValues = values.documentTemplate
-                .filter(template => !!template.isOpen)
-                .map(({ templateId, templateFields }) => ({
-                  projectId: newProjectId,
-                  templateId: templateId as number,
-                  fields: templateFields,
-                }));
-
-              toast.promise(
-                documentGenerate({
-                  variables: {
-                    input: documentGenerateValues,
-                  },
-                }),
-                {
-                  loading: 'Generating documents...',
-                  success: 'Documents generation is successful',
-                  error: e => {
-                    const errors = getGqlError(e?.graphQLErrors);
-                    return `Error while generating project documents: ${JSON.stringify(errors)}`;
-                  },
-                },
-              );
-            }
           });
+
+          const newProjectId = data?.projectCreate.id as number;
+          const isDocsList = !!values.documentTemplate.filter(template => template.isOpen).length;
+
+          navigate(
+            generatePath(ROUTES.PROJECT_DETAILS, {
+              id: newProjectId,
+            }),
+          );
+
+          if (isDocsList) {
+            const documentGenerateValues = values.documentTemplate
+              .filter(template => !!template.isOpen)
+              .map(({ templateId, templateFields }) => ({
+                projectId: newProjectId,
+                templateId: templateId as number,
+                fields: templateFields,
+              }));
+
+            toast.promise(
+              documentGenerate({
+                variables: {
+                  input: documentGenerateValues,
+                },
+              }),
+              {
+                loading: 'Generating documents...',
+                success: 'Documents generation is successful',
+                error: e => {
+                  const errors = getGqlError(e?.graphQLErrors);
+                  return `Error while generating project documents: ${JSON.stringify(errors)}`;
+                },
+              },
+            );
+          }
+        }
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
           fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],

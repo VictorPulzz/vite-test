@@ -75,7 +75,7 @@ export const RepositoryDetailsPage: FC = () => {
         )}
         {data && (
           <div className="flex gap-5 p-6 h-full">
-            <SectionContainer containerClassName="w-[382px] min-w-[382px] h-[392px]">
+            <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
               <div className={styles['section']}>
                 <div className="flex gap-2 mb-3 ">
                   <h2 className="text-p1 font-bold">Info</h2>
@@ -92,11 +92,11 @@ export const RepositoryDetailsPage: FC = () => {
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Name</span>
-                    <span className="text-p3 leading-none">{name}</span>
+                    <span className="text-p3 leading-none break-words">{name}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Project</span>
-                    <span className="text-p3 leading-none">{project?.name}</span>
+                    <span className="text-p3 break-words leading-4">{project?.name}</span>
                   </div>
                   <div className="flex flex-col gap-[2px]">
                     <span className="text-c1 text-gray-2">Type</span>

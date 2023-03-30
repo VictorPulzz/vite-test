@@ -30,6 +30,9 @@ export const PROJECTS_TABLE_COLUMNS = [
         </div>
       );
     },
+    meta: {
+      className: 'w-[400px]',
+    },
   }),
   columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
     id: 'PM',

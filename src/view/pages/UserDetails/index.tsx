@@ -26,6 +26,7 @@ import styles from './styles.module.scss';
 export const UserDetailsPage: FC = () => {
   const canEditUser = useHasAccess(Permission.EDIT_USER);
   const canReadUserDocs = useHasAccess(Permission.READ_USER_DOCS);
+  const canReadUserHistory = useHasAccess(Permission.READ_USER_HISTORY);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -44,7 +45,7 @@ export const UserDetailsPage: FC = () => {
     () => (
       <Tabs
         className={styles['tabs']}
-        contentClassName="p-7 flex-auto"
+        contentClassName={styles['tabs__body']}
         items={[
           {
             title: 'Projects',
@@ -60,12 +61,16 @@ export const UserDetailsPage: FC = () => {
           },
           {
             title: 'History',
-            element: <UserHistory userId={userId} />,
+            element: canReadUserHistory ? (
+              <UserHistory userId={userId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
         ]}
       />
     ),
-    [canReadUserDocs, userId],
+    [canReadUserDocs, canReadUserHistory, userId],
   );
 
   return (
@@ -84,15 +89,16 @@ export const UserDetailsPage: FC = () => {
             />
           )
         }
+        contentClassName="flex-auto"
       >
         {loading && (
-          <div className="pt-6">
+          <div className="flex h-full items-center">
             <Loader full colorful />
           </div>
         )}
         {data && (
-          <div className="flex gap-5 p-6 min-h-[calc(90vh+2rem)]">
-            <SectionContainer containerClassName="w-[382px] min-w-[382px]">
+          <div className="flex gap-5 p-6 h-full">
+            <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
               <div className="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
                 <Avatar uri={photo?.url || photoPlaceholder} size={50} />
                 <div className="flex flex-col gap-2">
@@ -101,14 +107,18 @@ export const UserDetailsPage: FC = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4 pt-7">
-                <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Department</span>
-                  <span className="text-p3 text-primary leading-none">{department?.name}</span>
-                </div>
-                <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Role</span>
-                  <span className="text-p3 text-primary leading-none">{role?.name}</span>
-                </div>
+                {department && (
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Department</span>
+                    <span className="text-p3 text-primary leading-none">{department.name}</span>
+                  </div>
+                )}
+                {role && (
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Role</span>
+                    <span className="text-p3 text-primary leading-none">{role.name}</span>
+                  </div>
+                )}
                 <div className="flex flex-col gap-[2px]">
                   <span className="text-c1 text-gray-2">Status</span>
                   <span
@@ -117,22 +127,29 @@ export const UserDetailsPage: FC = () => {
                     {isActive ? 'Active' : 'Inactive'}
                   </span>
                 </div>
-                <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Contract type</span>
-                  <span className="text-p3 text-primary leading-none">
-                    {convertUppercaseToReadable(contractType ?? '-')}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Date of Birth</span>
-                  <span className="text-p3 text-primary leading-none">
-                    {birthDate ? format(new Date(birthDate ?? ''), DateFormat.DMY) : '-'}
-                  </span>
-                </div>
-                <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Address</span>
-                  <span className="text-p3 text-primary leading-none">{address ?? '-'}</span>
-                </div>
+                {contractType && (
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Contract type</span>
+                    <span className="text-p3 text-primary leading-none">
+                      {convertUppercaseToReadable(contractType)}
+                    </span>
+                  </div>
+                )}
+                {birthDate && (
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Date of Birth</span>
+                    <span className="text-p3 text-primary leading-none">
+                      {format(new Date(birthDate), DateFormat.DMY)}
+                    </span>
+                  </div>
+                )}
+
+                {address && (
+                  <div className="flex flex-col gap-[2px]">
+                    <span className="text-c1 text-gray-2">Address</span>
+                    <span className="text-p3 text-primary  break-words leading-4">{address}</span>
+                  </div>
+                )}
               </div>
             </SectionContainer>
             <div className="shadow-4 bg-white rounded-md flex-auto">{UserDetailsTabs}</div>

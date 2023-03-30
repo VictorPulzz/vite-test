@@ -4,7 +4,6 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import {
@@ -24,7 +23,6 @@ interface Props {
 }
 
 export const History: FC<Props> = ({ projectId }) => {
-  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
@@ -68,41 +66,35 @@ export const History: FC<Props> = ({ projectId }) => {
   }, []);
 
   return (
-    <div>
-      {canReadProjectHistory ? (
-        <div className="flex flex-col gap-5">
-          <SectionContainer title="History">
-            <Select
-              className="w-40"
-              options={filterByUserOptions}
-              value={filter?.createdById}
-              placeholder="Filter by user"
-              onChange={value => setFilter({ createdById: value })}
-            />
-            {loading && <TableLoader className="mt-10" />}
-            {tableData && tableData.logList.results.length === 0 && (
-              <div className="flex h-[67vh]">
-                <EmptyState iconName="list" label="No history here yet" />
-              </div>
-            )}
-            {!loading && tableData && tableData.logList.results.length > 0 && (
-              <Table
-                className="mt-4"
-                data={tableData.logList.results}
-                columns={
-                  canReadUserDetails ? HISTORY_TABLE_COLUMNS : HISTORY_TABLE_COLUMNS_NO_USER_DETAILS
-                }
-                setOffset={setOffset}
-                offset={offset}
-                fetchMore={fetchMore}
-                totalCount={tableData.logList.count}
-              />
-            )}
-          </SectionContainer>
-        </div>
-      ) : (
-        <NoAccessMessage className="h-[70vh]" />
-      )}
+    <div className="flex flex-col gap-5">
+      <SectionContainer title="History">
+        <Select
+          className="w-40"
+          options={filterByUserOptions}
+          value={filter?.createdById}
+          placeholder="Filter by user"
+          onChange={value => setFilter({ createdById: value })}
+        />
+        {loading && <TableLoader className="mt-10" />}
+        {tableData && tableData.logList.results.length === 0 && (
+          <div className="flex h-[67vh]">
+            <EmptyState iconName="list" label="No history here yet" />
+          </div>
+        )}
+        {!loading && tableData && tableData.logList.results.length > 0 && (
+          <Table
+            className="mt-4"
+            data={tableData.logList.results}
+            columns={
+              canReadUserDetails ? HISTORY_TABLE_COLUMNS : HISTORY_TABLE_COLUMNS_NO_USER_DETAILS
+            }
+            setOffset={setOffset}
+            offset={offset}
+            fetchMore={fetchMore}
+            totalCount={tableData.logList.count}
+          />
+        )}
+      </SectionContainer>
     </div>
   );
 };

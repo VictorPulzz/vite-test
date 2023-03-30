@@ -90,11 +90,11 @@ export const Participants: FC = () => {
               >
                 <div className="flex gap-[15px] items-center">
                   <Avatar uri={user.photo?.url || photoPlaceholder} size={36} />
-                  <div className="flex flex-col gap-[3px] truncate">
-                    <span className="block max-w-[120px] text-p3 text-black truncate flex-grow-0">
+                  <div className="flex flex-col gap-[3px] ">
+                    <span className="block text-p3 text-black break-words leading-4">
                       {user.fullName}
                     </span>
-                    <span className="text-c1 text-gray-1 leading-none">
+                    <span className="text-c1 text-gray-1 ">
                       {convertUppercaseToReadable(accessLevel)}
                     </span>
                   </div>
