@@ -7,15 +7,13 @@ import { LoginInput } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { useAppDispatch } from '~/store/hooks';
 import { setAuth, setUser } from '~/store/modules/user';
+import { passwordValidation } from '~/utils/validations';
 
-// import { passwordValidation } from '~/utils/validations';
 import { useSignInMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
   email: z.string().email().min(1),
-  // TODO add passwordValidation
-  // password: passwordValidation,
-  password: z.string(),
+  password: passwordValidation,
 });
 
 type SignInFormValues = z.infer<typeof formSchema>;

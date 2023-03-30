@@ -9,7 +9,7 @@ export const passwordValidation = z
   .min(8, formErrors.PASSWORD_MIN_LENGTH)
   .refine(value => {
     if (!value) return false;
-    return /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,}$/.test(value);
+    return /(?:.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,}$/.test(value);
   }, formErrors.INVALID_PASSWORD);
 
 export const phoneNumberValidation = z
@@ -32,7 +32,3 @@ export const phoneNumberValidation = z
 export const numberValidation = z
   .string()
   .refine(value => value === '' || !Number.isNaN(+value), formErrors.SHOULD_BE_NUMBER);
-
-export const zipCodeValidation = z.string().refine(value => {
-  return /^[0-9A-z\s-]+$/.test(value);
-}, formErrors.INVALID_ZIP_CODE);

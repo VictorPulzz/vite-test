@@ -24,7 +24,7 @@ export const ResetPasswordPage: FC = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="text-h2 text-center mb-7">Create a new password</h1>
         <PasswordField
-          name="password"
+          name="newPassword"
           control={form.control}
           label="New password"
           size={InputSize.LARGE}
