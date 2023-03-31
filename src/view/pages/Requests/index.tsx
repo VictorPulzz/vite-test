@@ -1,33 +1,29 @@
 import React, { FC } from 'react';
 
-import { ALL_SELECT_OPTION } from '~/constants/select';
-import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import comingSoon from '~/view/assets/images/coming-soon.svg';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { Table } from '~/view/ui/components/common/Table';
-import { Select } from '~/view/ui/components/form/Select';
-
-import { REQUESTS_TABLE_COLUMNS } from './consts';
 
 // TODO when back will be ready
-const requests = {
+/* const requests = {
   id: '0',
   type: 'Access',
   assignedTo: 'Katy Adams',
   createdBy: 'Daniel Collins',
   createdAt: '28 May 2022',
   dueDate: '28 May 2022',
-};
+}; */
 
 export const RequestsPage: FC = () => {
-  const statusOptions = [ALL_SELECT_OPTION, ...enumToSelectOptions({})];
+  // const statusOptions = [ALL_SELECT_OPTION, ...enumToSelectOptions({})];
 
-  const requestsData = new Array(5).fill(requests);
+  // const requestsData = new Array(5).fill(requests);
 
   return (
     <SidebarLayout contentClassName="p-6">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-center items-center flex-auto ">
+        <img src={comingSoon} alt="feature" />
+      </div>
+      {/* <div className="flex justify-between items-center">
         <div>
           <h1 className="text-h4">Requests</h1>
           <p className="text-c1 text-gray-2">0 requests in total</p>
@@ -57,7 +53,7 @@ export const RequestsPage: FC = () => {
         // offset={offset}
         // fetchMore={fetchMore}
         totalCount={12}
-      />
+      /> */}
     </SidebarLayout>
   );
 };
