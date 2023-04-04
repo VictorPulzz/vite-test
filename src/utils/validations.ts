@@ -9,7 +9,7 @@ export const passwordValidation = z
   .min(8, formErrors.PASSWORD_MIN_LENGTH)
   .refine(value => {
     if (!value) return false;
-    return /(?:.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,}$/.test(value);
+    return /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*[@$!%*#?&]).{8,}$/.test(value);
   }, formErrors.INVALID_PASSWORD);
 
 export const phoneNumberValidation = z
