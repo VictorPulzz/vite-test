@@ -38,26 +38,16 @@ export const PROJECTS_TABLE_COLUMNS = [
     id: 'PM',
     header: 'PM',
     cell: props => {
-      const isProjectHasPm = props.row.original.PM && props.row.original.PM[0];
       return (
         <div>
-          {isProjectHasPm ? (
-            <div>
-              {props.row.original.PM?.map(pm => (
-                <div key={pm.id} className="flex gap-3 items-center">
-                  <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
-                  <TextLink
-                    to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}
-                    className="underline"
-                  >
-                    {pm.fullName}
-                  </TextLink>
-                </div>
-              ))}
+          {props.row.original.PM?.map(pm => (
+            <div key={pm.id} className="flex gap-3 items-center">
+              <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
+              <TextLink to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })} className="underline">
+                {pm.fullName}
+              </TextLink>
             </div>
-          ) : (
-            <span>-</span>
-          )}
+          ))}
         </div>
       );
     },

@@ -77,7 +77,7 @@ export const UserDetailsPage: FC = () => {
     <SidebarLayout>
       <DetailLayout
         title="User details"
-        onClickBackButton={() => navigate(ROUTES.USERS)}
+        onClickBackButton={() => navigate(-1)}
         rightHeaderElement={
           canEditUser && (
             <Button

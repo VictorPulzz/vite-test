@@ -5,10 +5,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
-import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-// import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -65,7 +63,7 @@ export const RepositoryDetailsPage: FC = () => {
     <SidebarLayout>
       <DetailLayout
         title="Repository details"
-        onClickBackButton={() => navigate(ROUTES.REPOSITORIES)}
+        onClickBackButton={() => navigate(-1)}
         contentClassName="flex-auto"
       >
         {loading && (
