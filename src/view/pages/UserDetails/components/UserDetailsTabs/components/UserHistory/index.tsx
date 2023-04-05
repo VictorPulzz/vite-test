@@ -7,7 +7,7 @@ import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
-import { useFetchUserHistoryListQuery } from '../../__generated__/schema';
+import { useFetchUserHistoryListQuery } from '../../../../__generated__/schema';
 import { USERS_HISTORY_TABLE_COLUMNS } from './consts';
 
 interface Props {

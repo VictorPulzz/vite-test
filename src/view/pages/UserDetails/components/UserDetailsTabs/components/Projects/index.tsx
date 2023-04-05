@@ -6,7 +6,7 @@ import { Table } from '~/view/ui/components/common/Table';
 import { TableLoader } from '~/view/ui/components/common/TableLoader';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
-import { useFetchUserProjectsListQuery } from '../../__generated__/schema';
+import { useFetchUserProjectsListQuery } from '../../../../__generated__/schema';
 import { USERS_PROJECTS_TABLE_COLUMNS } from './consts';
 
 interface Props {

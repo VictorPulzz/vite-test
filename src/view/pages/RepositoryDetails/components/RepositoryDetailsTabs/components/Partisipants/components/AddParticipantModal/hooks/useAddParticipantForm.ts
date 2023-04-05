@@ -6,11 +6,10 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-
 import {
   FetchRepositoryParticipantsDocument,
   useAddOrUpdateRepositoryParticipantMutation,
-} from '../../../../../__generated__/schema';
+} from '~/view/pages/RepositoryDetails/__generated__/schema';
 
 const formSchema = z.object({
   user: z.string().refine(value => value !== '', formErrors.REQUIRED),

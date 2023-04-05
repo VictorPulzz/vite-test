@@ -287,6 +287,10 @@ type Mutation {
   """
   projectAddMember(data: ProjectMemberInput!): ProjectMemberType!
   """
+  Project add slack
+  """
+  projectAddSlackChannel(data: ProjectSlackInput!): ProjectSlackType!
+  """
   Project change status
   """
   projectChangeStatus(data: ProjectStatusInput!): ProjectType!
@@ -370,6 +374,10 @@ type Mutation {
   Change user status
   """
   userChangeStatus(data: ActiveInput!): UserType!
+  """
+  Connect user with bitbucket
+  """
+  userConnectBitbucket(data: IDInput!): UserType!
   """
   User create or updating
   """
@@ -551,6 +559,18 @@ type ProjectPreviewType {
   createdBy: UserType
   id: Int!
   name: String!
+}
+
+input ProjectSlackInput {
+  channelId: String = null
+  channelType: SlackChannelTypeInput!
+  projectId: Int!
+}
+
+type ProjectSlackType {
+  channelId: String!
+  channelType: String!
+  channelUrl: String!
 }
 
 input ProjectStatusInput {
@@ -872,6 +892,10 @@ type RoleType {
   permissionsList: [String!]!
 }
 
+input SlackChannelTypeInput {
+  name: String!
+}
+
 enum StatusEnum {
   BLOCKED
   IN_PROGRESS
@@ -918,6 +942,7 @@ input UserInput {
 type UserType {
   address: String
   birthDate: Date
+  bitbucketId: String
   contractType: ContractChoice
   department: DepartmentType
   email: String!

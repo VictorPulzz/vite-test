@@ -9,12 +9,12 @@ import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Pagination } from '~/view/components/Pagination';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useFetchRepositoryParticipantsQuery } from '~/view/pages/RepositoryDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
-import { useFetchRepositoryParticipantsQuery } from '../../__generated__/schema';
 import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
 

@@ -287,6 +287,8 @@ export type Mutation = {
   permissionsUpdate: Array<PermissionType>;
   /** Project add member */
   projectAddMember: ProjectMemberType;
+  /** Project add slack */
+  projectAddSlackChannel: ProjectSlackType;
   /** Project change status */
   projectChangeStatus: ProjectType;
   /** Project creation */
@@ -329,6 +331,8 @@ export type Mutation = {
   tokenRefresh: LoginSuccessType;
   /** Change user status */
   userChangeStatus: UserType;
+  /** Connect user with bitbucket */
+  userConnectBitbucket: UserType;
   /** User create or updating */
   userCreateUpdate: UserType;
   /** User deletion */
@@ -375,6 +379,10 @@ export type MutationPermissionsUpdateArgs = {
 
 export type MutationProjectAddMemberArgs = {
   data: ProjectMemberInput;
+};
+
+export type MutationProjectAddSlackChannelArgs = {
+  data: ProjectSlackInput;
 };
 
 export type MutationProjectChangeStatusArgs = {
@@ -459,6 +467,10 @@ export type MutationTokenRefreshArgs = {
 
 export type MutationUserChangeStatusArgs = {
   data: ActiveInput;
+};
+
+export type MutationUserConnectBitbucketArgs = {
+  data: IdInput;
 };
 
 export type MutationUserCreateUpdateArgs = {
@@ -647,6 +659,19 @@ export type ProjectPreviewType = {
   createdBy?: Maybe<UserType>;
   id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type ProjectSlackInput = {
+  channelId?: InputMaybe<Scalars['String']>;
+  channelType: SlackChannelTypeInput;
+  projectId: Scalars['Int'];
+};
+
+export type ProjectSlackType = {
+  __typename: 'ProjectSlackType';
+  channelId: Scalars['String'];
+  channelType: Scalars['String'];
+  channelUrl: Scalars['String'];
 };
 
 export type ProjectStatusInput = {
@@ -994,6 +1019,10 @@ export type RoleType = {
   permissionsList: Array<Scalars['String']>;
 };
 
+export type SlackChannelTypeInput = {
+  name: Scalars['String'];
+};
+
 export enum StatusEnum {
   BLOCKED = 'BLOCKED',
   IN_PROGRESS = 'IN_PROGRESS',
@@ -1041,6 +1070,7 @@ export type UserType = {
   __typename: 'UserType';
   address?: Maybe<Scalars['String']>;
   birthDate?: Maybe<Scalars['Date']>;
+  bitbucketId?: Maybe<Scalars['String']>;
   contractType?: Maybe<ContractChoice>;
   department?: Maybe<DepartmentType>;
   email: Scalars['String'];

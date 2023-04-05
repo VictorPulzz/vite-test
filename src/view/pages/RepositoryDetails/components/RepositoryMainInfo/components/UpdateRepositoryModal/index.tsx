@@ -2,9 +2,9 @@ import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 
+import { FetchRepositoryDetailsQuery } from '~/view/pages/RepositoryDetails/__generated__/schema';
 import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 
-import { FetchRepositoryDetailsQuery } from '../../__generated__/schema';
 import { useUpdateRepositoryForm } from './hooks/useUpdateRepositoryForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {

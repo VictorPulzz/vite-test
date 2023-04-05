@@ -47,3 +47,9 @@ query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
     count
   }
 }
+
+mutation ConnectUserToBitbucket($input: IDInput!) {
+  userConnectBitbucket(data: $input) {
+    bitbucketId
+  }
+}

@@ -5,12 +5,11 @@ import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-
 import {
   FetchRepositoryDetailsDocument,
   FetchRepositoryDetailsQuery,
   useUpdateRepositoryMutation,
-} from '../../../__generated__/schema';
+} from '~/view/pages/RepositoryDetails/__generated__/schema';
 
 const formSchema = z.object({
   name: z
