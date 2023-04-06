@@ -568,9 +568,11 @@ input ProjectSlackInput {
 }
 
 type ProjectSlackType {
-  channelId: String!
-  channelType: String!
-  channelUrl: String!
+  channelId: String
+  channelType: String
+  channelUrl: String
+  createdAt: DateTime!
+  type: SlackChannelTypeType
 }
 
 input ProjectStatusInput {
@@ -594,6 +596,7 @@ type ProjectType {
   notes: String
   phase: ProjectPhaseChoice
   platforms: [PlatformType!]
+  projectChannels: [ProjectSlackType!]
   roadmap: String
   startDate: Date
   status: StatusEnum
@@ -893,6 +896,10 @@ type RoleType {
 }
 
 input SlackChannelTypeInput {
+  name: String!
+}
+
+type SlackChannelTypeType {
   name: String!
 }
 

@@ -307,6 +307,33 @@ export type FetchAllDocumentCategoriesQuery = {
   }>;
 };
 
+export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectSlackChannelsQuery = {
+  __typename?: 'Query';
+  project: {
+    __typename?: 'ProjectType';
+    projectChannels?: Array<{
+      __typename?: 'ProjectSlackType';
+      channelId?: string | null;
+      createdAt: string;
+      channelUrl?: string | null;
+      type?: { __typename?: 'SlackChannelTypeType'; name: string } | null;
+    }> | null;
+  };
+};
+
+export type CreateProjectSlackChannelMutationVariables = Types.Exact<{
+  input: Types.ProjectSlackInput;
+}>;
+
+export type CreateProjectSlackChannelMutation = {
+  __typename?: 'Mutation';
+  projectAddSlackChannel: { __typename?: 'ProjectSlackType'; channelUrl?: string | null };
+};
+
 export const FetchProjectPreviewDocument = gql`
   query FetchProjectPreview($data: IDInput!) {
     projectPreview(data: $data) {
@@ -1357,4 +1384,119 @@ export type FetchAllDocumentCategoriesLazyQueryHookResult = ReturnType<
 export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
   FetchAllDocumentCategoriesQuery,
   FetchAllDocumentCategoriesQueryVariables
+>;
+export const FetchProjectSlackChannelsDocument = gql`
+  query FetchProjectSlackChannels($data: IDInput!) {
+    project(data: $data) {
+      projectChannels {
+        type {
+          name
+        }
+        channelId
+        createdAt
+        channelUrl
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectSlackChannelsQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectSlackChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectSlackChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectSlackChannelsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectSlackChannelsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectSlackChannelsQuery, FetchProjectSlackChannelsQueryVariables>(
+    FetchProjectSlackChannelsDocument,
+    options,
+  );
+}
+export function useFetchProjectSlackChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >(FetchProjectSlackChannelsDocument, options);
+}
+export type FetchProjectSlackChannelsQueryHookResult = ReturnType<
+  typeof useFetchProjectSlackChannelsQuery
+>;
+export type FetchProjectSlackChannelsLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectSlackChannelsLazyQuery
+>;
+export type FetchProjectSlackChannelsQueryResult = Apollo.QueryResult<
+  FetchProjectSlackChannelsQuery,
+  FetchProjectSlackChannelsQueryVariables
+>;
+export const CreateProjectSlackChannelDocument = gql`
+  mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
+    projectAddSlackChannel(data: $input) {
+      channelUrl
+    }
+  }
+`;
+export type CreateProjectSlackChannelMutationFn = Apollo.MutationFunction<
+  CreateProjectSlackChannelMutation,
+  CreateProjectSlackChannelMutationVariables
+>;
+
+/**
+ * __useCreateProjectSlackChannelMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectSlackChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectSlackChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectSlackChannelMutation, { data, loading, error }] = useCreateProjectSlackChannelMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProjectSlackChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateProjectSlackChannelMutation,
+    CreateProjectSlackChannelMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateProjectSlackChannelMutation,
+    CreateProjectSlackChannelMutationVariables
+  >(CreateProjectSlackChannelDocument, options);
+}
+export type CreateProjectSlackChannelMutationHookResult = ReturnType<
+  typeof useCreateProjectSlackChannelMutation
+>;
+export type CreateProjectSlackChannelMutationResult =
+  Apollo.MutationResult<CreateProjectSlackChannelMutation>;
+export type CreateProjectSlackChannelMutationOptions = Apollo.BaseMutationOptions<
+  CreateProjectSlackChannelMutation,
+  CreateProjectSlackChannelMutationVariables
 >;

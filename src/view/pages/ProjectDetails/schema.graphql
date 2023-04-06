@@ -237,3 +237,22 @@ query FetchAllDocumentCategories {
     label: name
   }
 }
+
+query FetchProjectSlackChannels($data: IDInput!) {
+  project(data: $data) {
+    projectChannels {
+      type {
+        name
+      }
+      channelId
+      createdAt
+      channelUrl
+    }
+  }
+}
+
+mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
+  projectAddSlackChannel(data: $input) {
+    channelUrl
+  }
+}

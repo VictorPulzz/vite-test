@@ -21,6 +21,7 @@ import { History } from './components/History';
 import { Info } from './components/Info';
 import { Overview } from './components/Overview';
 import { Reports } from './components/Reports';
+import { SlackChannels } from './components/SlackChannels';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
@@ -89,6 +90,10 @@ export const ProjectDetailsPage: FC = () => {
             ) : (
               <NoAccessMessage className="h-[70vh]" />
             ),
+          },
+          {
+            title: 'Slack',
+            element: <SlackChannels projectId={projectId} />,
           },
           {
             title: 'Reports',

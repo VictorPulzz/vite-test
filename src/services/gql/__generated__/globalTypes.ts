@@ -669,9 +669,11 @@ export type ProjectSlackInput = {
 
 export type ProjectSlackType = {
   __typename: 'ProjectSlackType';
-  channelId: Scalars['String'];
-  channelType: Scalars['String'];
-  channelUrl: Scalars['String'];
+  channelId?: Maybe<Scalars['String']>;
+  channelType?: Maybe<Scalars['String']>;
+  channelUrl?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  type?: Maybe<SlackChannelTypeType>;
 };
 
 export type ProjectStatusInput = {
@@ -696,6 +698,7 @@ export type ProjectType = {
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
+  projectChannels?: Maybe<Array<ProjectSlackType>>;
   roadmap?: Maybe<Scalars['String']>;
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<StatusEnum>;
@@ -1020,6 +1023,11 @@ export type RoleType = {
 };
 
 export type SlackChannelTypeInput = {
+  name: Scalars['String'];
+};
+
+export type SlackChannelTypeType = {
+  __typename: 'SlackChannelTypeType';
   name: Scalars['String'];
 };
 
