@@ -243,6 +243,7 @@ query FetchProjectSlackChannels($data: IDInput!) {
     projectChannels {
       type {
         name
+        label
       }
       channelId
       createdAt

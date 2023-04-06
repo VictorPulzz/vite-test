@@ -34,13 +34,13 @@ export const PROJECTS_TABLE_COLUMNS = [
       className: 'w-[400px]',
     },
   }),
-  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
+  columnHelper.accessor('PM', {
     id: 'PM',
     header: 'PM',
     cell: props => {
       return (
         <div>
-          {props.row.original.PM?.map(pm => (
+          {props.getValue()?.map(pm => (
             <div key={pm.id} className="flex gap-3 items-center">
               <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
               <TextLink to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })} className="underline">
@@ -66,10 +66,10 @@ export const PROJECTS_TABLE_COLUMNS = [
     id: 'platforms',
     header: 'Platform',
     cell: props => {
-      const platforms = props.getValue() ?? [];
+      const platforms = props.getValue();
       return (
         <div className="flex gap-2">
-          {platforms.map(platform => (
+          {platforms?.map(platform => (
             <Badge key={platform.id} color={BadgeColor.BLUE}>
               {platform.name}
             </Badge>
@@ -92,13 +92,13 @@ const projectTableColumns = [...PROJECTS_TABLE_COLUMNS];
 projectTableColumns.splice(
   1,
   1,
-  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
+  columnHelper.accessor('PM', {
     id: 'PM',
     header: 'PM',
     cell: props => {
       return (
         <div>
-          {props.row.original.PM?.map(pm => (
+          {props.getValue()?.map(pm => (
             <div key={pm.id} className="flex gap-3 items-center">
               <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
               <span>{pm.fullName}</span>

@@ -1028,6 +1028,7 @@ export type SlackChannelTypeInput = {
 
 export type SlackChannelTypeType = {
   __typename: 'SlackChannelTypeType';
+  label: Scalars['String'];
   name: Scalars['String'];
 };
 

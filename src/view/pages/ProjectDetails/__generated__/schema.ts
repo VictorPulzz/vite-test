@@ -320,7 +320,7 @@ export type FetchProjectSlackChannelsQuery = {
       channelId?: string | null;
       createdAt: string;
       channelUrl?: string | null;
-      type?: { __typename?: 'SlackChannelTypeType'; name: string } | null;
+      type?: { __typename?: 'SlackChannelTypeType'; name: string; label: string } | null;
     }> | null;
   };
 };
@@ -1391,6 +1391,7 @@ export const FetchProjectSlackChannelsDocument = gql`
       projectChannels {
         type {
           name
+          label
         }
         channelId
         createdAt

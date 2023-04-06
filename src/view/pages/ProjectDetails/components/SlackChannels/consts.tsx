@@ -10,8 +10,8 @@ import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateS
 const columnHelper = createColumnHelper<ProjectSlackType>();
 
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
-  columnHelper.accessor('type.name', {
-    id: 'channelType',
+  columnHelper.accessor('type.label', {
+    id: 'type.label',
     header: 'Type',
     cell: props => {
       const isCreatedSlackChannel = props.row.original.channelId;
