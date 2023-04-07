@@ -327,6 +327,12 @@ export type Mutation = {
   secretsAddUpdate: MessageType;
   /** User creation */
   signup: MessageType;
+  /** Create Slack channel template */
+  slackTemplateCreate: SlackChannelTemplateType;
+  /** Delete Slack channel template */
+  slackTemplateDelete: MessageType;
+  /** Update Slack channel template */
+  slackTemplateUpdate: SlackChannelTemplateType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
   /** Change user status */
@@ -459,6 +465,18 @@ export type MutationSecretsAddUpdateArgs = {
 
 export type MutationSignupArgs = {
   data: LoginInput;
+};
+
+export type MutationSlackTemplateCreateArgs = {
+  data: SlackChannelTemplateInput;
+};
+
+export type MutationSlackTemplateDeleteArgs = {
+  data: IdInput;
+};
+
+export type MutationSlackTemplateUpdateArgs = {
+  data: SlackChannelTemplateInput;
 };
 
 export type MutationTokenRefreshArgs = {
@@ -631,7 +649,9 @@ export type ProjectMemberListType = {
 export type ProjectMemberType = {
   __typename: 'ProjectMemberType';
   currentTeam: Scalars['Boolean'];
+  endDate?: Maybe<Scalars['DateTime']>;
   project: ProjectType;
+  startDate: Scalars['DateTime'];
   user: UserType;
 };
 
@@ -663,17 +683,17 @@ export type ProjectPreviewType = {
 
 export type ProjectSlackInput = {
   channelId?: InputMaybe<Scalars['String']>;
-  channelType: SlackChannelTypeInput;
+  channelTemplate: SlackChannelTemplateInput;
   projectId: Scalars['Int'];
 };
 
 export type ProjectSlackType = {
   __typename: 'ProjectSlackType';
   channelId?: Maybe<Scalars['String']>;
-  channelType?: Maybe<Scalars['String']>;
+  channelTemplate?: Maybe<Scalars['String']>;
   channelUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
-  type?: Maybe<SlackChannelTypeType>;
+  template?: Maybe<SlackChannelTemplateType>;
 };
 
 export type ProjectStatusInput = {
@@ -698,8 +718,8 @@ export type ProjectType = {
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
-  projectChannels?: Maybe<Array<ProjectSlackType>>;
   roadmap?: Maybe<Scalars['String']>;
+  slackChannels?: Maybe<Array<ProjectSlackType>>;
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<StatusEnum>;
 };
@@ -756,6 +776,8 @@ export type Query = {
   requestList: RequestTypePagination;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
+  /** Getting Slack channel templates list */
+  slackTemplateList: Array<SlackChannelTemplateType>;
   /** Getting technologies list */
   technologyList: TechnologyTypePagination;
   /** Getting user by id */
@@ -1022,14 +1044,26 @@ export type RoleType = {
   permissionsList: Array<Scalars['String']>;
 };
 
-export type SlackChannelTypeInput = {
-  name: Scalars['String'];
+export enum SlackChannelAccessibilityEnum {
+  PRIVATE = 'PRIVATE',
+  PUBLIC = 'PUBLIC',
+}
+
+export type SlackChannelTemplateInput = {
+  accessibility?: InputMaybe<SlackChannelAccessibilityEnum>;
+  id?: InputMaybe<Scalars['Int']>;
+  initialUsers?: InputMaybe<Array<Scalars['Int']>>;
+  label?: InputMaybe<Scalars['String']>;
+  prefix?: InputMaybe<Scalars['String']>;
 };
 
-export type SlackChannelTypeType = {
-  __typename: 'SlackChannelTypeType';
-  label: Scalars['String'];
-  name: Scalars['String'];
+export type SlackChannelTemplateType = {
+  __typename: 'SlackChannelTemplateType';
+  accessibility?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
+  initialUsers?: Maybe<Array<UserType>>;
+  label?: Maybe<Scalars['String']>;
+  prefix: Scalars['String'];
 };
 
 export enum StatusEnum {

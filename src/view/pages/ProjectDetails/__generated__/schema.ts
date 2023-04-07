@@ -315,12 +315,16 @@ export type FetchProjectSlackChannelsQuery = {
   __typename?: 'Query';
   project: {
     __typename?: 'ProjectType';
-    projectChannels?: Array<{
+    slackChannels?: Array<{
       __typename?: 'ProjectSlackType';
       channelId?: string | null;
       createdAt: string;
       channelUrl?: string | null;
-      type?: { __typename?: 'SlackChannelTypeType'; name: string; label: string } | null;
+      template?: {
+        __typename?: 'SlackChannelTemplateType';
+        label?: string | null;
+        prefix: string;
+      } | null;
     }> | null;
   };
 };
@@ -1388,10 +1392,10 @@ export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
 export const FetchProjectSlackChannelsDocument = gql`
   query FetchProjectSlackChannels($data: IDInput!) {
     project(data: $data) {
-      projectChannels {
-        type {
-          name
+      slackChannels {
+        template {
           label
+          prefix
         }
         channelId
         createdAt

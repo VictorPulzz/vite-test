@@ -240,10 +240,10 @@ query FetchAllDocumentCategories {
 
 query FetchProjectSlackChannels($data: IDInput!) {
   project(data: $data) {
-    projectChannels {
-      type {
-        name
+    slackChannels {
+      template {
         label
+        prefix
       }
       channelId
       createdAt

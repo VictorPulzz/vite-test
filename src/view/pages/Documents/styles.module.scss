@@ -1,4 +1,4 @@
-:global(.tabs) {
+.tabs:global(.tabs) {
   display: flex;
   flex-direction: column;
   height: 100%;

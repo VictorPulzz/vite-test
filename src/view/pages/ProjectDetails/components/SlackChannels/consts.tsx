@@ -3,14 +3,19 @@ import { format } from 'date-fns';
 import React from 'react';
 
 import { DateFormat } from '~/constants/dates';
-import { ProjectSlackType } from '~/services/gql/__generated__/globalTypes';
 
+import { FetchProjectSlackChannelsQuery } from '../../__generated__/schema';
 import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateSlackChannelCell';
 
-const columnHelper = createColumnHelper<ProjectSlackType>();
+export type ProjectSlackChannelResultType = Exclude<
+  FetchProjectSlackChannelsQuery['project']['slackChannels'],
+  undefined | null
+>[number];
+
+const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
 
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
-  columnHelper.accessor('type.label', {
+  columnHelper.accessor('template.label', {
     id: 'type.label',
     header: 'Type',
     cell: props => {

@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 
-import { ProjectSlackType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
@@ -24,15 +23,15 @@ export const SlackChannels: FC<Props> = ({ projectId }) => {
   return (
     <SectionContainer title="Slack channels" containerClassName="h-full">
       {loading && <TableLoader className="mt-2" />}
-      {data && data.project.projectChannels?.length === 0 && (
+      {data && data.project.slackChannels?.length === 0 && (
         <div className="flex h-full items-center justify-center">
           <EmptyState iconName="list" label="No slack channels here yet" />
         </div>
       )}
-      {!loading && data?.project.projectChannels && data.project.projectChannels?.length > 0 && (
+      {!loading && data?.project.slackChannels && data.project.slackChannels?.length > 0 && (
         <Table
           className="mt-2"
-          data={data?.project.projectChannels as ProjectSlackType[]}
+          data={data?.project.slackChannels}
           columns={SLACK_CHANNELS_TABLE_COLUMNS}
         />
       )}

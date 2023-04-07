@@ -367,6 +367,18 @@ type Mutation {
   """
   signup(data: LoginInput!): MessageType!
   """
+  Create Slack channel template
+  """
+  slackTemplateCreate(data: SlackChannelTemplateInput!): SlackChannelTemplateType!
+  """
+  Delete Slack channel template
+  """
+  slackTemplateDelete(data: IDInput!): MessageType!
+  """
+  Update Slack channel template
+  """
+  slackTemplateUpdate(data: SlackChannelTemplateInput!): SlackChannelTemplateType!
+  """
   Refreshing of tokens
   """
   tokenRefresh(data: RefreshTokenInput!): LoginSuccessType!
@@ -533,7 +545,9 @@ type ProjectMemberListType {
 
 type ProjectMemberType {
   currentTeam: Boolean!
+  endDate: DateTime
   project: ProjectType!
+  startDate: DateTime!
   user: UserType!
 }
 
@@ -563,16 +577,16 @@ type ProjectPreviewType {
 
 input ProjectSlackInput {
   channelId: String = null
-  channelType: SlackChannelTypeInput!
+  channelTemplate: SlackChannelTemplateInput!
   projectId: Int!
 }
 
 type ProjectSlackType {
   channelId: String
-  channelType: String
+  channelTemplate: String
   channelUrl: String
   createdAt: DateTime!
-  type: SlackChannelTypeType
+  template: SlackChannelTemplateType
 }
 
 input ProjectStatusInput {
@@ -596,8 +610,8 @@ type ProjectType {
   notes: String
   phase: ProjectPhaseChoice
   platforms: [PlatformType!]
-  projectChannels: [ProjectSlackType!]
   roadmap: String
+  slackChannels: [ProjectSlackType!]
   startDate: Date
   status: StatusEnum
 }
@@ -710,6 +724,10 @@ type Query {
   Getting list of users' roles
   """
   rolesList: [RoleType!]!
+  """
+  Getting Slack channel templates list
+  """
+  slackTemplateList: [SlackChannelTemplateType!]!
   """
   Getting technologies list
   """
@@ -895,13 +913,25 @@ type RoleType {
   permissionsList: [String!]!
 }
 
-input SlackChannelTypeInput {
-  name: String!
+enum SlackChannelAccessibilityEnum {
+  PRIVATE
+  PUBLIC
 }
 
-type SlackChannelTypeType {
-  label: String!
-  name: String!
+input SlackChannelTemplateInput {
+  accessibility: SlackChannelAccessibilityEnum = null
+  id: Int = null
+  initialUsers: [Int!]
+  label: String = null
+  prefix: String = null
+}
+
+type SlackChannelTemplateType {
+  accessibility: String
+  id: Int!
+  initialUsers: [UserType!]
+  label: String
+  prefix: String!
 }
 
 enum StatusEnum {

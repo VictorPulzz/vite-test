@@ -4,20 +4,21 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
-import { ProjectSlackType } from '~/services/gql/__generated__/globalTypes';
 import { useCreateProjectSlackChannelMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { FetchProjectSlackChannelsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
+import { ProjectSlackChannelResultType } from '../../consts';
+
 interface Props {
-  ctx: CellContext<ProjectSlackType, unknown>;
+  ctx: CellContext<ProjectSlackChannelResultType, unknown>;
 }
 
 export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  const { type, channelUrl, channelId } = ctx.row.original;
+  const { template, channelUrl, channelId } = ctx.row.original;
 
   const [createProjectSlackChannel, { loading }] = useCreateProjectSlackChannelMutation();
 
@@ -28,7 +29,7 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
       toast.promise(
         createProjectSlackChannel({
           variables: {
-            input: { projectId, channelType: { name: type?.name ?? '' } },
+            input: { projectId, channelTemplate: { prefix: template?.prefix ?? '' } },
           },
           refetchQueries: [FetchProjectSlackChannelsDocument],
         }),
@@ -41,7 +42,7 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
           },
         },
       );
-  }, [channelUrl, createProjectSlackChannel, projectId, type?.name]);
+  }, [channelUrl, createProjectSlackChannel, projectId, template?.prefix]);
 
   return (
     <Button
