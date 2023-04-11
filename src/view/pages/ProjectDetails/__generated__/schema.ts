@@ -30,7 +30,6 @@ export type FetchProjectInfoQuery = {
     id: number;
     name: string;
     createdAt: string;
-    status?: Types.StatusEnum | null;
     startDate?: string | null;
     endDate?: string | null;
     phase?: Types.ProjectPhaseChoice | null;
@@ -38,6 +37,7 @@ export type FetchProjectInfoQuery = {
     roadmap?: string | null;
     notes?: string | null;
     createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
+    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -47,7 +47,7 @@ export type FetchProjectInfoQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
   };
 };
 
@@ -405,7 +405,10 @@ export const FetchProjectInfoDocument = gql`
       createdBy {
         fullName
       }
-      status
+      status {
+        id
+        name
+      }
       startDate
       endDate
       phase

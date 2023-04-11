@@ -2,11 +2,8 @@ import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { PROJECT_STATUS_BADGES } from '~/constants/projectStatusBadges';
 import { ROUTES } from '~/constants/routes';
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { Badge } from '~/view/ui/components/common/Badge';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { UserProjectsListResultType } from './types';
@@ -39,10 +36,7 @@ export const USERS_PROJECTS_TABLE_COLUMNS = [
     id: 'status',
     header: 'Status',
     cell: props => {
-      const value = convertUppercaseToReadable(props.getValue() ?? StatusEnum.WAITING);
-      return (
-        <Badge color={PROJECT_STATUS_BADGES[props.getValue() ?? StatusEnum.WAITING]}>{value}</Badge>
-      );
+      return props.getValue() && <Badge color={BadgeColor.BLUE}>{props.getValue()?.name}</Badge>;
     },
   }),
 ];

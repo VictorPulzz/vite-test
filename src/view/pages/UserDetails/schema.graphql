@@ -29,7 +29,10 @@ query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
       project {
         id
         name
-        status
+        status {
+          id
+          name
+        }
       }
       currentTeam
     }

@@ -3,10 +3,7 @@ import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { PROJECT_STATUS_BADGES } from '~/constants/projectStatusBadges';
 import { ROUTES } from '~/constants/routes';
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
@@ -56,10 +53,7 @@ export const PROJECTS_TABLE_COLUMNS = [
     id: 'status',
     header: 'Status',
     cell: props => {
-      const value = convertUppercaseToReadable(props.getValue() ?? StatusEnum.WAITING);
-      return (
-        <Badge color={PROJECT_STATUS_BADGES[props.getValue() ?? StatusEnum.WAITING]}>{value}</Badge>
-      );
+      return props.getValue() && <Badge color={BadgeColor.BLUE}>{props.getValue()?.name}</Badge>;
     },
   }),
   columnHelper.accessor('platforms', {

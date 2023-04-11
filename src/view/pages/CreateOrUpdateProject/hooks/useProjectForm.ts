@@ -10,11 +10,7 @@ import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
 import { ROUTES } from '~/constants/routes';
-import {
-  DocumentTemplateType,
-  ProjectPhaseChoice,
-  StatusEnum,
-} from '~/services/gql/__generated__/globalTypes';
+import { DocumentTemplateType, ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
@@ -32,7 +28,7 @@ const formSchema = z
   .object({
     name: z.string().refine(value => value !== '', formErrors.REQUIRED),
     phase: z.nativeEnum(ProjectPhaseChoice),
-    status: z.nativeEnum(StatusEnum),
+    status: z.number().nullable(),
     hoursEstimated: z.string().and(numberValidation),
     platforms: z.array(z.number()),
     startDate: z.date().nullable(),
@@ -106,7 +102,7 @@ interface UseProjectFormProps {
 const defaultValues: ProjectFormValues = {
   name: '',
   phase: ProjectPhaseChoice.PRE_SIGNED,
-  status: StatusEnum.WAITING,
+  status: null,
   hoursEstimated: '',
   platforms: [],
   startDate: null,
@@ -134,12 +130,12 @@ export function useProjectForm({
   const navigate = useNavigate();
 
   useEffect(() => {
-    const templatesIds = templates?.map(template => template.id);
-    const templateFields = templates?.map(template =>
-      template?.fields?.map(field => ({ value: '', name: field.name })),
-    );
-    const documentTemplateList = templateFields?.map((i, index) => {
-      return { isOpen: false, templateId: templatesIds[index], templateFields: i };
+    const documentTemplateList = templates?.map(template => {
+      return {
+        isOpen: false,
+        templateId: template.id,
+        templateFields: template?.fields?.map(field => ({ value: '', name: field.name })),
+      };
     });
 
     form.setValue('documentTemplate', documentTemplateList as []);
@@ -161,7 +157,7 @@ export function useProjectForm({
                 name: values.name,
                 hoursEstimated: +values.hoursEstimated,
                 platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
-                status: values.status,
+                statusId: values.status,
                 startDate: values.startDate
                   ? formatISO(values.startDate, { representation: 'date' })
                   : null,
@@ -190,7 +186,7 @@ export function useProjectForm({
                 name: values.name,
                 hoursEstimated: +values.hoursEstimated,
                 platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
-                status: values.status,
+                statusId: values.status,
                 notes: values.notes,
                 phase: ProjectPhaseChoice.PRE_SIGNED,
                 clientTeam: values.clientTeam ?? [],

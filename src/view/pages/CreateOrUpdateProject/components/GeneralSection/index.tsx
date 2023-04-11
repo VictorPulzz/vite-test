@@ -1,25 +1,31 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { ProjectFormValues } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
 import { DateField } from '~/view/ui/components/form/DateField';
 import { InlineFields } from '~/view/ui/components/form/InlineFields';
-import { SelectField } from '~/view/ui/components/form/SelectField';
+import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
 import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 import { TextField } from '~/view/ui/components/form/TextField';
+import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
-import { useFetchPlatformsListQuery } from '../../__generated__/schema';
+import {
+  useFetchPlatformsListQuery,
+  useFetchProjectStatusesListQuery,
+} from '../../__generated__/schema';
 
 interface Props {
   projectId?: number;
 }
 
+const DEFAULT_STATUS_ID = 1;
+
 export const GeneralSection: FC<Props> = ({ projectId }) => {
-  const { control, watch } = useFormContext<ProjectFormValues>();
+  const { control, watch, setValue } = useFormContext<ProjectFormValues>();
 
   const { data: platforms } = useFetchPlatformsListQuery({
     variables: {
@@ -27,9 +33,29 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
     },
     fetchPolicy: 'cache-and-network',
   });
+  const { data: statuses } = useFetchProjectStatusesListQuery({
+    variables: {
+      pagination: { limit: 0 },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const platformsOptions = useMemo(() => platforms?.platformList.results ?? [], [platforms]);
-  const statusOptions = [...enumToSelectOptions(StatusEnum)];
+  useEffect(() => {
+    if (statuses?.projectStatusesList.results) {
+      setValue('status', DEFAULT_STATUS_ID);
+    }
+  }, [setValue, statuses?.projectStatusesList.results]);
+
+  const platformsOptions = useSelectOptions(platforms?.platformList.results, {
+    value: 'value',
+    label: 'label',
+  }) as SelectOption<number>[];
+
+  const statusesOptions = useSelectOptions(statuses?.projectStatusesList.results, {
+    value: 'value',
+    label: 'label',
+  }) as SelectOption<number>[];
+
   const phasesOptions = [...enumToSelectOptions(ProjectPhaseChoice)];
 
   return (
@@ -47,7 +73,7 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
             label="Platform"
             isMulti
           />
-          <SelectField name="status" options={statusOptions} control={control} label="Status" />
+          <SelectField name="status" options={statusesOptions} control={control} label="Status" />
         </InlineFields>
       </InlineFields>
       {!!projectId && (

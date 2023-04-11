@@ -6,17 +6,18 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
-import { ProjectFilter, StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { SearchInput } from '~/view/ui/components/common/SearchInput';
 import { Table } from '~/view/ui/components/common/Table';
 import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { Select } from '~/view/ui/components/form/Select';
+import { Select, SelectOption } from '~/view/ui/components/form/Select';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
+import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
+import { useFetchProjectStatusesListQuery } from '../CreateOrUpdateProject/__generated__/schema';
 import { useFetchProjectsQuery } from './__generated__/schema';
 import { PROJECTS_TABLE_COLUMNS, PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
 
@@ -25,7 +26,7 @@ export const ProjectsPage: FC = () => {
   const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
-  const { searchValue, setSearchValue, offset, setOffset, setFilter, filter } =
+  const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
     useListQueryParams<ProjectFilter>();
 
   const { data, loading, fetchMore } = useFetchProjectsQuery({
@@ -41,13 +42,24 @@ export const ProjectsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const statusOptions = [ALL_SELECT_OPTION, ...enumToSelectOptions(StatusEnum)];
+  const { data: statuses } = useFetchProjectStatusesListQuery({
+    variables: {
+      pagination: { limit: 0 },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const prepeareStatusesOptions = useSelectOptions(statuses?.projectStatusesList.results, {
+    value: 'value',
+    label: 'label',
+  }) as SelectOption<number>[];
+
+  const statusOptions = [ALL_SELECT_OPTION, ...prepeareStatusesOptions];
 
   return (
     <SidebarLayout contentClassName="p-6">
       {canReadProjectsList ? (
         <>
-          {' '}
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-h4">Projects</h1>
@@ -74,9 +86,9 @@ export const ProjectsPage: FC = () => {
             <Select
               className="w-40"
               options={statusOptions}
-              value={filter?.status}
+              value={filter?.statusId}
               placeholder="Status"
-              onChange={value => setFilter({ status: value })}
+              onChange={value => setFilter({ statusId: value })}
             />
           </div>
           {loading && <TableLoader className="mt-10" />}

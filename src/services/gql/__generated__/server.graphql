@@ -174,6 +174,11 @@ input IDInput {
   id: Int!
 }
 
+input IDNameInput {
+  id: Int = null
+  name: String!
+}
+
 type ImageType {
   fileName: String!
   size: Int!
@@ -291,10 +296,6 @@ type Mutation {
   """
   projectAddSlackChannel(data: ProjectSlackInput!): ProjectSlackType!
   """
-  Project change status
-  """
-  projectChangeStatus(data: ProjectStatusInput!): ProjectType!
-  """
   Project creation
   """
   projectCreate(data: ProjectCreateInput!): ProjectType!
@@ -323,9 +324,17 @@ type Mutation {
   """
   projectIntegrationDelete(data: IDInput!): MessageType!
   """
+  Project status creation/updating by id
+  """
+  projectStatusCreateUpdate(data: IDNameInput!): ProjectStatusType!
+  """
+  Project status deletion by id
+  """
+  projectStatusDelete(data: IDInput!): MessageType!
+  """
   Project update
   """
-  projectUpdate(data: ProjectCreateInput!): ProjectType!
+  projectUpdate(data: ProjectUpdateInput!): ProjectType!
   """
   Repository creation
   """
@@ -349,11 +358,11 @@ type Mutation {
   """
   Create requests
   """
-  requestCreate(data: RequestInput!): RequestType!
+  requestCreate(data: RequestCreateInput!): RequestType!
   """
-  Update request status
+  Update request
   """
-  requestUpdateStatus(data: RequestUpdateStatusInput!): RequestType!
+  requestUpdate(data: RequestUpdateInput!): RequestType!
   """
   Reset password
   """
@@ -440,7 +449,7 @@ type PermissionType {
 }
 
 type PlatformType {
-  id: Int!
+  id: Int
   name: String!
 }
 
@@ -485,7 +494,7 @@ input ProjectCreateInput {
   platforms: [Int!]
   roadmap: String = null
   startDate: Date = null
-  status: StatusEnum = null
+  statusId: Int = null
 }
 
 enum ProjectEnvironmentChoice {
@@ -511,7 +520,7 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
-  status: StatusEnum = null
+  statusId: Int = null
 }
 
 input ProjectIntegrationInput {
@@ -589,9 +598,16 @@ type ProjectSlackType {
   template: SlackChannelTemplateType
 }
 
-input ProjectStatusInput {
-  id: Int!
-  status: StatusEnum!
+type ProjectStatusType {
+  id: Int
+  name: String!
+}
+
+type ProjectStatusTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectStatusType!]!
 }
 
 type ProjectType {
@@ -613,7 +629,7 @@ type ProjectType {
   roadmap: String
   slackChannels: [ProjectSlackType!]
   startDate: Date
-  status: StatusEnum
+  status: ProjectStatusType
 }
 
 type ProjectTypePagination {
@@ -621,6 +637,21 @@ type ProjectTypePagination {
   limit: Int!
   offset: Int!
   results: [ProjectType!]!
+}
+
+input ProjectUpdateInput {
+  clientTeam: [ClientInput!] = null
+  design: String = null
+  endDate: Date = null
+  hoursEstimated: Int = null
+  id: Int = null
+  name: String = null
+  notes: String = null
+  phase: ProjectPhaseChoice = null
+  platforms: [Int!]
+  roadmap: String = null
+  startDate: Date = null
+  statusId: Int = null
 }
 
 type Query {
@@ -690,6 +721,10 @@ type Query {
   """
   projectRepositoryList(data: IDInput!): [RepositoryType!]!
   """
+  Getting project's statuses list
+  """
+  projectStatusesList(pagination: PaginationInput!): ProjectStatusTypePagination!
+  """
   Getting list of projects
   """
   projectsList(
@@ -724,6 +759,10 @@ type Query {
   Getting list of users' roles
   """
   rolesList: [RoleType!]!
+  """
+  Getting Slack channel template by id
+  """
+  slackTemplate(data: IDInput!): SlackChannelTemplateType!
   """
   Getting Slack channel templates list
   """
@@ -858,18 +897,22 @@ input RepositoryUpdateInput {
   name: String = null
 }
 
+input RequestCreateInput {
+  accessLevel: String = null
+  assignedRoleId: Int!
+  assignedToId: Int = null
+  description: String = null
+  dueDate: Date = null
+  projectId: Int = null
+  repositoryId: Int = null
+  type: RequestTypeChoice!
+}
+
 input RequestFilter {
   createdById: Int = null
   projectId: Int = null
   status: RequestStatusChoice = null
-  type: String = null
-}
-
-input RequestInput {
-  projectId: Int = null
-  repositories: [Int!]
-  roleId: Int!
-  type: String!
+  type: RequestTypeChoice = null
 }
 
 enum RequestStatusChoice {
@@ -878,14 +921,26 @@ enum RequestStatusChoice {
 }
 
 type RequestType {
+  accessLevel: String
+  assignedRole: RoleType!
+  assignedTo: UserType
   createdAt: DateTime!
   createdBy: UserType!
+  description: String
+  dueDate: Date
   id: Int!
   project: ProjectType
-  repositories: [RepositoryType!]
-  role: RoleType!
+  repository: RepositoryType
   status: RequestStatusChoice!
-  type: String!
+  type: RequestTypeChoice!
+}
+
+enum RequestTypeChoice {
+  ACCESS_PROJECT
+  ACCESS_REPOSITORY
+  CREATION_ENVIRONMENT
+  CREATION_INTEGRATION
+  CREATION_REPOSITORY
 }
 
 type RequestTypePagination {
@@ -895,9 +950,11 @@ type RequestTypePagination {
   results: [RequestType!]!
 }
 
-input RequestUpdateStatusInput {
+input RequestUpdateInput {
+  dueDate: Date = null
   id: Int!
-  status: RequestStatusChoice!
+  ssignedRoleId: Int = null
+  status: RequestStatusChoice = null
 }
 
 input ResetPasswordInput {
@@ -913,32 +970,20 @@ type RoleType {
   permissionsList: [String!]!
 }
 
-enum SlackChannelAccessibilityEnum {
-  PRIVATE
-  PUBLIC
-}
-
 input SlackChannelTemplateInput {
-  accessibility: SlackChannelAccessibilityEnum = null
   id: Int = null
   initialUsers: [Int!]
+  isPrivate: Boolean = null
   label: String = null
   prefix: String = null
 }
 
 type SlackChannelTemplateType {
-  accessibility: String
   id: Int!
   initialUsers: [UserType!]
+  isPrivate: Boolean
   label: String
   prefix: String!
-}
-
-enum StatusEnum {
-  BLOCKED
-  IN_PROGRESS
-  STOPPED
-  WAITING
 }
 
 type TechnologyType {

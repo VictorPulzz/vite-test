@@ -44,7 +44,7 @@ export type FetchUserProjectsListQuery = {
         __typename?: 'ProjectType';
         id: number;
         name: string;
-        status?: Types.StatusEnum | null;
+        status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
       };
     }>;
   };
@@ -147,7 +147,10 @@ export const FetchUserProjectsListDocument = gql`
         project {
           id
           name
-          status
+          status {
+            id
+            name
+          }
         }
         currentTeam
       }
