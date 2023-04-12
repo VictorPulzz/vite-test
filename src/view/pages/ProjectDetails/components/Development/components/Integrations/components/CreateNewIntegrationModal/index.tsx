@@ -2,16 +2,16 @@ import { nanoid } from '@reduxjs/toolkit';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
 import { InlineFields } from '@ui/components/form/InlineFields';
-import { PasswordField } from '@ui/components/form/PasswordField';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useCreateNewIntegrationForm } from '~/view/pages/ProjectDetails/hooks/useCreateNewIntegrationForm';
 import { Icon } from '~/view/ui/components/common/Icon';
 import { SelectField } from '~/view/ui/components/form/SelectField';
+
+import { useCreateNewIntegrationForm } from './hooks/useCreateNewIntegrationForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
@@ -54,7 +54,7 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
         </InlineFields>
         <InlineFields>
           <TextField name="credential.login" control={control} label="Login" />
-          <PasswordField name="credential.password" control={control} label="Password" />
+          <TextField name="credential.password" control={control} label="Password" />
         </InlineFields>
         <TextField name="credential.url" control={control} label="Account url" />
       </div>

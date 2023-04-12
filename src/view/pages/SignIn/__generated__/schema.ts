@@ -20,6 +20,7 @@ export type SignInMutation = {
       email: string;
       fullName?: string | null;
       photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
+      role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
     };
   };
 };
@@ -37,6 +38,10 @@ export const SignInDocument = gql`
           fileName
           size
           url
+        }
+        role {
+          name
+          permissionsList
         }
       }
     }

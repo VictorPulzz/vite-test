@@ -64,3 +64,23 @@ export const USERS_TABLE_COLUMNS = [
     },
   }),
 ];
+
+export const USERS_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('fullName', {
+    id: 'fullName',
+    header: 'Name',
+    cell: ({
+      row: {
+        original: { photo, fullName },
+      },
+    }) => {
+      return (
+        <div className="flex gap-3 items-center">
+          <Avatar uri={photo?.url || photoPlaceholder} size={26} />
+          <span> {fullName}</span>
+        </div>
+      );
+    },
+  }),
+  ...USERS_TABLE_COLUMNS.slice(1, USERS_TABLE_COLUMNS.length),
+];

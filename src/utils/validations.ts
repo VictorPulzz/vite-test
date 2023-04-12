@@ -32,7 +32,3 @@ export const phoneNumberValidation = z
 export const numberValidation = z
   .string()
   .refine(value => value === '' || !Number.isNaN(+value), formErrors.SHOULD_BE_NUMBER);
-
-export const zipCodeValidation = z.string().refine(value => {
-  return /^[0-9A-z\s-]+$/.test(value);
-}, formErrors.INVALID_ZIP_CODE);

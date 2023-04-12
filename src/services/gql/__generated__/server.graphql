@@ -84,6 +84,7 @@ input DocumentFilter {
   categoryId: Int = null
   internal: Boolean = null
   projectId: Int = null
+  userId: Int = null
 }
 
 input DocumentGenerateFieldInput {
@@ -94,8 +95,10 @@ input DocumentGenerateFieldInput {
 input DocumentGenerateInput {
   categoryId: Int = null
   fields: [DocumentGenerateFieldInput!] = null
+  internal: Boolean = null
   projectId: Int = null
   templateId: Int!
+  userId: Int = null
 }
 
 input DocumentInput {
@@ -104,6 +107,7 @@ input DocumentInput {
   id: Int = null
   internal: Boolean = null
   projectId: Int = null
+  userId: Int = null
 }
 
 enum DocumentSort {
@@ -135,6 +139,7 @@ type DocumentType {
   id: Int!
   internal: Boolean!
   project: ProjectType
+  user: UserType
 }
 
 type DocumentTypePagination {
@@ -167,6 +172,11 @@ type ForgotPasswordType {
 
 input IDInput {
   id: Int!
+}
+
+input IDNameInput {
+  id: Int = null
+  name: String!
 }
 
 type ImageType {
@@ -282,13 +292,13 @@ type Mutation {
   """
   projectAddMember(data: ProjectMemberInput!): ProjectMemberType!
   """
-  Project change status
+  Project add slack
   """
-  projectChangeStatus(data: ProjectStatusInput!): ProjectType!
+  projectAddSlackChannel(data: ProjectSlackInput!): ProjectSlackType!
   """
   Project creation
   """
-  projectCreateUpdate(data: ProjectCreateInput!): ProjectType!
+  projectCreate(data: ProjectCreateInput!): ProjectType!
   """
   Project deletion
   """
@@ -314,6 +324,18 @@ type Mutation {
   """
   projectIntegrationDelete(data: IDInput!): MessageType!
   """
+  Project status creation/updating by id
+  """
+  projectStatusCreateUpdate(data: IDNameInput!): ProjectStatusType!
+  """
+  Project status deletion by id
+  """
+  projectStatusDelete(data: IDInput!): MessageType!
+  """
+  Project update
+  """
+  projectUpdate(data: ProjectUpdateInput!): ProjectType!
+  """
   Repository creation
   """
   repositoryCreate(data: RepositoryCreateInput!): RepositoryType!
@@ -336,19 +358,35 @@ type Mutation {
   """
   Create requests
   """
-  requestCreate(data: RequestInput!): RequestType!
+  requestCreate(data: RequestCreateInput!): RequestType!
   """
-  Update request status
+  Update request
   """
-  requestUpdateStatus(data: RequestUpdateStatusInput!): RequestType!
+  requestUpdate(data: RequestUpdateInput!): RequestType!
   """
   Reset password
   """
   resetPassword(data: ResetPasswordInput!): MessageType!
   """
+  Repository's secrets creation/updating
+  """
+  secretsAddUpdate(data: RepositorySecretsInput!): MessageType!
+  """
   User creation
   """
   signup(data: LoginInput!): MessageType!
+  """
+  Create Slack channel template
+  """
+  slackTemplateCreate(data: SlackChannelTemplateInput!): SlackChannelTemplateType!
+  """
+  Delete Slack channel template
+  """
+  slackTemplateDelete(data: IDInput!): MessageType!
+  """
+  Update Slack channel template
+  """
+  slackTemplateUpdate(data: SlackChannelTemplateInput!): SlackChannelTemplateType!
   """
   Refreshing of tokens
   """
@@ -357,6 +395,10 @@ type Mutation {
   Change user status
   """
   userChangeStatus(data: ActiveInput!): UserType!
+  """
+  Connect user with bitbucket
+  """
+  userConnectBitbucket(data: IDInput!): UserType!
   """
   User create or updating
   """
@@ -407,7 +449,7 @@ type PermissionType {
 }
 
 type PlatformType {
-  id: Int!
+  id: Int
   name: String!
 }
 
@@ -445,14 +487,13 @@ input ProjectCreateInput {
   design: String = null
   endDate: Date = null
   hoursEstimated: Int = null
-  id: Int = null
   name: String!
   notes: String = null
-  phase: ProjectPhaseChoice!
+  phase: ProjectPhaseChoice = null
   platforms: [Int!]
   roadmap: String = null
-  startDate: Date!
-  status: StatusEnum
+  startDate: Date = null
+  statusId: Int = null
 }
 
 enum ProjectEnvironmentChoice {
@@ -478,7 +519,7 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
-  status: StatusEnum = null
+  statusId: Int = null
 }
 
 input ProjectIntegrationInput {
@@ -512,7 +553,9 @@ type ProjectMemberListType {
 
 type ProjectMemberType {
   currentTeam: Boolean!
+  endDate: DateTime
   project: ProjectType!
+  startDate: DateTime!
   user: UserType!
 }
 
@@ -533,9 +576,37 @@ enum ProjectPhaseChoice {
   SUPPORT
 }
 
-input ProjectStatusInput {
+type ProjectPreviewType {
+  createdAt: DateTime!
+  createdBy: UserType
   id: Int!
-  status: StatusEnum!
+  name: String!
+}
+
+input ProjectSlackInput {
+  channelId: String = null
+  channelTemplate: SlackChannelTemplateInput!
+  projectId: Int!
+}
+
+type ProjectSlackType {
+  channelId: String
+  channelTemplate: String
+  channelUrl: String
+  createdAt: DateTime!
+  template: SlackChannelTemplateType
+}
+
+type ProjectStatusType {
+  id: Int
+  name: String!
+}
+
+type ProjectStatusTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectStatusType!]!
 }
 
 type ProjectType {
@@ -552,11 +623,12 @@ type ProjectType {
   id: Int!
   name: String!
   notes: String
-  phase: ProjectPhaseChoice!
+  phase: ProjectPhaseChoice
   platforms: [PlatformType!]
   roadmap: String
-  startDate: Date!
-  status: StatusEnum
+  slackChannels: [ProjectSlackType!]
+  startDate: Date
+  status: ProjectStatusType
 }
 
 type ProjectTypePagination {
@@ -564,6 +636,21 @@ type ProjectTypePagination {
   limit: Int!
   offset: Int!
   results: [ProjectType!]!
+}
+
+input ProjectUpdateInput {
+  clientTeam: [ClientInput!] = null
+  design: String = null
+  endDate: Date = null
+  hoursEstimated: Int = null
+  id: Int = null
+  name: String = null
+  notes: String = null
+  phase: ProjectPhaseChoice = null
+  platforms: [Int!]
+  roadmap: String = null
+  startDate: Date = null
+  statusId: Int = null
 }
 
 type Query {
@@ -621,13 +708,21 @@ type Query {
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
   """
-  Getting member for project by id
+  Getting members for project by id
   """
   projectMemberList(data: IDInput!): ProjectMemberListType!
+  """
+  Getting project preview by id
+  """
+  projectPreview(data: IDInput!): ProjectPreviewType!
   """
   Getting repositories for project by id
   """
   projectRepositoryList(data: IDInput!): [RepositoryType!]!
+  """
+  Getting project's statuses list
+  """
+  projectStatusesList(pagination: PaginationInput!): ProjectStatusTypePagination!
   """
   Getting list of projects
   """
@@ -663,6 +758,14 @@ type Query {
   Getting list of users' roles
   """
   rolesList: [RoleType!]!
+  """
+  Getting Slack channel template by id
+  """
+  slackTemplate(data: IDInput!): SlackChannelTemplateType!
+  """
+  Getting Slack channel templates list
+  """
+  slackTemplateList: [SlackChannelTemplateType!]!
   """
   Getting technologies list
   """
@@ -751,6 +854,13 @@ enum RepositoryPlatformChoice {
   MOBILE
 }
 
+input RepositorySecretsInput {
+  environment: ProjectEnvironmentChoice!
+  key: String!
+  repositoryId: Int!
+  value: String = ""
+}
+
 type RepositoryType {
   boilerplate: BoilerplateType
   createdAt: DateTime!
@@ -786,18 +896,22 @@ input RepositoryUpdateInput {
   name: String = null
 }
 
+input RequestCreateInput {
+  accessLevel: String = null
+  assignedRoleId: Int!
+  assignedToId: Int = null
+  description: String = null
+  dueDate: Date = null
+  projectId: Int = null
+  repositoryId: Int = null
+  type: RequestTypeChoice!
+}
+
 input RequestFilter {
   createdById: Int = null
   projectId: Int = null
   status: RequestStatusChoice = null
-  type: String = null
-}
-
-input RequestInput {
-  projectId: Int = null
-  repositories: [Int!]
-  roleId: Int!
-  type: String!
+  type: RequestTypeChoice = null
 }
 
 enum RequestStatusChoice {
@@ -806,14 +920,26 @@ enum RequestStatusChoice {
 }
 
 type RequestType {
+  accessLevel: String
+  assignedRole: RoleType!
+  assignedTo: UserType
   createdAt: DateTime!
   createdBy: UserType!
+  description: String
+  dueDate: Date
   id: Int!
   project: ProjectType
-  repositories: [RepositoryType!]
-  role: RoleType!
+  repository: RepositoryType
   status: RequestStatusChoice!
-  type: String!
+  type: RequestTypeChoice!
+}
+
+enum RequestTypeChoice {
+  ACCESS_PROJECT
+  ACCESS_REPOSITORY
+  CREATION_ENVIRONMENT
+  CREATION_INTEGRATION
+  CREATION_REPOSITORY
 }
 
 type RequestTypePagination {
@@ -823,9 +949,11 @@ type RequestTypePagination {
   results: [RequestType!]!
 }
 
-input RequestUpdateStatusInput {
+input RequestUpdateInput {
+  dueDate: Date = null
   id: Int!
-  status: RequestStatusChoice!
+  ssignedRoleId: Int = null
+  status: RequestStatusChoice = null
 }
 
 input ResetPasswordInput {
@@ -834,17 +962,27 @@ input ResetPasswordInput {
 }
 
 type RoleType {
+  color: String
   id: Int!
   name: String!
   permissions: [PermissionType!]!
   permissionsList: [String!]!
 }
 
-enum StatusEnum {
-  BLOCKED
-  IN_PROGRESS
-  STOPPED
-  WAITING
+input SlackChannelTemplateInput {
+  id: Int = null
+  initialUsers: [Int!]
+  isPrivate: Boolean = null
+  label: String = null
+  prefix: String = null
+}
+
+type SlackChannelTemplateType {
+  id: Int!
+  initialUsers: [UserType!]
+  isPrivate: Boolean
+  label: String
+  prefix: String!
 }
 
 type TechnologyType {
@@ -886,6 +1024,7 @@ input UserInput {
 type UserType {
   address: String
   birthDate: Date
+  bitbucketId: String
   contractType: ContractChoice
   department: DepartmentType
   email: String!

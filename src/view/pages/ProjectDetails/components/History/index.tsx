@@ -1,9 +1,11 @@
 import React, { FC, useEffect, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
+import { Permission } from '~/constants/permissions';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import {
   useFetchAllUsersQuery,
   useFetchHistoryLogsQuery,
@@ -14,13 +16,15 @@ import { TableLoader } from '~/view/ui/components/common/TableLoader';
 import { Select } from '~/view/ui/components/form/Select';
 import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
-import { HISTORY_TABLE_COLUMNS } from './consts';
+import { HISTORY_TABLE_COLUMNS, HISTORY_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
 
 interface Props {
   projectId: number;
 }
 
 export const History: FC<Props> = ({ projectId }) => {
+  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
   const { data } = useFetchAllUsersQuery({
@@ -81,7 +85,9 @@ export const History: FC<Props> = ({ projectId }) => {
           <Table
             className="mt-4"
             data={tableData.logList.results}
-            columns={HISTORY_TABLE_COLUMNS}
+            columns={
+              canReadUserDetails ? HISTORY_TABLE_COLUMNS : HISTORY_TABLE_COLUMNS_NO_USER_DETAILS
+            }
             setOffset={setOffset}
             offset={offset}
             fetchMore={fetchMore}

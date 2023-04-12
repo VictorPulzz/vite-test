@@ -17,6 +17,7 @@ export type FetchRepositoryDetailsQuery = {
     createdAt: string;
     gitUrl?: string | null;
     gitTerraformUrl?: string | null;
+    type?: Types.RepositoryTypeChoice | null;
     project: { __typename?: 'ProjectType'; name: string };
     technologies?: Array<{ __typename?: 'TechnologyType'; id: number; name: string }> | null;
   };
@@ -86,6 +87,7 @@ export const FetchRepositoryDetailsDocument = gql`
       createdAt
       gitUrl
       gitTerraformUrl
+      type
       technologies {
         id
         name

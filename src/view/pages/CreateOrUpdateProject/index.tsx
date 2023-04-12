@@ -8,13 +8,13 @@ import { ROUTES } from '~/constants/routes';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { useProjectForm } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
 import { Loader } from '~/view/ui/components/common/Loader';
 
 import { useFetchDocumentTemplateListQuery, useFetchProjectQuery } from './__generated__/schema';
 import { ClientTeamSection } from './components/ClientTeamSection';
 import { GeneralSection } from './components/GeneralSection';
 import { GenerateDocumentsSection } from './components/GenerateDocumentsSection';
+import { useProjectForm } from './hooks/useProjectForm';
 
 export const CreateOrUpdateProject: FC = () => {
   const params = useParams<ExtractRouteParams<typeof ROUTES.EDIT_PROJECT, string>>();
@@ -41,7 +41,7 @@ export const CreateOrUpdateProject: FC = () => {
       <SidebarLayout>
         <DetailLayout
           title={`${projectId ? 'Edit' : 'New'} project`}
-          contentClassName="my-4 mx-6"
+          contentClassName="my-4 mx-6 flex-auto"
           rightHeaderElement={
             <Button
               variant={ButtonVariant.PRIMARY}
@@ -52,10 +52,14 @@ export const CreateOrUpdateProject: FC = () => {
             />
           }
         >
-          {loading && <Loader full colorful />}
+          {loading && (
+            <div className="flex h-full items-center">
+              <Loader full colorful />
+            </div>
+          )}
           {!loading && (
             <div className="flex flex-col gap-4">
-              <GeneralSection />
+              <GeneralSection projectId={projectId} />
               {!projectId && documentTemplates?.documentTemplateList.length !== 0 && (
                 <GenerateDocumentsSection
                   templates={documentTemplates?.documentTemplateList as DocumentTemplateType[]}

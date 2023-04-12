@@ -1,7 +1,9 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
 import React, { FC } from 'react';
 
+import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { FetchProjectIntegrationsListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
@@ -14,6 +16,8 @@ interface Props {
 }
 
 export const DevelopmentIntegrations: FC<Props> = ({ integrations }) => {
+  const canCreateProjectIntegrations = useHasAccess(Permission.CREATE_PROJECT_INTEGRATIONS);
+
   const {
     value: isCreateNewIntegrationModalOpen,
     on: openCreateNewIntegrationModal,
@@ -27,12 +31,14 @@ export const DevelopmentIntegrations: FC<Props> = ({ integrations }) => {
           <EmptyState iconName="repositories" label="No integrations here yet" />
         )}
         {!!integrations.length && <IntegrationsList integrations={integrations} />}
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Create new integration"
-          className="mt-6 w-[180px]"
-          onClick={openCreateNewIntegrationModal}
-        />
+        {canCreateProjectIntegrations && (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Create new integration"
+            className="mt-6 w-[180px]"
+            onClick={openCreateNewIntegrationModal}
+          />
+        )}
       </SectionContainer>
       <CreateNewIntegrationModal
         isOpen={isCreateNewIntegrationModalOpen}

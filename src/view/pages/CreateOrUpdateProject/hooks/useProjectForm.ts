@@ -10,39 +10,29 @@ import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
 import { ROUTES } from '~/constants/routes';
-import {
-  DocumentTemplateType,
-  ProjectPhaseChoice,
-  StatusEnum,
-} from '~/services/gql/__generated__/globalTypes';
+import { DocumentTemplateType, ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
+import { FetchProjectPreviewDocument } from '../../ProjectDetails/__generated__/schema';
 import {
   FetchProjectDocument,
   FetchProjectQuery,
-  useCreateOrUpdateProjectMutation,
+  useCreateProjectMutation,
   useDocumentGenerateMutation,
+  useUpdateProjectMutation,
 } from '../__generated__/schema';
 
 const formSchema = z
   .object({
     name: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    phase: z.string(),
-    hoursEstimated: z
-      .string()
-      .refine(value => value !== '', formErrors.REQUIRED)
-      .and(numberValidation),
-    platforms: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
-    startDate: z
-      .date()
-      .nullable()
-      .refine(value => value !== null, formErrors.REQUIRED),
-    endDate: z
-      .date()
-      .nullable()
-      .refine(value => value !== null, formErrors.REQUIRED),
+    phase: z.nativeEnum(ProjectPhaseChoice),
+    status: z.number().nullable(),
+    hoursEstimated: z.string().and(numberValidation),
+    platforms: z.array(z.number()),
+    startDate: z.date().nullable(),
+    endDate: z.date().nullable(),
     design: z.string(),
     roadmap: z.string(),
     notes: z.string(),
@@ -111,7 +101,8 @@ interface UseProjectFormProps {
 
 const defaultValues: ProjectFormValues = {
   name: '',
-  phase: '',
+  phase: ProjectPhaseChoice.PRE_SIGNED,
+  status: null,
   hoursEstimated: '',
   platforms: [],
   startDate: null,
@@ -134,68 +125,86 @@ export function useProjectForm({
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
+
+  const isEditMode = !!id;
   const navigate = useNavigate();
 
-  const templatesIds = useMemo(() => templates?.map(template => template.id), [templates]);
-
-  const templateFields = useMemo(
-    () =>
-      templates?.map(template => template?.fields?.map(field => ({ value: '', name: field.name }))),
-    [templates],
-  );
-
-  const documentTemplateList = useMemo(
-    () =>
-      templateFields?.map((i, index) => {
-        return { isOpen: false, templateId: templatesIds[index], templateFields: i };
-      }),
-    [templateFields, templatesIds],
-  );
-
   useEffect(() => {
-    form.setValue('documentTemplate', documentTemplateList as []);
-  }, [documentTemplateList, form]);
+    const documentTemplateList = templates?.map(template => {
+      return {
+        isOpen: false,
+        templateId: template.id,
+        templateFields: template?.fields?.map(field => ({ value: '', name: field.name })),
+      };
+    });
 
-  const [projectCreateUpdate, { loading: loadingProjectCreateUpdate }] =
-    useCreateOrUpdateProjectMutation();
+    form.setValue('documentTemplate', documentTemplateList as []);
+  }, [form, templates]);
+
+  const [projectCreate, { loading: loadingProjectCreate }] = useCreateProjectMutation();
+  const [projectUpdate, { loading: loadingProjectUpdate }] = useUpdateProjectMutation();
 
   const [documentGenerate] = useDocumentGenerateMutation();
 
   const handleSubmit = useCallback(
-    (values: ProjectFormValues) => {
+    async (values: ProjectFormValues) => {
       try {
-        projectCreateUpdate({
-          variables: {
-            input: {
-              id,
-              name: values.name,
-              hoursEstimated: +values.hoursEstimated,
-              platforms: !isNil(values.platforms) ? (values.platforms as number[]) : undefined,
-              startDate: values.startDate
-                ? formatISO(values.startDate, { representation: 'date' })
-                : '',
-              endDate: values.endDate ? formatISO(values.endDate, { representation: 'date' }) : '',
-              design: values.design,
-              roadmap: values.roadmap,
-              notes: values.notes,
-              phase: ProjectPhaseChoice.PRE_SIGNED,
-              status: StatusEnum.IN_PROGRESS,
-              clientTeam: values.clientTeam ?? [],
+        if (isEditMode) {
+          await projectUpdate({
+            variables: {
+              input: {
+                id,
+                name: values.name,
+                hoursEstimated: +values.hoursEstimated,
+                platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
+                statusId: values.status,
+                startDate: values.startDate
+                  ? formatISO(values.startDate, { representation: 'date' })
+                  : null,
+                endDate: values.endDate
+                  ? formatISO(values.endDate, { representation: 'date' })
+                  : null,
+                design: values.design,
+                roadmap: values.roadmap,
+                notes: values.notes,
+                phase: values.phase,
+                clientTeam: values.clientTeam ?? [],
+              },
             },
-          },
-          refetchQueries: [FetchProjectDocument],
-        }).then(response => {
-          const newProjectId = response.data?.projectCreateUpdate.id as number;
-          const isEmptyDocsList = !!values.documentTemplate.filter(template => !!template.isOpen)
-            .length;
+            refetchQueries: [FetchProjectPreviewDocument, FetchProjectDocument],
+          });
 
           navigate(
             generatePath(ROUTES.PROJECT_DETAILS, {
-              id: id || newProjectId,
+              id,
+            }),
+          );
+        } else {
+          const { data } = await projectCreate({
+            variables: {
+              input: {
+                name: values.name,
+                hoursEstimated: +values.hoursEstimated,
+                platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
+                statusId: values.status,
+                notes: values.notes,
+                phase: ProjectPhaseChoice.PRE_SIGNED,
+                clientTeam: values.clientTeam ?? [],
+              },
+            },
+            refetchQueries: [FetchProjectDocument],
+          });
+
+          const newProjectId = data?.projectCreate.id as number;
+          const isDocsList = !!values.documentTemplate.filter(template => template.isOpen).length;
+
+          navigate(
+            generatePath(ROUTES.PROJECT_DETAILS, {
+              id: newProjectId,
             }),
           );
 
-          if (!id && isEmptyDocsList) {
+          if (isDocsList) {
             const documentGenerateValues = values.documentTemplate
               .filter(template => !!template.isOpen)
               .map(({ templateId, templateFields }) => ({
@@ -220,7 +229,7 @@ export function useProjectForm({
               },
             );
           }
-        });
+        }
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
           fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],
@@ -228,15 +237,15 @@ export function useProjectForm({
         });
       }
     },
-    [documentGenerate, form.setError, id, navigate, projectCreateUpdate],
+    [documentGenerate, form.setError, id, isEditMode, navigate, projectCreate, projectUpdate],
   );
 
   return useMemo(
     () => ({
       form,
       handleSubmit: form.handleSubmit(handleSubmit),
-      isLoading: loadingProjectCreateUpdate,
+      isLoading: loadingProjectCreate || loadingProjectUpdate,
     }),
-    [form, handleSubmit, loadingProjectCreateUpdate],
+    [form, handleSubmit, loadingProjectCreate, loadingProjectUpdate],
   );
 }

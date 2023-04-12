@@ -27,8 +27,12 @@ query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
   userProjects(data: $input, pagination: $pagination) {
     results {
       project {
+        id
         name
-        status
+        status {
+          id
+          name
+        }
       }
       currentTeam
     }
@@ -44,5 +48,11 @@ query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
       createdAt
     }
     count
+  }
+}
+
+mutation ConnectUserToBitbucket($input: IDInput!) {
+  userConnectBitbucket(data: $input) {
+    bitbucketId
   }
 }

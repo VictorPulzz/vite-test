@@ -15,12 +15,13 @@ export type FetchProjectQuery = {
     id: number;
     name: string;
     hoursEstimated?: number | null;
-    startDate: string;
+    startDate?: string | null;
     endDate?: string | null;
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
-    phase: Types.ProjectPhaseChoice;
+    phase?: Types.ProjectPhaseChoice | null;
+    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -30,17 +31,26 @@ export type FetchProjectQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
   };
 };
 
-export type CreateOrUpdateProjectMutationVariables = Types.Exact<{
+export type CreateProjectMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
 }>;
 
-export type CreateOrUpdateProjectMutation = {
+export type CreateProjectMutation = {
   __typename?: 'Mutation';
-  projectCreateUpdate: { __typename?: 'ProjectType'; id: number };
+  projectCreate: { __typename?: 'ProjectType'; id: number };
+};
+
+export type UpdateProjectMutationVariables = Types.Exact<{
+  input: Types.ProjectUpdateInput;
+}>;
+
+export type UpdateProjectMutation = {
+  __typename?: 'Mutation';
+  projectUpdate: { __typename?: 'ProjectType'; id: number };
 };
 
 export type FetchPlatformsListQueryVariables = Types.Exact<{
@@ -51,7 +61,19 @@ export type FetchPlatformsListQuery = {
   __typename?: 'Query';
   platformList: {
     __typename?: 'PlatformTypePagination';
-    results: Array<{ __typename?: 'PlatformType'; value: number; label: string }>;
+    results: Array<{ __typename?: 'PlatformType'; value?: number | null; label: string }>;
+  };
+};
+
+export type FetchProjectStatusesListQueryVariables = Types.Exact<{
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchProjectStatusesListQuery = {
+  __typename?: 'Query';
+  projectStatusesList: {
+    __typename?: 'ProjectStatusTypePagination';
+    results: Array<{ __typename?: 'ProjectStatusType'; value?: number | null; label: string }>;
   };
 };
 
@@ -92,6 +114,10 @@ export const FetchProjectDocument = gql`
       roadmap
       notes
       phase
+      status {
+        id
+        name
+      }
       clientTeam {
         fullName
         email
@@ -148,55 +174,93 @@ export type FetchProjectQueryResult = Apollo.QueryResult<
   FetchProjectQuery,
   FetchProjectQueryVariables
 >;
-export const CreateOrUpdateProjectDocument = gql`
-  mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
-    projectCreateUpdate(data: $input) {
+export const CreateProjectDocument = gql`
+  mutation CreateProject($input: ProjectCreateInput!) {
+    projectCreate(data: $input) {
       id
     }
   }
 `;
-export type CreateOrUpdateProjectMutationFn = Apollo.MutationFunction<
-  CreateOrUpdateProjectMutation,
-  CreateOrUpdateProjectMutationVariables
+export type CreateProjectMutationFn = Apollo.MutationFunction<
+  CreateProjectMutation,
+  CreateProjectMutationVariables
 >;
 
 /**
- * __useCreateOrUpdateProjectMutation__
+ * __useCreateProjectMutation__
  *
- * To run a mutation, you first call `useCreateOrUpdateProjectMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateOrUpdateProjectMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [createOrUpdateProjectMutation, { data, loading, error }] = useCreateOrUpdateProjectMutation({
+ * const [createProjectMutation, { data, loading, error }] = useCreateProjectMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useCreateOrUpdateProjectMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    CreateOrUpdateProjectMutation,
-    CreateOrUpdateProjectMutationVariables
-  >,
+export function useCreateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateProjectMutation, CreateProjectMutationVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<CreateOrUpdateProjectMutation, CreateOrUpdateProjectMutationVariables>(
-    CreateOrUpdateProjectDocument,
+  return Apollo.useMutation<CreateProjectMutation, CreateProjectMutationVariables>(
+    CreateProjectDocument,
     options,
   );
 }
-export type CreateOrUpdateProjectMutationHookResult = ReturnType<
-  typeof useCreateOrUpdateProjectMutation
+export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
+export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
+export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<
+  CreateProjectMutation,
+  CreateProjectMutationVariables
 >;
-export type CreateOrUpdateProjectMutationResult =
-  Apollo.MutationResult<CreateOrUpdateProjectMutation>;
-export type CreateOrUpdateProjectMutationOptions = Apollo.BaseMutationOptions<
-  CreateOrUpdateProjectMutation,
-  CreateOrUpdateProjectMutationVariables
+export const UpdateProjectDocument = gql`
+  mutation UpdateProject($input: ProjectUpdateInput!) {
+    projectUpdate(data: $input) {
+      id
+    }
+  }
+`;
+export type UpdateProjectMutationFn = Apollo.MutationFunction<
+  UpdateProjectMutation,
+  UpdateProjectMutationVariables
+>;
+
+/**
+ * __useUpdateProjectMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectMutation, { data, loading, error }] = useUpdateProjectMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProjectMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProjectMutation, UpdateProjectMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<UpdateProjectMutation, UpdateProjectMutationVariables>(
+    UpdateProjectDocument,
+    options,
+  );
+}
+export type UpdateProjectMutationHookResult = ReturnType<typeof useUpdateProjectMutation>;
+export type UpdateProjectMutationResult = Apollo.MutationResult<UpdateProjectMutation>;
+export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProjectMutation,
+  UpdateProjectMutationVariables
 >;
 export const FetchPlatformsListDocument = gql`
   query FetchPlatformsList($pagination: PaginationInput!) {
@@ -253,6 +317,67 @@ export type FetchPlatformsListLazyQueryHookResult = ReturnType<
 export type FetchPlatformsListQueryResult = Apollo.QueryResult<
   FetchPlatformsListQuery,
   FetchPlatformsListQueryVariables
+>;
+export const FetchProjectStatusesListDocument = gql`
+  query FetchProjectStatusesList($pagination: PaginationInput!) {
+    projectStatusesList(pagination: $pagination) {
+      results {
+        value: id
+        label: name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectStatusesListQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectStatusesListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectStatusesListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectStatusesListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchProjectStatusesListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectStatusesListQuery,
+    FetchProjectStatusesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectStatusesListQuery, FetchProjectStatusesListQueryVariables>(
+    FetchProjectStatusesListDocument,
+    options,
+  );
+}
+export function useFetchProjectStatusesListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectStatusesListQuery,
+    FetchProjectStatusesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectStatusesListQuery, FetchProjectStatusesListQueryVariables>(
+    FetchProjectStatusesListDocument,
+    options,
+  );
+}
+export type FetchProjectStatusesListQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusesListQuery
+>;
+export type FetchProjectStatusesListLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusesListLazyQuery
+>;
+export type FetchProjectStatusesListQueryResult = Apollo.QueryResult<
+  FetchProjectStatusesListQuery,
+  FetchProjectStatusesListQueryVariables
 >;
 export const FetchDocumentTemplateListDocument = gql`
   query FetchDocumentTemplateList {

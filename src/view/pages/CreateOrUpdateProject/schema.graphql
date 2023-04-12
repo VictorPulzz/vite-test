@@ -9,6 +9,10 @@ query FetchProject($data: IDInput!) {
     roadmap
     notes
     phase
+    status {
+      id
+      name
+    }
     clientTeam {
       fullName
       email
@@ -24,14 +28,29 @@ query FetchProject($data: IDInput!) {
   }
 }
 
-mutation CreateOrUpdateProject($input: ProjectCreateInput!) {
-  projectCreateUpdate(data: $input) {
+mutation CreateProject($input: ProjectCreateInput!) {
+  projectCreate(data: $input) {
+    id
+  }
+}
+
+mutation UpdateProject($input: ProjectUpdateInput!) {
+  projectUpdate(data: $input) {
     id
   }
 }
 
 query FetchPlatformsList($pagination: PaginationInput!) {
   platformList(pagination: $pagination) {
+    results {
+      value: id
+      label: name
+    }
+  }
+}
+
+query FetchProjectStatusesList($pagination: PaginationInput!) {
+  projectStatusesList(pagination: $pagination) {
     results {
       value: id
       label: name

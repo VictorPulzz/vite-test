@@ -6,7 +6,7 @@ import React, { FC } from 'react';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 import { RepositoryResultType } from '../../types';
-import { DeleteRepositoryModal } from '../DeleteRepositoryModal';
+import { DeleteRepositoryModal } from './components/DeleteRepositoryModal';
 
 export const MoreCell: FC<CellContext<RepositoryResultType, unknown>> = ({ row }) => {
   const { id, name } = row.original;
@@ -37,7 +37,7 @@ export const MoreCell: FC<CellContext<RepositoryResultType, unknown>> = ({ row }
         isOpen={isDeleteRepositoryModalOpen}
         close={closeDeleteRepositoryModal}
         id={id as number}
-        // TOD fix this later
+        // TODO fix this later
         name={name ?? 'Requested'}
       />
     </>

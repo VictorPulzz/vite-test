@@ -5,7 +5,7 @@ export const formErrors = {
   INVALID_PHONE_NUMBER: 'Invalid phone number',
   PASSWORD_MIN_LENGTH: 'Password should be at least 8 characters',
   INVALID_PASSWORD:
-    'Password should contain latin letters and at least one uppercase letter, one lowercase letter and one number',
+    'Password should contain latin letters and at least one uppercase letter, one lowercase letter, one special character and one numeric character',
   SHOULD_BE_IN_PAST: 'Date should be in the past',
   INVALID_RANGE: 'Invalid range',
   MAX_IMAGE_SIZE: 'Image size should be less than 500kb',

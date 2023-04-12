@@ -1,5 +1,4 @@
-fragment AuthorizedUser on UserType {
-  id
+fragment AuthorizedUser on ProfileType {
   email
   firstName
   lastName
@@ -8,5 +7,9 @@ fragment AuthorizedUser on UserType {
     fileName
     size
     url
+  }
+  role {
+    name
+    permissionsList
   }
 }

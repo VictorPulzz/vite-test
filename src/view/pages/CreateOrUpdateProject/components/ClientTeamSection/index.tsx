@@ -4,20 +4,20 @@ import { useFormContext } from 'react-hook-form';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { AddOrEditModal } from '~/view/pages/CreateOrUpdateProject/components/ClientTeamSection/components/AddOrEditModal';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Table } from '~/view/ui/components/common/Table';
 
-import { AddOrEditClientTeamMemberModal } from './components/AddOrEditClientTeamMemberModal';
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';
 
 export const ClientTeamSection: FC = () => {
   const { watch } = useFormContext();
 
   const {
-    value: isAddOrEditClientTeamMemberModalOpen,
-    on: openAddOrEditClientTeamMemberModal,
-    off: closeAddOrEditClientTeamMemberModal,
+    value: isAddOrEditModalOpen,
+    on: openAddOrEditModal,
+    off: closeAddOrEditModal,
   } = useSwitchValue(false);
 
   const clientTeamMembers = watch('clientTeam');
@@ -39,11 +39,11 @@ export const ClientTeamSection: FC = () => {
         label="Add team member"
         withIcon="add"
         className="w-[170px] mt-3"
-        onClick={openAddOrEditClientTeamMemberModal}
+        onClick={openAddOrEditModal}
       />
-      <AddOrEditClientTeamMemberModal
-        isOpen={isAddOrEditClientTeamMemberModalOpen}
-        close={closeAddOrEditClientTeamMemberModal}
+      <AddOrEditModal
+        isOpen={isAddOrEditModalOpen}
+        close={closeAddOrEditModal}
         isEditMode={false}
       />
     </SectionContainer>

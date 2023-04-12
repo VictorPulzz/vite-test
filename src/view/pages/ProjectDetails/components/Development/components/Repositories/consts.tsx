@@ -57,7 +57,7 @@ export const REPOSITORIES_TABLE_COLUMNS = [
   columnHelper.accessor('createdAt', {
     id: 'createdAt',
     header: 'Created at',
-    cell: props => <span>{format(new Date(props.getValue()), DateFormat.PP)}</span>,
+    cell: props => <span>{format(new Date(props.getValue()), DateFormat.D_MMM_Y)}</span>,
   }),
   columnHelper.group({
     id: 'more',
@@ -66,4 +66,20 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       className: 'w-0',
     },
   }),
+];
+
+export const REPOSITORIES_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('name', {
+    id: 'name',
+    header: 'Name',
+    cell: props => {
+      const { name } = props.row.original;
+      return (
+        <div>
+          {name ? <span>{props.getValue()}</span> : <span className="text-red">Requested</span>}
+        </div>
+      );
+    },
+  }),
+  ...REPOSITORIES_TABLE_COLUMNS.slice(1, REPOSITORIES_TABLE_COLUMNS.length),
 ];

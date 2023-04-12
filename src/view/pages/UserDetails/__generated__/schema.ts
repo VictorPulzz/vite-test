@@ -40,7 +40,12 @@ export type FetchUserProjectsListQuery = {
     results: Array<{
       __typename?: 'ProjectMemberType';
       currentTeam: boolean;
-      project: { __typename?: 'ProjectType'; name: string; status?: Types.StatusEnum | null };
+      project: {
+        __typename?: 'ProjectType';
+        id: number;
+        name: string;
+        status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
+      };
     }>;
   };
 };
@@ -57,6 +62,15 @@ export type FetchUserHistoryListQuery = {
     count: number;
     results: Array<{ __typename?: 'LogType'; id: number; message: string; createdAt: string }>;
   };
+};
+
+export type ConnectUserToBitbucketMutationVariables = Types.Exact<{
+  input: Types.IdInput;
+}>;
+
+export type ConnectUserToBitbucketMutation = {
+  __typename?: 'Mutation';
+  userConnectBitbucket: { __typename?: 'UserType'; bitbucketId?: string | null };
 };
 
 export const FetchUserDetailsDocument = gql`
@@ -131,8 +145,12 @@ export const FetchUserProjectsListDocument = gql`
     userProjects(data: $input, pagination: $pagination) {
       results {
         project {
+          id
           name
-          status
+          status {
+            id
+            name
+          }
         }
         currentTeam
       }
@@ -251,4 +269,54 @@ export type FetchUserHistoryListLazyQueryHookResult = ReturnType<
 export type FetchUserHistoryListQueryResult = Apollo.QueryResult<
   FetchUserHistoryListQuery,
   FetchUserHistoryListQueryVariables
+>;
+export const ConnectUserToBitbucketDocument = gql`
+  mutation ConnectUserToBitbucket($input: IDInput!) {
+    userConnectBitbucket(data: $input) {
+      bitbucketId
+    }
+  }
+`;
+export type ConnectUserToBitbucketMutationFn = Apollo.MutationFunction<
+  ConnectUserToBitbucketMutation,
+  ConnectUserToBitbucketMutationVariables
+>;
+
+/**
+ * __useConnectUserToBitbucketMutation__
+ *
+ * To run a mutation, you first call `useConnectUserToBitbucketMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConnectUserToBitbucketMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [connectUserToBitbucketMutation, { data, loading, error }] = useConnectUserToBitbucketMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useConnectUserToBitbucketMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConnectUserToBitbucketMutation,
+    ConnectUserToBitbucketMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ConnectUserToBitbucketMutation,
+    ConnectUserToBitbucketMutationVariables
+  >(ConnectUserToBitbucketDocument, options);
+}
+export type ConnectUserToBitbucketMutationHookResult = ReturnType<
+  typeof useConnectUserToBitbucketMutation
+>;
+export type ConnectUserToBitbucketMutationResult =
+  Apollo.MutationResult<ConnectUserToBitbucketMutation>;
+export type ConnectUserToBitbucketMutationOptions = Apollo.BaseMutationOptions<
+  ConnectUserToBitbucketMutation,
+  ConnectUserToBitbucketMutationVariables
 >;

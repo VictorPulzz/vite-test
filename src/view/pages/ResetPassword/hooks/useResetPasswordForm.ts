@@ -11,11 +11,11 @@ import { useResetPasswordMutation } from '../__generated__/schema';
 
 const formSchema = z
   .object({
-    password: passwordValidation,
+    newPassword: passwordValidation,
     confirmPassword: z.string().min(1),
   })
   .superRefine((value, ctx) => {
-    if (value.password !== value.confirmPassword) {
+    if (value.newPassword !== value.confirmPassword) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ['confirmPassword'],
@@ -37,7 +37,7 @@ interface UseResetPasswordFormProps {
 }
 
 const defaultValues: ResetPasswordFormValues = {
-  password: '',
+  newPassword: '',
   confirmPassword: '',
 };
 
@@ -67,7 +67,7 @@ export function useResetPasswordForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ResetPasswordFormValues>(e, {
-          fields: ['password'],
+          fields: ['newPassword', 'confirmPassword'],
           setFormError: form.setError,
         });
       }

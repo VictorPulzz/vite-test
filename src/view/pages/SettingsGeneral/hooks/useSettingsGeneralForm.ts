@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import { useUserProfile } from '~/store/hooks';
 import { setUser } from '~/store/modules/user';
 import { phoneNumberValidation } from '~/utils/validations';
 import {
@@ -62,7 +61,6 @@ export const useSettingsGeneralForm = ({
   settingsData,
 }: UseSettingsGeneralFormProps): UseSettingsGeneralFormReturn => {
   const dispatch = useDispatch();
-  const profile = useUserProfile();
 
   const form = useForm<SettingsGeneralFormValues>({
     defaultValues,
@@ -102,10 +100,10 @@ export const useSettingsGeneralForm = ({
         });
         dispatch(
           setUser({
-            id: profile.id,
             email: data?.meUpdate.email ?? '',
             fullName: `${data?.meUpdate.firstName} ${data?.meUpdate.lastName}` ?? '',
             photo: data?.meUpdate.photo,
+            role: data?.meUpdate.role,
           }),
         );
         toast.success('Profile updated');
@@ -116,7 +114,7 @@ export const useSettingsGeneralForm = ({
         });
       }
     },
-    [dispatch, form.setError, profile.id, updateProfile],
+    [dispatch, form.setError, updateProfile],
   );
 
   return useMemo(

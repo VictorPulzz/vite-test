@@ -33,6 +33,7 @@ export type ProfileUpdateMutation = {
     phone?: string | null;
     address?: string | null;
     photo?: { __typename?: 'ImageType'; url: string; fileName: string; size: number } | null;
+    role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
   };
 };
 
@@ -93,6 +94,10 @@ export const ProfileUpdateDocument = gql`
         url
         fileName
         size
+      }
+      role {
+        name
+        permissionsList
       }
     }
   }

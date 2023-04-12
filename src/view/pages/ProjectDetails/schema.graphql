@@ -1,4 +1,15 @@
-query FetchProjectDetails($data: IDInput!) {
+query FetchProjectPreview($data: IDInput!) {
+  projectPreview(data: $data) {
+    id
+    name
+    createdAt
+    createdBy {
+      fullName
+    }
+  }
+}
+
+query FetchProjectInfo($data: IDInput!) {
   project(data: $data) {
     id
     name
@@ -6,7 +17,10 @@ query FetchProjectDetails($data: IDInput!) {
     createdBy {
       fullName
     }
-    status
+    status {
+      id
+      name
+    }
     startDate
     endDate
     phase
@@ -163,6 +177,7 @@ query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
       createdAt
       createdBy {
         fullName
+        id
       }
       id
       message
@@ -223,5 +238,25 @@ query FetchAllDocumentCategories {
   documentCategoryList {
     value: id
     label: name
+  }
+}
+
+query FetchProjectSlackChannels($data: IDInput!) {
+  project(data: $data) {
+    slackChannels {
+      template {
+        label
+        prefix
+      }
+      channelId
+      createdAt
+      channelUrl
+    }
+  }
+}
+
+mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
+  projectAddSlackChannel(data: $input) {
+    channelUrl
   }
 }

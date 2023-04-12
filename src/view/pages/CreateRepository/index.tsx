@@ -1,7 +1,8 @@
+import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
@@ -22,6 +23,8 @@ import styles from './styles.module.scss';
 export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
 
+  const searchParams = useSearchParams();
+
   const { data: allProjects } = useFetchAllProjectsQuery({
     variables: {
       pagination: { limit: 0 },
@@ -39,11 +42,17 @@ export const CreateRepositoryPage: FC = () => {
   const { data: allBoilerplates } = useFetchBoilerplateListQuery();
 
   const {
-    form: { register, control, formState },
+    form: { register, control, formState, setValue },
     handleSubmit,
   } = useCreateRepositoryForm({
     onSubmitSuccessful: () => navigate(-1),
   });
+
+  useEffect(() => {
+    if (searchParams.projectId) {
+      setValue('projectId', +searchParams.projectId);
+    }
+  }, [searchParams.projectId, setValue]);
 
   const projectsOptions = useMemo(
     () => allProjects?.projectsList.results ?? [],
@@ -80,12 +89,14 @@ export const CreateRepositoryPage: FC = () => {
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
           <InlineFields>
-            <TextField name="name" control={control} label="Name*" />
+            <TextField name="name" control={control} label="Name" required />
             <SelectField
               name="projectId"
               options={projectsOptions}
               control={control}
-              label="Project*"
+              label="Project"
+              required
+              // TODO add disabled if searchParams.projectId===true
             />
           </InlineFields>
           <InlineFields>
@@ -93,7 +104,8 @@ export const CreateRepositoryPage: FC = () => {
               name="type"
               options={repositoryTypeOptions}
               control={control}
-              label="Type*"
+              label="Type"
+              required
             />
             <SelectField
               name="technologies"
@@ -101,6 +113,7 @@ export const CreateRepositoryPage: FC = () => {
               control={control}
               label="Technologies"
               isMulti
+              required
             />
           </InlineFields>
         </section>
@@ -111,10 +124,10 @@ export const CreateRepositoryPage: FC = () => {
               name="boilerplateId"
               options={boilerplatesOptions}
               control={control}
-              label="Boilerplate*"
+              label="Boilerplate"
             />
-            <TextField name="gitRepoId" control={control} label="Git repo id*" />
-            <TextField name="gitSlug" control={control} label="Git slug*" />
+            <TextField name="gitRepoId" control={control} label="Git repo id" />
+            <TextField name="gitSlug" control={control} label="Git slug" />
           </div>
           <div className="flex flex-col">
             <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />

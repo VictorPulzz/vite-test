@@ -5,6 +5,9 @@ import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
@@ -45,6 +48,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
         </TextLink>
       );
     },
+    meta: {
+      className: 'w-[400px]',
+    },
   }),
   columnHelper.accessor('technologies', {
     id: 'technologies',
@@ -61,16 +67,34 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
-  // TODO add TextLink
   columnHelper.accessor('gitUrl', {
     id: 'gitUrl',
     header: 'Git url',
-    cell: props => props.getValue() ?? '-',
+    cell: props => {
+      const gitUrl = props.getValue();
+      return (
+        <TextLink external to={gitUrl ?? ''} className="underline">
+          {gitUrl}
+        </TextLink>
+      );
+    },
+  }),
+  columnHelper.accessor('type', {
+    id: 'type',
+    header: 'Type',
+    cell: props => {
+      const type = props.getValue();
+      return (
+        <Badge color={type === RepositoryTypeChoice.FRONTEND ? BadgeColor.BLUE : BadgeColor.GREEN}>
+          {convertUppercaseToReadable(type ?? '')}
+        </Badge>
+      );
+    },
   }),
   columnHelper.accessor('createdAt', {
     id: 'createdAt',
     header: 'Created at',
-    cell: props => format(new Date(props.getValue()), DateFormat.PP),
+    cell: props => format(new Date(props.getValue()), DateFormat.D_MMM_Y),
   }),
   columnHelper.group({
     id: 'more',
@@ -79,4 +103,20 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       className: 'w-0',
     },
   }),
+];
+
+export const REPOSITORIES_TABLE_COLUMNS_NO_DETAILS = [
+  columnHelper.accessor('name', {
+    id: 'name',
+    header: 'Name',
+    cell: props => {
+      const { name } = props.row.original;
+      return (
+        <div>
+          {name ? <span>{props.getValue()}</span> : <span className="text-red">Requested</span>}
+        </div>
+      );
+    },
+  }),
+  ...REPOSITORIES_TABLE_COLUMNS.slice(1, REPOSITORIES_TABLE_COLUMNS.length),
 ];

@@ -4,25 +4,40 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type FetchProjectDetailsQueryVariables = Types.Exact<{
+export type FetchProjectPreviewQueryVariables = Types.Exact<{
   data: Types.IdInput;
 }>;
 
-export type FetchProjectDetailsQuery = {
+export type FetchProjectPreviewQuery = {
+  __typename?: 'Query';
+  projectPreview: {
+    __typename?: 'ProjectPreviewType';
+    id: number;
+    name: string;
+    createdAt: string;
+    createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
+  };
+};
+
+export type FetchProjectInfoQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectInfoQuery = {
   __typename?: 'Query';
   project: {
     __typename?: 'ProjectType';
     id: number;
     name: string;
     createdAt: string;
-    status?: Types.StatusEnum | null;
-    startDate: string;
+    startDate?: string | null;
     endDate?: string | null;
-    phase: Types.ProjectPhaseChoice;
+    phase?: Types.ProjectPhaseChoice | null;
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
     createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
+    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -32,7 +47,7 @@ export type FetchProjectDetailsQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
   };
 };
 
@@ -221,7 +236,7 @@ export type FetchHistoryLogsQuery = {
       createdAt: string;
       id: number;
       message: string;
-      createdBy: { __typename?: 'UserType'; fullName?: string | null };
+      createdBy: { __typename?: 'UserType'; fullName?: string | null; id?: string | null };
     }>;
   };
 };
@@ -292,8 +307,97 @@ export type FetchAllDocumentCategoriesQuery = {
   }>;
 };
 
-export const FetchProjectDetailsDocument = gql`
-  query FetchProjectDetails($data: IDInput!) {
+export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectSlackChannelsQuery = {
+  __typename?: 'Query';
+  project: {
+    __typename?: 'ProjectType';
+    slackChannels?: Array<{
+      __typename?: 'ProjectSlackType';
+      channelId?: string | null;
+      createdAt: string;
+      channelUrl?: string | null;
+      template?: {
+        __typename?: 'SlackChannelTemplateType';
+        label?: string | null;
+        prefix: string;
+      } | null;
+    }> | null;
+  };
+};
+
+export type CreateProjectSlackChannelMutationVariables = Types.Exact<{
+  input: Types.ProjectSlackInput;
+}>;
+
+export type CreateProjectSlackChannelMutation = {
+  __typename?: 'Mutation';
+  projectAddSlackChannel: { __typename?: 'ProjectSlackType'; channelUrl?: string | null };
+};
+
+export const FetchProjectPreviewDocument = gql`
+  query FetchProjectPreview($data: IDInput!) {
+    projectPreview(data: $data) {
+      id
+      name
+      createdAt
+      createdBy {
+        fullName
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectPreviewQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectPreviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectPreviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectPreviewQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectPreviewQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchProjectPreviewQuery, FetchProjectPreviewQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectPreviewQuery, FetchProjectPreviewQueryVariables>(
+    FetchProjectPreviewDocument,
+    options,
+  );
+}
+export function useFetchProjectPreviewLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectPreviewQuery,
+    FetchProjectPreviewQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectPreviewQuery, FetchProjectPreviewQueryVariables>(
+    FetchProjectPreviewDocument,
+    options,
+  );
+}
+export type FetchProjectPreviewQueryHookResult = ReturnType<typeof useFetchProjectPreviewQuery>;
+export type FetchProjectPreviewLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectPreviewLazyQuery
+>;
+export type FetchProjectPreviewQueryResult = Apollo.QueryResult<
+  FetchProjectPreviewQuery,
+  FetchProjectPreviewQueryVariables
+>;
+export const FetchProjectInfoDocument = gql`
+  query FetchProjectInfo($data: IDInput!) {
     project(data: $data) {
       id
       name
@@ -301,7 +405,10 @@ export const FetchProjectDetailsDocument = gql`
       createdBy {
         fullName
       }
-      status
+      status {
+        id
+        name
+      }
       startDate
       endDate
       phase
@@ -325,49 +432,44 @@ export const FetchProjectDetailsDocument = gql`
 `;
 
 /**
- * __useFetchProjectDetailsQuery__
+ * __useFetchProjectInfoQuery__
  *
- * To run a query within a React component, call `useFetchProjectDetailsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchProjectDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFetchProjectInfoQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectInfoQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFetchProjectDetailsQuery({
+ * const { data, loading, error } = useFetchProjectInfoQuery({
  *   variables: {
  *      data: // value for 'data'
  *   },
  * });
  */
-export function useFetchProjectDetailsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchProjectDetailsQuery, FetchProjectDetailsQueryVariables>,
+export function useFetchProjectInfoQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchProjectInfoQuery, FetchProjectInfoQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchProjectDetailsQuery, FetchProjectDetailsQueryVariables>(
-    FetchProjectDetailsDocument,
+  return Apollo.useQuery<FetchProjectInfoQuery, FetchProjectInfoQueryVariables>(
+    FetchProjectInfoDocument,
     options,
   );
 }
-export function useFetchProjectDetailsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    FetchProjectDetailsQuery,
-    FetchProjectDetailsQueryVariables
-  >,
+export function useFetchProjectInfoLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FetchProjectInfoQuery, FetchProjectInfoQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchProjectDetailsQuery, FetchProjectDetailsQueryVariables>(
-    FetchProjectDetailsDocument,
+  return Apollo.useLazyQuery<FetchProjectInfoQuery, FetchProjectInfoQueryVariables>(
+    FetchProjectInfoDocument,
     options,
   );
 }
-export type FetchProjectDetailsQueryHookResult = ReturnType<typeof useFetchProjectDetailsQuery>;
-export type FetchProjectDetailsLazyQueryHookResult = ReturnType<
-  typeof useFetchProjectDetailsLazyQuery
->;
-export type FetchProjectDetailsQueryResult = Apollo.QueryResult<
-  FetchProjectDetailsQuery,
-  FetchProjectDetailsQueryVariables
+export type FetchProjectInfoQueryHookResult = ReturnType<typeof useFetchProjectInfoQuery>;
+export type FetchProjectInfoLazyQueryHookResult = ReturnType<typeof useFetchProjectInfoLazyQuery>;
+export type FetchProjectInfoQueryResult = Apollo.QueryResult<
+  FetchProjectInfoQuery,
+  FetchProjectInfoQueryVariables
 >;
 export const FetchAllUsersDocument = gql`
   query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
@@ -968,6 +1070,7 @@ export const FetchHistoryLogsDocument = gql`
         createdAt
         createdBy {
           fullName
+          id
         }
         id
         message
@@ -1288,4 +1391,120 @@ export type FetchAllDocumentCategoriesLazyQueryHookResult = ReturnType<
 export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
   FetchAllDocumentCategoriesQuery,
   FetchAllDocumentCategoriesQueryVariables
+>;
+export const FetchProjectSlackChannelsDocument = gql`
+  query FetchProjectSlackChannels($data: IDInput!) {
+    project(data: $data) {
+      slackChannels {
+        template {
+          label
+          prefix
+        }
+        channelId
+        createdAt
+        channelUrl
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectSlackChannelsQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectSlackChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectSlackChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectSlackChannelsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectSlackChannelsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectSlackChannelsQuery, FetchProjectSlackChannelsQueryVariables>(
+    FetchProjectSlackChannelsDocument,
+    options,
+  );
+}
+export function useFetchProjectSlackChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectSlackChannelsQuery,
+    FetchProjectSlackChannelsQueryVariables
+  >(FetchProjectSlackChannelsDocument, options);
+}
+export type FetchProjectSlackChannelsQueryHookResult = ReturnType<
+  typeof useFetchProjectSlackChannelsQuery
+>;
+export type FetchProjectSlackChannelsLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectSlackChannelsLazyQuery
+>;
+export type FetchProjectSlackChannelsQueryResult = Apollo.QueryResult<
+  FetchProjectSlackChannelsQuery,
+  FetchProjectSlackChannelsQueryVariables
+>;
+export const CreateProjectSlackChannelDocument = gql`
+  mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
+    projectAddSlackChannel(data: $input) {
+      channelUrl
+    }
+  }
+`;
+export type CreateProjectSlackChannelMutationFn = Apollo.MutationFunction<
+  CreateProjectSlackChannelMutation,
+  CreateProjectSlackChannelMutationVariables
+>;
+
+/**
+ * __useCreateProjectSlackChannelMutation__
+ *
+ * To run a mutation, you first call `useCreateProjectSlackChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProjectSlackChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProjectSlackChannelMutation, { data, loading, error }] = useCreateProjectSlackChannelMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProjectSlackChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateProjectSlackChannelMutation,
+    CreateProjectSlackChannelMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateProjectSlackChannelMutation,
+    CreateProjectSlackChannelMutationVariables
+  >(CreateProjectSlackChannelDocument, options);
+}
+export type CreateProjectSlackChannelMutationHookResult = ReturnType<
+  typeof useCreateProjectSlackChannelMutation
+>;
+export type CreateProjectSlackChannelMutationResult =
+  Apollo.MutationResult<CreateProjectSlackChannelMutation>;
+export type CreateProjectSlackChannelMutationOptions = Apollo.BaseMutationOptions<
+  CreateProjectSlackChannelMutation,
+  CreateProjectSlackChannelMutationVariables
 >;

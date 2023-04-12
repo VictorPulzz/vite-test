@@ -7,6 +7,7 @@ import { formErrors } from '~/constants/form';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { isNil } from '~/utils/isNil';
+import { FetchProjectRepositoriesListDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useCreateRepositoryMutation } from '../__generated__/schema';
 
@@ -21,12 +22,9 @@ const formSchema = z.object({
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
   technologies: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
-  boilerplateId: z
-    .number()
-    .nullable()
-    .refine(value => value !== null, formErrors.REQUIRED),
-  gitRepoId: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  gitSlug: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  boilerplateId: z.number().nullable(),
+  gitRepoId: z.string(),
+  gitSlug: z.string(),
   useTerraform: z.boolean(),
   withRelay: z.boolean(),
   awsSecrets: z.boolean(),
@@ -78,11 +76,12 @@ export function useCreateRepositoryForm({
               type: values.type as RepositoryTypeChoice,
             },
           },
+          refetchQueries: [FetchProjectRepositoriesListDocument],
         });
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<CreateRepositoryFormValues>(e, {
-          fields: ['name'],
+          fields: ['name', 'type', 'technologies', 'gitRepoId', 'gitSlug'],
           setFormError: form.setError,
         });
       }

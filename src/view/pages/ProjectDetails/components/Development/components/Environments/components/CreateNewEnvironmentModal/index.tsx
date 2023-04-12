@@ -1,13 +1,13 @@
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { PasswordField } from '@ui/components/form/PasswordField';
 import { SelectField } from '@ui/components/form/SelectField';
 import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useCreateNewEnvironmentForm } from '~/view/pages/ProjectDetails/hooks/useCreateNewEnvironmentForm';
+
+import { useCreateNewEnvironmentForm } from './hooks/useCreateNewEnvironmentForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
@@ -39,7 +39,7 @@ export const CreateNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
             <h2 className="text-p1 font-bold pb-2">Frontend credentials</h2>
             <TextField name="frontendCredentials.url" control={form.control} label="Url" />
             <TextField name="frontendCredentials.login" control={form.control} label="Login" />
-            <PasswordField
+            <TextField
               name="frontendCredentials.password"
               control={form.control}
               label="Password"
@@ -49,11 +49,7 @@ export const CreateNewEnvironmentModal: FC<Props> = ({ isOpen, close }) => {
             <h2 className="text-p1 font-bold pb-2">Backend credentials</h2>
             <TextField name="backendCredentials.url" control={form.control} label="Url" />
             <TextField name="backendCredentials.login" control={form.control} label="Login" />
-            <PasswordField
-              name="backendCredentials.password"
-              control={form.control}
-              label="Password"
-            />
+            <TextField name="backendCredentials.password" control={form.control} label="Password" />
           </div>
         </div>
       </div>

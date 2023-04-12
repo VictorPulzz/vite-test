@@ -1,3 +1,4 @@
+@use 'sass:math';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,7 +8,7 @@
 @import '../ui/styles/index.scss';
 
 @function pxToRem($value) {
-  $remValue: ($value / 16) + rem;
+  $remValue: math.div($value, 16) + rem;
   @return $remValue;
 }
 
@@ -90,27 +91,5 @@ body {
 
   .section-container {
     @apply shadow-4 rounded-md bg-white p-7;
-  }
-}
-
-@layer components {
-  .dropdown {
-    &__menu {
-      @apply bg-white border border-solid border-gray-5 shadow-4 rounded-md py-1;
-    }
-
-    &__option {
-      padding: 0.8rem 1rem;
-      cursor: pointer;
-      word-break: break-word;
-    }
-
-    &__option-hover {
-      @apply bg-gray-6;
-    }
-
-    &__option-label {
-      @apply text-c1 font-semibold;
-    }
   }
 }

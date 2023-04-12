@@ -160,7 +160,7 @@ function getStyleLoaders({ cssOptions, preProcessor, env }) {
       {
         loader: require.resolve(preProcessor),
         options: {
-          sourceMap: env === DEV_MODE,
+          sourceMap: true,
         },
       },
     );

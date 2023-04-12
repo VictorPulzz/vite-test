@@ -1,8 +1,11 @@
 import React, { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
@@ -14,6 +17,7 @@ import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { ProjectsPage } from '~/view/pages/Projects';
 import { RepositoriesPage } from '~/view/pages/Repositories';
 import { RepositoryDetailsPage } from '~/view/pages/RepositoryDetails';
+import { RequestsPage } from '~/view/pages/Requests';
 import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
@@ -30,10 +34,6 @@ const authRoutes: RouteObject[] = [
   {
     path: ROUTES.FORGOT_PASSWORD,
     element: <ForgotPasswordPage />,
-  },
-  {
-    path: ROUTES.RESET_PASSWORD,
-    element: <ResetPasswordPage />,
   },
 ];
 
@@ -83,6 +83,10 @@ const protectedRoutes: RouteObject[] = [
     element: <RepositoriesPage />,
   },
   {
+    path: ROUTES.REQUESTS,
+    element: <RequestsPage />,
+  },
+  {
     path: ROUTES.ADD_REPOSITORY,
     element: <CreateRepositoryPage />,
   },
@@ -91,10 +95,7 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.REPOSITORY_DETAILS,
     element: <RepositoryDetailsPage />,
   },
-  {
-    path: ROUTES.ROLES_AND_PERMISSIONS,
-    element: <RolesAndPermissionsPage />,
-  },
+
   {
     path: ROUTES.SETTINGS,
     element: <SettingsGeneralPage />,
@@ -103,19 +104,35 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.SETTINGS_SECURITY,
     element: <SettingsSecurityPage />,
   },
+  {
+    path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+    element: <AdminSettingsIntegrationsPage />,
+  },
 ];
 
 export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
 
+  const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
+
   return useRoutes([
     {
-      children: protectedRoutes,
+      children: [
+        ...protectedRoutes,
+        {
+          path: ROUTES.ROLES_AND_PERMISSIONS,
+          element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,
+        },
+      ],
       element: !isAuthorized ? <Navigate to={ROUTES.SIGN_IN} /> : undefined,
     },
     {
       children: authRoutes,
       element: isAuthorized ? <Navigate to={ROUTES.HOME} /> : undefined,
+    },
+    {
+      path: ROUTES.RESET_PASSWORD,
+      element: <ResetPasswordPage />,
     },
     {
       path: '*',

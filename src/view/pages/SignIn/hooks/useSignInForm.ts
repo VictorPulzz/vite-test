@@ -7,15 +7,13 @@ import { LoginInput } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { useAppDispatch } from '~/store/hooks';
 import { setAuth, setUser } from '~/store/modules/user';
+import { passwordValidation } from '~/utils/validations';
 
-// import { passwordValidation } from '~/utils/validations';
 import { useSignInMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
   email: z.string().email().min(1),
-  // TODO add passwordValidation
-  // password: passwordValidation,
-  password: z.string(),
+  password: passwordValidation,
 });
 
 type SignInFormValues = z.infer<typeof formSchema>;
@@ -57,12 +55,13 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
           throw new Error('No data');
         }
         const { user, accessToken, refreshToken } = data.login;
+
         dispatch(
           setUser({
-            id: String(user.id),
             email: user.email,
             fullName: user.fullName,
             photo: user.photo,
+            role: user.role,
           }),
         );
         dispatch(setAuth({ access: accessToken, refresh: refreshToken }));

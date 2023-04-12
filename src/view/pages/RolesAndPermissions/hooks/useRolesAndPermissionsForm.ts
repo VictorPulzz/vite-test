@@ -1,88 +1,78 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
+import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
-interface RolesAndPermissionsFormValues {
-  [key: string]: {
-    engineer: boolean;
-    pm: boolean;
-    lead: boolean;
-    hr: boolean;
-    sales: boolean;
-    admin: boolean;
-  };
-}
+import {
+  FetchPermissionsListDocument,
+  useUpdatePermissionsListMutation,
+} from '../__generated__/schema';
 
-interface UseRolesAndPermissionsFormProps {
-  rolesAndPermissionsData: RolesAndPermissionsFormValues;
-}
+const formSchema = z.object({
+  permissions: z
+    .object({
+      id: z.number(),
+      roles: z.array(z.number()),
+    })
+    .array(),
+});
+
+type RolesAndPermissionsFormValues = z.infer<typeof formSchema>;
 
 interface UseRolesAndPermissionsFormReturn {
   form: UseFormReturn<RolesAndPermissionsFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<RolesAndPermissionsFormValues>>;
-  resetForm: () => void;
+  resetForm?: () => void;
 }
 
-// TODO fix hook when backend will be ready
-export const useRolesAndPermissionsForm = ({
-  rolesAndPermissionsData,
-}: UseRolesAndPermissionsFormProps): UseRolesAndPermissionsFormReturn => {
-  const defaultValues = useMemo(() => {
-    return Object.assign(
-      {},
-      ...Object.entries(rolesAndPermissionsData).map(([key, value]) => {
-        return {
-          [key]: {
-            engineer: value.engineer,
-            pm: value.pm,
-            lead: value.lead,
-            hr: value.hr,
-            sales: value.sales,
-            admin: value.admin,
-          },
-        };
-      }),
-    );
-  }, [rolesAndPermissionsData]);
+interface UseRolesAndPermissionsFormProps {
+  onSubmitSuccessful?: () => void;
+  roles: RolesAndPermissionsFormValues;
+}
 
+const defaultValues: RolesAndPermissionsFormValues = {
+  permissions: [],
+};
+
+export function useRolesAndPermissionsForm({
+  roles,
+}: UseRolesAndPermissionsFormProps): UseRolesAndPermissionsFormReturn {
   const form = useForm<RolesAndPermissionsFormValues>({
-    defaultValues,
+    defaultValues: roles,
+    values: roles || undefined,
     mode: 'onChange',
+    resolver: zodResolver(formSchema),
   });
 
-  // const [updateRolesAndPermissions] = useUpdateRolesAndPermissionsMutation();
+  const [updatePermissions] = useUpdatePermissionsListMutation();
 
   const handleSubmit = useCallback(
     async (values: RolesAndPermissionsFormValues) => {
       try {
-        // eslint-disable-next-line no-console
-        console.log('🚀 ~ file: useSettingsGeneralForm.ts:80 ~ values', values);
-        // eslint-disable-next-line no-console
-
-        // await updateRolesAndPermissions({
-        //   variables: {
-        //     data: {
-        //       id: values.id,
-        //     },
-        //   },
-        //   refetchQueries: [MeDocument],
-        // });
+        await updatePermissions({
+          variables: {
+            input: values.permissions,
+          },
+          refetchQueries: [FetchPermissionsListDocument],
+        });
       } catch (e) {
         processGqlErrorResponse<RolesAndPermissionsFormValues>(e, {
+          fields: ['permissions'],
           setFormError: form.setError,
         });
       }
     },
-    [form.setError],
+    [form.setError, updatePermissions],
   );
-
-  const resetForm = useCallback(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
 
   return useMemo(
-    () => ({ form, handleSubmit: form.handleSubmit(handleSubmit), resetForm }),
-    [form, handleSubmit, resetForm],
+    () => ({
+      form,
+      handleSubmit: form.handleSubmit(handleSubmit),
+      resetForm: () => form.reset(defaultValues),
+    }),
+    [form, handleSubmit],
   );
-};
+}

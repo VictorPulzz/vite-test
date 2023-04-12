@@ -4,25 +4,32 @@ import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { useFetchProjectStatusesListQuery } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
 import { Icon } from '~/view/ui/components/common/Icon';
 
-import { useChangeProjectStatusMutation } from '../../__generated__/schema';
+import { FetchProjectsDocument, useChangeProjectStatusMutation } from '../../__generated__/schema';
 import { ProjectResultType } from '../../types';
 
 export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) => {
-  const { id, status } = row.original;
+  const { status, id } = row.original;
 
-  const [changeStatus] = useChangeProjectStatusMutation();
+  const { data: statuses } = useFetchProjectStatusesListQuery({
+    variables: {
+      pagination: { limit: 0 },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const [projectUpdate] = useChangeProjectStatusMutation();
 
   const setProjectStatus = useCallback(
-    (status: StatusEnum) => {
+    (status: number) => {
       toast.promise(
-        changeStatus({
+        projectUpdate({
           variables: {
-            input: { id, status },
+            input: { id, statusId: status },
           },
+          refetchQueries: [FetchProjectsDocument],
         }),
         {
           loading: 'Changing status...',
@@ -34,17 +41,17 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
         },
       );
     },
-    [changeStatus, id],
+    [id, projectUpdate],
   );
 
   const options: DropdownItem[] = [
     {
       label: 'Change status',
       iconBefore: <Icon name="connection" size={16} />,
-      items: Object.keys(StatusEnum).map(projectStatus => ({
-        label: convertUppercaseToReadable(projectStatus),
-        onSelect: () => setProjectStatus(projectStatus as StatusEnum),
-        iconAfter: projectStatus === status && (
+      items: statuses?.projectStatusesList.results.map(projectStatus => ({
+        label: projectStatus.label,
+        onSelect: () => setProjectStatus(Number(projectStatus.value)),
+        iconAfter: projectStatus.value === status?.id && (
           <Icon name="check" className="text-green" size={18} />
         ),
       })),

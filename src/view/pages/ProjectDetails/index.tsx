@@ -5,29 +5,44 @@ import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
+import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
+import { NoAccessMessage } from '~/view/components/NoAccessMessage';
+import { SectionContainer } from '~/view/components/SectionContainer';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Tabs } from '~/view/ui/components/common/Tabs';
 
-import { useFetchProjectDetailsQuery } from './__generated__/schema';
+import { useFetchProjectPreviewQuery } from './__generated__/schema';
 import { Development } from './components/Development';
 import { Docs } from './components/Docs';
 import { History } from './components/History';
 import { Info } from './components/Info';
+import { Overview } from './components/Overview';
 import { Reports } from './components/Reports';
+import { SlackChannels } from './components/SlackChannels';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
+  const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
+  const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
+  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
+  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
+  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
+  const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
+  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
+
   const navigate = useNavigate();
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
-  const { data, loading } = useFetchProjectDetailsQuery({
+  const { data, loading } = useFetchProjectPreviewQuery({
     variables: {
       data: { id: projectId },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const DocumentTabs = useMemo(
@@ -38,28 +53,47 @@ export const ProjectDetailsPage: FC = () => {
         items={[
           {
             title: 'Overview',
-            element: <div>Overview</div>,
+            element: canReadProjectOverview ? (
+              <Overview />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
           {
             title: 'Info',
-            element: (
-              <>
-                {loading && <Loader full colorful />}
-                {data && <Info projectInfo={data.project} />}
-              </>
+            element: canReadProjectInfo ? (
+              <Info projectId={projectId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
             ),
           },
           {
             title: 'Team',
-            element: <Team />,
+            element: canReadProjectTeam ? <Team /> : <NoAccessMessage className="h-[70vh]" />,
           },
           {
             title: 'Development',
-            element: <Development />,
+            element: canReadProjectDevelopment ? (
+              <Development />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
           {
             title: 'Docs',
-            element: <Docs withHeading />,
+            element: canReadProjectDocs ? (
+              <div className="h-full">
+                <SectionContainer containerClassName="h-full">
+                  <Docs isProjectDetailsPage projectId={projectId} />
+                </SectionContainer>
+              </div>
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
+          },
+          {
+            title: 'Slack',
+            element: <SlackChannels projectId={projectId} />,
           },
           {
             title: 'Reports',
@@ -67,41 +101,61 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'History',
-            element: <History projectId={projectId} />,
+            element: canReadProjectHistory ? (
+              <History projectId={projectId} />
+            ) : (
+              <NoAccessMessage className="h-[70vh]" />
+            ),
           },
         ]}
       />
     ),
-    [data, loading, projectId],
+    [
+      canReadProjectDevelopment,
+      canReadProjectDocs,
+      canReadProjectHistory,
+      canReadProjectInfo,
+      canReadProjectOverview,
+      canReadProjectTeam,
+      projectId,
+    ],
   );
 
   return (
     <TabLayout tabs={loading || DocumentTabs}>
       {loading && <Loader full colorful />}
-      {data && (
+      {!loading && data && (
         <div className="bg-white">
-          <div className="flex items-center justify-between px-7 pt-7">
+          <div className="flex items-center justify-between px-7 pt-7 gap-6">
             <div className="flex items-center gap-4">
               <Button
                 variant={ButtonVariant.SECONDARY}
                 withIcon="left-arrow"
-                onClick={() => navigate(ROUTES.PROJECTS)}
+                onClick={() => navigate(-1)}
               />
-              <div className="flex flex-col">
-                <h2 className="text-h4 font-bold">{data?.project.name}</h2>
-                <span className="text-c1 text-gray-2 leading-none">
-                  Created {format(new Date(data?.project.createdAt ?? new Date()), DateFormat.PP)} •
-                  by {data?.project.createdBy?.fullName}
+              <div className="flex flex-col w-[65vw]">
+                <h2 className="text-h4 font-bold break-words leading-6">
+                  {data?.projectPreview.name}
+                </h2>
+                <span className="text-c1 text-gray-2">
+                  Created{' '}
+                  {format(
+                    new Date(data?.projectPreview.createdAt ?? new Date()),
+                    DateFormat.D_MMM_Y,
+                  )}{' '}
+                  • by {data?.projectPreview.createdBy?.fullName}
                 </span>
               </div>
             </div>
-            <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Edit project"
-              withIcon="edit"
-              onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
-              className="w-[140px]"
-            />
+            {canEditProject && (
+              <Button
+                variant={ButtonVariant.SECONDARY}
+                label="Edit project"
+                withIcon="edit"
+                onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
+                className="w-[140px]"
+              />
+            )}
           </div>
         </div>
       )}
