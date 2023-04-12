@@ -21,7 +21,7 @@ export type FetchProjectQuery = {
     roadmap?: string | null;
     notes?: string | null;
     phase?: Types.ProjectPhaseChoice | null;
-    status?: Types.StatusEnum | null;
+    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
     clientTeam?: Array<{
       __typename?: 'ClientType';
       fullName: string;
@@ -31,7 +31,7 @@ export type FetchProjectQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
+    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
   };
 };
 
@@ -45,7 +45,7 @@ export type CreateProjectMutation = {
 };
 
 export type UpdateProjectMutationVariables = Types.Exact<{
-  input: Types.ProjectCreateInput;
+  input: Types.ProjectUpdateInput;
 }>;
 
 export type UpdateProjectMutation = {
@@ -61,7 +61,19 @@ export type FetchPlatformsListQuery = {
   __typename?: 'Query';
   platformList: {
     __typename?: 'PlatformTypePagination';
-    results: Array<{ __typename?: 'PlatformType'; value: number; label: string }>;
+    results: Array<{ __typename?: 'PlatformType'; value?: number | null; label: string }>;
+  };
+};
+
+export type FetchProjectStatusesListQueryVariables = Types.Exact<{
+  pagination: Types.PaginationInput;
+}>;
+
+export type FetchProjectStatusesListQuery = {
+  __typename?: 'Query';
+  projectStatusesList: {
+    __typename?: 'ProjectStatusTypePagination';
+    results: Array<{ __typename?: 'ProjectStatusType'; value?: number | null; label: string }>;
   };
 };
 
@@ -102,7 +114,10 @@ export const FetchProjectDocument = gql`
       roadmap
       notes
       phase
-      status
+      status {
+        id
+        name
+      }
       clientTeam {
         fullName
         email
@@ -204,7 +219,7 @@ export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<
   CreateProjectMutationVariables
 >;
 export const UpdateProjectDocument = gql`
-  mutation UpdateProject($input: ProjectCreateInput!) {
+  mutation UpdateProject($input: ProjectUpdateInput!) {
     projectUpdate(data: $input) {
       id
     }
@@ -302,6 +317,67 @@ export type FetchPlatformsListLazyQueryHookResult = ReturnType<
 export type FetchPlatformsListQueryResult = Apollo.QueryResult<
   FetchPlatformsListQuery,
   FetchPlatformsListQueryVariables
+>;
+export const FetchProjectStatusesListDocument = gql`
+  query FetchProjectStatusesList($pagination: PaginationInput!) {
+    projectStatusesList(pagination: $pagination) {
+      results {
+        value: id
+        label: name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectStatusesListQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectStatusesListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectStatusesListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectStatusesListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchProjectStatusesListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectStatusesListQuery,
+    FetchProjectStatusesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectStatusesListQuery, FetchProjectStatusesListQueryVariables>(
+    FetchProjectStatusesListDocument,
+    options,
+  );
+}
+export function useFetchProjectStatusesListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectStatusesListQuery,
+    FetchProjectStatusesListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectStatusesListQuery, FetchProjectStatusesListQueryVariables>(
+    FetchProjectStatusesListDocument,
+    options,
+  );
+}
+export type FetchProjectStatusesListQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusesListQuery
+>;
+export type FetchProjectStatusesListLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusesListLazyQuery
+>;
+export type FetchProjectStatusesListQueryResult = Apollo.QueryResult<
+  FetchProjectStatusesListQuery,
+  FetchProjectStatusesListQueryVariables
 >;
 export const FetchDocumentTemplateListDocument = gql`
   query FetchDocumentTemplateList {

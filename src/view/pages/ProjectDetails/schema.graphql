@@ -17,7 +17,10 @@ query FetchProjectInfo($data: IDInput!) {
     createdBy {
       fullName
     }
-    status
+    status {
+      id
+      name
+    }
     startDate
     endDate
     phase
@@ -235,5 +238,25 @@ query FetchAllDocumentCategories {
   documentCategoryList {
     value: id
     label: name
+  }
+}
+
+query FetchProjectSlackChannels($data: IDInput!) {
+  project(data: $data) {
+    slackChannels {
+      template {
+        label
+        prefix
+      }
+      channelId
+      createdAt
+      channelUrl
+    }
+  }
+}
+
+mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
+  projectAddSlackChannel(data: $input) {
+    channelUrl
   }
 }

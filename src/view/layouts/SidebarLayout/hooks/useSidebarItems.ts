@@ -65,6 +65,17 @@ export function useSidebarItems(): SidebarItem[] {
           },
         ],
       },
+      {
+        title: 'Admin settings',
+        icon: 'adminSettings',
+        link: ROUTES.ADMIN_SETTINGS,
+        items: [
+          {
+            title: 'Integrations',
+            link: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+          },
+        ],
+      },
     ],
     [],
   );

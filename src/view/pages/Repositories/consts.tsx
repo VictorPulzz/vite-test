@@ -48,6 +48,9 @@ export const REPOSITORIES_TABLE_COLUMNS = [
         </TextLink>
       );
     },
+    meta: {
+      className: 'w-[400px]',
+    },
   }),
   columnHelper.accessor('technologies', {
     id: 'technologies',
@@ -64,10 +67,17 @@ export const REPOSITORIES_TABLE_COLUMNS = [
       );
     },
   }),
-  // TODO add TextLink
   columnHelper.accessor('gitUrl', {
     id: 'gitUrl',
     header: 'Git url',
+    cell: props => {
+      const gitUrl = props.getValue();
+      return (
+        <TextLink external to={gitUrl ?? ''} className="underline">
+          {gitUrl}
+        </TextLink>
+      );
+    },
   }),
   columnHelper.accessor('type', {
     id: 'type',

@@ -5,6 +5,7 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
@@ -102,6 +103,10 @@ const protectedRoutes: RouteObject[] = [
   {
     path: ROUTES.SETTINGS_SECURITY,
     element: <SettingsSecurityPage />,
+  },
+  {
+    path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+    element: <AdminSettingsIntegrationsPage />,
   },
 ];
 

@@ -9,6 +9,8 @@ import {
 import { useFetchRolesListQuery } from '~/view/pages/Users/__generated__/schema';
 import { Icon } from '~/view/ui/components/common/Icon';
 
+import styles from './styles.module.scss';
+
 interface Props {
   featureRow: PermissionType;
 }
@@ -63,7 +65,7 @@ export const AddRolePopup: FC<Props> = ({ featureRow }) => {
   return (
     <div>
       {!!rolesOptions?.length && (
-        <Dropdown items={options} containerWidth="14.93rem">
+        <Dropdown items={options} containerWidth="14.93rem" className={styles['dropdown']}>
           {({ onClick }) => (
             <button
               type="button"

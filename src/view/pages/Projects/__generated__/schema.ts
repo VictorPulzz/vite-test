@@ -19,25 +19,25 @@ export type FetchProjectsQuery = {
       __typename?: 'ProjectType';
       id: number;
       name: string;
-      status?: Types.StatusEnum | null;
       PM?: Array<{
         __typename?: 'UserType';
         id?: string | null;
         fullName?: string | null;
         photo?: { __typename?: 'ImageType'; url: string } | null;
       }> | null;
-      platforms?: Array<{ __typename?: 'PlatformType'; id: number; name: string }> | null;
+      status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
+      platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
     }>;
   };
 };
 
 export type ChangeProjectStatusMutationVariables = Types.Exact<{
-  input: Types.ProjectStatusInput;
+  input: Types.ProjectUpdateInput;
 }>;
 
 export type ChangeProjectStatusMutation = {
   __typename?: 'Mutation';
-  projectChangeStatus: { __typename?: 'ProjectType'; id: number; status?: Types.StatusEnum | null };
+  projectUpdate: { __typename?: 'ProjectType'; id: number };
 };
 
 export const FetchProjectsDocument = gql`
@@ -53,7 +53,10 @@ export const FetchProjectsDocument = gql`
           }
           fullName
         }
-        status
+        status {
+          id
+          name
+        }
         platforms {
           id
           name
@@ -107,10 +110,9 @@ export type FetchProjectsQueryResult = Apollo.QueryResult<
   FetchProjectsQueryVariables
 >;
 export const ChangeProjectStatusDocument = gql`
-  mutation ChangeProjectStatus($input: ProjectStatusInput!) {
-    projectChangeStatus(data: $input) {
+  mutation ChangeProjectStatus($input: ProjectUpdateInput!) {
+    projectUpdate(data: $input) {
       id
-      status
     }
   }
 `;

@@ -26,4 +26,7 @@ export const ROUTES = {
 
   SETTINGS: '/settings',
   SETTINGS_SECURITY: '/settings/security',
+
+  ADMIN_SETTINGS: '/admin-settings',
+  ADMIN_SETTINGS_INTEGRATIONS: '/admin-settings/integrations',
 };

@@ -187,6 +187,11 @@ export type IdInput = {
   id: Scalars['Int'];
 };
 
+export type IdNameInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+};
+
 export type ImageType = {
   __typename: 'ImageType';
   fileName: Scalars['String'];
@@ -287,8 +292,8 @@ export type Mutation = {
   permissionsUpdate: Array<PermissionType>;
   /** Project add member */
   projectAddMember: ProjectMemberType;
-  /** Project change status */
-  projectChangeStatus: ProjectType;
+  /** Project add slack */
+  projectAddSlackChannel: ProjectSlackType;
   /** Project creation */
   projectCreate: ProjectType;
   /** Project deletion */
@@ -303,6 +308,10 @@ export type Mutation = {
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Project delete integration */
   projectIntegrationDelete: MessageType;
+  /** Project status creation/updating by id */
+  projectStatusCreateUpdate: ProjectStatusType;
+  /** Project status deletion by id */
+  projectStatusDelete: MessageType;
   /** Project update */
   projectUpdate: ProjectType;
   /** Repository creation */
@@ -317,18 +326,26 @@ export type Mutation = {
   repositoryUpdate: RepositoryType;
   /** Create requests */
   requestCreate: RequestType;
-  /** Update request status */
-  requestUpdateStatus: RequestType;
+  /** Update request */
+  requestUpdate: RequestType;
   /** Reset password */
   resetPassword: MessageType;
   /** Repository's secrets creation/updating */
   secretsAddUpdate: MessageType;
   /** User creation */
   signup: MessageType;
+  /** Create Slack channel template */
+  slackTemplateCreate: SlackChannelTemplateType;
+  /** Delete Slack channel template */
+  slackTemplateDelete: MessageType;
+  /** Update Slack channel template */
+  slackTemplateUpdate: SlackChannelTemplateType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
   /** Change user status */
   userChangeStatus: UserType;
+  /** Connect user with bitbucket */
+  userConnectBitbucket: UserType;
   /** User create or updating */
   userCreateUpdate: UserType;
   /** User deletion */
@@ -377,8 +394,8 @@ export type MutationProjectAddMemberArgs = {
   data: ProjectMemberInput;
 };
 
-export type MutationProjectChangeStatusArgs = {
-  data: ProjectStatusInput;
+export type MutationProjectAddSlackChannelArgs = {
+  data: ProjectSlackInput;
 };
 
 export type MutationProjectCreateArgs = {
@@ -409,8 +426,16 @@ export type MutationProjectIntegrationDeleteArgs = {
   data: IdInput;
 };
 
+export type MutationProjectStatusCreateUpdateArgs = {
+  data: IdNameInput;
+};
+
+export type MutationProjectStatusDeleteArgs = {
+  data: IdInput;
+};
+
 export type MutationProjectUpdateArgs = {
-  data: ProjectCreateInput;
+  data: ProjectUpdateInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -434,11 +459,11 @@ export type MutationRepositoryUpdateArgs = {
 };
 
 export type MutationRequestCreateArgs = {
-  data: RequestInput;
+  data: RequestCreateInput;
 };
 
-export type MutationRequestUpdateStatusArgs = {
-  data: RequestUpdateStatusInput;
+export type MutationRequestUpdateArgs = {
+  data: RequestUpdateInput;
 };
 
 export type MutationResetPasswordArgs = {
@@ -453,12 +478,28 @@ export type MutationSignupArgs = {
   data: LoginInput;
 };
 
+export type MutationSlackTemplateCreateArgs = {
+  data: SlackChannelTemplateInput;
+};
+
+export type MutationSlackTemplateDeleteArgs = {
+  data: IdInput;
+};
+
+export type MutationSlackTemplateUpdateArgs = {
+  data: SlackChannelTemplateInput;
+};
+
 export type MutationTokenRefreshArgs = {
   data: RefreshTokenInput;
 };
 
 export type MutationUserChangeStatusArgs = {
   data: ActiveInput;
+};
+
+export type MutationUserConnectBitbucketArgs = {
+  data: IdInput;
 };
 
 export type MutationUserCreateUpdateArgs = {
@@ -508,7 +549,7 @@ export type PermissionType = {
 
 export type PlatformType = {
   __typename: 'PlatformType';
-  id: Scalars['Int'];
+  id?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
 };
 
@@ -555,7 +596,7 @@ export type ProjectCreateInput = {
   platforms?: InputMaybe<Array<Scalars['Int']>>;
   roadmap?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['Date']>;
-  status?: InputMaybe<StatusEnum>;
+  statusId?: InputMaybe<Scalars['Int']>;
 };
 
 export enum ProjectEnvironmentChoice {
@@ -582,7 +623,7 @@ export type ProjectEnvironmentType = {
 };
 
 export type ProjectFilter = {
-  status?: InputMaybe<StatusEnum>;
+  statusId?: InputMaybe<Scalars['Int']>;
 };
 
 export type ProjectIntegrationInput = {
@@ -619,7 +660,9 @@ export type ProjectMemberListType = {
 export type ProjectMemberType = {
   __typename: 'ProjectMemberType';
   currentTeam: Scalars['Boolean'];
+  endDate?: Maybe<Scalars['DateTime']>;
   project: ProjectType;
+  startDate: Scalars['DateTime'];
   user: UserType;
 };
 
@@ -649,9 +692,33 @@ export type ProjectPreviewType = {
   name: Scalars['String'];
 };
 
-export type ProjectStatusInput = {
-  id: Scalars['Int'];
-  status: StatusEnum;
+export type ProjectSlackInput = {
+  channelId?: InputMaybe<Scalars['String']>;
+  channelTemplate: SlackChannelTemplateInput;
+  projectId: Scalars['Int'];
+};
+
+export type ProjectSlackType = {
+  __typename: 'ProjectSlackType';
+  channelId?: Maybe<Scalars['String']>;
+  channelTemplate?: Maybe<Scalars['String']>;
+  channelUrl?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  template?: Maybe<SlackChannelTemplateType>;
+};
+
+export type ProjectStatusType = {
+  __typename: 'ProjectStatusType';
+  id?: Maybe<Scalars['Int']>;
+  name: Scalars['String'];
+};
+
+export type ProjectStatusTypePagination = {
+  __typename: 'ProjectStatusTypePagination';
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<ProjectStatusType>;
 };
 
 export type ProjectType = {
@@ -672,8 +739,9 @@ export type ProjectType = {
   phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
   roadmap?: Maybe<Scalars['String']>;
+  slackChannels?: Maybe<Array<ProjectSlackType>>;
   startDate?: Maybe<Scalars['Date']>;
-  status?: Maybe<StatusEnum>;
+  status?: Maybe<ProjectStatusType>;
 };
 
 export type ProjectTypePagination = {
@@ -682,6 +750,21 @@ export type ProjectTypePagination = {
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   results: Array<ProjectType>;
+};
+
+export type ProjectUpdateInput = {
+  clientTeam?: InputMaybe<Array<ClientInput>>;
+  design?: InputMaybe<Scalars['String']>;
+  endDate?: InputMaybe<Scalars['Date']>;
+  hoursEstimated?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+  notes?: InputMaybe<Scalars['String']>;
+  phase?: InputMaybe<ProjectPhaseChoice>;
+  platforms?: InputMaybe<Array<Scalars['Int']>>;
+  roadmap?: InputMaybe<Scalars['String']>;
+  startDate?: InputMaybe<Scalars['Date']>;
+  statusId?: InputMaybe<Scalars['Int']>;
 };
 
 export type Query = {
@@ -716,6 +799,8 @@ export type Query = {
   projectPreview: ProjectPreviewType;
   /** Getting repositories for project by id */
   projectRepositoryList: Array<RepositoryType>;
+  /** Getting project's statuses list */
+  projectStatusesList: ProjectStatusTypePagination;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
   /** Getting repository */
@@ -728,6 +813,10 @@ export type Query = {
   requestList: RequestTypePagination;
   /** Getting list of users' roles */
   rolesList: Array<RoleType>;
+  /** Getting Slack channel template by id */
+  slackTemplate: SlackChannelTemplateType;
+  /** Getting Slack channel templates list */
+  slackTemplateList: Array<SlackChannelTemplateType>;
   /** Getting technologies list */
   technologyList: TechnologyTypePagination;
   /** Getting user by id */
@@ -782,6 +871,10 @@ export type QueryProjectRepositoryListArgs = {
   data: IdInput;
 };
 
+export type QueryProjectStatusesListArgs = {
+  pagination: PaginationInput;
+};
+
 export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination: PaginationInput;
@@ -806,6 +899,10 @@ export type QueryRepositoryParticipantListArgs = {
 export type QueryRequestListArgs = {
   filters?: InputMaybe<RequestFilter>;
   pagination: PaginationInput;
+};
+
+export type QuerySlackTemplateArgs = {
+  data: IdInput;
 };
 
 export type QueryTechnologyListArgs = {
@@ -936,18 +1033,22 @@ export type RepositoryUpdateInput = {
   name?: InputMaybe<Scalars['String']>;
 };
 
+export type RequestCreateInput = {
+  accessLevel?: InputMaybe<Scalars['String']>;
+  assignedRoleId: Scalars['Int'];
+  assignedToId?: InputMaybe<Scalars['Int']>;
+  description?: InputMaybe<Scalars['String']>;
+  dueDate?: InputMaybe<Scalars['Date']>;
+  projectId?: InputMaybe<Scalars['Int']>;
+  repositoryId?: InputMaybe<Scalars['Int']>;
+  type: RequestTypeChoice;
+};
+
 export type RequestFilter = {
   createdById?: InputMaybe<Scalars['Int']>;
   projectId?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<RequestStatusChoice>;
-  type?: InputMaybe<Scalars['String']>;
-};
-
-export type RequestInput = {
-  projectId?: InputMaybe<Scalars['Int']>;
-  repositories?: InputMaybe<Array<Scalars['Int']>>;
-  roleId: Scalars['Int'];
-  type: Scalars['String'];
+  type?: InputMaybe<RequestTypeChoice>;
 };
 
 export enum RequestStatusChoice {
@@ -957,15 +1058,27 @@ export enum RequestStatusChoice {
 
 export type RequestType = {
   __typename: 'RequestType';
+  accessLevel?: Maybe<Scalars['String']>;
+  assignedRole: RoleType;
+  assignedTo?: Maybe<UserType>;
   createdAt: Scalars['DateTime'];
   createdBy: UserType;
+  description?: Maybe<Scalars['String']>;
+  dueDate?: Maybe<Scalars['Date']>;
   id: Scalars['Int'];
   project?: Maybe<ProjectType>;
-  repositories?: Maybe<Array<RepositoryType>>;
-  role: RoleType;
+  repository?: Maybe<RepositoryType>;
   status: RequestStatusChoice;
-  type: Scalars['String'];
+  type: RequestTypeChoice;
 };
+
+export enum RequestTypeChoice {
+  ACCESS_PROJECT = 'ACCESS_PROJECT',
+  ACCESS_REPOSITORY = 'ACCESS_REPOSITORY',
+  CREATION_ENVIRONMENT = 'CREATION_ENVIRONMENT',
+  CREATION_INTEGRATION = 'CREATION_INTEGRATION',
+  CREATION_REPOSITORY = 'CREATION_REPOSITORY',
+}
 
 export type RequestTypePagination = {
   __typename: 'RequestTypePagination';
@@ -975,9 +1088,11 @@ export type RequestTypePagination = {
   results: Array<RequestType>;
 };
 
-export type RequestUpdateStatusInput = {
+export type RequestUpdateInput = {
+  dueDate?: InputMaybe<Scalars['Date']>;
   id: Scalars['Int'];
-  status: RequestStatusChoice;
+  ssignedRoleId?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<RequestStatusChoice>;
 };
 
 export type ResetPasswordInput = {
@@ -994,12 +1109,22 @@ export type RoleType = {
   permissionsList: Array<Scalars['String']>;
 };
 
-export enum StatusEnum {
-  BLOCKED = 'BLOCKED',
-  IN_PROGRESS = 'IN_PROGRESS',
-  STOPPED = 'STOPPED',
-  WAITING = 'WAITING',
-}
+export type SlackChannelTemplateInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  initialUsers?: InputMaybe<Array<Scalars['Int']>>;
+  isPrivate?: InputMaybe<Scalars['Boolean']>;
+  label?: InputMaybe<Scalars['String']>;
+  prefix?: InputMaybe<Scalars['String']>;
+};
+
+export type SlackChannelTemplateType = {
+  __typename: 'SlackChannelTemplateType';
+  id: Scalars['Int'];
+  initialUsers?: Maybe<Array<UserType>>;
+  isPrivate?: Maybe<Scalars['Boolean']>;
+  label?: Maybe<Scalars['String']>;
+  prefix: Scalars['String'];
+};
 
 export type TechnologyType = {
   __typename: 'TechnologyType';
@@ -1041,6 +1166,7 @@ export type UserType = {
   __typename: 'UserType';
   address?: Maybe<Scalars['String']>;
   birthDate?: Maybe<Scalars['Date']>;
+  bitbucketId?: Maybe<Scalars['String']>;
   contractType?: Maybe<ContractChoice>;
   department?: Maybe<DepartmentType>;
   email: Scalars['String'];

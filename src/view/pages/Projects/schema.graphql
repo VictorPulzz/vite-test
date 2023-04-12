@@ -10,7 +10,10 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
         }
         fullName
       }
-      status
+      status {
+        id
+        name
+      }
       platforms {
         id
         name
@@ -20,9 +23,8 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
   }
 }
 
-mutation ChangeProjectStatus($input: ProjectStatusInput!) {
-  projectChangeStatus(data: $input) {
+mutation ChangeProjectStatus($input: ProjectUpdateInput!) {
+  projectUpdate(data: $input) {
     id
-    status
   }
 }

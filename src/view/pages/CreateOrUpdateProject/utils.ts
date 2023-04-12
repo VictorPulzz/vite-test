@@ -1,8 +1,4 @@
-import {
-  ClientType,
-  ProjectPhaseChoice,
-  StatusEnum,
-} from '~/services/gql/__generated__/globalTypes';
+import { ClientType, ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { isNumber } from '~/utils/isNumber';
 
 import { FetchProjectQuery } from './__generated__/schema';
@@ -28,9 +24,9 @@ export function transformProjectPrefilledData(
     roadmap: data.roadmap ?? '',
     notes: data.notes ?? '',
     phase: data.phase ?? ProjectPhaseChoice.PRE_SIGNED,
-    status: data.status ?? StatusEnum.WAITING,
+    status: Number(data.status?.id),
     documentTemplate: [],
-    platforms: data.platforms?.map(({ id }) => id) ?? [],
+    platforms: data.platforms?.map(({ id }) => Number(id)) ?? [],
     clientTeam: data.clientTeam as ClientTeamMember[],
   };
 }
@@ -47,7 +43,3 @@ export function transformClientTeamMemberPrefilledData(
     pointContact: !!data.pointContact,
   };
 }
-// platforms: data.platforms?.map(({ id, name }) => ({
-//   value: id,
-//   label: name,
-// })) as SelectOption<number>[]

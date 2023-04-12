@@ -17,7 +17,7 @@ export type FetchRequestsQuery = {
     results: Array<{
       __typename?: 'RequestType';
       createdAt: string;
-      type: string;
+      type: Types.RequestTypeChoice;
       createdBy: { __typename?: 'UserType'; id?: string | null; fullName?: string | null };
     }>;
   };

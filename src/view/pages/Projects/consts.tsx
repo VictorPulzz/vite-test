@@ -3,10 +3,7 @@ import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { PROJECT_STATUS_BADGES } from '~/constants/projectStatusBadges';
 import { ROUTES } from '~/constants/routes';
-import { StatusEnum } from '~/services/gql/__generated__/globalTypes';
-import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
@@ -34,30 +31,20 @@ export const PROJECTS_TABLE_COLUMNS = [
       className: 'w-[400px]',
     },
   }),
-  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
+  columnHelper.accessor('PM', {
     id: 'PM',
     header: 'PM',
     cell: props => {
-      const isProjectHasPm = props.row.original.PM && props.row.original.PM[0];
       return (
         <div>
-          {isProjectHasPm ? (
-            <div>
-              {props.row.original.PM?.map(pm => (
-                <div key={pm.id} className="flex gap-3 items-center">
-                  <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
-                  <TextLink
-                    to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}
-                    className="underline"
-                  >
-                    {pm.fullName}
-                  </TextLink>
-                </div>
-              ))}
+          {props.getValue()?.map(pm => (
+            <div key={pm.id} className="flex gap-3 items-center">
+              <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
+              <TextLink to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })} className="underline">
+                {pm.fullName}
+              </TextLink>
             </div>
-          ) : (
-            <span>-</span>
-          )}
+          ))}
         </div>
       );
     },
@@ -66,20 +53,17 @@ export const PROJECTS_TABLE_COLUMNS = [
     id: 'status',
     header: 'Status',
     cell: props => {
-      const value = convertUppercaseToReadable(props.getValue() ?? StatusEnum.WAITING);
-      return (
-        <Badge color={PROJECT_STATUS_BADGES[props.getValue() ?? StatusEnum.WAITING]}>{value}</Badge>
-      );
+      return props.getValue() && <Badge color={BadgeColor.BLUE}>{props.getValue()?.name}</Badge>;
     },
   }),
   columnHelper.accessor('platforms', {
     id: 'platforms',
     header: 'Platform',
     cell: props => {
-      const platforms = props.getValue() ?? [];
+      const platforms = props.getValue();
       return (
         <div className="flex gap-2">
-          {platforms.map(platform => (
+          {platforms?.map(platform => (
             <Badge key={platform.id} color={BadgeColor.BLUE}>
               {platform.name}
             </Badge>
@@ -102,13 +86,13 @@ const projectTableColumns = [...PROJECTS_TABLE_COLUMNS];
 projectTableColumns.splice(
   1,
   1,
-  columnHelper.accessor(row => (row.PM ? row.PM[0]?.fullName : 'PM'), {
+  columnHelper.accessor('PM', {
     id: 'PM',
     header: 'PM',
     cell: props => {
       return (
         <div>
-          {props.row.original.PM?.map(pm => (
+          {props.getValue()?.map(pm => (
             <div key={pm.id} className="flex gap-3 items-center">
               <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
               <span>{pm.fullName}</span>

@@ -2,12 +2,11 @@ import { format, formatDuration, intervalToDuration, isPast, parseISO } from 'da
 import React, { FC, useMemo } from 'react';
 
 import { DateFormat } from '~/constants/dates';
-import { PROJECT_STATUS_BADGES } from '~/constants/projectStatusBadges';
-import { ProjectPhaseChoice, StatusEnum } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Badge } from '~/view/ui/components/common/Badge';
+import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 import { EmptyState } from '~/view/ui/components/common/EmptyState';
 import { Loader } from '~/view/ui/components/common/Loader';
 import { Table } from '~/view/ui/components/common/Table';
@@ -57,12 +56,12 @@ export const Info: FC<Props> = ({ projectId }) => {
         <div className="flex flex-col gap-5">
           <SectionContainer title="General">
             <div className="grid grid-cols-2 gap-4 mt-3">
-              <div className="flex flex-col gap-[2px]">
-                <span className="text-c1 text-gray-2">Project status</span>
-                <Badge color={PROJECT_STATUS_BADGES[status ?? StatusEnum.WAITING]}>
-                  {convertUppercaseToReadable(status ?? StatusEnum.WAITING)}
-                </Badge>
-              </div>
+              {status && (
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-c1 text-gray-2">Project status</span>
+                  <Badge color={BadgeColor.BLUE}>{status?.name}</Badge>
+                </div>
+              )}
               {platforms && !!platforms.length && (
                 <div className="flex flex-col gap-[2px]">
                   <span className="text-c1 text-gray-2 leading-none">Platform</span>

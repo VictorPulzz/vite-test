@@ -21,6 +21,7 @@ import { History } from './components/History';
 import { Info } from './components/Info';
 import { Overview } from './components/Overview';
 import { Reports } from './components/Reports';
+import { SlackChannels } from './components/SlackChannels';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
@@ -91,6 +92,10 @@ export const ProjectDetailsPage: FC = () => {
             ),
           },
           {
+            title: 'Slack',
+            element: <SlackChannels projectId={projectId} />,
+          },
+          {
             title: 'Reports',
             element: <Reports />,
           },
@@ -126,7 +131,7 @@ export const ProjectDetailsPage: FC = () => {
               <Button
                 variant={ButtonVariant.SECONDARY}
                 withIcon="left-arrow"
-                onClick={() => navigate(ROUTES.PROJECTS)}
+                onClick={() => navigate(-1)}
               />
               <div className="flex flex-col w-[65vw]">
                 <h2 className="text-h4 font-bold break-words leading-6">
