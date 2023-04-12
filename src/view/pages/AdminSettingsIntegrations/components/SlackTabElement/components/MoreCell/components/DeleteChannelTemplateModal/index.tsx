@@ -1,13 +1,42 @@
+import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { Button, ButtonVariant } from '@ui/components/common/Button';
 import { Icon } from '@ui/components/common/Icon';
 import { Modal, ModalProps } from '@ui/components/common/Modal';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
+
+import {
+  FetchSlackTemplatesListDocument,
+  useDeleteSlackTemplateMutation,
+} from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   name: string;
+  id: number;
 }
 
-export const DeleteChannelTemplateModal: FC<Props> = ({ isOpen, close, name }) => {
+export const DeleteChannelTemplateModal: FC<Props> = ({ isOpen, close, name, id }) => {
+  const [slackTemplateDelete] = useDeleteSlackTemplateMutation();
+
+  const removeSlackTemplateDelete = useCallback(() => {
+    toast.promise(
+      slackTemplateDelete({
+        variables: {
+          input: { id },
+        },
+        refetchQueries: [FetchSlackTemplatesListDocument],
+      }),
+      {
+        loading: 'Deleting channel template...',
+        success: 'Channel template deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while deleting channel template: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [id, slackTemplateDelete]);
+
   return (
     <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">
       <div className="flex flex-col items-center">
@@ -19,7 +48,7 @@ export const DeleteChannelTemplateModal: FC<Props> = ({ isOpen, close, name }) =
         <div className="flex w-full">
           <Button
             variant={ButtonVariant.SECONDARY}
-            onClick={() => null}
+            onClick={removeSlackTemplateDelete}
             label="Yes, delete"
             className="mr-2 text-red"
           />

@@ -1,51 +1,39 @@
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
-import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { InitialUsersCell } from './components/InitialUsersCell';
 import { MoreCell } from './components/MoreCell';
+import { SlackChannelTemplateResultType } from './types';
 
-export enum Accessibility {
-  PRIVATE = 'PRIVATE',
-  PUBLIC = 'PUBLIC',
-}
-
-export interface ChannelTemplatesType {
-  name: string;
-  prefix: string;
-  users: { id: number; photo: string; fullName: string }[];
-  accessibility: Accessibility;
-}
-
-const columnHelper = createColumnHelper<ChannelTemplatesType>();
+const columnHelper = createColumnHelper<SlackChannelTemplateResultType>();
 
 export const CHANNEL_TEMPLATES_TABLE_COLUMNS = [
-  columnHelper.accessor('name', {
-    id: 'name',
+  columnHelper.accessor('label', {
+    id: 'label',
     header: 'Name',
   }),
   columnHelper.accessor('prefix', {
     id: 'prefix',
     header: 'Prefix',
   }),
-  columnHelper.accessor('users', {
-    id: 'users',
+  columnHelper.group({
+    id: 'initialUsers',
     header: 'Initial users',
-    cell: ctx => <InitialUsersCell ctx={ctx} />,
+    cell: InitialUsersCell,
     meta: {
       className: 'w-[200px]',
     },
   }),
-  columnHelper.accessor('accessibility', {
-    id: 'accessibility',
+  columnHelper.accessor('isPrivate', {
+    id: 'isPrivate',
     header: 'Accessibility',
     cell: ctx => {
-      const accessibility = ctx.getValue();
+      const isPrivate = ctx.getValue();
       return (
-        <Badge color={accessibility === Accessibility.PRIVATE ? BadgeColor.BLUE : BadgeColor.GREEN}>
-          {convertUppercaseToReadable(accessibility)}
+        <Badge color={isPrivate ? BadgeColor.BLUE : BadgeColor.GREEN}>
+          {isPrivate ? 'Private' : 'Public'}
         </Badge>
       );
     },

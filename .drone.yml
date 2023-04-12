@@ -1,5 +1,5 @@
 kind: pipeline
-name: Appello Internal web-front-end
+name: StartButton v2 web app
 
 definitions:
   environment: &environment
@@ -14,16 +14,16 @@ definitions:
         from_secret: slack_token
   slack_commands1: &error_slack_message_commands
     commands:
-      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "❌ Appello Internal web-front-end app build/deployment failed!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
+      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "❌ StartButton v2 web app build/deployment failed!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
   slack_commands2: &success_slack_message_commands
     commands:
-      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "✅ Appello Internal web-front-end app build/deployment succeeded!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
+      - /notify_slack.py $SLACK_API_TOKEN $SLACK_CHANNEL_ID "✅ StartButton v2 web app build/deployment succeeded!\n*$DRONE_COMMIT_REF*, ${DRONE_COMMIT_SHA:0:8}\n$DRONE_COMMIT_MESSAGE\nSee more $DRONE_BUILD_LINK"
 
 
 steps:
 # Dev
 - name: Build Development
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet
@@ -56,7 +56,7 @@ steps:
 
 # Staging
 - name: Build Staging
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet
@@ -89,7 +89,7 @@ steps:
 
 # Production (Keep commented out before deploying on produciton)
 - name: Build Production
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet

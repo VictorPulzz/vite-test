@@ -4,13 +4,8 @@ import React from 'react';
 
 import { DateFormat } from '~/constants/dates';
 
-import { FetchProjectSlackChannelsQuery } from '../../__generated__/schema';
+import { ProjectSlackChannelResultType } from '../../types';
 import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateSlackChannelCell';
-
-export type ProjectSlackChannelResultType = Exclude<
-  FetchProjectSlackChannelsQuery['project']['slackChannels'],
-  undefined | null
->[number];
 
 const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
 

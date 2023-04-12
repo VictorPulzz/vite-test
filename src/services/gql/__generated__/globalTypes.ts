@@ -589,7 +589,6 @@ export type ProjectCreateInput = {
   design?: InputMaybe<Scalars['String']>;
   endDate?: InputMaybe<Scalars['Date']>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
-  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;
@@ -793,7 +792,7 @@ export type Query = {
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting integrations for project by id */
   projectIntegrationList: Array<ProjectIntegrationType>;
-  /** Getting member for project by id */
+  /** Getting members for project by id */
   projectMemberList: ProjectMemberListType;
   /** Getting project preview by id */
   projectPreview: ProjectPreviewType;
