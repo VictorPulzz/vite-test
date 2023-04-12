@@ -23,7 +23,7 @@ definitions:
 steps:
 # Dev
 - name: Build Development
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet
@@ -56,7 +56,7 @@ steps:
 
 # Staging
 - name: Build Staging
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet
@@ -89,7 +89,7 @@ steps:
 
 # Production (Keep commented out before deploying on produciton)
 - name: Build Production
-  image: node:16
+  image: node:18
   commands:
   - git submodule update --init --recursive
   - npm install --quiet
