@@ -6,9 +6,8 @@ import { useParams } from 'react-router-dom';
 
 import { useCreateProjectSlackChannelMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { FetchProjectSlackChannelsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { ProjectSlackChannelResultType } from '~/view/pages/ProjectDetails/types';
 import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-
-import { ProjectSlackChannelResultType } from '../../consts';
 
 interface Props {
   ctx: CellContext<ProjectSlackChannelResultType, unknown>;

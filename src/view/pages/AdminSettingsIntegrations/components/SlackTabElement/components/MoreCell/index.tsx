@@ -5,11 +5,13 @@ import React, { FC } from 'react';
 
 import { Icon } from '~/view/ui/components/common/Icon';
 
-import { ChannelTemplatesType } from '../../consts';
+import { SlackChannelTemplateResultType } from '../../types';
 import { CreateOrUpdateChannelTemplateModal } from '../CreateOrUpdateChannelTemplateModal';
 import { DeleteChannelTemplateModal } from './components/DeleteChannelTemplateModal';
 
-export const MoreCell: FC<CellContext<ChannelTemplatesType, unknown>> = ({ row }) => {
+export const MoreCell: FC<CellContext<SlackChannelTemplateResultType, unknown>> = ({ row }) => {
+  const { id, label } = row.original;
+
   const {
     value: isCreateOrUpdateChannelTemplateModal,
     on: openCreateOrUpdateChannelTemplateModal,
@@ -45,17 +47,21 @@ export const MoreCell: FC<CellContext<ChannelTemplatesType, unknown>> = ({ row }
           </button>
         )}
       </Dropdown>
-      <CreateOrUpdateChannelTemplateModal
-        isOpen={isCreateOrUpdateChannelTemplateModal}
-        close={closeCreateOrUpdateChannelTemplateModal}
-        channelTemplateRow={row}
-        isEditMode
-      />
-      <DeleteChannelTemplateModal
-        isOpen={isDeleteChannelTemplateModal}
-        close={closeDeleteChannelTemplateModal}
-        name={row.original.name}
-      />
+      {isCreateOrUpdateChannelTemplateModal && (
+        <CreateOrUpdateChannelTemplateModal
+          isOpen={isCreateOrUpdateChannelTemplateModal}
+          close={closeCreateOrUpdateChannelTemplateModal}
+          channelTemplateId={id}
+        />
+      )}
+      {isDeleteChannelTemplateModal && (
+        <DeleteChannelTemplateModal
+          isOpen={isDeleteChannelTemplateModal}
+          close={closeDeleteChannelTemplateModal}
+          name={label ?? ''}
+          id={id}
+        />
+      )}
     </>
   );
 };

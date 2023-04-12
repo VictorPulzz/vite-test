@@ -1,0 +1,49 @@
+query FetchSlackTemplatesList {
+  slackTemplateList {
+    id
+    label
+    prefix
+    initialUsers {
+      id
+      photo {
+        url
+      }
+      fullName
+    }
+    isPrivate
+  }
+}
+
+query FetchSlackTemplateInfo($input: IDInput!) {
+  slackTemplate(data: $input) {
+    id
+    label
+    prefix
+    initialUsers {
+      id
+      photo {
+        url
+      }
+      fullName
+    }
+    isPrivate
+  }
+}
+
+mutation CreateSlackTemplate($input: SlackChannelTemplateInput!) {
+  slackTemplateCreate(data: $input) {
+    id
+  }
+}
+
+mutation UpdateSlackTemplate($input: SlackChannelTemplateInput!) {
+  slackTemplateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation DeleteSlackTemplate($input: IDInput!) {
+  slackTemplateDelete(data: $input) {
+    message
+  }
+}

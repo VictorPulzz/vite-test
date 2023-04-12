@@ -487,7 +487,6 @@ input ProjectCreateInput {
   design: String = null
   endDate: Date = null
   hoursEstimated: Int = null
-  id: Int = null
   name: String!
   notes: String = null
   phase: ProjectPhaseChoice = null
@@ -709,7 +708,7 @@ type Query {
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
   """
-  Getting member for project by id
+  Getting members for project by id
   """
   projectMemberList(data: IDInput!): ProjectMemberListType!
   """
