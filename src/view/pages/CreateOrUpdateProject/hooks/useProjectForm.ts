@@ -188,7 +188,7 @@ export function useProjectForm({
                 platforms: !isNil(values.platforms) ? values.platforms ?? [] : undefined,
                 statusId: values.status,
                 notes: values.notes,
-                phase: ProjectPhaseChoice.PRE_SIGNED,
+                phase: values.phase,
                 clientTeam: values.clientTeam ?? [],
               },
             },
