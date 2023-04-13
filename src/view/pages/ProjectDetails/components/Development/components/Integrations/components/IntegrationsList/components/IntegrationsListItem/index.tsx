@@ -30,18 +30,27 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
     [mainIntegrationCredentialsData],
   );
 
+  const withBorderBottomCardHeader =
+    isEmptyMainIntegrationCredential && integration?.keys?.length === 0;
+
   return (
     <>
       {variant === CardVariant.DEFAULT && (
         <div className="p-5 border-solid border border-gray-5 rounded-xl">
-          <div className="flex items-center justify-between border-solid border-b border-gray-5 pb-3">
+          <div
+            className={`flex items-center justify-between ${
+              !withBorderBottomCardHeader && 'border-solid border-b border-gray-5 pb-3'
+            } gap-3`}
+          >
             <div className="flex items-center gap-2">
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
-                <h2 className="text-p4 font-medium">
+                <h2 className="text-p4 font-medium break-all">
                   {convertUppercaseToReadable(integration.name)}
                 </h2>
-                <span className="text-c1 text-gray-1">Dev</span>
+                <span className="text-c1 text-gray-1">
+                  {convertUppercaseToReadable(integration.environment ?? '')}
+                </span>
               </div>
             </div>
             <IntegrationsListItemMenu />

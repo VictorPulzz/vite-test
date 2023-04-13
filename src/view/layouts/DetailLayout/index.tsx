@@ -7,7 +7,6 @@ interface Props {
   title: ReactNode;
   contentClassName?: string;
   rightHeaderElement?: ReactNode;
-  onClickBackButton?(): void;
 }
 
 export const DetailLayout: FC<Props> = ({
@@ -15,7 +14,6 @@ export const DetailLayout: FC<Props> = ({
   title,
   contentClassName,
   rightHeaderElement,
-  onClickBackButton,
 }) => {
   const navigate = useNavigate();
 
@@ -25,7 +23,7 @@ export const DetailLayout: FC<Props> = ({
         <Button
           variant={ButtonVariant.SECONDARY}
           withIcon="left-arrow"
-          onClick={onClickBackButton || (() => navigate(-1))}
+          onClick={() => navigate(-1)}
           className="mr-4"
         />
         <h1 className="text-p3 font-semibold">{title}</h1>

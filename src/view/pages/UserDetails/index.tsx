@@ -30,7 +30,6 @@ export const UserDetailsPage: FC = () => {
     <SidebarLayout>
       <DetailLayout
         title="User details"
-        onClickBackButton={() => navigate(-1)}
         rightHeaderElement={
           canEditUser && (
             <Button

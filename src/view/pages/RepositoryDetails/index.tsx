@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -11,7 +11,7 @@ import { RepositoryMainInfo } from './components/RepositoryMainInfo';
 
 export const RepositoryDetailsPage: FC = () => {
   const params = useParams();
-  const navigate = useNavigate();
+
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
   const { data, loading } = useFetchRepositoryDetailsQuery({
@@ -22,11 +22,7 @@ export const RepositoryDetailsPage: FC = () => {
 
   return (
     <SidebarLayout>
-      <DetailLayout
-        title="Repository details"
-        onClickBackButton={() => navigate(-1)}
-        contentClassName="flex-auto"
-      >
+      <DetailLayout title="Repository details" contentClassName="flex-auto">
         {loading && (
           <div className="flex h-full items-center">
             <Loader full colorful />
