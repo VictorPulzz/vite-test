@@ -121,7 +121,6 @@ export const Router: FC = () => {
           element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,
         },
         {
-          path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
           children: [
             {
               path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
