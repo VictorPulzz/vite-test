@@ -27,4 +27,5 @@ export enum Permission {
   READ_USERS_LIST = 'readUsersList',
   READ_PROJECTS_LIST = 'readProjectsList',
   READ_REPOS_LIST = 'readReposList',
+  EDIT_ADMIN_SETTINGS = 'editAdminSettings',
 }

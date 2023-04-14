@@ -7,10 +7,15 @@ import { SidebarItem } from '~/view/ui/components/common/Sidebar';
 
 export function useSidebarItems(): SidebarItem[] {
   const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
+  const canEditAdminSettings = useHasAccess(Permission.EDIT_ADMIN_SETTINGS);
 
   const hiddenRoutes = useMemo(
-    () => [!canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS].filter(Boolean),
-    [canEditPermissions],
+    () =>
+      [
+        !canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS,
+        !canEditAdminSettings && ROUTES.ADMIN_SETTINGS,
+      ].filter(Boolean),
+    [canEditAdminSettings, canEditPermissions],
   );
 
   const navItems = useMemo(

@@ -104,16 +104,13 @@ const protectedRoutes: RouteObject[] = [
     path: ROUTES.SETTINGS_SECURITY,
     element: <SettingsSecurityPage />,
   },
-  {
-    path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
-    element: <AdminSettingsIntegrationsPage />,
-  },
 ];
 
 export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
 
   const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
+  const canEditAdminSettings = useHasAccess(Permission.EDIT_ADMIN_SETTINGS);
 
   return useRoutes([
     {
@@ -122,6 +119,19 @@ export const Router: FC = () => {
         {
           path: ROUTES.ROLES_AND_PERMISSIONS,
           element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,
+        },
+        {
+          path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+          children: [
+            {
+              path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+              element: canEditAdminSettings ? (
+                <AdminSettingsIntegrationsPage />
+              ) : (
+                <Navigate to={ROUTES.HOME} />
+              ),
+            },
+          ],
         },
       ],
       element: !isAuthorized ? <Navigate to={ROUTES.SIGN_IN} /> : undefined,
