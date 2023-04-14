@@ -9,8 +9,6 @@ import { ROUTES } from '~/constants/routes';
 import { RepositoryType, RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 
-import { MoreCell } from './components/MoreCell';
-
 const columnHelper = createColumnHelper<RepositoryType>();
 
 export const REPOSITORIES_TABLE_COLUMNS = [
@@ -58,13 +56,6 @@ export const REPOSITORIES_TABLE_COLUMNS = [
     id: 'createdAt',
     header: 'Created at',
     cell: props => <span>{format(new Date(props.getValue()), DateFormat.D_MMM_Y)}</span>,
-  }),
-  columnHelper.group({
-    id: 'more',
-    cell: MoreCell,
-    meta: {
-      className: 'w-0',
-    },
   }),
 ];
 

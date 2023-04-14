@@ -81,20 +81,30 @@ export type FetchProjectMembersQuery = {
   projectMemberList: {
     __typename?: 'ProjectMemberListType';
     currentTeam: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
-      fullName?: string | null;
-      email: string;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-      role?: { __typename?: 'RoleType'; name: string } | null;
+      __typename?: 'ProjectMemberType';
+      startDate: string;
+      endDate?: string | null;
+      user: {
+        __typename?: 'UserType';
+        id?: string | null;
+        fullName?: string | null;
+        email: string;
+        photo?: { __typename?: 'ImageType'; url: string } | null;
+        role?: { __typename?: 'RoleType'; name: string } | null;
+      };
     }>;
     otherContrubutors: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
-      fullName?: string | null;
-      email: string;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-      role?: { __typename?: 'RoleType'; name: string } | null;
+      __typename?: 'ProjectMemberType';
+      startDate: string;
+      endDate?: string | null;
+      user: {
+        __typename?: 'UserType';
+        id?: string | null;
+        fullName?: string | null;
+        email: string;
+        photo?: { __typename?: 'ImageType'; url: string } | null;
+        role?: { __typename?: 'RoleType'; name: string } | null;
+      };
     }>;
   };
 };
@@ -535,26 +545,34 @@ export const FetchProjectMembersDocument = gql`
   query FetchProjectMembers($data: IDInput!) {
     projectMemberList(data: $data) {
       currentTeam {
-        id
-        photo {
-          url
+        startDate
+        endDate
+        user {
+          id
+          photo {
+            url
+          }
+          fullName
+          role {
+            name
+          }
+          email
         }
-        fullName
-        role {
-          name
-        }
-        email
       }
       otherContrubutors {
-        id
-        photo {
-          url
+        startDate
+        endDate
+        user {
+          id
+          photo {
+            url
+          }
+          fullName
+          role {
+            name
+          }
+          email
         }
-        fullName
-        role {
-          name
-        }
-        email
       }
     }
   }

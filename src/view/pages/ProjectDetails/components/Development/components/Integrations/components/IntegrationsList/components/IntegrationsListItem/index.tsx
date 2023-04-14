@@ -1,4 +1,5 @@
 import { pick } from '@appello/common/lib/utils/object/pick';
+import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';
 
 import { ProjectIntegrationType } from '~/services/gql/__generated__/globalTypes';
@@ -38,9 +39,10 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
       {variant === CardVariant.DEFAULT && (
         <div className="p-5 border-solid border border-gray-5 rounded-xl">
           <div
-            className={`flex items-center justify-between ${
-              !withBorderBottomCardHeader && 'border-solid border-b border-gray-5 pb-3'
-            } gap-3`}
+            className={clsx(
+              'flex items-center justify-between gap-3',
+              !withBorderBottomCardHeader && 'border-solid border-b border-gray-5 pb-3',
+            )}
           >
             <div className="flex items-center gap-2">
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
@@ -65,7 +67,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
                       <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
                       <button
                         type="button"
-                        onClick={() => copyTextValue(value as string)}
+                        onClick={() => copyTextValue(value ?? '')}
                         className="text-c1 truncate hover:underline cursor-pointer"
                       >
                         {value || '-'}

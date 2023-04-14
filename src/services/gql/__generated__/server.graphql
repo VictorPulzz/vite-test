@@ -547,8 +547,8 @@ input ProjectMemberInput {
 }
 
 type ProjectMemberListType {
-  currentTeam: [UserType!]!
-  otherContrubutors: [UserType!]!
+  currentTeam: [ProjectMemberType!]!
+  otherContrubutors: [ProjectMemberType!]!
 }
 
 type ProjectMemberType {
@@ -643,7 +643,7 @@ input ProjectUpdateInput {
   design: String = null
   endDate: Date = null
   hoursEstimated: Int = null
-  id: Int = null
+  id: Int!
   name: String = null
   notes: String = null
   phase: ProjectPhaseChoice = null

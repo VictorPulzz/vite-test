@@ -61,26 +61,34 @@ query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search
 query FetchProjectMembers($data: IDInput!) {
   projectMemberList(data: $data) {
     currentTeam {
-      id
-      photo {
-        url
+      startDate
+      endDate
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
       }
-      fullName
-      role {
-        name
-      }
-      email
     }
     otherContrubutors {
-      id
-      photo {
-        url
+      startDate
+      endDate
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
       }
-      fullName
-      role {
-        name
-      }
-      email
     }
   }
 }

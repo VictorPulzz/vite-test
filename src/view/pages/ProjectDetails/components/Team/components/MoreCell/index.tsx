@@ -5,23 +5,23 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
-import { UserType } from '~/services/gql/__generated__/globalTypes';
 import {
   FetchProjectMembersDocument,
   useAddProjectMemberMutation,
   useRemoveProjectMemberMutation,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { ProjectMemberResultType } from '~/view/pages/ProjectDetails/types';
 import { Icon } from '~/view/ui/components/common/Icon';
 
 interface Props {
-  ctx: CellContext<UserType, unknown>;
+  ctx: CellContext<ProjectMemberResultType, unknown>;
   isCurrentTeam: boolean;
 }
 export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  const { id } = ctx.row.original;
+  const { id } = ctx.row.original.user;
 
   const [removeProjectMember] = useRemoveProjectMemberMutation();
   const [addProjectMember] = useAddProjectMemberMutation();
@@ -41,27 +41,27 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
 
       if (isCurrentTeam) {
         toast.promise(removeProjectMember(variables), {
-          loading: 'Removing member...',
-          success: 'Member removed',
+          loading: 'Moving member to other contributors...',
+          success: 'Member moved to other contributors',
           error: e => {
             const errors = getGqlError(e?.graphQLErrors);
-            return `Error while removing member: ${JSON.stringify(errors)}`;
+            return `Error while moving member to other contributors: ${JSON.stringify(errors)}`;
           },
         });
       } else
         toast.promise(addProjectMember(variables), {
-          loading: 'Removing member...',
-          success: 'Member removed',
+          loading: 'Moving member to team...',
+          success: 'Member moved to team',
           error: e => {
             const errors = getGqlError(e?.graphQLErrors);
-            return `Error while removing member: ${JSON.stringify(errors)}`;
+            return `Error while moving member to team: ${JSON.stringify(errors)}`;
           },
         });
     },
     [isCurrentTeam, projectId, addProjectMember, removeProjectMember],
   );
 
-  const removeFromOtherContrubutors = useCallback(
+  const removeFromOtherContributors = useCallback(
     (memberId: number) => {
       toast.promise(
         removeProjectMember({
@@ -94,21 +94,21 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
     },
   ];
 
-  const otherContrubutorsOptions: DropdownItem[] = [
+  const otherContributorsOptions: DropdownItem[] = [
     {
       label: 'Set as current',
       onSelect: () => moveProjectMember(Number(id)),
     },
     {
       label: 'Remove',
-      onSelect: () => removeFromOtherContrubutors(Number(id)),
+      onSelect: () => removeFromOtherContributors(Number(id)),
       className: 'text-red',
     },
   ];
 
   return (
     <Dropdown
-      items={isCurrentTeam ? currentTeamOptions : otherContrubutorsOptions}
+      items={isCurrentTeam ? currentTeamOptions : otherContributorsOptions}
       containerWidth="14.93rem"
     >
       {({ onClick }) => (

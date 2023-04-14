@@ -652,8 +652,8 @@ export type ProjectMemberInput = {
 
 export type ProjectMemberListType = {
   __typename: 'ProjectMemberListType';
-  currentTeam: Array<UserType>;
-  otherContrubutors: Array<UserType>;
+  currentTeam: Array<ProjectMemberType>;
+  otherContrubutors: Array<ProjectMemberType>;
 };
 
 export type ProjectMemberType = {
@@ -756,7 +756,7 @@ export type ProjectUpdateInput = {
   design?: InputMaybe<Scalars['String']>;
   endDate?: InputMaybe<Scalars['Date']>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
   name?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;

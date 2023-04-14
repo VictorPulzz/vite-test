@@ -73,20 +73,27 @@ export const CreateOrUpdateUserPage: FC = () => {
           <h2 className={styles['section__heading']}>User info</h2>
           <PhotoField name="photo" control={form.control} label="Photo" />
           <InlineFields>
-            <TextField name="firstName" control={form.control} label="First name" />
-            <TextField name="lastName" control={form.control} label="Last name" />
+            <TextField name="firstName" control={form.control} label="First name" required />
+            <TextField name="lastName" control={form.control} label="Last name" required />
           </InlineFields>
           <InlineFields>
-            <TextField name="email" control={form.control} label="Email" />
+            <TextField name="email" control={form.control} label="Email" required />
             <SelectField
               name="department"
               options={departmentsOptions}
               control={form.control}
               label="Department"
+              required
             />
           </InlineFields>
           <InlineFields>
-            <SelectField name="role" options={rolesOptions} control={form.control} label="Role" />
+            <SelectField
+              name="role"
+              options={rolesOptions}
+              control={form.control}
+              label="Role"
+              required
+            />
             <TextField name="address" control={form.control} label="Address" />
           </InlineFields>
           <InlineFields>
@@ -95,8 +102,9 @@ export const CreateOrUpdateUserPage: FC = () => {
               options={contractTypeOptions}
               control={form.control}
               label="Contract type"
+              required
             />
-            <DateField name="birthDate" control={form.control} label="Birth date" />
+            <DateField name="birthDate" control={form.control} label="Birth date" required />
           </InlineFields>
           <InlineFields>
             <Checkbox label="Active" {...form.register('isActive')} className="mt-4" />
