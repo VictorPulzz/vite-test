@@ -1,7 +1,9 @@
 import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { SelectField } from '@ui/components/form/SelectField';
-import { TextField } from '@ui/components/form/TextField';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,8 +11,6 @@ import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { InlineFields } from '~/view/ui/components/form/InlineFields';
 
 import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
 import {

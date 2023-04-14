@@ -1,13 +1,13 @@
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { useFetchSlackTemplateInfoQuery } from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { TextField } from '~/view/ui/components/form/TextField';
 
 import { useChannelTemplateForm } from './hooks/useChannelTemplateForm';
 

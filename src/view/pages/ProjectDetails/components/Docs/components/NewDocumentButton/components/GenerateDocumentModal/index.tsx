@@ -1,16 +1,16 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { Field } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextInput } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { useFetchDocumentTemplateListQuery } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
-import { Field } from '~/view/ui/components/form/Field';
-import { InlineFields } from '~/view/ui/components/form/InlineFields';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { TextInput } from '~/view/ui/components/form/TextInput';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useGenerateDocumentForm } from './hooks/useGenerateDocumentForm';
 

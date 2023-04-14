@@ -1,6 +1,7 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/react-table';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
@@ -11,7 +12,6 @@ import {
   useRemoveProjectMemberMutation,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { ProjectMemberResultType } from '~/view/pages/ProjectDetails/types';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 interface Props {
   ctx: CellContext<ProjectMemberResultType, unknown>;

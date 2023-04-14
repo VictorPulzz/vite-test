@@ -1,5 +1,6 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
@@ -9,7 +10,6 @@ import {
   FetchDocumentsDocument,
   useRemoveDocumentMutation,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 interface Props {
   file: DocumentType['file'];

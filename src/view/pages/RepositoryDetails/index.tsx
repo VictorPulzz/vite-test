@@ -1,9 +1,9 @@
+import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Loader } from '~/view/ui/components/common/Loader';
 
 import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
 import { RepositoryDetailsTabs } from './components/RepositoryDetailsTabs';

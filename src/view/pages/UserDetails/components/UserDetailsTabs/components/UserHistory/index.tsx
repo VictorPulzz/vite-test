@@ -1,11 +1,12 @@
-import { Table } from '@ui/components/common/Table';
-import { TableLoader } from '@ui/components/common/TableLoader';
-import React, { FC, useEffect } from 'react';
+import { useMountEffect } from '@appello/common/lib/hooks';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUserHistoryListQuery } from '../../../../__generated__/schema';
 import { USERS_HISTORY_TABLE_COLUMNS } from './consts';
@@ -30,9 +31,9 @@ export const UserHistory: FC<Props> = ({ userId }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  useEffect(() => {
+  useMountEffect(() => {
     setOffset(0);
-  }, []);
+  });
 
   return (
     <>

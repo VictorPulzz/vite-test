@@ -1,3 +1,4 @@
+import { Button, ButtonVariant, TextLink } from '@appello/web-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import React from 'react';
@@ -9,8 +10,6 @@ import { ROUTES } from '~/constants/routes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { ProjectMemberResultType } from '../../../types';
 import { MoreCell } from '../components/MoreCell';

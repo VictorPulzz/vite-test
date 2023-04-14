@@ -1,3 +1,4 @@
+import { TextLink } from '@appello/web-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import React from 'react';
@@ -6,7 +7,6 @@ import { generatePath } from 'react-router-dom';
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
 import { LogsResultType } from '~/view/pages/ProjectDetails/types';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 const columnHelper = createColumnHelper<LogsResultType>();
 

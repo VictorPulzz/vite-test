@@ -1,4 +1,10 @@
-import React, { FC, useEffect, useMemo } from 'react';
+import { useMountEffect } from '@appello/common/lib/hooks';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { Select } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import React, { FC, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
@@ -10,11 +16,6 @@ import {
   useFetchAllUsersQuery,
   useFetchHistoryLogsQuery,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { Select } from '~/view/ui/components/form/Select';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { HISTORY_TABLE_COLUMNS, HISTORY_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
 
@@ -61,9 +62,9 @@ export const History: FC<Props> = ({ projectId }) => {
 
   const filterByUserOptions = [ALL_SELECT_OPTION, ...usersOptions];
 
-  useEffect(() => {
+  useMountEffect(() => {
     setOffset(0);
-  }, []);
+  });
 
   return (
     <div className="flex flex-col gap-5">

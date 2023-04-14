@@ -1,13 +1,13 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { SelectOption } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { SelectOption } from '~/view/ui/components/form/Select';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useAddParticipantForm } from './hooks/useAddParticipantForm';
 

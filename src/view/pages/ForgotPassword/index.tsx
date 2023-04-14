@@ -1,7 +1,7 @@
-import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
-import { TextLink } from '@ui/components/common/TextLink';
-import { TextField } from '@ui/components/form/TextField';
-import { InputSize } from '@ui/components/form/TextInput';
+import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { InputSize } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 

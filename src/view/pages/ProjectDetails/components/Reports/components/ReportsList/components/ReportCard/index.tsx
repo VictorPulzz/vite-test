@@ -1,8 +1,7 @@
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import React, { FC } from 'react';
-
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { Dropdown, DropdownItem } from '~/view/ui/components/common/Dropdown';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 // TODO remove HistoryUsersType when backend will be ready
 type ReportsProps = {

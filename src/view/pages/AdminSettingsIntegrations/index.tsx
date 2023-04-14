@@ -1,7 +1,7 @@
+import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { TabLayout } from '~/view/layouts/TabLayout';
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { SlackTabElement } from './components/SlackTabElement';
 import styles from './styles.module.scss';

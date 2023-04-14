@@ -1,4 +1,9 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import { Pagination } from '@appello/web-ui';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -7,13 +12,8 @@ import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { Pagination } from '~/view/components/Pagination';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { useFetchRepositoryParticipantsQuery } from '~/view/pages/RepositoryDetails/__generated__/schema';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
@@ -117,7 +117,7 @@ export const Participants: FC = () => {
             setOffset={setOffset}
             totalCount={data.repositoryParticipantList.count}
             offset={offset}
-            dataLength={data.repositoryParticipantList.results.length}
+            itemsCount={data.repositoryParticipantList.results.length}
             fetchMore={fetchMore}
           />
         )}

@@ -1,4 +1,6 @@
 import { pick } from '@appello/common/lib/utils/object/pick';
+import { Icon } from '@appello/web-ui';
+import { IconContainer } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';
 
@@ -8,8 +10,6 @@ import { copyTextValue } from '~/utils/copyTextValue';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/components/RequestCard';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { IconContainer } from '~/view/ui/components/common/IconContainer';
 
 import { IntegrationsListItemMenu } from './components/IntegrationsListItemMenu';
 

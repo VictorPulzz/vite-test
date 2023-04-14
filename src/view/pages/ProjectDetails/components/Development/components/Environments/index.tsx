@@ -1,12 +1,12 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { FetchProjectEnvironmentsListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
 
 import { CreateNewEnvironmentModal } from './components/CreateNewEnvironmentModal';
 import { EnvironmentsList } from './components/EnvironmentsList';

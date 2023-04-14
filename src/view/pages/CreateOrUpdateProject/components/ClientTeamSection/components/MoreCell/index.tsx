@@ -1,12 +1,12 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC, useCallback } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { AddOrEditModal } from '~/view/pages/CreateOrUpdateProject/components/ClientTeamSection/components/AddOrEditModal';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
   const { pointContact } = row.original;

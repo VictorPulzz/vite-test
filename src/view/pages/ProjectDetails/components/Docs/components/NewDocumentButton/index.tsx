@@ -1,8 +1,7 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Button, ButtonVariant } from '@appello/web-ui';
 import React, { FC } from 'react';
-
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
 import { GenerateDocumentModal } from './components/GenerateDocumentModal';
 import { UploadDocumentModal } from './components/UploadDocumentModal';

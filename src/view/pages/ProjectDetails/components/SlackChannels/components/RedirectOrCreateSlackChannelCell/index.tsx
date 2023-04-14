@@ -1,4 +1,5 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { Button, ButtonVariant } from '@appello/web-ui';
 import { CellContext } from '@tanstack/react-table';
 import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
@@ -7,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import { useCreateProjectSlackChannelMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { FetchProjectSlackChannelsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { ProjectSlackChannelResultType } from '~/view/pages/ProjectDetails/types';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
 interface Props {
   ctx: CellContext<ProjectSlackChannelResultType, unknown>;

@@ -1,6 +1,6 @@
+import { Badge, BadgeColor } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Badge, BadgeColor } from '@ui/components/common/Badge';
-import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 

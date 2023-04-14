@@ -1,6 +1,10 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { EmptyState } from '@ui/components/common/EmptyState';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { SearchInput } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -10,10 +14,6 @@ import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchRepositoriesQuery } from './__generated__/schema';
 import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';

@@ -1,12 +1,12 @@
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { TextAreaField } from '@appello/web-ui';
 import { Row } from '@tanstack/react-table';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
-import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
 
 import { useAddOrEditClientTeamMemberForm } from './hooks/useAddOrEditClientTeamMemberForm';
 

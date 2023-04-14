@@ -1,4 +1,7 @@
 import { makeQueryString } from '@appello/common/lib/utils';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { Permission } from '~/constants/permissions';
@@ -7,9 +10,6 @@ import { RepositoryType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { FetchProjectRepositoriesListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
 
 // import { RequestNewRepositoryModal } from './components/RequestNewRepositoryModal';
 import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';

@@ -1,8 +1,8 @@
+import { TextLink } from '@appello/web-ui';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
 
 import { Avatar } from '~/view/components/Avatar';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 // TODO remove any when get from backend real type
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,6 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { Icon } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC } from 'react';
 
@@ -7,8 +9,6 @@ import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { FetchRepositoryDetailsQuery } from '../../__generated__/schema';
 import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';

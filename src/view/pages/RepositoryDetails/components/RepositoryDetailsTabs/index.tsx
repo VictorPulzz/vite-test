@@ -1,6 +1,5 @@
+import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
-
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { Participants } from './components/Partisipants';
 import styles from './styles.module.scss';

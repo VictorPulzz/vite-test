@@ -1,9 +1,9 @@
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
 
 import { useFetchProjectSlackChannelsQuery } from '../../__generated__/schema';
 import { SLACK_CHANNELS_TABLE_COLUMNS } from './consts';

@@ -1,3 +1,4 @@
+import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo, useState } from 'react';
 
 import { Permission } from '~/constants/permissions';
@@ -7,7 +8,6 @@ import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 import { NewDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/NewDocumentButton';
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import styles from './styles.module.scss';
 

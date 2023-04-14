@@ -1,7 +1,6 @@
+import { Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC } from 'react';
-
-import { Icon } from '~/view/ui/components/common/Icon';
 
 interface Props {
   className?: string;

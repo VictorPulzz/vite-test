@@ -1,3 +1,9 @@
+import { EmptyState } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { SearchInput } from '@appello/web-ui';
+import { Select } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import { Pagination } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
@@ -14,13 +20,7 @@ import {
 } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { getFileExtension } from '~/utils/getFileExtension';
-import { Pagination } from '~/view/components/Pagination';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { Select } from '~/view/ui/components/form/Select';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import {
   useFetchAllDocumentCategoriesQuery,
@@ -261,7 +261,7 @@ export const Docs: FC<DocsProps> = ({
                   setOffset={setOffset}
                   totalCount={data.documentList.count}
                   offset={offset}
-                  dataLength={data.documentList.results.length}
+                  itemsCount={data.documentList.results.length}
                   fetchMore={fetchMore}
                 />
               )}

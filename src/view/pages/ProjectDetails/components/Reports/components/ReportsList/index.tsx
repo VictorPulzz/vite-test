@@ -1,11 +1,11 @@
+import { DateField } from '@appello/web-ui';
+import { SelectField, SelectOption } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import comingSoon from '~/view/assets/images/coming-soon.svg';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { DateField } from '~/view/ui/components/form/DateField';
-import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useGetReportsForm } from '../../hooks/useGetReportsForm';
 import { ReportsCard } from './components/ReportCard';

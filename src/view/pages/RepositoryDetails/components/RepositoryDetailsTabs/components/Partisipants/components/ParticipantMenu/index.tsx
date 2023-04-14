@@ -1,6 +1,7 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
@@ -10,7 +11,6 @@ import {
   FetchRepositoryParticipantsDocument,
   useAddOrUpdateRepositoryParticipantMutation,
 } from '~/view/pages/RepositoryDetails/__generated__/schema';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import { DeleteParticipantModal } from './components/DeleteParticipantModal';
 

@@ -1,4 +1,4 @@
-import { SelectOption } from '@ui/components/form/SelectField';
+import { SelectOption } from '@appello/web-ui';
 
 import { convertUppercaseToReadable } from './convertUppercaseToReadable';
 

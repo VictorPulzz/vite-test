@@ -1,10 +1,10 @@
+import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { Permission } from '~/constants/permissions';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { Projects } from './components/Projects';
 import { UserHistory } from './components/UserHistory';

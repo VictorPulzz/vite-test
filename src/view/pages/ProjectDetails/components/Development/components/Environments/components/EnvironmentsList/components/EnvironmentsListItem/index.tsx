@@ -1,4 +1,6 @@
 import { pick } from '@appello/common/lib/utils/object/pick';
+import { Icon } from '@appello/web-ui';
+import { IconContainer } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
@@ -6,8 +8,6 @@ import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { copyTextValue } from '~/utils/copyTextValue';
 import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/components/RequestCard';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { IconContainer } from '~/view/ui/components/common/IconContainer';
 
 import { EnvironmentsListItemMenu } from './components/EnvironmentsListItemMenu';
 

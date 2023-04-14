@@ -1,7 +1,6 @@
+import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-
-import { Loader } from '~/view/ui/components/common/Loader';
 
 import {
   useFetchProjectEnvironmentsListQuery,

@@ -1,7 +1,6 @@
+import { Badge, BadgeColor } from '@appello/web-ui';
 import { createColumnHelper } from '@tanstack/react-table';
 import React from 'react';
-
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { InitialUsersCell } from './components/InitialUsersCell';
 import { MoreCell } from './components/MoreCell';

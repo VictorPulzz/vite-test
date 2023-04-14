@@ -1,5 +1,11 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { EmptyState } from '@ui/components/common/EmptyState';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { SearchInput } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { Select, SelectOption } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -10,12 +16,6 @@ import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { Select, SelectOption } from '~/view/ui/components/form/Select';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useFetchProjectStatusesListQuery } from '../CreateOrUpdateProject/__generated__/schema';
 import { useFetchProjectsQuery } from './__generated__/schema';

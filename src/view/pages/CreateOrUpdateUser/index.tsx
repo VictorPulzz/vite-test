@@ -1,7 +1,10 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { SelectField } from '@ui/components/form/SelectField';
-import { TextField } from '@ui/components/form/TextField';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { DateField } from '@appello/web-ui';
+import { PhotoField } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,9 +14,6 @@ import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { DateField } from '~/view/ui/components/form/DateField';
-import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
 import { useFetchUserDetailsQuery } from '../UserDetails/__generated__/schema';
 import {

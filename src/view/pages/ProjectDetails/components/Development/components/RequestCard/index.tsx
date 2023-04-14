@@ -1,7 +1,7 @@
+import { IconContainer } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { IconContainer } from '~/view/ui/components/common/IconContainer';
 
 interface Props {
   title: string;

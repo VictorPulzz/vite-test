@@ -1,6 +1,6 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { SelectField } from '@ui/components/form/SelectField';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';

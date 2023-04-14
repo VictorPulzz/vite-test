@@ -1,9 +1,9 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { TextField } from '@ui/components/form/TextField';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { FetchRepositoryDetailsQuery } from '~/view/pages/RepositoryDetails/__generated__/schema';
-import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
 
 import { useUpdateRepositoryForm } from './hooks/useUpdateRepositoryForm';
 

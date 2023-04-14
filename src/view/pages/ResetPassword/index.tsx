@@ -1,6 +1,6 @@
-import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
-import { PasswordField } from '@ui/components/form/PasswordField';
-import { InputSize } from '@ui/components/form/TextInput';
+import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
+import { PasswordField } from '@appello/web-ui';
+import { InputSize } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 

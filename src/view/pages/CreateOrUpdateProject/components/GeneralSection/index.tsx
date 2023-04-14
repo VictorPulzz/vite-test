@@ -1,3 +1,9 @@
+import { DateField } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { SelectField, SelectOption } from '@appello/web-ui';
+import { TextAreaField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -6,12 +12,6 @@ import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { ProjectFormValues } from '~/view/pages/CreateOrUpdateProject/hooks/useProjectForm';
-import { DateField } from '~/view/ui/components/form/DateField';
-import { InlineFields } from '~/view/ui/components/form/InlineFields';
-import { SelectField, SelectOption } from '~/view/ui/components/form/SelectField';
-import { TextAreaField } from '~/view/ui/components/form/TextAreaField';
-import { TextField } from '~/view/ui/components/form/TextField';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import {
   useFetchPlatformsListQuery,

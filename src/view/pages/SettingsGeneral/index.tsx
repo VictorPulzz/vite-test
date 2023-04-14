@@ -1,9 +1,9 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { PhotoField } from '@ui/components/form/PhotoField';
-import { TextField } from '@ui/components/form/TextField';
-import { InputSize } from '@ui/components/form/TextInput';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { PhotoField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { InputSize } from '@appello/web-ui';
 import React from 'react';
 
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';

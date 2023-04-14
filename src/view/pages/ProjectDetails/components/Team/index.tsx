@@ -1,14 +1,14 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { Table } from '~/view/ui/components/common/Table';
 
 import { useFetchProjectMembersQuery } from '../../__generated__/schema';
 import { AddNewMemberModal } from './components/AddNewMemberModal';

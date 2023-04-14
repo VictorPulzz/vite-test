@@ -1,15 +1,15 @@
-import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
+import { FileUpload } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { FieldErrorMessage } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { getFileExtension } from '~/utils/getFileExtension';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { FileUpload } from '~/view/ui/components/common/FileUpload';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
-import { FieldErrorMessage } from '~/view/ui/components/form/FieldErrorMessage';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { useSelectOptions } from '~/view/ui/hooks/useSelectOptions';
 
 import { useUploadDocumentForm } from './hooks/useUploadDocumentForm';
 

@@ -1,3 +1,5 @@
+import { Badge, BadgeColor } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import React from 'react';
@@ -7,8 +9,6 @@ import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { MoreCell } from './components/MoreCell';
 import { RepositoryResultType } from './types';

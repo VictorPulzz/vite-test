@@ -1,12 +1,12 @@
+import { TextLink } from '@appello/web-ui';
+import { Badge, BadgeColor } from '@appello/web-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
-import { TextLink } from '@ui/components/common/TextLink';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
 
 import { MoreCell } from './components/MoreCell';
 import { ProjectResultType } from './types';

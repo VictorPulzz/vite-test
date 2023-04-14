@@ -1,10 +1,11 @@
-import React, { FC, useEffect } from 'react';
+import { useMountEffect } from '@appello/common/lib/hooks';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUserProjectsListQuery } from '../../../../__generated__/schema';
 import { USERS_PROJECTS_TABLE_COLUMNS } from './consts';
@@ -27,9 +28,9 @@ export const Projects: FC<Props> = ({ userId }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  useEffect(() => {
+  useMountEffect(() => {
     setOffset(0);
-  }, []);
+  });
 
   return (
     <>

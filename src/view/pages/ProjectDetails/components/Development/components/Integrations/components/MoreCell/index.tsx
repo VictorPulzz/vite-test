@@ -1,10 +1,10 @@
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
 
-import { Icon } from '~/view/ui/components/common/Icon';
-
 // TODO remove any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const MoreCell: FC<CellContext<any, unknown>> = ({ row }) => {
   const options: DropdownItem[] = [
     {

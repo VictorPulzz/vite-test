@@ -1,3 +1,8 @@
+import { Badge, BadgeColor } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
 import { format, formatDuration, intervalToDuration, isPast, parseISO } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 
@@ -6,11 +11,6 @@ import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { isValidHttpUrl } from '~/utils/isValidHttpUrl';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Badge, BadgeColor } from '~/view/ui/components/common/Badge';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { Table } from '~/view/ui/components/common/Table';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useFetchProjectInfoQuery } from '../../__generated__/schema';
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';

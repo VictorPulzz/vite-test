@@ -1,7 +1,6 @@
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import React, { FC } from 'react';
-
-import { Icon } from '~/view/ui/components/common/Icon';
 
 export const EnvironmentsListItemMenu: FC = () => {
   const options: DropdownItem[] = [

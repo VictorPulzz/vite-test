@@ -1,3 +1,5 @@
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
@@ -6,8 +8,6 @@ import { ROUTES } from '~/constants/routes';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { Loader } from '~/view/ui/components/common/Loader';
 
 import { useFetchUserDetailsQuery } from './__generated__/schema';
 import { UserDetailsTabs } from './components/UserDetailsTabs';

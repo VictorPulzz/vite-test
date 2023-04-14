@@ -1,8 +1,8 @@
+import { Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { PermissionType, RoleType } from '~/services/gql/__generated__/globalTypes';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import {
   FetchPermissionsListDocument,

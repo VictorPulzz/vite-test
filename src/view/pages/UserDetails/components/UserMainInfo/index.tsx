@@ -1,4 +1,5 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
+import { Button, ButtonVariant } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
@@ -8,7 +9,6 @@ import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
 
 import {
   FetchUserDetailsQuery,

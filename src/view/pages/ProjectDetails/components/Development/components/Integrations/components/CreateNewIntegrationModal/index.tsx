@@ -1,15 +1,15 @@
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
 import { nanoid } from '@reduxjs/toolkit';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { TextField } from '@ui/components/form/TextField';
 import React, { FC } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
 import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { Icon } from '~/view/ui/components/common/Icon';
-import { SelectField } from '~/view/ui/components/form/SelectField';
 
 import { useCreateNewIntegrationForm } from './hooks/useCreateNewIntegrationForm';
 

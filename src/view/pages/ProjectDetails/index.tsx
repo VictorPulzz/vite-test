@@ -1,4 +1,6 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { Tabs } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 import { generatePath } from 'react-router';
@@ -11,8 +13,6 @@ import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
 import { Development } from './components/Development';
