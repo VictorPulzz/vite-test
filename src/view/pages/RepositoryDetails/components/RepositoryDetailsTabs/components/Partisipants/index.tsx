@@ -94,7 +94,7 @@ export const Participants: FC = () => {
                     <span className="block text-p3 text-black break-words leading-4">
                       {user.fullName}
                     </span>
-                    <span className="text-c1 text-gray-1 ">
+                    <span className="text-p5 text-gray-1 ">
                       {convertUppercaseToReadable(accessLevel)}
                     </span>
                   </div>

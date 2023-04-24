@@ -40,19 +40,19 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
       </div>
       <div className="flex flex-col gap-3">
         <div className="flex flex-col gap-[2px]">
-          <span className="text-c1 text-gray-2">Name</span>
+          <span className="text-p5 text-gray-2">Name</span>
           <span className="text-p3 leading-none break-words">{name}</span>
         </div>
         <div className="flex flex-col gap-[2px]">
-          <span className="text-c1 text-gray-2">Project</span>
+          <span className="text-p5 text-gray-2">Project</span>
           <span className="text-p3 break-words leading-4">{project?.name}</span>
         </div>
         <div className="flex flex-col gap-[2px]">
-          <span className="text-c1 text-gray-2">Type</span>
+          <span className="text-p5 text-gray-2">Type</span>
           <span className="text-p3 leading-none">{convertUppercaseToReadable(type ?? '')}</span>
         </div>
         <div className="flex flex-col gap-[2px]">
-          <span className="text-c1 text-gray-2">Technologies</span>
+          <span className="text-p5 text-gray-2">Technologies</span>
           <div>
             {technologies?.map(({ id, name }, index) => [
               index > 0 && ', ',
@@ -64,7 +64,7 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
         </div>
         {gitUrl && (
           <div className="flex flex-col gap-[2px]">
-            <span className="text-c1 text-gray-2">Git url</span>
+            <span className="text-p5 text-gray-2">Git url</span>
             <TextLink
               external
               to={gitUrl}
@@ -75,14 +75,14 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
           </div>
         )}
         <div className="flex flex-col gap-[2px]">
-          <span className="text-c1 text-gray-2">Created at</span>
+          <span className="text-p5 text-gray-2">Created at</span>
           <span className="text-p3 text-primary leading-none">
             {format(new Date(createdAt ?? ''), DateFormat.DMY)}
           </span>
         </div>
         {gitTerraformUrl && (
           <div className="flex flex-col gap-[2px]">
-            <span className="text-c1 text-gray-2">Git Terraform url</span>
+            <span className="text-p5 text-gray-2">Git Terraform url</span>
             <span className="text-p3 leading-none">{gitTerraformUrl}</span>
           </div>
         )}

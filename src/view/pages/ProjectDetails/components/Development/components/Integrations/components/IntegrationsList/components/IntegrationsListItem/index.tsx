@@ -50,7 +50,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
                 <h2 className="text-p4 font-medium break-all">
                   {convertUppercaseToReadable(integration.name)}
                 </h2>
-                <span className="text-c1 text-gray-1">
+                <span className="text-p5 text-gray-1">
                   {convertUppercaseToReadable(integration.environment ?? '')}
                 </span>
               </div>
@@ -60,7 +60,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
           <div className="mt-3 grid grid-cols-2 justify-between gap-10">
             {!isEmptyMainIntegrationCredential && (
               <div>
-                <span className="text-c1 text-gray-1">Main</span>
+                <span className="text-p5 text-gray-1">Main</span>
                 <div className="mt-2 flex flex-col gap-3">
                   {Object.entries(mainIntegrationCredentialsData || {})?.map(([key, value]) => (
                     <div key={key} className="flex items-center gap-1">
@@ -68,7 +68,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
                       <button
                         type="button"
                         onClick={() => copyTextValue(value ?? '')}
-                        className="text-c1 truncate hover:underline cursor-pointer"
+                        className="text-p5 truncate hover:underline cursor-pointer"
                       >
                         {value || '-'}
                       </button>
@@ -79,11 +79,11 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
             )}
             {!!integration?.keys?.length && (
               <div>
-                <span className="text-c1 text-gray-1">Keys</span>
+                <span className="text-p5 text-gray-1">Keys</span>
                 <div className="mt-2 flex flex-col  gap-3">
                   {integration?.keys?.map(value => (
                     <div key={value.id} className="flex items-center gap-2">
-                      <span className="text-c1 truncate">{value.title}</span>
+                      <span className="text-p5 truncate">{value.title}</span>
                       <CopyTextButton value={value.value} />
                     </div>
                   ))}

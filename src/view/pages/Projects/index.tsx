@@ -63,7 +63,7 @@ export const ProjectsPage: FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-h4">Projects</h1>
-              <p className="text-c1 text-gray-2">
+              <p className="text-p5 text-gray-2">
                 {(data && data.projectsList.count) ?? 0} projects in total
               </p>
             </div>

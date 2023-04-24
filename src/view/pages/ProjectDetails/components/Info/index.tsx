@@ -59,13 +59,13 @@ export const Info: FC<Props> = ({ projectId }) => {
             <div className="grid grid-cols-2 gap-4 mt-3">
               {status && (
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Project status</span>
+                  <span className="text-p5 text-gray-2">Project status</span>
                   <Badge color={BadgeColor.BLUE}>{status?.name}</Badge>
                 </div>
               )}
               {platforms && !!platforms.length && (
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2 leading-none">Platform</span>
+                  <span className="text-p5 text-gray-2 leading-none">Platform</span>
                   <div>
                     {platforms.map(({ id, name }, index) => [
                       index > 0 && ', ',
@@ -78,7 +78,7 @@ export const Info: FC<Props> = ({ projectId }) => {
               )}
               {startDate && (
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Start date</span>
+                  <span className="text-p5 text-gray-2">Start date</span>
                   <span className="text-p3 leading-none">
                     {format(new Date(startDate), DateFormat.D_MMM_Y)}
                   </span>
@@ -86,7 +86,7 @@ export const Info: FC<Props> = ({ projectId }) => {
               )}
               {endDate && (
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2">Estimated end date</span>
+                  <span className="text-p5 text-gray-2">Estimated end date</span>
                   <span className="text-p3 leading-none">
                     {format(new Date(endDate), DateFormat.D_MMM_Y)}{' '}
                     <span className="text-gray-2">
@@ -97,7 +97,7 @@ export const Info: FC<Props> = ({ projectId }) => {
               )}
               {design && (
                 <div className="flex flex-col gap-[2px] break-words">
-                  <span className="text-c1 text-gray-2">Design link</span>
+                  <span className="text-p5 text-gray-2">Design link</span>
                   <TextLink
                     external
                     to={design ?? ''}
@@ -111,7 +111,7 @@ export const Info: FC<Props> = ({ projectId }) => {
               )}
               {roadmap && (
                 <div className="flex flex-col gap-[2px] break-words">
-                  <span className="text-c1 text-gray-2">Roadmap</span>
+                  <span className="text-p5 text-gray-2">Roadmap</span>
                   <TextLink
                     external
                     to={roadmap}
@@ -124,14 +124,14 @@ export const Info: FC<Props> = ({ projectId }) => {
                 </div>
               )}
               <div className="flex flex-col gap-[2px]">
-                <span className="text-c1 text-gray-2">Current phase</span>
+                <span className="text-p5 text-gray-2">Current phase</span>
                 <span className="text-p3 leading-none">
                   {convertUppercaseToReadable(phase as ProjectPhaseChoice)}
                 </span>
               </div>
               {notes && (
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-c1 text-gray-2 leading-none">Notes</span>
+                  <span className="text-p5 text-gray-2 leading-none">Notes</span>
                   <span className="text-p3 w-3/4 leading-5 break-words">{notes}</span>
                 </div>
               )}

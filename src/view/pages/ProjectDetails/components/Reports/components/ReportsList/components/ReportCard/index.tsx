@@ -22,7 +22,7 @@ export const ReportsCard: FC<ReportsProps> = ({ reportName, reportDate, reported
     <div className="flex justify-between px-6 py-4 border-solid border border-gray-5 rounded-md mt-4">
       <div>
         <p className="font-medium mt-1">{reportName}</p>
-        <p className="text-c1 mt-1 text-gray-1">
+        <p className="text-p5 mt-1 text-gray-1">
           {reportDate} {reportedBy}
         </p>
       </div>

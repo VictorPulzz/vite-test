@@ -20,7 +20,7 @@ export const RequestCard: FC<Props> = ({ title, icon }) => {
           />
           <div>
             <h2 className="text-p4 font-medium">{convertUppercaseToReadable(title)}</h2>
-            <span className="text-c1 text-red font-medium">Requested</span>
+            <span className="text-p5 text-red font-medium">Requested</span>
           </div>
         </div>
       </div>

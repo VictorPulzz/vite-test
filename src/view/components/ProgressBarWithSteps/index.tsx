@@ -39,7 +39,7 @@ export const ProgressBarWithSteps: FC<Props> = ({ currentStep }) => {
             )}
           </div>
           <span
-            className={`text-c1 ${
+            className={`text-p5 ${
               currentStep > count || currentStep === steps.length ? 'opacity-40' : 'text-gray-1'
             }`}
           >

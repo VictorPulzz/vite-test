@@ -59,7 +59,7 @@ export const DocumentsPage: FC = () => {
         <div className="flex items-end justify-between px-6 pt-6 bg-white">
           <div className="flex flex-col gap-[2px]">
             <h2 className="text-h4 font-bold">Documents</h2>
-            <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
+            <p className="text-p5 text-gray-2">{docsCount} docs in total</p>
           </div>
           {isInternal && canAddInternalDocs && <NewDocumentButton />}
         </div>

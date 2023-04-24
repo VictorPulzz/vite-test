@@ -137,7 +137,7 @@ export const ProjectDetailsPage: FC = () => {
                 <h2 className="text-h4 font-bold break-words leading-6">
                   {data?.projectPreview.name}
                 </h2>
-                <span className="text-c1 text-gray-2">
+                <span className="text-p5 text-gray-2">
                   Created{' '}
                   {format(
                     new Date(data?.projectPreview.createdAt ?? new Date()),

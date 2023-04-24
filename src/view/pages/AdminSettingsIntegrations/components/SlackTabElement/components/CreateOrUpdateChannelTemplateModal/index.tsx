@@ -106,7 +106,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
                 className="mt-4"
                 disabled={isDisableAccessibilityCheckbox}
               />
-              <span className="text-c1 text-gray-2">
+              <span className="text-p5 text-gray-2">
                 You’ll not be able to make it public later
               </span>
             </div>

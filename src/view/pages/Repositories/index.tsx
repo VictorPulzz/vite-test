@@ -53,7 +53,7 @@ export const RepositoriesPage: FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-h4">Repositories</h1>
-              <p className="text-c1 text-gray-2">
+              <p className="text-p5 text-gray-2">
                 {(data && data.repositoryList.count) ?? 0} repositories in total
               </p>
             </div>

@@ -39,14 +39,14 @@ export const EnvironmentsListItem: FC<Props> = ({
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
                 <h2 className="text-p4 font-medium">{convertUppercaseToReadable(name)}</h2>
-                <span className="text-c1 text-gray-1">Credentials</span>
+                <span className="text-p5 text-gray-1">Credentials</span>
               </div>
             </div>
             <EnvironmentsListItemMenu />
           </div>
           <div className="mt-3 grid grid-cols-2 justify-between gap-10">
             <div>
-              <span className="text-c1 text-gray-1">Backend</span>
+              <span className="text-p5 text-gray-1">Backend</span>
               <div className="mt-2 flex flex-col gap-3">
                 {Object.entries(backendCredentialsData || {})?.map(([key, value]) => (
                   <div key={key} className="flex items-center gap-1">
@@ -54,7 +54,7 @@ export const EnvironmentsListItem: FC<Props> = ({
                     <button
                       type="button"
                       onClick={() => copyTextValue(value)}
-                      className="text-c1 truncate hover:underline cursor-pointer"
+                      className="text-p5 truncate hover:underline cursor-pointer"
                     >
                       {value}
                     </button>
@@ -63,7 +63,7 @@ export const EnvironmentsListItem: FC<Props> = ({
               </div>
             </div>
             <div>
-              <span className="text-c1 text-gray-1">Frontend</span>
+              <span className="text-p5 text-gray-1">Frontend</span>
               <div className="mt-2 flex flex-col gap-3">
                 {Object.entries(frontendCredentialsData || {})?.map(([key, value]) => (
                   <div key={key} className="flex items-center gap-1">
@@ -71,7 +71,7 @@ export const EnvironmentsListItem: FC<Props> = ({
                     <button
                       type="button"
                       onClick={() => copyTextValue(value)}
-                      className="text-c1 truncate hover:underline cursor-pointer"
+                      className="text-p5 truncate hover:underline cursor-pointer"
                     >
                       {value}
                     </button>

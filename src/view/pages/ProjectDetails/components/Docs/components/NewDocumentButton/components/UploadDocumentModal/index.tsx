@@ -63,7 +63,7 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
             {fileName && (
               <div className="mt-5 flex items-center justify-between gap-5 p-3 border border-solid border-gray-5 rounded-md">
                 <div className="flex items-center gap-2 min-w-0">
-                  <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
+                  <div className="bg-blue/10 p-3 text-blue text-p5 rounded-md w-10 h-10 flex items-center justify-center">
                     {getFileExtension(fileName)}
                   </div>
                   <span className="text-p3 text-black truncate">{fileName}</span>

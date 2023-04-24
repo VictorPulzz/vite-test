@@ -153,7 +153,7 @@ export const Docs: FC<DocsProps> = ({
         <>
           <div className="flex flex-col gap-[2px]">
             <h2 className="text-p1 font-bold">Documents</h2>
-            <p className="text-c1 text-gray-2">
+            <p className="text-p5 text-gray-2">
               {(data && data.documentList.count) ?? 0} docs in total
             </p>
           </div>
@@ -233,14 +233,14 @@ export const Docs: FC<DocsProps> = ({
                     className="flex justify-between gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
                   >
                     <div className="flex gap-3 items-center min-w-0">
-                      <div className="bg-blue/10 p-3 text-blue text-c1 rounded-md w-10 h-10 flex items-center justify-center">
+                      <div className="bg-blue/10 p-3 text-blue text-p5 rounded-md w-10 h-10 flex items-center justify-center">
                         {getFileExtension(file.fileName)}
                       </div>
                       <div className="flex flex-col gap-[5px] truncate">
                         <span className="text-p3 text-black leading-4 truncate">
                           {file.fileName.split('.').slice(0, -1).join('.')}
                         </span>
-                        <span className="text-c1 text-gray-2 leading-4 truncate">
+                        <span className="text-p5 text-gray-2 leading-4 truncate">
                           {format(new Date(String(createdAt)), DateFormat.D_MMM_Y)} •{' '}
                           {addedBy?.fullName}{' '}
                           {!isInternal &&

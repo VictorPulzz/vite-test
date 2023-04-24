@@ -144,7 +144,7 @@ export const CreateRepositoryPage: FC = () => {
               <Checkbox label="Use terraform" {...form.register('useTerraform')} className="mt-4" />
               <div className="flex flex-col gap-1">
                 <Checkbox label="With relay" {...form.register('withRelay')} className="mt-4" />
-                <span className="text-c1 text-gray-2">
+                <span className="text-p5 text-gray-2">
                   Works only for GraphQl Boilerplate. Please, consult backend developer if not sure
                 </span>
               </div>
@@ -159,7 +159,7 @@ export const CreateRepositoryPage: FC = () => {
               {...form.register('awsSecrets')}
               className="mt-4"
             />
-            <span className="text-c1 text-gray-2">
+            <span className="text-p5 text-gray-2">
               Set yes for backend repository, consult frontend developer for frontend
             </span>
           </div>

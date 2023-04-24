@@ -83,7 +83,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
               <button
                 type="button"
                 onClick={onClick}
-                className={`${isOpen ? 'text-white' : 'text-blue '} text-c1 font-medium p-[5px]`}
+                className={`${isOpen ? 'text-white' : 'text-blue '} text-p5 font-medium p-[5px]`}
               >
                 +{hiddenUsersCount}
               </button>
