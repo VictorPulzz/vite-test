@@ -28,6 +28,7 @@ const formSchema = z.object({
   useTerraform: z.boolean(),
   withRelay: z.boolean(),
   awsSecrets: z.boolean(),
+  withExistingRepo: z.boolean(),
 });
 
 type CreateRepositoryFormValues = z.infer<typeof formSchema>;
@@ -52,6 +53,7 @@ const defaultValues: CreateRepositoryFormValues = {
   useTerraform: false,
   withRelay: false,
   awsSecrets: false,
+  withExistingRepo: false,
 };
 
 export function useCreateRepositoryForm({
