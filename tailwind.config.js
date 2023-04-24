@@ -74,16 +74,16 @@ module.exports = {
           lineHeight: 'var(--p4-line-height)',
         },
       ],
-      c1: [
-        'var(--c1-font-size)',
+      p5: [
+        'var(--p5-font-size)',
         {
-          lineHeight: 'var(--c1-line-height)',
+          lineHeight: 'var(--p5-line-height)',
         },
       ],
-      c2: [
-        'var(--c2-font-size)',
+      p6: [
+        'var(--p6-font-size)',
         {
-          lineHeight: 'var(--c2-line-height)',
+          lineHeight: 'var(--p6-line-height)',
         },
       ],
     },
