@@ -3,6 +3,7 @@ import { EmptyState } from '@appello/web-ui';
 import { Loader } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TextLink } from '@appello/web-ui';
+import clsx from 'clsx';
 import { format, formatDuration, intervalToDuration, isPast, parseISO } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 
@@ -100,9 +101,9 @@ export const Info: FC<Props> = ({ projectId }) => {
                   <TextLink
                     external
                     to={design ?? ''}
-                    className={`text-p3 text-blue leading-none hover:underline ${
-                      !isValidHttpUrl(design ?? '') && 'pointer-events-none'
-                    }`}
+                    className={clsx('text-p3 text-blue leading-none hover:underline', {
+                      'pointer-events-none': !isValidHttpUrl(design ?? ''),
+                    })}
                   >
                     Design link
                   </TextLink>

@@ -34,7 +34,7 @@ if (!container) {
 
 const root = createRoot(container);
 
-const defaultTheme: AppelloKit = {
+const defaultTheme: Partial<AppelloKit> = {
   pageSize: PAGE_SIZE,
   debounceDelay: DEBOUNCE_DELAY,
   dateFormat: DATE_FORMAT,
