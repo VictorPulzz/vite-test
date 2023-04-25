@@ -86,24 +86,23 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
           <h2 className="mt-4 text-p2 font-bold">Template fields</h2>
           <InlineFields>
             {selectedTemplate.fields.map((field, fieldIndex) => (
-              <div key={fieldIndex}>
-                <Controller
-                  name={`templateFields.${fieldIndex}.value`}
-                  control={control}
-                  render={({ field: { value, onChange }, fieldState: { error } }) => (
-                    <Field label={field.description ?? ''} error={error} required>
-                      <TextInput
-                        value={value || ''}
-                        label={field.description ?? ''}
-                        onChange={onChange}
-                        placeholder={field.description ?? ''}
-                        error={!!error}
-                        required
-                      />
-                    </Field>
-                  )}
-                />
-              </div>
+              <Controller
+                key={fieldIndex}
+                name={`templateFields.${fieldIndex}.value`}
+                control={control}
+                render={({ field: { value, onChange }, fieldState: { error } }) => (
+                  <Field label={field.description ?? ''} error={error} required>
+                    <TextInput
+                      value={value || ''}
+                      label={field.description ?? ''}
+                      onChange={onChange}
+                      placeholder={field.description ?? ''}
+                      error={!!error}
+                      required
+                    />
+                  </Field>
+                )}
+              />
             ))}
           </InlineFields>
         </>

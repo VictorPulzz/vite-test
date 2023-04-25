@@ -56,7 +56,7 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
     label: 'label',
   }) as SelectOption<number>[];
 
-  const phasesOptions = [...enumToSelectOptions(ProjectPhaseChoice)];
+  const phasesOptions = enumToSelectOptions(ProjectPhaseChoice);
 
   return (
     <SectionContainer title="General">
