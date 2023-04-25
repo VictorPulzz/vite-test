@@ -12,6 +12,7 @@ mutation SignIn($data: LoginInput!) {
         url
       }
       role {
+        id
         name
         permissionsList
       }

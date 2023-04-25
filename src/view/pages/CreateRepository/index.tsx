@@ -51,7 +51,7 @@ export const CreateRepositoryPage: FC = () => {
     if (searchParams.projectId) {
       form.setValue('projectId', +searchParams.projectId);
     }
-  }, [searchParams.projectId, form.setValue]);
+  }, [searchParams.projectId, form.setValue, form]);
 
   const projectsOptions = useMemo(
     () => allProjects?.projectsList.results ?? [],
@@ -95,7 +95,7 @@ export const CreateRepositoryPage: FC = () => {
               control={form.control}
               label="Project"
               required
-              // TODO add disabled if searchParams.projectId===true
+              disabled={!!searchParams.projectId}
             />
           </InlineFields>
           <InlineFields>

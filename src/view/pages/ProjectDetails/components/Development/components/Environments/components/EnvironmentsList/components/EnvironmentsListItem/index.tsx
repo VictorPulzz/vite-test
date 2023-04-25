@@ -10,24 +10,29 @@ import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 
 import { EnvironmentsListItemMenu } from './components/EnvironmentsListItemMenu';
+import { RequestEnvType } from './types';
 
 interface Props {
-  environment: ProjectEnvironmentType;
-  variant?: CardVariant;
+  environment?: ProjectEnvironmentType;
+  envRequest?: RequestEnvType;
+  variant: CardVariant;
 }
 
-export const EnvironmentsListItem: FC<Props> = ({
-  environment: { name, backendCredentials, frontendCredentials },
-  variant = CardVariant.DEFAULT,
-}) => {
+export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, variant }) => {
   const backendCredentialsData = useMemo(
-    () => (backendCredentials ? pick(backendCredentials, ['url', 'login', 'password']) : null),
-    [backendCredentials],
+    () =>
+      environment?.backendCredentials
+        ? pick(environment.backendCredentials, ['url', 'login', 'password'])
+        : null,
+    [environment?.backendCredentials],
   );
 
   const frontendCredentialsData = useMemo(
-    () => (frontendCredentials ? pick(frontendCredentials, ['url', 'login', 'password']) : null),
-    [frontendCredentials],
+    () =>
+      environment?.frontendCredentials
+        ? pick(environment.frontendCredentials, ['url', 'login', 'password'])
+        : null,
+    [environment?.frontendCredentials],
   );
 
   return (
@@ -38,7 +43,9 @@ export const EnvironmentsListItem: FC<Props> = ({
             <div className="flex items-center gap-2">
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
-                <h2 className="text-p4 font-medium">{convertUppercaseToReadable(name)}</h2>
+                <h2 className="text-p4 font-medium">
+                  {convertUppercaseToReadable(environment?.name ?? '')}
+                </h2>
                 <span className="text-p5 text-gray-1">Credentials</span>
               </div>
             </div>
@@ -82,7 +89,9 @@ export const EnvironmentsListItem: FC<Props> = ({
           </div>
         </div>
       )}
-      {variant === CardVariant.REQUEST && <RequestCard title={name} icon="code" />}
+      {variant === CardVariant.REQUEST && (
+        <RequestCard title={envRequest?.environment ?? ''} icon="code" />
+      )}
     </>
   );
 };

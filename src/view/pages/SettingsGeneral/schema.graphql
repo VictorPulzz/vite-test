@@ -1,5 +1,6 @@
 query Me {
   me {
+    id
     firstName
     lastName
     email
@@ -15,6 +16,7 @@ query Me {
 
 mutation ProfileUpdate($data: ProfileInput!) {
   meUpdate(data: $data) {
+    id
     firstName
     lastName
     email
@@ -26,6 +28,7 @@ mutation ProfileUpdate($data: ProfileInput!) {
       size
     }
     role {
+      id
       name
       permissionsList
     }

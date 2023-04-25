@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   children: ReactNode;
-  title: ReactNode;
+  title?: ReactNode;
   contentClassName?: string;
   rightHeaderElement?: ReactNode;
 }

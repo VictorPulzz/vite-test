@@ -39,7 +39,7 @@ export function useRepositoryFilterForm({
   });
 
   const handleSubmit = useCallback(
-    async (values: RepositoriesFilterFormValues) => {
+    (values: RepositoriesFilterFormValues) => {
       setFilter({
         technologies: values.technologies.length ? values.technologies : undefined,
         type: values.type,

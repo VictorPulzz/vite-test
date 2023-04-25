@@ -7,18 +7,15 @@ const defaultOptions = {} as const;
 export type FetchSlackTemplatesListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchSlackTemplatesListQuery = {
-  __typename?: 'Query';
   slackTemplateList: Array<{
-    __typename?: 'SlackChannelTemplateType';
     id: number;
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
     initialUsers?: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
+      id: string;
       fullName?: string | null;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
+      photo?: { url: string } | null;
     }> | null;
   }>;
 };
@@ -28,18 +25,15 @@ export type FetchSlackTemplateInfoQueryVariables = Types.Exact<{
 }>;
 
 export type FetchSlackTemplateInfoQuery = {
-  __typename?: 'Query';
   slackTemplate: {
-    __typename?: 'SlackChannelTemplateType';
     id: number;
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
     initialUsers?: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
+      id: string;
       fullName?: string | null;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
+      photo?: { url: string } | null;
     }> | null;
   };
 };
@@ -48,28 +42,19 @@ export type CreateSlackTemplateMutationVariables = Types.Exact<{
   input: Types.SlackChannelTemplateInput;
 }>;
 
-export type CreateSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateCreate: { __typename?: 'SlackChannelTemplateType'; id: number };
-};
+export type CreateSlackTemplateMutation = { slackTemplateCreate: { id: number } };
 
 export type UpdateSlackTemplateMutationVariables = Types.Exact<{
   input: Types.SlackChannelTemplateInput;
 }>;
 
-export type UpdateSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateUpdate: { __typename?: 'SlackChannelTemplateType'; id: number };
-};
+export type UpdateSlackTemplateMutation = { slackTemplateUpdate: { id: number } };
 
 export type DeleteSlackTemplateMutationVariables = Types.Exact<{
   input: Types.IdInput;
 }>;
 
-export type DeleteSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateDelete: { __typename?: 'MessageType'; message: string };
-};
+export type DeleteSlackTemplateMutation = { slackTemplateDelete: { message: string } };
 
 export const FetchSlackTemplatesListDocument = gql`
   query FetchSlackTemplatesList {

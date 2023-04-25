@@ -1,5 +1,5 @@
 import { PaginationItem } from '~/types';
 
-import { FetchRequestsQuery } from './__generated__/schema';
+import { FetchRequestsListQuery } from './__generated__/schema';
 
-export type RequestResultType = PaginationItem<FetchRequestsQuery['requestList']>;
+export type RequestResultType = PaginationItem<FetchRequestsListQuery['requestList']>;

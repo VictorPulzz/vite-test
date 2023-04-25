@@ -7,15 +7,14 @@ const defaultOptions = {} as const;
 export type MeQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
-  __typename?: 'Query';
   me: {
-    __typename?: 'ProfileType';
+    id: string;
     firstName?: string | null;
     lastName?: string | null;
     email: string;
     phone?: string | null;
     address?: string | null;
-    photo?: { __typename?: 'ImageType'; url: string; fileName: string; size: number } | null;
+    photo?: { url: string; fileName: string; size: number } | null;
   };
 };
 
@@ -24,22 +23,22 @@ export type ProfileUpdateMutationVariables = Types.Exact<{
 }>;
 
 export type ProfileUpdateMutation = {
-  __typename?: 'Mutation';
   meUpdate: {
-    __typename?: 'ProfileType';
+    id: string;
     firstName?: string | null;
     lastName?: string | null;
     email: string;
     phone?: string | null;
     address?: string | null;
-    photo?: { __typename?: 'ImageType'; url: string; fileName: string; size: number } | null;
-    role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
+    photo?: { url: string; fileName: string; size: number } | null;
+    role?: { id: number; name: string; permissionsList: Array<string> } | null;
   };
 };
 
 export const MeDocument = gql`
   query Me {
     me {
+      id
       firstName
       lastName
       email
@@ -85,6 +84,7 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const ProfileUpdateDocument = gql`
   mutation ProfileUpdate($data: ProfileInput!) {
     meUpdate(data: $data) {
+      id
       firstName
       lastName
       email
@@ -96,6 +96,7 @@ export const ProfileUpdateDocument = gql`
         size
       }
       role {
+        id
         name
         permissionsList
       }

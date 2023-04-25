@@ -12,16 +12,18 @@ import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 
 import { IntegrationsListItemMenu } from './components/IntegrationsListItemMenu';
+import { RequestIntegrationType } from './types';
 
 interface Props {
-  integration: ProjectIntegrationType;
-  variant?: CardVariant;
+  integration?: ProjectIntegrationType;
+  integrationRequest?: RequestIntegrationType;
+  variant: CardVariant;
 }
 
-export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVariant.DEFAULT }) => {
+export const IntegrationsListItem: FC<Props> = ({ integration, integrationRequest, variant }) => {
   const mainIntegrationCredentialsData = useMemo(
     () =>
-      integration.credential ? pick(integration.credential, ['url', 'login', 'password']) : null,
+      integration?.credential ? pick(integration.credential, ['url', 'login', 'password']) : null,
     [integration],
   );
 
@@ -48,10 +50,10 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
                 <h2 className="text-p4 font-medium break-all">
-                  {convertUppercaseToReadable(integration.name)}
+                  {convertUppercaseToReadable(integration?.name ?? '')}
                 </h2>
                 <span className="text-p5 text-gray-1">
-                  {convertUppercaseToReadable(integration.environment ?? '')}
+                  {convertUppercaseToReadable(integration?.environment ?? '')}
                 </span>
               </div>
             </div>
@@ -94,7 +96,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, variant = CardVar
         </div>
       )}
       {variant === CardVariant.REQUEST && (
-        <RequestCard title={integration.name} icon="integration" />
+        <RequestCard title={integrationRequest?.integrationName ?? ''} icon="integration" />
       )}
     </>
   );

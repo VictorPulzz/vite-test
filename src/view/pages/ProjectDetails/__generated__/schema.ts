@@ -9,13 +9,12 @@ export type FetchProjectPreviewQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectPreviewQuery = {
-  __typename?: 'Query';
   projectPreview: {
-    __typename?: 'ProjectPreviewType';
     id: number;
     name: string;
     createdAt: string;
-    createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
+    inTeam: boolean;
+    createdBy?: { fullName?: string | null } | null;
   };
 };
 
@@ -24,9 +23,7 @@ export type FetchProjectInfoQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectInfoQuery = {
-  __typename?: 'Query';
   project: {
-    __typename?: 'ProjectType';
     id: number;
     name: string;
     createdAt: string;
@@ -36,10 +33,9 @@ export type FetchProjectInfoQuery = {
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
-    createdBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
-    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
+    createdBy?: { fullName?: string | null } | null;
+    status?: { id: number; name: string } | null;
     clientTeam?: Array<{
-      __typename?: 'ClientType';
       fullName: string;
       email: string;
       phone?: string | null;
@@ -47,7 +43,7 @@ export type FetchProjectInfoQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
+    platforms?: Array<{ id: number; name: string }> | null;
   };
 };
 
@@ -58,16 +54,13 @@ export type FetchAllUsersQueryVariables = Types.Exact<{
 }>;
 
 export type FetchAllUsersQuery = {
-  __typename?: 'Query';
   usersList: {
-    __typename?: 'UserTypePagination';
     results: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
+      id: string;
       fullName?: string | null;
       email: string;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-      role?: { __typename?: 'RoleType'; name: string } | null;
+      photo?: { url: string } | null;
+      role?: { name: string } | null;
     }>;
   };
 };
@@ -77,33 +70,27 @@ export type FetchProjectMembersQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectMembersQuery = {
-  __typename?: 'Query';
   projectMemberList: {
-    __typename?: 'ProjectMemberListType';
     currentTeam: Array<{
-      __typename?: 'ProjectMemberType';
       startDate: string;
       endDate?: string | null;
       user: {
-        __typename?: 'UserType';
-        id?: string | null;
+        id: string;
         fullName?: string | null;
         email: string;
-        photo?: { __typename?: 'ImageType'; url: string } | null;
-        role?: { __typename?: 'RoleType'; name: string } | null;
+        photo?: { url: string } | null;
+        role?: { name: string } | null;
       };
     }>;
     otherContrubutors: Array<{
-      __typename?: 'ProjectMemberType';
       startDate: string;
       endDate?: string | null;
       user: {
-        __typename?: 'UserType';
-        id?: string | null;
+        id: string;
         fullName?: string | null;
         email: string;
-        photo?: { __typename?: 'ImageType'; url: string } | null;
-        role?: { __typename?: 'RoleType'; name: string } | null;
+        photo?: { url: string } | null;
+        role?: { name: string } | null;
       };
     }>;
   };
@@ -114,12 +101,10 @@ export type AddProjectMemberMutationVariables = Types.Exact<{
 }>;
 
 export type AddProjectMemberMutation = {
-  __typename?: 'Mutation';
   projectAddMember: {
-    __typename?: 'ProjectMemberType';
     currentTeam: boolean;
-    project: { __typename?: 'ProjectType'; name: string };
-    user: { __typename?: 'UserType'; fullName?: string | null };
+    project: { name: string };
+    user: { fullName?: string | null };
   };
 };
 
@@ -127,25 +112,37 @@ export type RemoveProjectMemberMutationVariables = Types.Exact<{
   input: Types.ProjectMemberInput;
 }>;
 
-export type RemoveProjectMemberMutation = {
-  __typename?: 'Mutation';
-  projectDeleteMember: { __typename?: 'MessageType'; message: string };
-};
+export type RemoveProjectMemberMutation = { projectDeleteMember: { message: string } };
 
 export type FetchProjectRepositoriesListQueryVariables = Types.Exact<{
   data: Types.IdInput;
 }>;
 
 export type FetchProjectRepositoriesListQuery = {
-  __typename?: 'Query';
   projectRepositoryList: Array<{
-    __typename?: 'RepositoryType';
-    id?: number | null;
+    id: number;
     name?: string | null;
     type?: Types.RepositoryTypeChoice | null;
     createdAt: string;
-    technologies?: Array<{ __typename?: 'TechnologyType'; id: number; name: string }> | null;
+    technologies?: Array<{ id: number; name: string }> | null;
   }>;
+};
+
+export type FetchReposRequestsListQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.RequestFilter>;
+  pagination: Types.PaginationInput;
+  sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
+}>;
+
+export type FetchReposRequestsListQuery = {
+  requestList: {
+    results: Array<{
+      id: number;
+      repositoryType?: Types.RepositoryTypeChoice | null;
+      createdAt: string;
+      technologies?: Array<{ id: number; name: string }> | null;
+    }>;
+  };
 };
 
 export type RequestNewProjectRepositoryMutationVariables = Types.Exact<{
@@ -153,8 +150,7 @@ export type RequestNewProjectRepositoryMutationVariables = Types.Exact<{
 }>;
 
 export type RequestNewProjectRepositoryMutation = {
-  __typename?: 'Mutation';
-  repositoryUpdate: { __typename?: 'RepositoryType'; type?: Types.RepositoryTypeChoice | null };
+  repositoryUpdate: { type?: Types.RepositoryTypeChoice | null };
 };
 
 export type FetchProjectEnvironmentsListQueryVariables = Types.Exact<{
@@ -162,25 +158,25 @@ export type FetchProjectEnvironmentsListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectEnvironmentsListQuery = {
-  __typename?: 'Query';
   projectEnvironmentList: Array<{
-    __typename?: 'ProjectEnvironmentType';
-    id?: number | null;
+    id: number;
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
-    frontendCredentials?: {
-      __typename?: 'EnvironmentCredentialsType';
-      url: string;
-      login: string;
-      password: string;
-    } | null;
-    backendCredentials?: {
-      __typename?: 'EnvironmentCredentialsType';
-      url: string;
-      login: string;
-      password: string;
-    } | null;
+    frontendCredentials?: { id: number; url: string; login: string; password: string } | null;
+    backendCredentials?: { id: number; url: string; login: string; password: string } | null;
   }>;
+};
+
+export type FetchEnvsRequestsListQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.RequestFilter>;
+  pagination: Types.PaginationInput;
+  sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
+}>;
+
+export type FetchEnvsRequestsListQuery = {
+  requestList: {
+    results: Array<{ id: number; environment?: Types.ProjectEnvironmentChoice | null }>;
+  };
 };
 
 export type RequestNewProjectEnvironmentMutationVariables = Types.Exact<{
@@ -188,11 +184,7 @@ export type RequestNewProjectEnvironmentMutationVariables = Types.Exact<{
 }>;
 
 export type RequestNewProjectEnvironmentMutation = {
-  __typename?: 'Mutation';
-  projectEnvironmentCreateUpdate: {
-    __typename?: 'ProjectEnvironmentType';
-    name: Types.ProjectEnvironmentChoice;
-  };
+  projectEnvironmentCreateUpdate: { name: Types.ProjectEnvironmentChoice };
 };
 
 export type FetchProjectIntegrationsListQueryVariables = Types.Exact<{
@@ -200,21 +192,14 @@ export type FetchProjectIntegrationsListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectIntegrationsListQuery = {
-  __typename?: 'Query';
   projectIntegrationList: Array<{
-    __typename?: 'ProjectIntegrationType';
-    id?: number | null;
+    id: number;
     name: string;
     projectId: number;
     environment?: Types.ProjectEnvironmentChoice | null;
-    keys?: Array<{
-      __typename?: 'IntegrationKeyType';
-      id?: number | null;
-      title: string;
-      value: string;
-    }> | null;
+    keys?: Array<{ id: number; title: string; value: string }> | null;
     credential?: {
-      __typename?: 'IntegrationCredentialsType';
+      id: number;
       url?: string | null;
       login?: string | null;
       password?: string | null;
@@ -222,13 +207,22 @@ export type FetchProjectIntegrationsListQuery = {
   }>;
 };
 
+export type FetchIntegrationsRequestsListQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.RequestFilter>;
+  pagination: Types.PaginationInput;
+  sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
+}>;
+
+export type FetchIntegrationsRequestsListQuery = {
+  requestList: { results: Array<{ id: number; integrationName?: string | null }> };
+};
+
 export type RequestNewProjectIntegrationMutationVariables = Types.Exact<{
   input: Types.ProjectIntegrationInput;
 }>;
 
 export type RequestNewProjectIntegrationMutation = {
-  __typename?: 'Mutation';
-  projectIntegrationCreateUpdate: { __typename?: 'ProjectIntegrationType'; name: string };
+  projectIntegrationCreateUpdate: { name: string };
 };
 
 export type FetchHistoryLogsQueryVariables = Types.Exact<{
@@ -237,16 +231,13 @@ export type FetchHistoryLogsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchHistoryLogsQuery = {
-  __typename?: 'Query';
   logList: {
-    __typename?: 'LogTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'LogType';
       createdAt: string;
       id: number;
       message: string;
-      createdBy: { __typename?: 'UserType'; fullName?: string | null; id?: string | null };
+      createdBy: { fullName?: string | null; id: string };
     }>;
   };
 };
@@ -259,17 +250,14 @@ export type FetchDocumentsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchDocumentsQuery = {
-  __typename?: 'Query';
   documentList: {
-    __typename?: 'DocumentTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'DocumentType';
       id: number;
       createdAt: string;
-      project?: { __typename?: 'ProjectType'; name: string } | null;
+      project?: { name: string } | null;
       file: { __typename: 'ImageType'; fileName: string; url: string; size: number };
-      addedBy?: { __typename?: 'UserType'; fullName?: string | null } | null;
+      addedBy?: { fullName?: string | null } | null;
     }>;
   };
 };
@@ -278,19 +266,13 @@ export type UploadDocumentMutationVariables = Types.Exact<{
   input: Types.DocumentInput;
 }>;
 
-export type UploadDocumentMutation = {
-  __typename?: 'Mutation';
-  documentCreateUpdate: { __typename?: 'DocumentType'; id: number };
-};
+export type UploadDocumentMutation = { documentCreateUpdate: { id: number } };
 
 export type RemoveDocumentMutationVariables = Types.Exact<{
   input: Types.IdInput;
 }>;
 
-export type RemoveDocumentMutation = {
-  __typename?: 'Mutation';
-  documentDelete: { __typename?: 'MessageType'; message: string };
-};
+export type RemoveDocumentMutation = { documentDelete: { message: string } };
 
 export type FetchAllProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
@@ -299,22 +281,13 @@ export type FetchAllProjectsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchAllProjectsQuery = {
-  __typename?: 'Query';
-  projectsList: {
-    __typename?: 'ProjectTypePagination';
-    results: Array<{ __typename?: 'ProjectType'; value: number; label: string }>;
-  };
+  projectsList: { results: Array<{ value: number; label: string }> };
 };
 
 export type FetchAllDocumentCategoriesQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchAllDocumentCategoriesQuery = {
-  __typename?: 'Query';
-  documentCategoryList: Array<{
-    __typename?: 'DocumentCategoryType';
-    value: number;
-    label: string;
-  }>;
+  documentCategoryList: Array<{ value: number; label: string }>;
 };
 
 export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
@@ -322,19 +295,12 @@ export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectSlackChannelsQuery = {
-  __typename?: 'Query';
   project: {
-    __typename?: 'ProjectType';
     slackChannels?: Array<{
-      __typename?: 'ProjectSlackType';
       channelId?: string | null;
       createdAt: string;
       channelUrl?: string | null;
-      template?: {
-        __typename?: 'SlackChannelTemplateType';
-        label?: string | null;
-        prefix: string;
-      } | null;
+      template?: { label?: string | null; prefix: string } | null;
     }> | null;
   };
 };
@@ -344,8 +310,7 @@ export type CreateProjectSlackChannelMutationVariables = Types.Exact<{
 }>;
 
 export type CreateProjectSlackChannelMutation = {
-  __typename?: 'Mutation';
-  projectAddSlackChannel: { __typename?: 'ProjectSlackType'; channelUrl?: string | null };
+  projectAddSlackChannel: { channelUrl?: string | null };
 };
 
 export const FetchProjectPreviewDocument = gql`
@@ -357,6 +322,7 @@ export const FetchProjectPreviewDocument = gql`
       createdBy {
         fullName
       }
+      inTeam
     }
   }
 `;
@@ -790,6 +756,78 @@ export type FetchProjectRepositoriesListQueryResult = Apollo.QueryResult<
   FetchProjectRepositoriesListQuery,
   FetchProjectRepositoriesListQueryVariables
 >;
+export const FetchReposRequestsListDocument = gql`
+  query FetchReposRequestsList(
+    $filters: RequestFilter
+    $pagination: PaginationInput!
+    $sort: [RequestSortFieldInput!]
+  ) {
+    requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+      results {
+        id
+        repositoryType
+        technologies {
+          id
+          name
+        }
+        createdAt
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchReposRequestsListQuery__
+ *
+ * To run a query within a React component, call `useFetchReposRequestsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchReposRequestsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchReposRequestsListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchReposRequestsListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchReposRequestsListQuery,
+    FetchReposRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchReposRequestsListQuery, FetchReposRequestsListQueryVariables>(
+    FetchReposRequestsListDocument,
+    options,
+  );
+}
+export function useFetchReposRequestsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchReposRequestsListQuery,
+    FetchReposRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchReposRequestsListQuery, FetchReposRequestsListQueryVariables>(
+    FetchReposRequestsListDocument,
+    options,
+  );
+}
+export type FetchReposRequestsListQueryHookResult = ReturnType<
+  typeof useFetchReposRequestsListQuery
+>;
+export type FetchReposRequestsListLazyQueryHookResult = ReturnType<
+  typeof useFetchReposRequestsListLazyQuery
+>;
+export type FetchReposRequestsListQueryResult = Apollo.QueryResult<
+  FetchReposRequestsListQuery,
+  FetchReposRequestsListQueryVariables
+>;
 export const RequestNewProjectRepositoryDocument = gql`
   mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
     repositoryUpdate(data: $input) {
@@ -847,11 +885,13 @@ export const FetchProjectEnvironmentsListDocument = gql`
       projectId
       name
       frontendCredentials {
+        id
         url
         login
         password
       }
       backendCredentials {
+        id
         url
         login
         password
@@ -909,6 +949,71 @@ export type FetchProjectEnvironmentsListLazyQueryHookResult = ReturnType<
 export type FetchProjectEnvironmentsListQueryResult = Apollo.QueryResult<
   FetchProjectEnvironmentsListQuery,
   FetchProjectEnvironmentsListQueryVariables
+>;
+export const FetchEnvsRequestsListDocument = gql`
+  query FetchEnvsRequestsList(
+    $filters: RequestFilter
+    $pagination: PaginationInput!
+    $sort: [RequestSortFieldInput!]
+  ) {
+    requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+      results {
+        id
+        environment
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchEnvsRequestsListQuery__
+ *
+ * To run a query within a React component, call `useFetchEnvsRequestsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchEnvsRequestsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchEnvsRequestsListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchEnvsRequestsListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchEnvsRequestsListQuery,
+    FetchEnvsRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchEnvsRequestsListQuery, FetchEnvsRequestsListQueryVariables>(
+    FetchEnvsRequestsListDocument,
+    options,
+  );
+}
+export function useFetchEnvsRequestsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchEnvsRequestsListQuery,
+    FetchEnvsRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchEnvsRequestsListQuery, FetchEnvsRequestsListQueryVariables>(
+    FetchEnvsRequestsListDocument,
+    options,
+  );
+}
+export type FetchEnvsRequestsListQueryHookResult = ReturnType<typeof useFetchEnvsRequestsListQuery>;
+export type FetchEnvsRequestsListLazyQueryHookResult = ReturnType<
+  typeof useFetchEnvsRequestsListLazyQuery
+>;
+export type FetchEnvsRequestsListQueryResult = Apollo.QueryResult<
+  FetchEnvsRequestsListQuery,
+  FetchEnvsRequestsListQueryVariables
 >;
 export const RequestNewProjectEnvironmentDocument = gql`
   mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
@@ -973,6 +1078,7 @@ export const FetchProjectIntegrationsListDocument = gql`
         value
       }
       credential {
+        id
         url
         login
         password
@@ -1030,6 +1136,73 @@ export type FetchProjectIntegrationsListLazyQueryHookResult = ReturnType<
 export type FetchProjectIntegrationsListQueryResult = Apollo.QueryResult<
   FetchProjectIntegrationsListQuery,
   FetchProjectIntegrationsListQueryVariables
+>;
+export const FetchIntegrationsRequestsListDocument = gql`
+  query FetchIntegrationsRequestsList(
+    $filters: RequestFilter
+    $pagination: PaginationInput!
+    $sort: [RequestSortFieldInput!]
+  ) {
+    requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+      results {
+        id
+        integrationName
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchIntegrationsRequestsListQuery__
+ *
+ * To run a query within a React component, call `useFetchIntegrationsRequestsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchIntegrationsRequestsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchIntegrationsRequestsListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchIntegrationsRequestsListQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchIntegrationsRequestsListQuery,
+    FetchIntegrationsRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchIntegrationsRequestsListQuery,
+    FetchIntegrationsRequestsListQueryVariables
+  >(FetchIntegrationsRequestsListDocument, options);
+}
+export function useFetchIntegrationsRequestsListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchIntegrationsRequestsListQuery,
+    FetchIntegrationsRequestsListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchIntegrationsRequestsListQuery,
+    FetchIntegrationsRequestsListQueryVariables
+  >(FetchIntegrationsRequestsListDocument, options);
+}
+export type FetchIntegrationsRequestsListQueryHookResult = ReturnType<
+  typeof useFetchIntegrationsRequestsListQuery
+>;
+export type FetchIntegrationsRequestsListLazyQueryHookResult = ReturnType<
+  typeof useFetchIntegrationsRequestsListLazyQuery
+>;
+export type FetchIntegrationsRequestsListQueryResult = Apollo.QueryResult<
+  FetchIntegrationsRequestsListQuery,
+  FetchIntegrationsRequestsListQueryVariables
 >;
 export const RequestNewProjectIntegrationDocument = gql`
   mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {

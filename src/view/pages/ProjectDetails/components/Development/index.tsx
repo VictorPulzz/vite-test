@@ -2,10 +2,15 @@ import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { RequestStatusChoice, RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
+
 import {
+  useFetchEnvsRequestsListQuery,
+  useFetchIntegrationsRequestsListQuery,
   useFetchProjectEnvironmentsListQuery,
   useFetchProjectIntegrationsListQuery,
   useFetchProjectRepositoriesListQuery,
+  useFetchReposRequestsListQuery,
 } from '../../__generated__/schema';
 import { DevelopmentEnvironments } from './components/Environments';
 import { DevelopmentIntegrations } from './components/Integrations';
@@ -23,12 +28,40 @@ export const Development: FC = () => {
       fetchPolicy: 'cache-and-network',
     });
 
+  const { data: reposRequests, loading: isLoadingReposRequests } = useFetchReposRequestsListQuery({
+    variables: {
+      pagination: {
+        limit: 0,
+      },
+      filters: {
+        type: RequestTypeChoice.CREATION_REPOSITORY,
+        status: RequestStatusChoice.PENDING,
+        project: projectId,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
   const { data: environmentsList, loading: isProjectEnvironmentsListLoading } =
     useFetchProjectEnvironmentsListQuery({
       variables: {
         data: { id: projectId },
       },
     });
+
+  const { data: envsRequests, loading: isLoadingEnvsRequests } = useFetchEnvsRequestsListQuery({
+    variables: {
+      pagination: {
+        limit: 0,
+      },
+      filters: {
+        type: RequestTypeChoice.CREATION_ENVIRONMENT,
+        status: RequestStatusChoice.PENDING,
+        project: projectId,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
 
   const { data: integrationsList, loading: isProjectIntegrationsListLoading } =
     useFetchProjectIntegrationsListQuery({
@@ -37,22 +70,65 @@ export const Development: FC = () => {
       },
     });
 
+  const { data: integrationsRequests, loading: isLoadingIntegrationsRequests } =
+    useFetchIntegrationsRequestsListQuery({
+      variables: {
+        pagination: {
+          limit: 0,
+        },
+        filters: {
+          type: RequestTypeChoice.CREATION_INTEGRATION,
+          status: RequestStatusChoice.PENDING,
+          project: projectId,
+        },
+      },
+      fetchPolicy: 'cache-and-network',
+    });
+
+  const prepeareReposRequests = useMemo(
+    () =>
+      reposRequests
+        ? reposRequests?.requestList.results.map(request => ({
+            ...request,
+            name: '',
+            type: request.repositoryType,
+          }))
+        : [],
+    [reposRequests],
+  );
+
+  const projectRepositories = useMemo(
+    () => [...(repositoriesList?.projectRepositoryList ?? []), ...prepeareReposRequests],
+    [prepeareReposRequests, repositoriesList?.projectRepositoryList],
+  );
+
+  const isLoading =
+    isProjectRepositoriesListLoading ||
+    isLoadingReposRequests ||
+    isProjectEnvironmentsListLoading ||
+    isLoadingEnvsRequests ||
+    isProjectIntegrationsListLoading ||
+    isLoadingIntegrationsRequests;
+
   return (
     <div className="h-full">
-      {isProjectRepositoriesListLoading ||
-      isProjectEnvironmentsListLoading ||
-      isProjectIntegrationsListLoading ? (
+      {isLoading ? (
         <div className="flex h-full items-center">
           <Loader full colorful />
         </div>
       ) : (
         <div className="flex flex-col gap-5">
-          <DevelopmentRepositories
-            repositories={repositoriesList?.projectRepositoryList ?? []}
+          <DevelopmentRepositories repositories={projectRepositories} projectId={projectId} />
+          <DevelopmentEnvironments
+            environments={environmentsList?.projectEnvironmentList ?? []}
+            envsRequests={envsRequests?.requestList.results ?? []}
             projectId={projectId}
           />
-          <DevelopmentEnvironments environments={environmentsList?.projectEnvironmentList ?? []} />
-          <DevelopmentIntegrations integrations={integrationsList?.projectIntegrationList ?? []} />
+          <DevelopmentIntegrations
+            integrations={integrationsList?.projectIntegrationList ?? []}
+            integrationsRequests={integrationsRequests?.requestList.results ?? []}
+            projectId={projectId}
+          />
         </div>
       )}
     </div>

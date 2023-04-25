@@ -100,6 +100,7 @@ export const useSettingsGeneralForm = ({
         });
         dispatch(
           setUser({
+            id: data?.meUpdate.id ?? '',
             email: data?.meUpdate.email ?? '',
             fullName: `${data?.meUpdate.firstName} ${data?.meUpdate.lastName}` ?? '',
             photo: data?.meUpdate.photo,

@@ -17,15 +17,16 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchRepositoriesQuery } from './__generated__/schema';
 import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
-import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';
+import { useRepositoriesTableColumns } from './hooks/useRepositoriesTableColumns';
 
 export const RepositoriesPage: FC = () => {
   const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
   const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
-  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter, filtersCount } =
     useListQueryParams<RepositoryFilter>();
+
+  const repositoriesTableColumns = useRepositoriesTableColumns();
 
   const {
     value: isFilterModalOpen,
@@ -89,11 +90,7 @@ export const RepositoriesPage: FC = () => {
             <Table
               className="mt-6"
               data={data?.repositoryList.results}
-              columns={
-                canReadRepoDetails
-                  ? REPOSITORIES_TABLE_COLUMNS
-                  : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
-              }
+              columns={repositoriesTableColumns}
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

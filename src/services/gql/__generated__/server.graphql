@@ -47,7 +47,7 @@ input ClientPointContactInput {
 type ClientType {
   email: String!
   fullName: String!
-  id: Int
+  id: Int!
   notes: String
   phone: String
   pointContact: Boolean
@@ -119,9 +119,20 @@ input DocumentSortFieldInput {
   field: DocumentSort!
 }
 
+input DocumentTemplateFieldInput {
+  description: String = null
+  name: String!
+}
+
 type DocumentTemplateFieldType {
   description: String
   name: String!
+}
+
+input DocumentTemplateInput {
+  fields: [DocumentTemplateFieldInput!]!
+  name: String!
+  url: String!
 }
 
 type DocumentTemplateType {
@@ -156,6 +167,7 @@ input EnvironmentCredentialsInput {
 }
 
 type EnvironmentCredentialsType {
+  id: Int!
   login: String!
   password: String!
   url: String!
@@ -168,6 +180,11 @@ input ForgotPasswordInput {
 type ForgotPasswordType {
   email: String!
   message: String!
+}
+
+enum GitPlatformEnum {
+  BITBUCKET
+  GITLAB
 }
 
 input IDInput {
@@ -195,7 +212,7 @@ input IntegrationCredentialsInput {
 }
 
 type IntegrationCredentialsType {
-  id: Int
+  id: Int!
   key: String
   login: String
   name: String
@@ -210,7 +227,7 @@ input IntegrationKeyInput {
 }
 
 type IntegrationKeyType {
-  id: Int
+  id: Int!
   title: String!
   value: String!
 }
@@ -268,6 +285,14 @@ type Mutation {
   """
   documentGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
+  Create document template
+  """
+  documentTemplateCreate(data: DocumentTemplateInput!): DocumentTemplateType!
+  """
+  Delete document template
+  """
+  documentTemplateDelete(data: IDInput!): MessageType!
+  """
   Sending reset password email
   """
   forgotPassword(data: ForgotPasswordInput!): ForgotPasswordType!
@@ -279,6 +304,10 @@ type Mutation {
   User updating himself
   """
   meUpdate(data: ProfileInput!): ProfileType!
+  """
+  Update notification
+  """
+  notificationUpdate(data: NotificationUpdateInput!): NotificationType!
   """
   Change password
   """
@@ -295,6 +324,10 @@ type Mutation {
   Project add slack
   """
   projectAddSlackChannel(data: ProjectSlackInput!): ProjectSlackType!
+  """
+  Project integration with git
+  """
+  projectConnectToGit(data: ProjectGitIntegrationInput!): ProjectType!
   """
   Project creation
   """
@@ -425,6 +458,35 @@ type NoteType {
   text: String!
 }
 
+type NotificationType {
+  createdAt: DateTime!
+  externalId: Int!
+  id: Int!
+  isNew: Boolean!
+  message: String!
+  type: NotificationTypeChoice!
+}
+
+enum NotificationTypeChoice {
+  ADDED_PROJECT
+  ADDED_REPOSITORY
+  ASSIGNED_REQUEST
+  FILL_REPORT
+  UNASSIGNED_REQUEST
+}
+
+type NotificationTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [NotificationType!]!
+}
+
+input NotificationUpdateInput {
+  id: Int!
+  isNew: Boolean!
+}
+
 enum OrderDirectionChoice {
   ASC
   DESC
@@ -449,7 +511,7 @@ type PermissionType {
 }
 
 type PlatformType {
-  id: Int
+  id: Int!
   name: String!
 }
 
@@ -476,6 +538,7 @@ type ProfileType {
   email: String!
   firstName: String
   fullName: String
+  id: String!
   lastName: String
   phone: String
   photo: ImageType
@@ -486,6 +549,7 @@ input ProjectCreateInput {
   clientTeam: [ClientInput!] = null
   design: String = null
   endDate: Date = null
+  gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
   name: String!
   notes: String = null
@@ -513,13 +577,17 @@ input ProjectEnvironmentInput {
 type ProjectEnvironmentType {
   backendCredentials: EnvironmentCredentialsType
   frontendCredentials: EnvironmentCredentialsType
-  id: Int
+  id: Int!
   name: ProjectEnvironmentChoice!
   projectId: Int!
 }
 
 input ProjectFilter {
   statusId: Int = null
+}
+
+input ProjectGitIntegrationInput {
+  id: Int!
 }
 
 input ProjectIntegrationInput {
@@ -534,7 +602,7 @@ input ProjectIntegrationInput {
 type ProjectIntegrationType {
   credential: IntegrationCredentialsType
   environment: ProjectEnvironmentChoice
-  id: Int
+  id: Int!
   keys: [IntegrationKeyType!]
   name: String!
   projectId: Int!
@@ -543,6 +611,7 @@ type ProjectIntegrationType {
 input ProjectMemberInput {
   currentTeam: Boolean!
   projectId: Int!
+  slackChannels: [Int!]
   userId: Int!
 }
 
@@ -580,6 +649,7 @@ type ProjectPreviewType {
   createdAt: DateTime!
   createdBy: UserType
   id: Int!
+  inTeam: Boolean!
   name: String!
 }
 
@@ -598,7 +668,7 @@ type ProjectSlackType {
 }
 
 type ProjectStatusType {
-  id: Int
+  id: Int!
   name: String!
 }
 
@@ -607,6 +677,11 @@ type ProjectStatusTypePagination {
   limit: Int!
   offset: Int!
   results: [ProjectStatusType!]!
+}
+
+enum ProjectTeamChoice {
+  CURRENT
+  OTHER
 }
 
 type ProjectType {
@@ -642,6 +717,7 @@ input ProjectUpdateInput {
   clientTeam: [ClientInput!] = null
   design: String = null
   endDate: Date = null
+  gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
   id: Int!
   name: String = null
@@ -688,6 +764,10 @@ type Query {
   """
   me: ProfileType!
   """
+  Getting list of notifications
+  """
+  notificationList(pagination: PaginationInput!): NotificationTypePagination!
+  """
   Getting list of roles and permissions
   """
   permissionsList: [PermissionType!]!
@@ -700,6 +780,15 @@ type Query {
   """
   project(data: IDInput!): ProjectType!
   """
+  Getting documents for project by id
+  """
+  projectDocumentList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput!
+    search: String = null
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
+  """
   Getting environments for project by id
   """
   projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
@@ -707,6 +796,10 @@ type Query {
   Getting integrations for project by id
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
+  """
+  Getting history for project by id
+  """
+  projectLogList(filters: LogFilter = null, pagination: PaginationInput!): LogTypePagination!
   """
   Getting members for project by id
   """
@@ -751,9 +844,21 @@ type Query {
     pagination: PaginationInput!
   ): RepositoryParticipantTypePagination!
   """
+  Getting repository preview
+  """
+  repositoryPreview(data: IDInput!): RepositoryPreviewType!
+  """
+  Getting request by id
+  """
+  requestDetails(data: IDInput!): RequestType!
+  """
   Getting list of requests
   """
-  requestList(filters: RequestFilter = null, pagination: PaginationInput!): RequestTypePagination!
+  requestList(
+    filters: RequestFilter = null
+    pagination: PaginationInput!
+    sort: [RequestSortFieldInput!] = null
+  ): RequestTypePagination!
   """
   Getting list of users' roles
   """
@@ -854,6 +959,12 @@ enum RepositoryPlatformChoice {
   MOBILE
 }
 
+type RepositoryPreviewType {
+  id: Int!
+  name: String!
+  projectId: Int
+}
+
 input RepositorySecretsInput {
   environment: ProjectEnvironmentChoice!
   key: String!
@@ -870,7 +981,7 @@ type RepositoryType {
   gitTerraformRepoId: String
   gitTerraformUrl: String
   gitUrl: String
-  id: Int
+  id: Int!
   name: String
   project: ProjectType!
   technologies: [TechnologyType!]
@@ -897,21 +1008,42 @@ input RepositoryUpdateInput {
 }
 
 input RequestCreateInput {
-  accessLevel: String = null
+  accessLevel: RepositoryAccessLevelChoice = null
   assignedRoleId: Int!
   assignedToId: Int = null
   description: String = null
   dueDate: Date = null
-  projectId: Int = null
+  environment: ProjectEnvironmentChoice = null
+  integrationName: String = null
+  projectId: Int!
   repositoryId: Int = null
+  repositoryType: RepositoryTypeChoice = null
+  technologies: [Int!]
   type: RequestTypeChoice!
 }
 
 input RequestFilter {
-  createdById: Int = null
-  projectId: Int = null
+  assignedRole: Int = null
+  assignedTo: Int = null
+  createdBy: Int = null
+  project: Int = null
   status: RequestStatusChoice = null
   type: RequestTypeChoice = null
+}
+
+enum RequestSort {
+  assigned_role
+  assigned_to
+  created_at
+  created_by
+  due_date
+  status
+  type
+}
+
+input RequestSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: RequestSort!
 }
 
 enum RequestStatusChoice {
@@ -920,17 +1052,22 @@ enum RequestStatusChoice {
 }
 
 type RequestType {
-  accessLevel: String
-  assignedRole: RoleType!
+  accessLevel: RepositoryAccessLevelChoice
+  assignedRole: RoleType
   assignedTo: UserType
   createdAt: DateTime!
-  createdBy: UserType!
+  createdBy: UserType
   description: String
   dueDate: Date
+  environment: ProjectEnvironmentChoice
   id: Int!
+  integrationName: String
   project: ProjectType
+  projectTeam: ProjectTeamChoice
   repository: RepositoryType
+  repositoryType: RepositoryTypeChoice
   status: RequestStatusChoice!
+  technologies: [TechnologyType!]
   type: RequestTypeChoice!
 }
 
@@ -950,9 +1087,10 @@ type RequestTypePagination {
 }
 
 input RequestUpdateInput {
+  assignedRoleId: Int = null
+  assignedToId: Int = null
   dueDate: Date = null
   id: Int!
-  ssignedRoleId: Int = null
   status: RequestStatusChoice = null
 }
 
@@ -1030,7 +1168,7 @@ type UserType {
   email: String!
   firstName: String
   fullName: String
-  id: String
+  id: String!
   isActive: Boolean
   isSuperuser: Boolean
   lastName: String

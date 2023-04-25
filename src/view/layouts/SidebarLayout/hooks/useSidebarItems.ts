@@ -1,9 +1,9 @@
+import { SidebarItem } from '@appello/web-ui';
 import { useMemo } from 'react';
 
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { SidebarItem } from '@appello/web-ui';
 
 export function useSidebarItems(): SidebarItem[] {
   const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);

@@ -9,9 +9,11 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
+import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
@@ -122,9 +124,9 @@ export const ProjectDetailsPage: FC = () => {
   );
 
   return (
-    <TabLayout tabs={loading || DocumentTabs}>
+    <TabLayout tabs={!loading && data?.projectPreview.inTeam && DocumentTabs}>
       {loading && <Loader full colorful />}
-      {!loading && data && (
+      {!loading && data && data.projectPreview.inTeam && (
         <div className="bg-white">
           <div className="flex items-center justify-between px-7 pt-7 gap-6">
             <div className="flex items-center gap-4">
@@ -135,15 +137,11 @@ export const ProjectDetailsPage: FC = () => {
               />
               <div className="flex flex-col w-[65vw]">
                 <h2 className="text-h4 font-bold break-words leading-6">
-                  {data?.projectPreview.name}
+                  {data.projectPreview.name}
                 </h2>
                 <span className="text-p5 text-gray-2">
-                  Created{' '}
-                  {format(
-                    new Date(data?.projectPreview.createdAt ?? new Date()),
-                    DateFormat.D_MMM_Y,
-                  )}{' '}
-                  • by {data?.projectPreview.createdBy?.fullName}
+                  Created {format(new Date(data.projectPreview.createdAt), DateFormat.D_MMM_Y)} • by{' '}
+                  {data.projectPreview.createdBy?.fullName}
                 </span>
               </div>
             </div>
@@ -158,6 +156,17 @@ export const ProjectDetailsPage: FC = () => {
             )}
           </div>
         </div>
+      )}
+      {!loading && data && !data.projectPreview.inTeam && (
+        <DetailLayout contentClassName="flex-auto">
+          <NoAccessMessage
+            className="h-full"
+            title={data.projectPreview.name}
+            projectId={data.projectPreview.id}
+            variant={NoAccessMessageVariant.REQUEST}
+            requestType={RequestTypeChoice.ACCESS_PROJECT}
+          />
+        </DetailLayout>
       )}
     </TabLayout>
   );

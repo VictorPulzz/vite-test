@@ -6,6 +6,7 @@ query FetchProjectPreview($data: IDInput!) {
     createdBy {
       fullName
     }
+    inTeam
   }
 }
 
@@ -124,6 +125,24 @@ query FetchProjectRepositoriesList($data: IDInput!) {
   }
 }
 
+query FetchReposRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput!
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      repositoryType
+      technologies {
+        id
+        name
+      }
+      createdAt
+    }
+  }
+}
+
 mutation RequestNewProjectRepository($input: RepositoryUpdateInput!) {
   repositoryUpdate(data: $input) {
     type
@@ -136,14 +155,29 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     projectId
     name
     frontendCredentials {
+      id
       url
       login
       password
     }
     backendCredentials {
+      id
       url
       login
       password
+    }
+  }
+}
+
+query FetchEnvsRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput!
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      environment
     }
   }
 }
@@ -166,9 +200,23 @@ query FetchProjectIntegrationsList($data: IDInput!) {
       value
     }
     credential {
+      id
       url
       login
       password
+    }
+  }
+}
+
+query FetchIntegrationsRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput!
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      integrationName
     }
   }
 }

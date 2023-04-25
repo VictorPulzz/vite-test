@@ -1,4 +1,5 @@
 fragment AuthorizedUser on ProfileType {
+  id
   email
   firstName
   lastName
@@ -9,6 +10,7 @@ fragment AuthorizedUser on ProfileType {
     url
   }
   role {
+    id
     name
     permissionsList
   }

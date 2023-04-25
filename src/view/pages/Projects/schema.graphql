@@ -18,6 +18,7 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $sea
         id
         name
       }
+      phase
     }
     count
   }

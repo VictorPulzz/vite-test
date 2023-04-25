@@ -25,7 +25,7 @@ interface Props {
 const DEFAULT_STATUS_ID = 1;
 
 export const GeneralSection: FC<Props> = ({ projectId }) => {
-  const { control, watch, setValue } = useFormContext<ProjectFormValues>();
+  const { control, setValue } = useFormContext<ProjectFormValues>();
 
   const { data: platforms } = useFetchPlatformsListQuery({
     variables: {

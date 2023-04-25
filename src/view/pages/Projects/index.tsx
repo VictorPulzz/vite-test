@@ -19,12 +19,13 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchProjectStatusesListQuery } from '../CreateOrUpdateProject/__generated__/schema';
 import { useFetchProjectsQuery } from './__generated__/schema';
-import { PROJECTS_TABLE_COLUMNS, PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
+import { useProjectsTableColumns } from './hooks/useProjectsTableColumns';
 
 export const ProjectsPage: FC = () => {
   const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
   const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+
+  const projectsListColumns = useProjectsTableColumns();
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
     useListQueryParams<ProjectFilter>();
@@ -99,9 +100,7 @@ export const ProjectsPage: FC = () => {
             <Table
               className="mt-6"
               data={data.projectsList.results}
-              columns={
-                canReadUserDetails ? PROJECTS_TABLE_COLUMNS : PROJECTS_TABLE_COLUMNS_NO_USER_DETAILS
-              }
+              columns={projectsListColumns}
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

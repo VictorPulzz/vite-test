@@ -58,6 +58,7 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
 
         dispatch(
           setUser({
+            id: user.id,
             email: user.email,
             fullName: user.fullName,
             photo: user.photo,
