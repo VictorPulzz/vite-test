@@ -146,14 +146,14 @@ export type DocumentTemplateType = {
 };
 
 export type DocumentType = {
-  addedBy?: Maybe<UserType>;
+  addedBy?: Maybe<ProfileType>;
   category?: Maybe<DocumentCategoryType>;
   createdAt: Scalars['DateTime'];
   file: ImageType;
   id: Scalars['Int'];
   internal: Scalars['Boolean'];
   project?: Maybe<ProjectType>;
-  user?: Maybe<UserType>;
+  user?: Maybe<ProfileType>;
 };
 
 export type DocumentTypePagination = {
@@ -183,6 +183,39 @@ export type ForgotPasswordInput = {
 export type ForgotPasswordType = {
   email: Scalars['String'];
   message: Scalars['String'];
+};
+
+export type GitInitialUserId = {
+  userId: Scalars['Int'];
+};
+
+export type GitInitialUserInput = {
+  accessLevel: RepositoryAccessLevelChoice;
+  userId: Scalars['Int'];
+};
+
+export enum GitInitialUserSort {
+  ACCESSLEVEL = 'accessLevel',
+  DEPARTMENT = 'department',
+  EMAIL = 'email',
+  FULLNAME = 'fullName',
+}
+
+export type GitInitialUserSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: GitInitialUserSort;
+};
+
+export type GitInitialUserType = {
+  accessLevel: RepositoryAccessLevelChoice;
+  user: ProfileType;
+};
+
+export type GitInitialUserTypePagination = {
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<GitInitialUserType>;
 };
 
 export enum GitPlatformEnum {
@@ -243,7 +276,7 @@ export type LogFilter = {
 
 export type LogType = {
   createdAt: Scalars['DateTime'];
-  createdBy: UserType;
+  createdBy: ProfileType;
   id: Scalars['Int'];
   message: Scalars['String'];
 };
@@ -285,6 +318,10 @@ export type Mutation = {
   documentTemplateDelete: MessageType;
   /** Sending reset password email */
   forgotPassword: ForgotPasswordType;
+  /** Add or update git initial user */
+  gitInitialUserCreateUpdate: GitInitialUserType;
+  /** Delete git initial user */
+  gitInitialUserDelete: MessageType;
   /** Login */
   login: LoginSuccessType;
   /** User updating himself */
@@ -387,6 +424,14 @@ export type MutationDocumentTemplateDeleteArgs = {
 
 export type MutationForgotPasswordArgs = {
   data: ForgotPasswordInput;
+};
+
+export type MutationGitInitialUserCreateUpdateArgs = {
+  data: GitInitialUserInput;
+};
+
+export type MutationGitInitialUserDeleteArgs = {
+  data: GitInitialUserId;
 };
 
 export type MutationLoginArgs = {
@@ -712,7 +757,7 @@ export type ProjectMemberType = {
   endDate?: Maybe<Scalars['DateTime']>;
   project: ProjectType;
   startDate: Scalars['DateTime'];
-  user: UserType;
+  user: ProfileType;
 };
 
 export type ProjectMemberTypePagination = {
@@ -827,6 +872,10 @@ export type Query = {
   documentList: DocumentTypePagination;
   /** Getting list of document templates */
   documentTemplateList: Array<DocumentTemplateType>;
+  /** Getting git initial user by id */
+  gitInitialUserDetails: GitInitialUserType;
+  /** Getting git initial user list */
+  gitInitialUserList: GitInitialUserTypePagination;
   /** Getting list of logs */
   logList: LogTypePagination;
   /** Getting authenticated user */
@@ -894,6 +943,15 @@ export type QueryDocumentListArgs = {
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
+};
+
+export type QueryGitInitialUserDetailsArgs = {
+  data: GitInitialUserId;
+};
+
+export type QueryGitInitialUserListArgs = {
+  pagination: PaginationInput;
+  sort?: InputMaybe<Array<GitInitialUserSortFieldInput>>;
 };
 
 export type QueryLogListArgs = {
@@ -1055,7 +1113,7 @@ export type RepositoryParticipantInput = {
 export type RepositoryParticipantType = {
   accessLevel: RepositoryAccessLevelChoice;
   repository: RepositoryType;
-  user: UserType;
+  user: ProfileType;
 };
 
 export type RepositoryParticipantTypePagination = {
@@ -1086,7 +1144,7 @@ export type RepositorySecretsInput = {
 export type RepositoryType = {
   boilerplate?: Maybe<BoilerplateType>;
   createdAt: Scalars['DateTime'];
-  createdBy?: Maybe<UserType>;
+  createdBy?: Maybe<ProfileType>;
   gitRepoId?: Maybe<Scalars['String']>;
   gitSlug?: Maybe<Scalars['String']>;
   gitTerraformRepoId?: Maybe<Scalars['String']>;
@@ -1165,9 +1223,9 @@ export enum RequestStatusChoice {
 export type RequestType = {
   accessLevel?: Maybe<RepositoryAccessLevelChoice>;
   assignedRole?: Maybe<RoleType>;
-  assignedTo?: Maybe<UserType>;
+  assignedTo?: Maybe<ProfileType>;
   createdAt: Scalars['DateTime'];
-  createdBy?: Maybe<UserType>;
+  createdBy?: Maybe<ProfileType>;
   description?: Maybe<Scalars['String']>;
   dueDate?: Maybe<Scalars['Date']>;
   environment?: Maybe<ProjectEnvironmentChoice>;
@@ -1228,7 +1286,7 @@ export type SlackChannelTemplateInput = {
 
 export type SlackChannelTemplateType = {
   id: Scalars['Int'];
-  initialUsers?: Maybe<Array<UserType>>;
+  initialUsers?: Maybe<Array<ProfileType>>;
   isPrivate?: Maybe<Scalars['Boolean']>;
   label?: Maybe<Scalars['String']>;
   prefix: Scalars['String'];

@@ -56,7 +56,6 @@ export const SettingsGeneralPage: React.FC = () => {
       </InlineFields>
       <InlineFields>
         <TextField
-          className="mb-6"
           disabled
           name="email"
           control={form.control}

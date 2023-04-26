@@ -143,14 +143,14 @@ type DocumentTemplateType {
 }
 
 type DocumentType {
-  addedBy: UserType
+  addedBy: ProfileType
   category: DocumentCategoryType
   createdAt: DateTime!
   file: ImageType!
   id: Int!
   internal: Boolean!
   project: ProjectType
-  user: UserType
+  user: ProfileType
 }
 
 type DocumentTypePagination {
@@ -180,6 +180,39 @@ input ForgotPasswordInput {
 type ForgotPasswordType {
   email: String!
   message: String!
+}
+
+input GitInitialUserId {
+  userId: Int!
+}
+
+input GitInitialUserInput {
+  accessLevel: RepositoryAccessLevelChoice!
+  userId: Int!
+}
+
+enum GitInitialUserSort {
+  accessLevel
+  department
+  email
+  fullName
+}
+
+input GitInitialUserSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: GitInitialUserSort!
+}
+
+type GitInitialUserType {
+  accessLevel: RepositoryAccessLevelChoice!
+  user: ProfileType!
+}
+
+type GitInitialUserTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [GitInitialUserType!]!
 }
 
 enum GitPlatformEnum {
@@ -240,7 +273,7 @@ input LogFilter {
 
 type LogType {
   createdAt: DateTime!
-  createdBy: UserType!
+  createdBy: ProfileType!
   id: Int!
   message: String!
 }
@@ -296,6 +329,14 @@ type Mutation {
   Sending reset password email
   """
   forgotPassword(data: ForgotPasswordInput!): ForgotPasswordType!
+  """
+  Add or update git initial user
+  """
+  gitInitialUserCreateUpdate(data: GitInitialUserInput!): GitInitialUserType!
+  """
+  Delete git initial user
+  """
+  gitInitialUserDelete(data: GitInitialUserId!): MessageType!
   """
   Login
   """
@@ -625,7 +666,7 @@ type ProjectMemberType {
   endDate: DateTime
   project: ProjectType!
   startDate: DateTime!
-  user: UserType!
+  user: ProfileType!
 }
 
 type ProjectMemberTypePagination {
@@ -755,6 +796,17 @@ type Query {
   Getting list of document templates
   """
   documentTemplateList: [DocumentTemplateType!]!
+  """
+  Getting git initial user by id
+  """
+  gitInitialUserDetails(data: GitInitialUserId!): GitInitialUserType!
+  """
+  Getting git initial user list
+  """
+  gitInitialUserList(
+    pagination: PaginationInput!
+    sort: [GitInitialUserSortFieldInput!] = null
+  ): GitInitialUserTypePagination!
   """
   Getting list of logs
   """
@@ -944,7 +996,7 @@ input RepositoryParticipantInput {
 type RepositoryParticipantType {
   accessLevel: RepositoryAccessLevelChoice!
   repository: RepositoryType!
-  user: UserType!
+  user: ProfileType!
 }
 
 type RepositoryParticipantTypePagination {
@@ -975,7 +1027,7 @@ input RepositorySecretsInput {
 type RepositoryType {
   boilerplate: BoilerplateType
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   gitRepoId: String
   gitSlug: String
   gitTerraformRepoId: String
@@ -1054,9 +1106,9 @@ enum RequestStatusChoice {
 type RequestType {
   accessLevel: RepositoryAccessLevelChoice
   assignedRole: RoleType
-  assignedTo: UserType
+  assignedTo: ProfileType
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   description: String
   dueDate: Date
   environment: ProjectEnvironmentChoice
@@ -1117,7 +1169,7 @@ input SlackChannelTemplateInput {
 
 type SlackChannelTemplateType {
   id: Int!
-  initialUsers: [UserType!]
+  initialUsers: [ProfileType!]
   isPrivate: Boolean
   label: String
   prefix: String!

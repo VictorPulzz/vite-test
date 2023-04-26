@@ -28,6 +28,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
         input: { id: Number(channelTemplateId) },
       },
       skip: !channelTemplateId,
+      fetchPolicy: 'cache-and-network',
     });
 
   const { form, handleSubmit, resetForm, isLoading } = useChannelTemplateForm({
@@ -41,7 +42,6 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
         limit: 0,
       },
     },
-    fetchPolicy: 'cache-and-network',
   });
 
   const usersOptions = useSelectOptions(allUsers?.usersList.results, {
@@ -62,7 +62,6 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
       contentClassName="w-[470px]"
       title={`${isEditMode ? 'Edit' : 'Add'} Custom template`}
       onAfterClose={resetForm}
-      shouldCloseOnOverlayClick={false}
     >
       {isLoadingQueries && (
         <div className="flex items-center h-[410px]">

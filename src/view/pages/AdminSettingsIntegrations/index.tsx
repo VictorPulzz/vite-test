@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react';
 
 import { TabLayout } from '~/view/layouts/TabLayout';
 
+import { BitbucketTabElement } from './components/BitbucketTabElement';
 import { SlackTabElement } from './components/SlackTabElement';
 import styles from './styles.module.scss';
 
@@ -18,6 +19,14 @@ export const AdminSettingsIntegrationsPage: FC = () => {
             element: (
               <div className="h-full p-7">
                 <SlackTabElement />
+              </div>
+            ),
+          },
+          {
+            title: 'Bitbucket',
+            element: (
+              <div className="h-full p-7">
+                <BitbucketTabElement />
               </div>
             ),
           },
