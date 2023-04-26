@@ -26,7 +26,7 @@ export function transformProjectPrefilledData(
     phase: data.phase ?? ProjectPhaseChoice.PRE_SIGNED,
     status: Number(data.status?.id),
     documentTemplate: [],
-    platforms: data.platforms?.map(({ id }) => Number(id)) ?? [],
+    platforms: data.platforms?.map(({ id }) => id) ?? [],
     clientTeam: data.clientTeam as ClientTeamMember[],
   };
 }

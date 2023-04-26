@@ -5,6 +5,8 @@ mutation SignIn($data: LoginInput!) {
     user {
       id
       email
+      firstName
+      lastName
       fullName
       photo {
         fileName

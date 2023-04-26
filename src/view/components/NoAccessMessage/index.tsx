@@ -17,7 +17,7 @@ interface Props {
   className?: string;
   title?: string;
   requestType?: RequestTypeChoice;
-  projectId?: number;
+  projectId?: Nullable<number>;
   repositoryId?: number;
 }
 

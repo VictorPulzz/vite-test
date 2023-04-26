@@ -17,7 +17,7 @@ export type FetchProjectsQuery = {
       id: number;
       name: string;
       phase?: Types.ProjectPhaseChoice | null;
-      PM?: Array<{ id: string; fullName?: string | null; photo?: { url: string } | null }> | null;
+      PM?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
       status?: { id: number; name: string } | null;
       platforms?: Array<{ id: number; name: string }> | null;
     }>;

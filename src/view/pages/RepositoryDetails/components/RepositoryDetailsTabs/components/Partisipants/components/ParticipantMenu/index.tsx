@@ -36,7 +36,7 @@ export const ParticipantMenu: FC<Props> = ({ participant, repositoryId, accessLe
       toast.promise(
         changeParticipantAccessLevel({
           variables: {
-            input: { userId: Number(id), accessLevel, repositoryId },
+            input: { userId: id, accessLevel, repositoryId },
           },
           refetchQueries: [FetchRepositoryParticipantsDocument],
         }),

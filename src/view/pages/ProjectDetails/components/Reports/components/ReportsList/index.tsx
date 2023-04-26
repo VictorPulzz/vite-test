@@ -1,5 +1,5 @@
 import { DateField } from '@appello/web-ui';
-import { SelectField, SelectOption } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import React, { FC } from 'react';
 
@@ -65,7 +65,7 @@ export const Reports: FC = () => {
   const usersOptions = useSelectOptions(data?.usersList.results, {
     value: 'id',
     label: 'fullName',
-  }) as SelectOption<string>[];
+  });
 
   return (
     <div className="flex flex-col gap-5">

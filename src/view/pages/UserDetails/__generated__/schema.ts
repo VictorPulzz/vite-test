@@ -10,10 +10,10 @@ export type FetchUserDetailsQueryVariables = Types.Exact<{
 
 export type FetchUserDetailsQuery = {
   userDetails: {
-    id: string;
-    fullName?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    fullName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     isActive?: boolean | null;
     contractType?: Types.ContractChoice | null;

@@ -32,8 +32,8 @@ export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
     () => [
       ALL_SELECT_OPTION,
       ...users.map(({ id, fullName }) => ({
-        value: Number(id),
-        label: fullName ?? '',
+        value: id,
+        label: fullName,
       })),
     ],
     [users],

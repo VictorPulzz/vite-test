@@ -36,7 +36,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
   );
 
   const showUserDetails = useCallback(
-    (id: string): void => {
+    (id: number): void => {
       if (canReadUserDetails) {
         navigate(
           generatePath(ROUTES.USER_DETAILS, {
@@ -55,7 +55,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
             label: `${user.fullName}`,
             iconBefore: <Avatar uri={user.photo?.url || photoPlaceholder} size={24} />,
             className: 'flex item-center gap-2',
-            onSelect: () => showUserDetails(user.id ?? ''),
+            onSelect: () => showUserDetails(user.id),
           }))
         : [],
     [hiddenUsers, showUserDetails],

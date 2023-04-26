@@ -12,7 +12,10 @@ import {
 } from '../../../../../__generated__/schema';
 
 const formSchema = z.object({
-  user: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  user: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
 });
 
 type AddNewMemberFormValues = z.infer<typeof formSchema>;
@@ -29,7 +32,7 @@ interface UseAddNewMemberFormProps {
 }
 
 const defaultValues: AddNewMemberFormValues = {
-  user: '',
+  user: null,
 };
 
 export function useAddNewMemberForm({
@@ -51,7 +54,7 @@ export function useAddNewMemberForm({
             input: {
               currentTeam: true,
               projectId,
-              userId: +values.user,
+              userId: Number(values.user),
             },
           },
           refetchQueries: [FetchProjectMembersDocument],

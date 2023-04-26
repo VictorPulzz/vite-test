@@ -12,7 +12,10 @@ import {
 } from '~/view/pages/RepositoryDetails/__generated__/schema';
 
 const formSchema = z.object({
-  user: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  user: z
+    .number()
+    .nullable()
+    .refine(value => value !== null, formErrors.REQUIRED),
   accessLevel: z
     .nativeEnum(RepositoryAccessLevelChoice)
     .nullable()
@@ -33,7 +36,7 @@ interface UseAddParticipantFormProps {
 }
 
 const defaultValues: AddParticipantFormValues = {
-  user: '',
+  user: null,
   accessLevel: null,
 };
 
@@ -54,7 +57,7 @@ export function useAddParticipantForm({
         await addRepositoryParticipant({
           variables: {
             input: {
-              userId: +values.user,
+              userId: Number(values.user),
               accessLevel: values.accessLevel as RepositoryAccessLevelChoice,
               repositoryId,
             },

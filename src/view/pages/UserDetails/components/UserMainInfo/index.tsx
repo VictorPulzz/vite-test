@@ -39,7 +39,7 @@ export const UserMainInfo: FC<Props> = ({
     toast.promise(
       connectUserToBitbucket({
         variables: {
-          input: { id: Number(id) },
+          input: { id },
         },
       }),
       {

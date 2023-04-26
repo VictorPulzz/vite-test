@@ -35,7 +35,7 @@ export const MoreCell: FC<CellContext<RepositoryResultType, unknown>> = ({ row }
       <DeleteRepositoryModal
         isOpen={isDeleteRepositoryModalOpen}
         close={closeDeleteRepositoryModal}
-        id={id as number}
+        id={id}
         // TODO fix this later
         name={name ?? 'Requested'}
       />

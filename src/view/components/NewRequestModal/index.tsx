@@ -1,4 +1,4 @@
-import { DateField, Loader } from '@appello/web-ui';
+import { DateField, Loader, useSelectOptions } from '@appello/web-ui';
 import { InlineFields } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextAreaField } from '@appello/web-ui';
@@ -28,7 +28,7 @@ import { useCreateNewRequestForm } from './hooks/useCreateNewRequest';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   requestType?: RequestTypeChoice;
-  projectId?: number;
+  projectId?: Nullable<number>;
   repositoryId?: number;
 }
 
@@ -79,15 +79,10 @@ export const NewRequestModal: FC<Props> = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useMemo(
-    () =>
-      allUsers?.usersList.results.map(({ value, label }) => ({
-        value: Number(value),
-        label: label ?? '',
-      })) ?? [],
-
-    [allUsers?.usersList.results],
-  );
+  const usersOptions = useSelectOptions(allUsers?.usersList.results, {
+    value: 'id',
+    label: 'fullName',
+  });
 
   const { data: allTechnologies, loading: isLoadingAllTechnologies } =
     useFetchTechnologiesListQuery({
@@ -123,7 +118,7 @@ export const NewRequestModal: FC<Props> = ({
   const repositoriesOptions = useMemo(
     () =>
       allRepositories?.repositoryList.results.map(({ value, label }) => ({
-        value: Number(value),
+        value,
         label: `${label}`,
       })) ?? [],
     [allRepositories?.repositoryList.results],

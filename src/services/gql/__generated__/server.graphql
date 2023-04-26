@@ -525,8 +525,8 @@ type PlatformTypePagination {
 input ProfileInput {
   address: String = null
   birthDate: Date = null
-  firstName: String = null
-  lastName: String = null
+  firstName: String!
+  lastName: String!
   phone: String = null
   photo: Upload
 }
@@ -536,10 +536,10 @@ type ProfileType {
   birthDate: Date
   department: DepartmentType
   email: String!
-  firstName: String
-  fullName: String
-  id: String!
-  lastName: String
+  firstName: String!
+  fullName: String!
+  id: Int!
+  lastName: String!
   phone: String
   photo: ImageType
   role: RoleType
@@ -1149,11 +1149,11 @@ input UserInput {
   contractType: ContractChoice = null
   departmentId: Int = null
   email: String = null
-  firstName: String = null
+  firstName: String!
   id: Int = null
   isActive: Boolean = null
   isSuperuser: Boolean = null
-  lastName: String = null
+  lastName: String!
   phone: String = null
   photo: Upload
   roleId: Int = null
@@ -1166,12 +1166,12 @@ type UserType {
   contractType: ContractChoice
   department: DepartmentType
   email: String!
-  firstName: String
-  fullName: String
-  id: String!
+  firstName: String!
+  fullName: String!
+  id: Int!
   isActive: Boolean
   isSuperuser: Boolean
-  lastName: String
+  lastName: String!
   notes: [NoteType!]
   phone: String
   photo: ImageType

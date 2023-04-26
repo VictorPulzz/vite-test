@@ -135,8 +135,8 @@ export const Docs: FC<DocsProps> = ({
       (allUsers && [
         ALL_SELECT_OPTION,
         ...allUsers.usersList.results.map(({ id, fullName }) => ({
-          value: Number(id),
-          label: fullName ?? '',
+          value: id,
+          label: fullName,
         })),
       ]) ??
       [],

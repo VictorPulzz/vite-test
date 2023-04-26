@@ -33,7 +33,7 @@ export type FetchAllUsersQueryVariables = Types.Exact<{
 }>;
 
 export type FetchAllUsersQuery = {
-  usersList: { results: Array<{ value: string; label?: string | null }> };
+  usersList: { results: Array<{ id: number; fullName: string }> };
 };
 
 export type FetchAllProjectsQueryVariables = Types.Exact<{
@@ -228,8 +228,8 @@ export const FetchAllUsersDocument = gql`
   query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
     usersList(filters: $filters, pagination: $pagination, search: $search) {
       results {
-        value: id
-        label: fullName
+        id
+        fullName
       }
     }
   }

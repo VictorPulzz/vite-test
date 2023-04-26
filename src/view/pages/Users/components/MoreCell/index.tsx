@@ -18,7 +18,7 @@ export const MoreCell: FC<CellContext<UserResultType, unknown>> = ({ row }) => {
       toast.promise(
         changeStatus({
           variables: {
-            input: { id: Number(id), isActive },
+            input: { id, isActive },
           },
         }),
         {

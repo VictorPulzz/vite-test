@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
-import { useAppSelector } from '~/store/hooks';
+import { useUserProfile } from '~/store/hooks';
 import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -23,7 +23,7 @@ export const RepositoryDetailsPage: FC = () => {
 
   const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
 
-  const userId = useAppSelector(state => state.user.profile?.id);
+  const profile = useUserProfile();
 
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
@@ -45,7 +45,7 @@ export const RepositoryDetailsPage: FC = () => {
     [repositoryParticipantsIdsData?.repositoryParticipantList.results],
   );
 
-  const isUserInRepository = canReadRepoDetails && repositoryParticipantsIds.includes(userId ?? '');
+  const isUserInRepository = canReadRepoDetails && repositoryParticipantsIds.includes(profile.id);
 
   const { data: repositoryDetails, loading: isLoadingRepositoryDetails } =
     useFetchRepositoryDetailsQuery({
@@ -91,7 +91,7 @@ export const RepositoryDetailsPage: FC = () => {
             title={repositoryPreview.repositoryPreview.name}
             variant={NoAccessMessageVariant.REQUEST}
             requestType={RequestTypeChoice.ACCESS_REPOSITORY}
-            projectId={Number(repositoryPreview.repositoryPreview.projectId)}
+            projectId={repositoryPreview.repositoryPreview.projectId}
             repositoryId={repositoryId}
           />
         )}

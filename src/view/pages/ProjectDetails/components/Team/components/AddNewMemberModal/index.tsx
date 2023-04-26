@@ -1,6 +1,6 @@
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
-import { SelectField, SelectOption } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
@@ -10,7 +10,7 @@ import { useAddNewMemberForm } from './hooks/useAddNewMemberForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
-  projectMembersListIds: string[];
+  projectMembersListIds: number[];
   canEditProjectTeam: boolean;
 }
 
@@ -35,14 +35,14 @@ export const AddNewMemberModal: FC<Props> = ({
   });
 
   const outsideProjectTeamUsers = useMemo(
-    () => data?.usersList.results.filter(user => !projectMembersListIds.includes(user.id ?? '')),
+    () => data?.usersList.results.filter(user => !projectMembersListIds.includes(user.id)),
     [data?.usersList.results, projectMembersListIds],
   );
 
   const usersOptions = useSelectOptions(outsideProjectTeamUsers, {
     value: 'id',
     label: 'fullName',
-  }) as SelectOption<string>[];
+  });
 
   return (
     <Modal

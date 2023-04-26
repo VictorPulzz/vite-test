@@ -612,8 +612,8 @@ export type PlatformTypePagination = {
 export type ProfileInput = {
   address?: InputMaybe<Scalars['String']>;
   birthDate?: InputMaybe<Scalars['Date']>;
-  firstName?: InputMaybe<Scalars['String']>;
-  lastName?: InputMaybe<Scalars['String']>;
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
   phone?: InputMaybe<Scalars['String']>;
   photo?: InputMaybe<Scalars['Upload']>;
 };
@@ -623,10 +623,10 @@ export type ProfileType = {
   birthDate?: Maybe<Scalars['Date']>;
   department?: Maybe<DepartmentType>;
   email: Scalars['String'];
-  firstName?: Maybe<Scalars['String']>;
-  fullName?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
-  lastName?: Maybe<Scalars['String']>;
+  firstName: Scalars['String'];
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
+  lastName: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<ImageType>;
   role?: Maybe<RoleType>;
@@ -1258,11 +1258,11 @@ export type UserInput = {
   contractType?: InputMaybe<ContractChoice>;
   departmentId?: InputMaybe<Scalars['Int']>;
   email?: InputMaybe<Scalars['String']>;
-  firstName?: InputMaybe<Scalars['String']>;
+  firstName: Scalars['String'];
   id?: InputMaybe<Scalars['Int']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   isSuperuser?: InputMaybe<Scalars['Boolean']>;
-  lastName?: InputMaybe<Scalars['String']>;
+  lastName: Scalars['String'];
   phone?: InputMaybe<Scalars['String']>;
   photo?: InputMaybe<Scalars['Upload']>;
   roleId?: InputMaybe<Scalars['Int']>;
@@ -1275,12 +1275,12 @@ export type UserType = {
   contractType?: Maybe<ContractChoice>;
   department?: Maybe<DepartmentType>;
   email: Scalars['String'];
-  firstName?: Maybe<Scalars['String']>;
-  fullName?: Maybe<Scalars['String']>;
-  id: Scalars['String'];
+  firstName: Scalars['String'];
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
   isActive?: Maybe<Scalars['Boolean']>;
   isSuperuser?: Maybe<Scalars['Boolean']>;
-  lastName?: Maybe<Scalars['String']>;
+  lastName: Scalars['String'];
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<ImageType>;

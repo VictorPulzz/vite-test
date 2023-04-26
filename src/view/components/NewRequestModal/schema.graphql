@@ -30,8 +30,8 @@ query FetchTechnologiesList($pagination: PaginationInput!) {
 query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
   usersList(filters: $filters, pagination: $pagination, search: $search) {
     results {
-      value: id
-      label: fullName
+      id
+      fullName
     }
   }
 }

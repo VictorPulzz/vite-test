@@ -61,7 +61,7 @@ export const AssignedTo: FC<Props> = ({
       allUsers
         ? allUsers.map(user => ({
             label: user.fullName ?? '',
-            onSelect: () => updateAssignedToRequest(Number(user.id)),
+            onSelect: () => updateAssignedToRequest(user.id),
           }))
         : [],
     [allUsers, updateAssignedToRequest],

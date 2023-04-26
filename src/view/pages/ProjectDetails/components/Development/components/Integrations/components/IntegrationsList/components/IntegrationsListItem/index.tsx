@@ -47,7 +47,11 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
             )}
           >
             <div className="flex items-center gap-2">
-              <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
+              <IconContainer
+                name="integration"
+                className="w-10 h-10 bg-blue/10"
+                iconClassName="w-5 h-5"
+              />
               <div>
                 <h2 className="text-p4 font-medium break-all">
                   {convertUppercaseToReadable(integration?.name ?? '')}

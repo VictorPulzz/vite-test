@@ -24,15 +24,15 @@ export type FetchRequestsListQuery = {
       integrationName?: string | null;
       repositoryType?: Types.RepositoryTypeChoice | null;
       assignedTo?: {
-        id: string;
+        id: number;
         email: string;
-        fullName?: string | null;
+        fullName: string;
         photo?: { url: string } | null;
       } | null;
       createdBy?: {
-        id: string;
+        id: number;
         email: string;
-        fullName?: string | null;
+        fullName: string;
         photo?: { url: string } | null;
       } | null;
       technologies?: Array<{ id: number; name: string }> | null;
@@ -57,14 +57,14 @@ export type FetchRequestDetailsQuery = {
     integrationName?: string | null;
     repositoryType?: Types.RepositoryTypeChoice | null;
     assignedTo?: {
-      id: string;
-      fullName?: string | null;
+      id: number;
+      fullName: string;
       email: string;
       photo?: { url: string } | null;
     } | null;
     createdBy?: {
-      id: string;
-      fullName?: string | null;
+      id: number;
+      fullName: string;
       email: string;
       photo?: { url: string } | null;
     } | null;

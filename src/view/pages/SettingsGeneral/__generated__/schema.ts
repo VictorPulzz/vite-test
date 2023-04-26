@@ -8,9 +8,9 @@ export type MeQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type MeQuery = {
   me: {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    firstName: string;
+    lastName: string;
     email: string;
     phone?: string | null;
     address?: string | null;
@@ -24,9 +24,9 @@ export type ProfileUpdateMutationVariables = Types.Exact<{
 
 export type ProfileUpdateMutation = {
   meUpdate: {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    firstName: string;
+    lastName: string;
     email: string;
     phone?: string | null;
     address?: string | null;

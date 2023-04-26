@@ -28,7 +28,7 @@ export const DeleteParticipantModal: FC<Props> = ({
     toast.promise(
       removeRepositoryParticipant({
         variables: {
-          input: { userId: Number(id), repositoryId },
+          input: { userId: id, repositoryId },
         },
         refetchQueries: [FetchRepositoryParticipantsDocument],
       }),

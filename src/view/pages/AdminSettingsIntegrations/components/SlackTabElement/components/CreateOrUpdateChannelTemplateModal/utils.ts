@@ -7,7 +7,7 @@ export function transformChannelTemplatePrefilledData(
   return {
     label: data.label ?? '',
     prefix: data.prefix ?? '',
-    initialUsers: data.initialUsers?.map(item => Number(item.id)) ?? [],
+    initialUsers: data.initialUsers?.map(({ id }) => id) ?? [],
     isPrivate: data.isPrivate ?? false,
   };
 }

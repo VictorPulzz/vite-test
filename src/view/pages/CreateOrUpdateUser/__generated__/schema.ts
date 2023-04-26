@@ -10,9 +10,9 @@ export type CreateOrUpdateUserMutationVariables = Types.Exact<{
 
 export type CreateOrUpdateUserMutation = {
   userCreateUpdate: {
-    id: string;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    firstName: string;
+    lastName: string;
     email: string;
     address?: string | null;
     contractType?: Types.ContractChoice | null;

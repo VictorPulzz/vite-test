@@ -1,10 +1,10 @@
 import { useMountEffect } from '@appello/common/lib/hooks';
-import { EmptyState } from '@appello/web-ui';
+import { EmptyState, useSelectOptions } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
 import { Select } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
@@ -35,15 +35,10 @@ export const History: FC<Props> = ({ projectId }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useMemo(() => {
-    if (data?.usersList.results) {
-      return data?.usersList.results.map(({ id, fullName }) => ({
-        value: Number(id),
-        label: fullName ?? '',
-      }));
-    }
-    return [];
-  }, [data?.usersList.results]);
+  const usersOptions = useSelectOptions(data?.usersList.results, {
+    value: 'id',
+    label: 'fullName',
+  });
 
   const {
     data: tableData,

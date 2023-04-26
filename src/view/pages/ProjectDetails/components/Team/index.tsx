@@ -43,7 +43,7 @@ export const Team: FC = () => {
       [
         ...(data?.projectMemberList.currentTeam ?? []),
         ...(data?.projectMemberList.otherContrubutors ?? []),
-      ].map(member => `${member.user.id}`),
+      ].map(member => member.user.id),
     [data],
   );
 

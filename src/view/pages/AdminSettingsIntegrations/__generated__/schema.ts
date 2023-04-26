@@ -12,11 +12,7 @@ export type FetchSlackTemplatesListQuery = {
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{
-      id: string;
-      fullName?: string | null;
-      photo?: { url: string } | null;
-    }> | null;
+    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
   }>;
 };
 
@@ -30,11 +26,7 @@ export type FetchSlackTemplateInfoQuery = {
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{
-      id: string;
-      fullName?: string | null;
-      photo?: { url: string } | null;
-    }> | null;
+    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
   };
 };
 

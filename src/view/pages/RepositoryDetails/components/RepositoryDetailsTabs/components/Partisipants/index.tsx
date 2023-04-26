@@ -62,7 +62,7 @@ export const Participants: FC = () => {
     () =>
       allRepositoryParticipants?.repositoryParticipantList.results.map(
         participant => participant.user.id,
-      ),
+      ) ?? [],
     [allRepositoryParticipants?.repositoryParticipantList.results],
   );
 
@@ -134,7 +134,7 @@ export const Participants: FC = () => {
         isOpen={isAddParticipantModalOpen}
         close={closeAddParticipantModal}
         repositoryId={repositoryId}
-        repositoryParticipantsIds={repositoryParticipantsIds as string[]}
+        repositoryParticipantsIds={repositoryParticipantsIds}
       />
     </div>
   );

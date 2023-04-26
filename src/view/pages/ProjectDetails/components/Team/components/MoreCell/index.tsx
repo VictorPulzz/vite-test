@@ -90,18 +90,18 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
   const currentTeamOptions: DropdownItem[] = [
     {
       label: 'Remove from current',
-      onSelect: () => moveProjectMember(Number(id)),
+      onSelect: () => moveProjectMember(id),
     },
   ];
 
   const otherContributorsOptions: DropdownItem[] = [
     {
       label: 'Set as current',
-      onSelect: () => moveProjectMember(Number(id)),
+      onSelect: () => moveProjectMember(id),
     },
     {
       label: 'Remove',
-      onSelect: () => removeFromOtherContributors(Number(id)),
+      onSelect: () => removeFromOtherContributors(id),
       className: 'text-red',
     },
   ];

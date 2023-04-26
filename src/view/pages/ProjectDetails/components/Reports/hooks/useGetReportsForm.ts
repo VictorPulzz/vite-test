@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 const formSchema = z.object({
-  submittedBy: z.string(),
+  submittedBy: z.number().nullable(),
   submittedReportsDateRange: z.date().nullable(),
   submittedClientsDateRange: z.date().nullable(),
 });
@@ -19,7 +19,7 @@ interface UseGetReportsFormReturn {
 }
 
 const defaultValues: ProjectReportsFormValues = {
-  submittedBy: '',
+  submittedBy: null,
   submittedReportsDateRange: null,
   submittedClientsDateRange: null,
 };

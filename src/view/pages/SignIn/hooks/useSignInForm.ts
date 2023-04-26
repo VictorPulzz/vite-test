@@ -56,15 +56,21 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
         }
         const { user, accessToken, refreshToken } = data.login;
 
-        dispatch(
-          setUser({
-            id: user.id,
-            email: user.email,
-            fullName: user.fullName,
-            photo: user.photo,
-            role: user.role,
-          }),
-        );
+        if (user) {
+          dispatch(
+            setUser({
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              fullName: user.fullName,
+              photo: user.photo,
+              role: user.role,
+            }),
+          );
+        } else {
+          throw new Error('Server error');
+        }
         dispatch(setAuth({ access: accessToken, refresh: refreshToken }));
         onSubmitSuccessful();
       } catch (e) {

@@ -1,6 +1,5 @@
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
-import { SelectOption } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
@@ -13,7 +12,7 @@ import { useAddParticipantForm } from './hooks/useAddParticipantForm';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   repositoryId: number;
-  repositoryParticipantsIds: string[];
+  repositoryParticipantsIds: number[];
 }
 
 export const AddParticipantModal: FC<Props> = ({
@@ -37,17 +36,14 @@ export const AddParticipantModal: FC<Props> = ({
   });
 
   const outsideRepositoryUsers = useMemo(
-    () =>
-      allUsers?.usersList.results.filter(
-        user => !repositoryParticipantsIds?.includes(user.id ?? ''),
-      ),
+    () => allUsers?.usersList.results.filter(user => !repositoryParticipantsIds?.includes(user.id)),
     [allUsers?.usersList.results, repositoryParticipantsIds],
   );
 
   const usersOptions = useSelectOptions(outsideRepositoryUsers, {
     value: 'id',
     label: 'fullName',
-  }) as SelectOption<string>[];
+  });
 
   const accessLevelOptions = enumToSelectOptions(RepositoryAccessLevelChoice);
 

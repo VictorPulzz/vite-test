@@ -13,9 +13,11 @@ export type SignInMutation = {
     accessToken: string;
     refreshToken: string;
     user: {
-      id: string;
+      id: number;
       email: string;
-      fullName?: string | null;
+      firstName: string;
+      lastName: string;
+      fullName: string;
       photo?: { fileName: string; size: number; url: string } | null;
       role?: { id: number; name: string; permissionsList: Array<string> } | null;
     };
@@ -30,6 +32,8 @@ export const SignInDocument = gql`
       user {
         id
         email
+        firstName
+        lastName
         fullName
         photo {
           fileName

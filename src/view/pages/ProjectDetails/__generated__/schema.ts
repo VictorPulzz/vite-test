@@ -14,7 +14,7 @@ export type FetchProjectPreviewQuery = {
     name: string;
     createdAt: string;
     inTeam: boolean;
-    createdBy?: { fullName?: string | null } | null;
+    createdBy?: { fullName: string } | null;
   };
 };
 
@@ -33,7 +33,7 @@ export type FetchProjectInfoQuery = {
     design?: string | null;
     roadmap?: string | null;
     notes?: string | null;
-    createdBy?: { fullName?: string | null } | null;
+    createdBy?: { fullName: string } | null;
     status?: { id: number; name: string } | null;
     clientTeam?: Array<{
       fullName: string;
@@ -56,8 +56,8 @@ export type FetchAllUsersQueryVariables = Types.Exact<{
 export type FetchAllUsersQuery = {
   usersList: {
     results: Array<{
-      id: string;
-      fullName?: string | null;
+      id: number;
+      fullName: string;
       email: string;
       photo?: { url: string } | null;
       role?: { name: string } | null;
@@ -75,8 +75,8 @@ export type FetchProjectMembersQuery = {
       startDate: string;
       endDate?: string | null;
       user: {
-        id: string;
-        fullName?: string | null;
+        id: number;
+        fullName: string;
         email: string;
         photo?: { url: string } | null;
         role?: { name: string } | null;
@@ -86,8 +86,8 @@ export type FetchProjectMembersQuery = {
       startDate: string;
       endDate?: string | null;
       user: {
-        id: string;
-        fullName?: string | null;
+        id: number;
+        fullName: string;
         email: string;
         photo?: { url: string } | null;
         role?: { name: string } | null;
@@ -101,11 +101,7 @@ export type AddProjectMemberMutationVariables = Types.Exact<{
 }>;
 
 export type AddProjectMemberMutation = {
-  projectAddMember: {
-    currentTeam: boolean;
-    project: { name: string };
-    user: { fullName?: string | null };
-  };
+  projectAddMember: { currentTeam: boolean; project: { name: string }; user: { fullName: string } };
 };
 
 export type RemoveProjectMemberMutationVariables = Types.Exact<{
@@ -237,7 +233,7 @@ export type FetchHistoryLogsQuery = {
       createdAt: string;
       id: number;
       message: string;
-      createdBy: { fullName?: string | null; id: string };
+      createdBy: { fullName: string; id: number };
     }>;
   };
 };
@@ -257,7 +253,7 @@ export type FetchDocumentsQuery = {
       createdAt: string;
       project?: { name: string } | null;
       file: { __typename: 'ImageType'; fileName: string; url: string; size: number };
-      addedBy?: { fullName?: string | null } | null;
+      addedBy?: { fullName: string } | null;
     }>;
   };
 };

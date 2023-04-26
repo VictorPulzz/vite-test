@@ -3,11 +3,11 @@ import * as Types from '~/services/gql/__generated__/globalTypes';
 
 import { gql } from '@apollo/client';
 export type AuthorizedUserFragment = {
-  id: string;
+  id: number;
   email: string;
-  firstName?: string | null;
-  lastName?: string | null;
-  fullName?: string | null;
+  firstName: string;
+  lastName: string;
+  fullName: string;
   photo?: { fileName: string; size: number; url: string } | null;
   role?: { id: number; name: string; permissionsList: Array<string> } | null;
 };

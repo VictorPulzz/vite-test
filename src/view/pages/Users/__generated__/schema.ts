@@ -14,8 +14,8 @@ export type FetchUsersQuery = {
   usersList: {
     count: number;
     results: Array<{
-      id: string;
-      fullName?: string | null;
+      id: number;
+      fullName: string;
       email: string;
       isActive?: boolean | null;
       photo?: { url: string } | null;
@@ -40,7 +40,7 @@ export type ChangeUserStatusMutationVariables = Types.Exact<{
 }>;
 
 export type ChangeUserStatusMutation = {
-  userChangeStatus: { id: string; isActive?: boolean | null };
+  userChangeStatus: { id: number; isActive?: boolean | null };
 };
 
 export const FetchUsersDocument = gql`

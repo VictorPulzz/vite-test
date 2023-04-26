@@ -1,10 +1,10 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
 import { Loader } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import { Checkbox } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 
 import { useFetchSlackTemplateInfoQuery } from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
 import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
@@ -44,15 +44,10 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useMemo(() => {
-    if (allUsers?.usersList.results) {
-      return allUsers?.usersList.results.map(({ id, fullName }) => ({
-        value: Number(id),
-        label: fullName ?? '',
-      }));
-    }
-    return [];
-  }, [allUsers?.usersList.results]);
+  const usersOptions = useSelectOptions(allUsers?.usersList.results, {
+    value: 'id',
+    label: 'fullName',
+  });
 
   const isDisableAccessibilityCheckbox =
     isEditMode && !!slackTemplateInfo?.slackTemplate?.isPrivate;

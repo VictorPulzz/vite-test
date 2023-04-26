@@ -50,7 +50,7 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
       iconBefore: <Icon name="connection" size={16} />,
       items: statuses?.projectStatusesList.results.map(projectStatus => ({
         label: projectStatus.label,
-        onSelect: () => setProjectStatus(Number(projectStatus.value)),
+        onSelect: () => setProjectStatus(projectStatus.value),
         iconAfter: projectStatus.value === status?.id && (
           <Icon name="check" className="text-green" size={18} />
         ),

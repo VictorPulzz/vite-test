@@ -45,7 +45,7 @@ export type FetchRepositoryParticipantsQuery = {
     count: number;
     results: Array<{
       accessLevel: Types.RepositoryAccessLevelChoice;
-      user: { id: string; fullName?: string | null; photo?: { url: string } | null };
+      user: { id: number; fullName: string; photo?: { url: string } | null };
     }>;
   };
 };
@@ -56,7 +56,7 @@ export type FetchRepositoryParticipantsIdsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchRepositoryParticipantsIdsQuery = {
-  repositoryParticipantList: { results: Array<{ user: { id: string } }> };
+  repositoryParticipantList: { results: Array<{ user: { id: number } }> };
 };
 
 export type AddOrUpdateRepositoryParticipantMutationVariables = Types.Exact<{
@@ -64,7 +64,7 @@ export type AddOrUpdateRepositoryParticipantMutationVariables = Types.Exact<{
 }>;
 
 export type AddOrUpdateRepositoryParticipantMutation = {
-  repositoryParticipantCreateUpdate: { user: { fullName?: string | null } };
+  repositoryParticipantCreateUpdate: { user: { fullName: string } };
 };
 
 export type RemoveRepositoryParticipantMutationVariables = Types.Exact<{
