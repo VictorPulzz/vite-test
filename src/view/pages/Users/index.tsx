@@ -17,12 +17,13 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchUsersQuery } from './__generated__/schema';
 import { UsersFilterModal } from './components/UsersFilterModal';
-import { USERS_TABLE_COLUMNS, USERS_TABLE_COLUMNS_NO_DETAILS } from './consts';
+import { useUsersTableColumns } from './hooks/useUsersTableColumns';
 
 export const UsersPage: FC = () => {
   const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
   const canCreateUser = useHasAccess(Permission.CREATE_USER);
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+
+  const usersTableColumns = useUsersTableColumns();
 
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter, filtersCount } =
     useListQueryParams<UserFilter>();
@@ -85,7 +86,7 @@ export const UsersPage: FC = () => {
             <Table
               className="mt-6"
               data={data.usersList.results}
-              columns={canReadUserDetails ? USERS_TABLE_COLUMNS : USERS_TABLE_COLUMNS_NO_DETAILS}
+              columns={usersTableColumns}
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

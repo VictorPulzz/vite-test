@@ -86,10 +86,8 @@ export function useProjectTeamTableColumns(
     }),
     columnHelper.group({
       id: 'more',
-      cell: ctx =>
-        canEditProjectTeam && (
-          <MoreCell isCurrentTeam={type === TeamTableType.CURRENT_TEAM} ctx={ctx} />
-        ),
+      enableHiding: !canEditProjectTeam,
+      cell: ctx => <MoreCell isCurrentTeam={type === TeamTableType.CURRENT_TEAM} ctx={ctx} />,
       meta: {
         className: 'w-0',
       },
