@@ -17,13 +17,13 @@ import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
+import { Integrations } from './components/ Integrations';
 import { Development } from './components/Development';
 import { Docs } from './components/Docs';
 import { History } from './components/History';
 import { Info } from './components/Info';
 import { Overview } from './components/Overview';
 import { Reports } from './components/Reports';
-import { SlackChannels } from './components/SlackChannels';
 import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
@@ -94,10 +94,6 @@ export const ProjectDetailsPage: FC = () => {
             ),
           },
           {
-            title: 'Slack',
-            element: <SlackChannels projectId={projectId} />,
-          },
-          {
             title: 'Reports',
             element: <Reports />,
           },
@@ -108,6 +104,10 @@ export const ProjectDetailsPage: FC = () => {
             ) : (
               <NoAccessMessage className="h-[70vh]" />
             ),
+          },
+          {
+            title: 'Integrations',
+            element: <Integrations projectId={projectId} />,
           },
         ]}
       />

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { DateFormat } from '~/constants/dates';
 
-import { ProjectSlackChannelResultType } from '../../types';
+import { ProjectSlackChannelResultType } from '../../../../types';
 import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateSlackChannelCell';
 
 const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();

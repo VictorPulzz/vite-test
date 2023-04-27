@@ -5,14 +5,14 @@ import React, { FC } from 'react';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 
-import { useFetchProjectSlackChannelsQuery } from '../../__generated__/schema';
+import { useFetchProjectSlackChannelsQuery } from '../../../../__generated__/schema';
 import { SLACK_CHANNELS_TABLE_COLUMNS } from './consts';
 
 interface Props {
   projectId: number;
 }
 
-export const SlackChannels: FC<Props> = ({ projectId }) => {
+export const SlackChannelsSection: FC<Props> = ({ projectId }) => {
   const { data, loading } = useFetchProjectSlackChannelsQuery({
     variables: {
       data: { id: projectId },

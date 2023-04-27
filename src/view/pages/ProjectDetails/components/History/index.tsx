@@ -7,24 +7,22 @@ import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
 import {
   useFetchAllUsersQuery,
   useFetchHistoryLogsQuery,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
 
-import { HISTORY_TABLE_COLUMNS, HISTORY_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
+import { useHistoryTableColumns } from './hooks/useHistoryTableColumns';
 
 interface Props {
   projectId: number;
 }
 
 export const History: FC<Props> = ({ projectId }) => {
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+  const historyTableColumns = useHistoryTableColumns();
 
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
@@ -81,9 +79,7 @@ export const History: FC<Props> = ({ projectId }) => {
           <Table
             className="mt-4"
             data={tableData.logList.results}
-            columns={
-              canReadUserDetails ? HISTORY_TABLE_COLUMNS : HISTORY_TABLE_COLUMNS_NO_USER_DETAILS
-            }
+            columns={historyTableColumns}
             setOffset={setOffset}
             offset={offset}
             fetchMore={fetchMore}
