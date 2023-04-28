@@ -105,7 +105,7 @@ export type DocumentGenerateInput = {
 
 export type DocumentInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
-  file?: InputMaybe<Scalars['Upload']>;
+  file: Scalars['Upload'];
   id?: InputMaybe<Scalars['Int']>;
   projectId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
@@ -147,7 +147,7 @@ export type DocumentType = {
   addedBy?: Maybe<ProfileType>;
   category?: Maybe<DocumentCategoryType>;
   createdAt: Scalars['DateTime'];
-  file: ImageType;
+  file: FileType;
   id: Scalars['Int'];
   internal: Scalars['Boolean'];
   project?: Maybe<ProjectType>;
@@ -171,6 +171,12 @@ export type EnvironmentCredentialsType = {
   id: Scalars['Int'];
   login: Scalars['String'];
   password: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type FileType = {
+  fileName: Scalars['String'];
+  size: Scalars['Int'];
   url: Scalars['String'];
 };
 
@@ -228,12 +234,6 @@ export type IdInput = {
 export type IdNameInput = {
   id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
-};
-
-export type ImageType = {
-  fileName: Scalars['String'];
-  size: Scalars['Int'];
-  url: Scalars['String'];
 };
 
 export type IntegrationCredentialsInput = {
@@ -712,7 +712,7 @@ export type ProfileType = {
   id: Scalars['Int'];
   lastName: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
-  photo?: Maybe<ImageType>;
+  photo?: Maybe<FileType>;
   role?: Maybe<RoleType>;
 };
 
@@ -1008,8 +1008,8 @@ export type QueryDocumentClientListArgs = {
 
 export type QueryDocumentInternalListArgs = {
   filters?: InputMaybe<DocumentFilter>;
-  pagination: PaginationInput;
-  search?: InputMaybe<Scalars['String']>;
+  pagination?: InputMaybe<PaginationInput>;
+  search?: Scalars['String'];
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
@@ -1048,8 +1048,8 @@ export type QueryProjectArgs = {
 
 export type QueryProjectDocumentListArgs = {
   filters?: InputMaybe<DocumentFilter>;
-  pagination: PaginationInput;
-  search?: InputMaybe<Scalars['String']>;
+  pagination?: InputMaybe<PaginationInput>;
+  search?: Scalars['String'];
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
@@ -1401,7 +1401,7 @@ export type UserFilter = {
 export type UserGlossaryType = {
   fullName: Scalars['String'];
   id: Scalars['Int'];
-  photo?: Maybe<ImageType>;
+  photo?: Maybe<FileType>;
 };
 
 export type UserInput = {
@@ -1435,7 +1435,7 @@ export type UserType = {
   lastName: Scalars['String'];
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
-  photo?: Maybe<ImageType>;
+  photo?: Maybe<FileType>;
   role?: Maybe<RoleType>;
 };
 

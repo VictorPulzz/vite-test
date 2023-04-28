@@ -5,8 +5,10 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
-import { useCreateProjectSlackChannelMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { FetchProjectSlackChannelsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
+import {
+  FetchProjectIntegrationsDocument,
+  useCreateProjectSlackChannelMutation,
+} from '~/view/pages/ProjectDetails/__generated__/schema';
 import { ProjectSlackChannelResultType } from '~/view/pages/ProjectDetails/types';
 
 interface Props {
@@ -30,7 +32,7 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
           variables: {
             input: { projectId, channelTemplate: { prefix: template?.prefix ?? '' } },
           },
-          refetchQueries: [FetchProjectSlackChannelsDocument],
+          refetchQueries: [FetchProjectIntegrationsDocument],
         }),
         {
           loading: 'Creating slack channel...',

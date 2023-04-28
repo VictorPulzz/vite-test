@@ -67,7 +67,7 @@ export function useUploadDocumentForm({
       const docsValues = {
         input: {
           categoryId: values.categoryId,
-          file: values.document,
+          file: values.document as File,
           projectId: projectId || undefined,
           userId: userId || undefined,
         },

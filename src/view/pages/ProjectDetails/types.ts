@@ -2,14 +2,14 @@ import { PaginationItem } from '~/types';
 
 import {
   FetchHistoryLogsQuery,
+  FetchProjectIntegrationsQuery,
   FetchProjectMembersQuery,
-  FetchProjectSlackChannelsQuery,
 } from './__generated__/schema';
 
 export type LogsResultType = PaginationItem<FetchHistoryLogsQuery['logList']>;
 
 export type ProjectSlackChannelResultType = Exclude<
-  FetchProjectSlackChannelsQuery['projectIntegrationPage']['slackChannels'],
+  FetchProjectIntegrationsQuery['projectIntegrationPage']['slackChannels'],
   undefined | null
 >[number];
 

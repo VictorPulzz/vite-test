@@ -260,8 +260,9 @@ query FetchAllDocumentCategories {
   }
 }
 
-query FetchProjectSlackChannels($data: IDInput!) {
+query FetchProjectIntegrations($data: IDInput!) {
   projectIntegrationPage(data: $data) {
+    gitGroupId
     slackChannels {
       template {
         label
@@ -271,6 +272,12 @@ query FetchProjectSlackChannels($data: IDInput!) {
       createdAt
       channelUrl
     }
+  }
+}
+
+mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
+  projectConnectToGit(data: $input) {
+    id
   }
 }
 

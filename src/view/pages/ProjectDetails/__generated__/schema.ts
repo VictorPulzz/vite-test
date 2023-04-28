@@ -256,12 +256,13 @@ export type FetchAllDocumentCategoriesQuery = {
   documentCategoryList: Array<{ value: number; label: string }>;
 };
 
-export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
+export type FetchProjectIntegrationsQueryVariables = Types.Exact<{
   data: Types.IdInput;
 }>;
 
-export type FetchProjectSlackChannelsQuery = {
+export type FetchProjectIntegrationsQuery = {
   projectIntegrationPage: {
+    gitGroupId?: string | null;
     slackChannels?: Array<{
       channelId?: string | null;
       createdAt: string;
@@ -270,6 +271,12 @@ export type FetchProjectSlackChannelsQuery = {
     }> | null;
   };
 };
+
+export type ConnectProjectToGitMutationVariables = Types.Exact<{
+  input: Types.ProjectGitIntegrationInput;
+}>;
+
+export type ConnectProjectToGitMutation = { projectConnectToGit: { id: number } };
 
 export type CreateProjectSlackChannelMutationVariables = Types.Exact<{
   input: Types.ProjectSlackInput;
@@ -1391,9 +1398,10 @@ export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
   FetchAllDocumentCategoriesQuery,
   FetchAllDocumentCategoriesQueryVariables
 >;
-export const FetchProjectSlackChannelsDocument = gql`
-  query FetchProjectSlackChannels($data: IDInput!) {
+export const FetchProjectIntegrationsDocument = gql`
+  query FetchProjectIntegrations($data: IDInput!) {
     projectIntegrationPage(data: $data) {
+      gitGroupId
       slackChannels {
         template {
           label
@@ -1408,54 +1416,103 @@ export const FetchProjectSlackChannelsDocument = gql`
 `;
 
 /**
- * __useFetchProjectSlackChannelsQuery__
+ * __useFetchProjectIntegrationsQuery__
  *
- * To run a query within a React component, call `useFetchProjectSlackChannelsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchProjectSlackChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useFetchProjectIntegrationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectIntegrationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useFetchProjectSlackChannelsQuery({
+ * const { data, loading, error } = useFetchProjectIntegrationsQuery({
  *   variables: {
  *      data: // value for 'data'
  *   },
  * });
  */
-export function useFetchProjectSlackChannelsQuery(
+export function useFetchProjectIntegrationsQuery(
   baseOptions: Apollo.QueryHookOptions<
-    FetchProjectSlackChannelsQuery,
-    FetchProjectSlackChannelsQueryVariables
+    FetchProjectIntegrationsQuery,
+    FetchProjectIntegrationsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchProjectSlackChannelsQuery, FetchProjectSlackChannelsQueryVariables>(
-    FetchProjectSlackChannelsDocument,
+  return Apollo.useQuery<FetchProjectIntegrationsQuery, FetchProjectIntegrationsQueryVariables>(
+    FetchProjectIntegrationsDocument,
     options,
   );
 }
-export function useFetchProjectSlackChannelsLazyQuery(
+export function useFetchProjectIntegrationsLazyQuery(
   baseOptions?: Apollo.LazyQueryHookOptions<
-    FetchProjectSlackChannelsQuery,
-    FetchProjectSlackChannelsQueryVariables
+    FetchProjectIntegrationsQuery,
+    FetchProjectIntegrationsQueryVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    FetchProjectSlackChannelsQuery,
-    FetchProjectSlackChannelsQueryVariables
-  >(FetchProjectSlackChannelsDocument, options);
+  return Apollo.useLazyQuery<FetchProjectIntegrationsQuery, FetchProjectIntegrationsQueryVariables>(
+    FetchProjectIntegrationsDocument,
+    options,
+  );
 }
-export type FetchProjectSlackChannelsQueryHookResult = ReturnType<
-  typeof useFetchProjectSlackChannelsQuery
+export type FetchProjectIntegrationsQueryHookResult = ReturnType<
+  typeof useFetchProjectIntegrationsQuery
 >;
-export type FetchProjectSlackChannelsLazyQueryHookResult = ReturnType<
-  typeof useFetchProjectSlackChannelsLazyQuery
+export type FetchProjectIntegrationsLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectIntegrationsLazyQuery
 >;
-export type FetchProjectSlackChannelsQueryResult = Apollo.QueryResult<
-  FetchProjectSlackChannelsQuery,
-  FetchProjectSlackChannelsQueryVariables
+export type FetchProjectIntegrationsQueryResult = Apollo.QueryResult<
+  FetchProjectIntegrationsQuery,
+  FetchProjectIntegrationsQueryVariables
+>;
+export const ConnectProjectToGitDocument = gql`
+  mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
+    projectConnectToGit(data: $input) {
+      id
+    }
+  }
+`;
+export type ConnectProjectToGitMutationFn = Apollo.MutationFunction<
+  ConnectProjectToGitMutation,
+  ConnectProjectToGitMutationVariables
+>;
+
+/**
+ * __useConnectProjectToGitMutation__
+ *
+ * To run a mutation, you first call `useConnectProjectToGitMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useConnectProjectToGitMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [connectProjectToGitMutation, { data, loading, error }] = useConnectProjectToGitMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useConnectProjectToGitMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ConnectProjectToGitMutation,
+    ConnectProjectToGitMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ConnectProjectToGitMutation, ConnectProjectToGitMutationVariables>(
+    ConnectProjectToGitDocument,
+    options,
+  );
+}
+export type ConnectProjectToGitMutationHookResult = ReturnType<
+  typeof useConnectProjectToGitMutation
+>;
+export type ConnectProjectToGitMutationResult = Apollo.MutationResult<ConnectProjectToGitMutation>;
+export type ConnectProjectToGitMutationOptions = Apollo.BaseMutationOptions<
+  ConnectProjectToGitMutation,
+  ConnectProjectToGitMutationVariables
 >;
 export const CreateProjectSlackChannelDocument = gql`
   mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
