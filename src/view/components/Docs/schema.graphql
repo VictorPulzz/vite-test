@@ -1,0 +1,145 @@
+query FetchInternalDocuments(
+  $filters: DocumentFilter
+  $pagination: PaginationInput!
+  $search: String
+  $sort: [DocumentSortFieldInput!]
+) {
+  documentInternalList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+    results {
+      id
+      project {
+        name
+      }
+      file {
+        fileName
+        url
+        size
+      }
+      createdAt
+      addedBy {
+        fullName
+      }
+    }
+    count
+  }
+}
+
+query FetchClientDocuments(
+  $filters: DocumentFilter
+  $pagination: PaginationInput!
+  $search: String
+  $sort: [DocumentSortFieldInput!]
+) {
+  documentClientList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+    results {
+      id
+      project {
+        name
+      }
+      file {
+        fileName
+        url
+        size
+      }
+      createdAt
+      addedBy {
+        fullName
+      }
+    }
+    count
+  }
+}
+
+query FetchProjectDocuments(
+  $filters: DocumentFilter
+  $pagination: PaginationInput!
+  $search: String
+  $sort: [DocumentSortFieldInput!]
+) {
+  projectDocumentList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+    results {
+      id
+      project {
+        name
+      }
+      file {
+        fileName
+        url
+        size
+      }
+      createdAt
+      addedBy {
+        fullName
+      }
+    }
+    count
+  }
+}
+
+query FetchUserDocuments(
+  $filters: DocumentFilter
+  $pagination: PaginationInput!
+  $search: String
+  $sort: [DocumentSortFieldInput!]
+) {
+  documentUserList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
+    results {
+      id
+      project {
+        name
+      }
+      file {
+        fileName
+        url
+        size
+      }
+      createdAt
+      addedBy {
+        fullName
+      }
+    }
+    count
+  }
+}
+
+mutation UploadInternalDocument($input: DocumentInput!) {
+  documentInternalCreateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation GenerateInternalDocument($input: [DocumentGenerateInput!]!) {
+  documentInternalGenerate(data: $input) {
+    createdAt
+  }
+}
+
+mutation UploadProjectDocument($input: DocumentInput!) {
+  documentProjectCreateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation GenerateProjectDocument($input: [DocumentGenerateInput!]!) {
+  documentProjectGenerate(data: $input) {
+    createdAt
+  }
+}
+
+mutation UploadUserDocument($input: DocumentInput!) {
+  documentUserCreateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation GenerateUserDocument($input: [DocumentGenerateInput!]!) {
+  documentUserGenerate(data: $input) {
+    createdAt
+  }
+}
+
+mutation RemoveDocument($input: IDInput!) {
+  documentDelete(data: $input) {
+    message
+  }
+}

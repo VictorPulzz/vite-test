@@ -67,7 +67,10 @@ export function useResetPasswordForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ResetPasswordFormValues>(e, {
-          fields: ['newPassword', 'confirmPassword'],
+          fields: {
+            password: 'confirmPassword',
+            token: 'confirmPassword',
+          },
           setFormError: form.setError,
         });
       }

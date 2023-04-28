@@ -10,6 +10,8 @@ import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { Docs } from '~/view/components/Docs';
+import { DocsType } from '~/view/components/Docs/types';
 import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
@@ -19,7 +21,6 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
 import { Integrations } from './components/ Integrations';
 import { Development } from './components/Development';
-import { Docs } from './components/Docs';
 import { History } from './components/History';
 import { Info } from './components/Info';
 import { Overview } from './components/Overview';
@@ -28,13 +29,14 @@ import { Team } from './components/Team';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
-  const canEditProject = useHasAccess(Permission.EDIT_PROJECT);
+  const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
   const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
   const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
   const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
   const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
-  const canReadProjectDocs = useHasAccess(Permission.READ_PROJECT_DOCS);
+  const canReadWriteProjectDocs = useHasAccess(Permission.READ_WRITE_PROJECT_DOCS);
   const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
+  // const canReadWriteProjectIntegrations = useHasAccess(Permission.READ_WRITE_PROJECT_INTEGRATIONS);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -71,7 +73,12 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Team',
-            element: canReadProjectTeam ? <Team /> : <NoAccessMessage className="h-[70vh]" />,
+            element:
+              canReadProjectTeam && data?.projectPreview.inTeam ? (
+                <Team />
+              ) : (
+                <NoAccessMessage className="h-[70vh]" />
+              ),
           },
           {
             title: 'Development',
@@ -83,10 +90,10 @@ export const ProjectDetailsPage: FC = () => {
           },
           {
             title: 'Docs',
-            element: canReadProjectDocs ? (
+            element: canReadWriteProjectDocs ? (
               <div className="h-full">
                 <SectionContainer containerClassName="h-full">
-                  <Docs isProjectDetailsPage projectId={projectId} />
+                  <Docs type={DocsType.PROJECT} projectId={projectId} />
                 </SectionContainer>
               </div>
             ) : (
@@ -114,11 +121,12 @@ export const ProjectDetailsPage: FC = () => {
     ),
     [
       canReadProjectDevelopment,
-      canReadProjectDocs,
       canReadProjectHistory,
       canReadProjectInfo,
       canReadProjectOverview,
       canReadProjectTeam,
+      canReadWriteProjectDocs,
+      data?.projectPreview.inTeam,
       projectId,
     ],
   );
@@ -145,7 +153,7 @@ export const ProjectDetailsPage: FC = () => {
                 </span>
               </div>
             </div>
-            {canEditProject && (
+            {canWriteProject && (
               <Button
                 variant={ButtonVariant.SECONDARY}
                 label="Edit project"

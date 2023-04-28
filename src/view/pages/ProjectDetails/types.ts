@@ -9,7 +9,7 @@ import {
 export type LogsResultType = PaginationItem<FetchHistoryLogsQuery['logList']>;
 
 export type ProjectSlackChannelResultType = Exclude<
-  FetchProjectSlackChannelsQuery['project']['slackChannels'],
+  FetchProjectSlackChannelsQuery['projectIntegrationPage']['slackChannels'],
   undefined | null
 >[number];
 

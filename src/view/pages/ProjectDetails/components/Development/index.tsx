@@ -98,7 +98,10 @@ export const Development: FC = () => {
   );
 
   const projectRepositories = useMemo(
-    () => [...(repositoriesList?.projectRepositoryList ?? []), ...prepeareReposRequests],
+    () => [
+      ...(repositoriesList?.projectRepositoryList.projectRepositories ?? []),
+      ...prepeareReposRequests,
+    ],
     [prepeareReposRequests, repositoriesList?.projectRepositoryList],
   );
 

@@ -9,6 +9,7 @@ import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
+import { DocsType } from '~/view/components/Docs/types';
 import { useFetchDocumentTemplateListQuery } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
@@ -17,9 +18,10 @@ import { useGenerateDocumentForm } from './hooks/useGenerateDocumentForm';
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
   userId: number;
+  type: DocsType;
 }
 
-export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId }) => {
+export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId, type }) => {
   const { data: documentTemplates } = useFetchDocumentTemplateListQuery();
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
@@ -34,6 +36,7 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
     template: template as DocumentTemplateType,
     projectId,
     userId,
+    type,
   });
 
   const documentTemplatesOptions = useSelectOptions(documentTemplates?.documentTemplateList, {

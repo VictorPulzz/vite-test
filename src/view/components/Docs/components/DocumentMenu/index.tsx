@@ -1,25 +1,46 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
 import { DocumentType } from '~/services/gql/__generated__/globalTypes';
 import { downloadFile } from '~/utils/downloadFile';
+
 import {
-  FetchDocumentsDocument,
+  FetchClientDocumentsDocument,
+  FetchInternalDocumentsDocument,
+  FetchProjectDocumentsDocument,
+  FetchUserDocumentsDocument,
   useRemoveDocumentMutation,
-} from '~/view/pages/ProjectDetails/__generated__/schema';
+} from '../../__generated__/schema';
+import { DocsType } from '../../types';
 
 interface Props {
   file: DocumentType['file'];
   documentId: number;
+  type: DocsType;
 }
 
-export const DocumentMenu: FC<Props> = ({ file, documentId }) => {
-  const [removeDocument] = useRemoveDocumentMutation();
-
+export const DocumentMenu: FC<Props> = ({ file, documentId, type }) => {
   const downloadDocument = useCallback(() => downloadFile(file.url, file.fileName), [file]);
+
+  const refetchList = useMemo(() => {
+    switch (true) {
+      case type === DocsType.INTERNAL:
+        return [FetchInternalDocumentsDocument];
+      case type === DocsType.CLIENT:
+        return [FetchClientDocumentsDocument];
+      case type === DocsType.PROJECT:
+        return [FetchProjectDocumentsDocument];
+      case type === DocsType.USER:
+        return [FetchUserDocumentsDocument];
+      default:
+        return [];
+    }
+  }, [type]);
+
+  const [removeDocument] = useRemoveDocumentMutation();
 
   const removeCurrentDocument = useCallback(() => {
     toast.promise(
@@ -27,7 +48,7 @@ export const DocumentMenu: FC<Props> = ({ file, documentId }) => {
         variables: {
           input: { id: documentId },
         },
-        refetchQueries: [FetchDocumentsDocument],
+        refetchQueries: refetchList,
       }),
       {
         loading: 'Deleting document...',
@@ -38,7 +59,7 @@ export const DocumentMenu: FC<Props> = ({ file, documentId }) => {
         },
       },
     );
-  }, [documentId, removeDocument]);
+  }, [documentId, refetchList, removeDocument]);
 
   const options: DropdownItem[] = [
     {

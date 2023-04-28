@@ -27,7 +27,7 @@ export const DevelopmentIntegrations: FC<Props> = ({
   integrationsRequests,
   projectId,
 }) => {
-  const canCreateProjectIntegrations = useHasAccess(Permission.CREATE_PROJECT_INTEGRATIONS);
+  const canWriteProjectIntegrations = useHasAccess(Permission.WRITE_PROJECT_INTEGRATIONS);
 
   const {
     value: isCreateNewIntegrationModalOpen,
@@ -55,10 +55,10 @@ export const DevelopmentIntegrations: FC<Props> = ({
         )}
         <Button
           variant={ButtonVariant.SECONDARY}
-          label={`${canCreateProjectIntegrations ? 'Create' : 'Request'} new integration`}
+          label={`${canWriteProjectIntegrations ? 'Create' : 'Request'} new integration`}
           className="mt-6 w-[190px]"
           onClick={
-            canCreateProjectIntegrations ? openCreateNewIntegrationModal : openNewRequestModal
+            canWriteProjectIntegrations ? openCreateNewIntegrationModal : openNewRequestModal
           }
         />
       </SectionContainer>

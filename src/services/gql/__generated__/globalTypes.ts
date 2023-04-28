@@ -98,7 +98,6 @@ export type DocumentGenerateFieldInput = {
 export type DocumentGenerateInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
   fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
-  internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
   templateId: Scalars['Int'];
   userId?: InputMaybe<Scalars['Int']>;
@@ -108,7 +107,6 @@ export type DocumentInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
   file?: InputMaybe<Scalars['Upload']>;
   id?: InputMaybe<Scalars['Int']>;
-  internal?: InputMaybe<Scalars['Boolean']>;
   projectId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
@@ -306,16 +304,28 @@ export type MessageType = {
 export type Mutation = {
   /** Update client point contact */
   clientMakePointContact: ClientType;
-  /** Create or update document */
-  documentCreateUpdate: DocumentType;
+  /** Create or update client document */
+  documentClientCreateUpdate: DocumentType;
+  /** Generate client document */
+  documentClientGenerate: Array<DocumentType>;
   /** Delete document */
   documentDelete: MessageType;
-  /** Generate document */
-  documentGenerate: Array<DocumentType>;
+  /** Create or update internal document */
+  documentInternalCreateUpdate: DocumentType;
+  /** Generate internal document */
+  documentInternalGenerate: Array<DocumentType>;
+  /** Create or update project document */
+  documentProjectCreateUpdate: DocumentType;
+  /** Generate project document */
+  documentProjectGenerate: Array<DocumentType>;
   /** Create document template */
   documentTemplateCreate: DocumentTemplateType;
   /** Delete document template */
   documentTemplateDelete: MessageType;
+  /** Create or update user document */
+  documentUserCreateUpdate: DocumentType;
+  /** Generate user document */
+  documentUserGenerate: Array<DocumentType>;
   /** Sending reset password email */
   forgotPassword: ForgotPasswordType;
   /** Add or update git initial user */
@@ -402,15 +412,31 @@ export type MutationClientMakePointContactArgs = {
   data: ClientPointContactInput;
 };
 
-export type MutationDocumentCreateUpdateArgs = {
+export type MutationDocumentClientCreateUpdateArgs = {
   data: DocumentInput;
+};
+
+export type MutationDocumentClientGenerateArgs = {
+  data: Array<DocumentGenerateInput>;
 };
 
 export type MutationDocumentDeleteArgs = {
   data: IdInput;
 };
 
-export type MutationDocumentGenerateArgs = {
+export type MutationDocumentInternalCreateUpdateArgs = {
+  data: DocumentInput;
+};
+
+export type MutationDocumentInternalGenerateArgs = {
+  data: Array<DocumentGenerateInput>;
+};
+
+export type MutationDocumentProjectCreateUpdateArgs = {
+  data: DocumentInput;
+};
+
+export type MutationDocumentProjectGenerateArgs = {
   data: Array<DocumentGenerateInput>;
 };
 
@@ -420,6 +446,14 @@ export type MutationDocumentTemplateCreateArgs = {
 
 export type MutationDocumentTemplateDeleteArgs = {
   data: IdInput;
+};
+
+export type MutationDocumentUserCreateUpdateArgs = {
+  data: DocumentInput;
+};
+
+export type MutationDocumentUserGenerateArgs = {
+  data: Array<DocumentGenerateInput>;
 };
 
 export type MutationForgotPasswordArgs = {
@@ -654,6 +688,11 @@ export type PlatformTypePagination = {
   results: Array<PlatformType>;
 };
 
+export type PorjectIntegrationsPage = {
+  gitGroupId?: Maybe<Scalars['String']>;
+  slackChannels?: Maybe<Array<ProjectSlackType>>;
+};
+
 export type ProfileInput = {
   address?: InputMaybe<Scalars['String']>;
   birthDate?: InputMaybe<Scalars['Date']>;
@@ -715,11 +754,17 @@ export type ProjectEnvironmentType = {
 };
 
 export type ProjectFilter = {
+  inGit?: InputMaybe<Scalars['Boolean']>;
   statusId?: InputMaybe<Scalars['Int']>;
 };
 
 export type ProjectGitIntegrationInput = {
   id: Scalars['Int'];
+};
+
+export type ProjectGlossaryType = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type ProjectIntegrationInput = {
@@ -779,10 +824,15 @@ export enum ProjectPhaseChoice {
 
 export type ProjectPreviewType = {
   createdAt: Scalars['DateTime'];
-  createdBy?: Maybe<UserType>;
+  createdBy?: Maybe<ProfileType>;
   id: Scalars['Int'];
   inTeam: Scalars['Boolean'];
   name: Scalars['String'];
+};
+
+export type ProjectRepositoryType = {
+  projectInGit: Scalars['Boolean'];
+  projectRepositories?: Maybe<Array<RepositoryType>>;
 };
 
 export type ProjectSlackInput = {
@@ -817,10 +867,10 @@ export enum ProjectTeamChoice {
 }
 
 export type ProjectType = {
-  PM?: Maybe<Array<UserType>>;
+  PM?: Maybe<Array<ProfileType>>;
   clientTeam?: Maybe<Array<ClientType>>;
   createdAt: Scalars['DateTime'];
-  createdBy?: Maybe<UserType>;
+  createdBy?: Maybe<ProfileType>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
   gitGroupId?: Maybe<Scalars['String']>;
@@ -833,7 +883,6 @@ export type ProjectType = {
   phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
   roadmap?: Maybe<Scalars['String']>;
-  slackChannels?: Maybe<Array<ProjectSlackType>>;
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<ProjectStatusType>;
 };
@@ -868,10 +917,14 @@ export type Query = {
   departmentsList: Array<DepartmentType>;
   /** Getting list of document categories */
   documentCategoryList: Array<DocumentCategoryType>;
-  /** Getting list of documents */
-  documentList: DocumentTypePagination;
+  /** Getting list of client documents */
+  documentClientList: DocumentTypePagination;
+  /** Getting list of internal documents */
+  documentInternalList: DocumentTypePagination;
   /** Getting list of document templates */
   documentTemplateList: Array<DocumentTemplateType>;
+  /** Getting list of user documents */
+  documentUserList: DocumentTypePagination;
   /** Getting git initial user by id */
   gitInitialUserDetails: GitInitialUserType;
   /** Getting git initial user list */
@@ -892,8 +945,12 @@ export type Query = {
   projectDocumentList: DocumentTypePagination;
   /** Getting environments for project by id */
   projectEnvironmentList: Array<ProjectEnvironmentType>;
+  /** Getting glossary list of projects */
+  projectGlossaryList: Array<ProjectGlossaryType>;
   /** Getting integrations for project by id */
   projectIntegrationList: Array<ProjectIntegrationType>;
+  /** Getting project integration page by id */
+  projectIntegrationPage: PorjectIntegrationsPage;
   /** Getting history for project by id */
   projectLogList: LogTypePagination;
   /** Getting members for project by id */
@@ -901,13 +958,15 @@ export type Query = {
   /** Getting project preview by id */
   projectPreview: ProjectPreviewType;
   /** Getting repositories for project by id */
-  projectRepositoryList: Array<RepositoryType>;
+  projectRepositoryList: ProjectRepositoryType;
   /** Getting project's statuses list */
   projectStatusesList: ProjectStatusTypePagination;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
   /** Getting repository */
   repository: RepositoryType;
+  /** Getting glossary list of repository */
+  repositoryGlossaryList: Array<RepositoryGlossaryType>;
   /** Getting repositories */
   repositoryList: RepositoryTypePagination;
   /** Getting repository participants */
@@ -928,6 +987,8 @@ export type Query = {
   technologyList: TechnologyTypePagination;
   /** Getting user by id */
   userDetails: UserType;
+  /** Getting glossary list of users */
+  userGlossaryList: Array<UserGlossaryType>;
   /** Getting project by user */
   userProjects: ProjectMemberTypePagination;
   /** Getting list of users */
@@ -938,7 +999,21 @@ export type QueryBoilerplateListArgs = {
   filters?: InputMaybe<BoilerplateFilter>;
 };
 
-export type QueryDocumentListArgs = {
+export type QueryDocumentClientListArgs = {
+  filters?: InputMaybe<DocumentFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<DocumentSortFieldInput>>;
+};
+
+export type QueryDocumentInternalListArgs = {
+  filters?: InputMaybe<DocumentFilter>;
+  pagination: PaginationInput;
+  search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<DocumentSortFieldInput>>;
+};
+
+export type QueryDocumentUserListArgs = {
   filters?: InputMaybe<DocumentFilter>;
   pagination: PaginationInput;
   search?: InputMaybe<Scalars['String']>;
@@ -982,7 +1057,15 @@ export type QueryProjectEnvironmentListArgs = {
   data: IdInput;
 };
 
+export type QueryProjectGlossaryListArgs = {
+  filters?: InputMaybe<ProjectFilter>;
+};
+
 export type QueryProjectIntegrationListArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectIntegrationPageArgs = {
   data: IdInput;
 };
 
@@ -1096,6 +1179,11 @@ export type RepositoryFilter = {
   projectId?: InputMaybe<Scalars['Int']>;
   technologies?: InputMaybe<Array<Scalars['Int']>>;
   type?: InputMaybe<RepositoryTypeChoice>;
+};
+
+export type RepositoryGlossaryType = {
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type RepositoryParticipantFilter = {
@@ -1308,6 +1396,12 @@ export type UserFilter = {
   departmentId?: InputMaybe<Array<Scalars['Int']>>;
   isActive?: InputMaybe<Scalars['Boolean']>;
   roleId?: InputMaybe<Array<Scalars['Int']>>;
+};
+
+export type UserGlossaryType = {
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
+  photo?: Maybe<ImageType>;
 };
 
 export type UserInput = {

@@ -3,15 +3,17 @@ import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import React, { FC } from 'react';
 
+import { DocsType } from '../../types';
 import { GenerateDocumentModal } from './components/GenerateDocumentModal';
 import { UploadDocumentModal } from './components/UploadDocumentModal';
 
 interface Props {
   projectId?: number;
   userId?: number;
+  type: DocsType;
 }
 
-export const NewDocumentButton: FC<Props> = ({ projectId, userId }) => {
+export const NewDocumentButton: FC<Props> = ({ projectId, userId, type }) => {
   const {
     value: isUploadDocumentModalOpen,
     on: openUploadDocumentModal,
@@ -53,12 +55,14 @@ export const NewDocumentButton: FC<Props> = ({ projectId, userId }) => {
         close={closeUploadDocumentModal}
         projectId={projectId as number}
         userId={userId as number}
+        type={type}
       />
       <GenerateDocumentModal
         isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}
         projectId={projectId as number}
         userId={userId as number}
+        type={type}
       />
     </>
   );

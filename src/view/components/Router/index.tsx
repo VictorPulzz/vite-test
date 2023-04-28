@@ -109,8 +109,8 @@ const protectedRoutes: RouteObject[] = [
 export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
 
-  const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
-  const canEditAdminSettings = useHasAccess(Permission.EDIT_ADMIN_SETTINGS);
+  const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
+  const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
 
   return useRoutes([
     {
@@ -118,13 +118,17 @@ export const Router: FC = () => {
         ...protectedRoutes,
         {
           path: ROUTES.ROLES_AND_PERMISSIONS,
-          element: canEditPermissions ? <RolesAndPermissionsPage /> : <Navigate to={ROUTES.HOME} />,
+          element: canWritePermissions ? (
+            <RolesAndPermissionsPage />
+          ) : (
+            <Navigate to={ROUTES.HOME} />
+          ),
         },
         {
           children: [
             {
               path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
-              element: canEditAdminSettings ? (
+              element: canWriteAdminSettings ? (
                 <AdminSettingsIntegrationsPage />
               ) : (
                 <Navigate to={ROUTES.HOME} />

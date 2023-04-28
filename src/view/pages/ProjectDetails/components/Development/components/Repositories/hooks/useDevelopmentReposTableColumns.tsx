@@ -57,6 +57,7 @@ export function useDevelopmentReposTableColumns() {
       header: 'Technologies',
       cell: ctx => {
         const { technologies } = ctx.row.original;
+
         return (
           <div>
             {technologies?.map(({ id, name }, index) => [

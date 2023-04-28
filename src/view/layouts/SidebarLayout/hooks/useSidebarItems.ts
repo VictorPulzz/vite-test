@@ -6,16 +6,16 @@ import { ROUTES } from '~/constants/routes';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
 export function useSidebarItems(): SidebarItem[] {
-  const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
-  const canEditAdminSettings = useHasAccess(Permission.EDIT_ADMIN_SETTINGS);
+  const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
+  const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
 
   const hiddenRoutes = useMemo(
     () =>
       [
-        !canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS,
-        !canEditAdminSettings && ROUTES.ADMIN_SETTINGS,
+        !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
+        !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
       ].filter(Boolean),
-    [canEditAdminSettings, canEditPermissions],
+    [canWriteAdminSettings, canWritePermissions],
   );
 
   const navItems = useMemo(

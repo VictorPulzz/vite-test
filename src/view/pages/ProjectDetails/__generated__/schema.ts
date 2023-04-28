@@ -115,13 +115,15 @@ export type FetchProjectRepositoriesListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectRepositoriesListQuery = {
-  projectRepositoryList: Array<{
-    id: number;
-    name?: string | null;
-    type?: Types.RepositoryTypeChoice | null;
-    createdAt: string;
-    technologies?: Array<{ id: number; name: string }> | null;
-  }>;
+  projectRepositoryList: {
+    projectRepositories?: Array<{
+      id: number;
+      name?: string | null;
+      type?: Types.RepositoryTypeChoice | null;
+      createdAt: string;
+      technologies?: Array<{ id: number; name: string }> | null;
+    }> | null;
+  };
 };
 
 export type FetchReposRequestsListQueryVariables = Types.Exact<{
@@ -238,38 +240,6 @@ export type FetchHistoryLogsQuery = {
   };
 };
 
-export type FetchDocumentsQueryVariables = Types.Exact<{
-  filters?: Types.InputMaybe<Types.DocumentFilter>;
-  pagination: Types.PaginationInput;
-  search?: Types.InputMaybe<Types.Scalars['String']>;
-  sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
-}>;
-
-export type FetchDocumentsQuery = {
-  documentList: {
-    count: number;
-    results: Array<{
-      id: number;
-      createdAt: string;
-      project?: { name: string } | null;
-      file: { __typename: 'ImageType'; fileName: string; url: string; size: number };
-      addedBy?: { fullName: string } | null;
-    }>;
-  };
-};
-
-export type UploadDocumentMutationVariables = Types.Exact<{
-  input: Types.DocumentInput;
-}>;
-
-export type UploadDocumentMutation = { documentCreateUpdate: { id: number } };
-
-export type RemoveDocumentMutationVariables = Types.Exact<{
-  input: Types.IdInput;
-}>;
-
-export type RemoveDocumentMutation = { documentDelete: { message: string } };
-
 export type FetchAllProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
   pagination: Types.PaginationInput;
@@ -291,7 +261,7 @@ export type FetchProjectSlackChannelsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectSlackChannelsQuery = {
-  project: {
+  projectIntegrationPage: {
     slackChannels?: Array<{
       channelId?: string | null;
       createdAt: string;
@@ -690,14 +660,16 @@ export type RemoveProjectMemberMutationOptions = Apollo.BaseMutationOptions<
 export const FetchProjectRepositoriesListDocument = gql`
   query FetchProjectRepositoriesList($data: IDInput!) {
     projectRepositoryList(data: $data) {
-      id
-      name
-      type
-      technologies {
+      projectRepositories {
         id
         name
+        type
+        technologies {
+          id
+          name
+        }
+        createdAt
       }
-      createdAt
     }
   }
 `;
@@ -1308,166 +1280,6 @@ export type FetchHistoryLogsQueryResult = Apollo.QueryResult<
   FetchHistoryLogsQuery,
   FetchHistoryLogsQueryVariables
 >;
-export const FetchDocumentsDocument = gql`
-  query FetchDocuments(
-    $filters: DocumentFilter
-    $pagination: PaginationInput!
-    $search: String
-    $sort: [DocumentSortFieldInput!]
-  ) {
-    documentList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
-      results {
-        id
-        project {
-          name
-        }
-        file {
-          fileName
-          url
-          size
-          __typename
-        }
-        createdAt
-        addedBy {
-          fullName
-        }
-      }
-      count
-    }
-  }
-`;
-
-/**
- * __useFetchDocumentsQuery__
- *
- * To run a query within a React component, call `useFetchDocumentsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchDocumentsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchDocumentsQuery({
- *   variables: {
- *      filters: // value for 'filters'
- *      pagination: // value for 'pagination'
- *      search: // value for 'search'
- *      sort: // value for 'sort'
- *   },
- * });
- */
-export function useFetchDocumentsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchDocumentsQuery, FetchDocumentsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchDocumentsQuery, FetchDocumentsQueryVariables>(
-    FetchDocumentsDocument,
-    options,
-  );
-}
-export function useFetchDocumentsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FetchDocumentsQuery, FetchDocumentsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchDocumentsQuery, FetchDocumentsQueryVariables>(
-    FetchDocumentsDocument,
-    options,
-  );
-}
-export type FetchDocumentsQueryHookResult = ReturnType<typeof useFetchDocumentsQuery>;
-export type FetchDocumentsLazyQueryHookResult = ReturnType<typeof useFetchDocumentsLazyQuery>;
-export type FetchDocumentsQueryResult = Apollo.QueryResult<
-  FetchDocumentsQuery,
-  FetchDocumentsQueryVariables
->;
-export const UploadDocumentDocument = gql`
-  mutation UploadDocument($input: DocumentInput!) {
-    documentCreateUpdate(data: $input) {
-      id
-    }
-  }
-`;
-export type UploadDocumentMutationFn = Apollo.MutationFunction<
-  UploadDocumentMutation,
-  UploadDocumentMutationVariables
->;
-
-/**
- * __useUploadDocumentMutation__
- *
- * To run a mutation, you first call `useUploadDocumentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUploadDocumentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [uploadDocumentMutation, { data, loading, error }] = useUploadDocumentMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useUploadDocumentMutation(
-  baseOptions?: Apollo.MutationHookOptions<UploadDocumentMutation, UploadDocumentMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<UploadDocumentMutation, UploadDocumentMutationVariables>(
-    UploadDocumentDocument,
-    options,
-  );
-}
-export type UploadDocumentMutationHookResult = ReturnType<typeof useUploadDocumentMutation>;
-export type UploadDocumentMutationResult = Apollo.MutationResult<UploadDocumentMutation>;
-export type UploadDocumentMutationOptions = Apollo.BaseMutationOptions<
-  UploadDocumentMutation,
-  UploadDocumentMutationVariables
->;
-export const RemoveDocumentDocument = gql`
-  mutation RemoveDocument($input: IDInput!) {
-    documentDelete(data: $input) {
-      message
-    }
-  }
-`;
-export type RemoveDocumentMutationFn = Apollo.MutationFunction<
-  RemoveDocumentMutation,
-  RemoveDocumentMutationVariables
->;
-
-/**
- * __useRemoveDocumentMutation__
- *
- * To run a mutation, you first call `useRemoveDocumentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRemoveDocumentMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [removeDocumentMutation, { data, loading, error }] = useRemoveDocumentMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useRemoveDocumentMutation(
-  baseOptions?: Apollo.MutationHookOptions<RemoveDocumentMutation, RemoveDocumentMutationVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<RemoveDocumentMutation, RemoveDocumentMutationVariables>(
-    RemoveDocumentDocument,
-    options,
-  );
-}
-export type RemoveDocumentMutationHookResult = ReturnType<typeof useRemoveDocumentMutation>;
-export type RemoveDocumentMutationResult = Apollo.MutationResult<RemoveDocumentMutation>;
-export type RemoveDocumentMutationOptions = Apollo.BaseMutationOptions<
-  RemoveDocumentMutation,
-  RemoveDocumentMutationVariables
->;
 export const FetchAllProjectsDocument = gql`
   query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
     projectsList(filters: $filters, pagination: $pagination, search: $search) {
@@ -1581,7 +1393,7 @@ export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
 >;
 export const FetchProjectSlackChannelsDocument = gql`
   query FetchProjectSlackChannels($data: IDInput!) {
-    project(data: $data) {
+    projectIntegrationPage(data: $data) {
       slackChannels {
         template {
           label

@@ -25,7 +25,7 @@ export function useProjectTeamTableColumns(
   type: TeamTableType,
 ): ColumnDef<ProjectMemberResultType, string>[] {
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canEditProjectTeam = useHasAccess(Permission.EDIT_PROJECT_TEAM);
+  const canWriteProjectTeam = useHasAccess(Permission.WRITE_PROJECT_TEAM);
 
   return [
     columnHelper.accessor('user.fullName', {
@@ -86,7 +86,7 @@ export function useProjectTeamTableColumns(
     }),
     columnHelper.group({
       id: 'more',
-      enableHiding: !canEditProjectTeam,
+      enableHiding: !canWriteProjectTeam,
       cell: ctx => <MoreCell isCurrentTeam={type === TeamTableType.CURRENT_TEAM} ctx={ctx} />,
       meta: {
         className: 'w-0',

@@ -16,7 +16,7 @@ import { FetchProjectRepositoriesListQuery } from '~/view/pages/ProjectDetails/_
 import { useDevelopmentReposTableColumns } from './hooks/useDevelopmentReposTableColumns';
 
 interface Props {
-  repositories: FetchProjectRepositoriesListQuery['projectRepositoryList'];
+  repositories: FetchProjectRepositoriesListQuery['projectRepositoryList']['projectRepositories'];
   projectId: number;
 }
 
@@ -34,10 +34,10 @@ export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) 
   return (
     <div>
       <SectionContainer title="Repositories">
-        {repositories.length === 0 && (
+        {repositories?.length === 0 && (
           <EmptyState iconName="repositories" label="No repositories here yet" />
         )}
-        {!!repositories.length && (
+        {!!repositories?.length && (
           <Table className="mt-3" data={repositories} columns={reposTableColumns} />
         )}
         {canCreateRepository ? (

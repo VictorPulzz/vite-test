@@ -2,9 +2,10 @@ import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { Permission } from '~/constants/permissions';
+import { Docs } from '~/view/components/Docs';
+import { DocsType } from '~/view/components/Docs/types';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
 
 import { Projects } from './components/Projects';
 import { UserHistory } from './components/UserHistory';
@@ -31,7 +32,7 @@ export const UserDetailsTabs: FC<Props> = ({ userId }) => {
           {
             title: 'Docs',
             element: canReadUserDocs ? (
-              <Docs userId={userId} />
+              <Docs type={DocsType.USER} userId={userId} />
             ) : (
               <NoAccessMessage className="h-[70vh]" />
             ),

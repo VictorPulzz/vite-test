@@ -23,7 +23,7 @@ interface Props {
 }
 
 export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests, projectId }) => {
-  const canCreateProjectEnvs = useHasAccess(Permission.CREATE_PROJECT_ENVS);
+  const canWriteProjectEnvs = useHasAccess(Permission.WRITE_PROJECT_ENVS);
 
   const {
     value: isCreateNewEnvironmentModalOpen,
@@ -48,9 +48,9 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests,
         )}
         <Button
           variant={ButtonVariant.SECONDARY}
-          label={`${canCreateProjectEnvs ? 'Create' : 'Request'} new environment`}
+          label={`${canWriteProjectEnvs ? 'Create' : 'Request'} new environment`}
           className="mt-6 w-[190px]"
-          onClick={canCreateProjectEnvs ? openCreateNewEnvironmentModal : openNewRequestModal}
+          onClick={canWriteProjectEnvs ? openCreateNewEnvironmentModal : openNewRequestModal}
         />
       </SectionContainer>
       <CreateNewEnvironmentModal
