@@ -1,10 +1,9 @@
-import { useMountEffect } from '@appello/common/lib/hooks';
-import { EmptyState, useSelectOptions } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
+import { EmptyState, Table, useSelectOptions } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
 import { Select } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
@@ -19,11 +18,9 @@ import {
 
 import { HISTORY_TABLE_COLUMNS, HISTORY_TABLE_COLUMNS_NO_USER_DETAILS } from './consts';
 
-interface Props {
-  projectId: number;
-}
-
-export const History: FC<Props> = ({ projectId }) => {
+export const History: FC = () => {
+  const params = useParams();
+  const projectId = params.id ? Number(params.id) : 0;
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
@@ -56,10 +53,6 @@ export const History: FC<Props> = ({ projectId }) => {
   });
 
   const filterByUserOptions = [ALL_SELECT_OPTION, ...usersOptions];
-
-  useMountEffect(() => {
-    setOffset(0);
-  });
 
   return (
     <div className="flex flex-col gap-5">

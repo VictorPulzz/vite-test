@@ -2,17 +2,16 @@ import { EmptyState } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
 import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
 
 import { useFetchProjectSlackChannelsQuery } from '../../__generated__/schema';
 import { SLACK_CHANNELS_TABLE_COLUMNS } from './consts';
 
-interface Props {
-  projectId: number;
-}
-
-export const SlackChannels: FC<Props> = ({ projectId }) => {
+export const SlackChannels: FC = () => {
+  const params = useParams();
+  const projectId = params.id ? Number(params.id) : 0;
   const { data, loading } = useFetchProjectSlackChannelsQuery({
     variables: {
       data: { id: projectId },

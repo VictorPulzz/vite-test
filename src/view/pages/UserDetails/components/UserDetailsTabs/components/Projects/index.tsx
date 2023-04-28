@@ -1,21 +1,19 @@
-import { useMountEffect } from '@appello/common/lib/hooks';
 import { EmptyState } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 
 import { useFetchUserProjectsListQuery } from '../../../../__generated__/schema';
 import { USERS_PROJECTS_TABLE_COLUMNS } from './consts';
 
-interface Props {
-  userId: number;
-}
-
-export const Projects: FC<Props> = ({ userId }) => {
+export const Projects: FC = () => {
   const { offset, setOffset } = useListQueryParams();
+  const params = useParams();
+  const userId = params.id ? Number(params.id) : 0;
 
   const { data, loading, fetchMore } = useFetchUserProjectsListQuery({
     variables: {
@@ -26,10 +24,6 @@ export const Projects: FC<Props> = ({ userId }) => {
       },
     },
     fetchPolicy: 'cache-and-network',
-  });
-
-  useMountEffect(() => {
-    setOffset(0);
   });
 
   return (
