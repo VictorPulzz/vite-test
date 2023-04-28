@@ -6,9 +6,14 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import {
-  FetchDocumentsDocument,
-  useUploadDocumentMutation,
-} from '~/view/pages/ProjectDetails/__generated__/schema';
+  FetchInternalDocumentsDocument,
+  FetchProjectDocumentsDocument,
+  FetchUserDocumentsDocument,
+  useUploadInternalDocumentMutation,
+  useUploadProjectDocumentMutation,
+  useUploadUserDocumentMutation,
+} from '~/view/components/Docs/__generated__/schema';
+import { DocsType } from '~/view/components/Docs/types';
 
 const formSchema = z.object({
   categoryId: z
@@ -30,9 +35,10 @@ interface UseUploadDocumentFormReturn {
 }
 
 interface UseUploadDocumentFormProps {
-  onSubmitSuccessful?: () => void;
+  onSubmitSuccessful?(): void;
   projectId?: number;
   userId?: number;
+  type: DocsType;
 }
 
 const defaultValues: UploadDocumentFormValues = {
@@ -44,6 +50,7 @@ export function useUploadDocumentForm({
   onSubmitSuccessful,
   projectId,
   userId,
+  type,
 }: UseUploadDocumentFormProps): UseUploadDocumentFormReturn {
   const form = useForm<UploadDocumentFormValues>({
     defaultValues,
@@ -51,23 +58,39 @@ export function useUploadDocumentForm({
     resolver: zodResolver(formSchema),
   });
 
-  const [uploadDocument] = useUploadDocumentMutation();
+  const [uploadInternalDocument] = useUploadInternalDocumentMutation();
+  const [uploadProjectDocument] = useUploadProjectDocumentMutation();
+  const [uploadUserDocument] = useUploadUserDocumentMutation();
 
   const handleSubmit = useCallback(
     async (values: UploadDocumentFormValues) => {
+      const docsValues = {
+        input: {
+          categoryId: values.categoryId,
+          file: values.document,
+          projectId: projectId || undefined,
+          userId: userId || undefined,
+        },
+      };
       try {
-        await uploadDocument({
-          variables: {
-            input: {
-              categoryId: values.categoryId,
-              file: values.document,
-              projectId: projectId || undefined,
-              userId: userId || undefined,
-              internal: !projectId,
-            },
-          },
-          refetchQueries: [FetchDocumentsDocument],
-        });
+        if (type === DocsType.INTERNAL) {
+          await uploadInternalDocument({
+            variables: docsValues,
+            refetchQueries: [FetchInternalDocumentsDocument],
+          });
+        }
+        if (type === DocsType.PROJECT) {
+          await uploadProjectDocument({
+            variables: docsValues,
+            refetchQueries: [FetchProjectDocumentsDocument],
+          });
+        }
+        if (type === DocsType.USER) {
+          await uploadUserDocument({
+            variables: docsValues,
+            refetchQueries: [FetchUserDocumentsDocument],
+          });
+        }
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<UploadDocumentFormValues>(e, {
@@ -76,7 +99,16 @@ export function useUploadDocumentForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful, projectId, uploadDocument, userId],
+    [
+      form.setError,
+      onSubmitSuccessful,
+      projectId,
+      type,
+      uploadInternalDocument,
+      uploadProjectDocument,
+      uploadUserDocument,
+      userId,
+    ],
   );
 
   return useMemo(

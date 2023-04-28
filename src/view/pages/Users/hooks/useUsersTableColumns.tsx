@@ -17,7 +17,7 @@ const columnHelper = createColumnHelper<UserResultType>();
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useUsersTableColumns() {
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canEditUser = useHasAccess(Permission.EDIT_USER);
+  const canWriteUser = useHasAccess(Permission.WRITE_USER);
 
   return [
     columnHelper.accessor('fullName', {
@@ -65,7 +65,7 @@ export function useUsersTableColumns() {
     }),
     columnHelper.group({
       id: 'more',
-      enableHiding: !canEditUser,
+      enableHiding: !canWriteUser,
       cell: MoreCell,
       meta: {
         className: 'w-0',

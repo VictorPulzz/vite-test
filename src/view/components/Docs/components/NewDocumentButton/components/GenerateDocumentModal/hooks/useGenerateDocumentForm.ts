@@ -6,8 +6,15 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import { useDocumentGenerateMutation } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
-import { FetchDocumentsDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
+import {
+  FetchInternalDocumentsDocument,
+  FetchProjectDocumentsDocument,
+  FetchUserDocumentsDocument,
+  useGenerateInternalDocumentMutation,
+  useGenerateProjectDocumentMutation,
+  useGenerateUserDocumentMutation,
+} from '~/view/components/Docs/__generated__/schema';
+import { DocsType } from '~/view/components/Docs/types';
 
 const formSchema = z
   .object({
@@ -51,8 +58,9 @@ interface UseGenerateDocumentFormReturn {
 interface UseGenerateDocumentFormProps {
   onSubmitSuccessful?: () => void;
   template: DocumentTemplateType;
-  projectId?: number;
+  projectId: number;
   userId?: number;
+  type: DocsType;
 }
 
 const defaultValues: GenerateDocumentFormValues = {
@@ -66,6 +74,7 @@ export function useGenerateDocumentForm({
   template,
   projectId,
   userId,
+  type,
 }: UseGenerateDocumentFormProps): UseGenerateDocumentFormReturn {
   const form = useForm<GenerateDocumentFormValues>({
     defaultValues,
@@ -82,24 +91,40 @@ export function useGenerateDocumentForm({
     form.setValue('templateFields', templateFields ?? []);
   }, [form, templateFields]);
 
-  const [documentGenerate] = useDocumentGenerateMutation();
+  const [generateInternalDocument] = useGenerateInternalDocumentMutation();
+  const [generateProjectDocument] = useGenerateProjectDocumentMutation();
+  const [generateUserDocument] = useGenerateUserDocumentMutation();
 
   const handleSubmit = useCallback(
     async (values: GenerateDocumentFormValues) => {
+      const docsValues = {
+        input: {
+          categoryId: values.categoryId,
+          templateId: values.templateId as number,
+          fields: values.templateFields,
+          projectId: projectId || undefined,
+          userId: userId || undefined,
+        },
+      };
       try {
-        await documentGenerate({
-          variables: {
-            input: {
-              categoryId: values.categoryId,
-              templateId: values.templateId as number,
-              fields: values.templateFields,
-              projectId: projectId || undefined,
-              userId: userId || undefined,
-              internal: !projectId,
-            },
-          },
-          refetchQueries: [FetchDocumentsDocument],
-        });
+        if (type === DocsType.INTERNAL) {
+          await generateInternalDocument({
+            variables: docsValues,
+            refetchQueries: [FetchInternalDocumentsDocument],
+          });
+        }
+        if (type === DocsType.PROJECT) {
+          await generateProjectDocument({
+            variables: docsValues,
+            refetchQueries: [FetchProjectDocumentsDocument],
+          });
+        }
+        if (type === DocsType.USER) {
+          await generateUserDocument({
+            variables: docsValues,
+            refetchQueries: [FetchUserDocumentsDocument],
+          });
+        }
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<GenerateDocumentFormValues>(e, {
@@ -108,7 +133,16 @@ export function useGenerateDocumentForm({
         });
       }
     },
-    [documentGenerate, form.setError, onSubmitSuccessful, projectId, userId],
+    [
+      form.setError,
+      generateInternalDocument,
+      generateProjectDocument,
+      generateUserDocument,
+      onSubmitSuccessful,
+      projectId,
+      type,
+      userId,
+    ],
   );
 
   return useMemo(

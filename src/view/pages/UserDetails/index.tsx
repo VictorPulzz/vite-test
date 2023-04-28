@@ -14,7 +14,7 @@ import { UserDetailsTabs } from './components/UserDetailsTabs';
 import { UserMainInfo } from './components/UserMainInfo';
 
 export const UserDetailsPage: FC = () => {
-  const canEditUser = useHasAccess(Permission.EDIT_USER);
+  const canWriteUser = useHasAccess(Permission.WRITE_USER);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -31,7 +31,7 @@ export const UserDetailsPage: FC = () => {
       <DetailLayout
         title="User details"
         rightHeaderElement={
-          canEditUser && (
+          canWriteUser && (
             <Button
               variant={ButtonVariant.SECONDARY}
               label="Edit user"

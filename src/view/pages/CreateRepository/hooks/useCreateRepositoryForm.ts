@@ -7,8 +7,9 @@ import { formErrors } from '~/constants/form';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { isNil } from '~/utils/isNil';
-import { FetchProjectRepositoriesListDocument } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { FetchRepositoriesDocument } from '~/view/pages/Repositories/__generated__/schema';
 
+import { FetchProjectRepositoriesListDocument } from '../../ProjectDetails/__generated__/schema';
 import { useCreateRepositoryMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
@@ -78,7 +79,7 @@ export function useCreateRepositoryForm({
               type: values.type as RepositoryTypeChoice,
             },
           },
-          refetchQueries: [FetchProjectRepositoriesListDocument],
+          refetchQueries: [FetchRepositoriesDocument, FetchProjectRepositoriesListDocument],
         });
         onSubmitSuccessful?.();
       } catch (e) {

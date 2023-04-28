@@ -15,7 +15,7 @@ import { AddNewMemberModal } from './components/AddNewMemberModal';
 import { TeamTableType, useProjectTeamTableColumns } from './hooks/useProjectTeamTableColumns';
 
 export const Team: FC = () => {
-  const canEditProjectTeam = useHasAccess(Permission.EDIT_PROJECT_TEAM);
+  const canWriteProjectTeam = useHasAccess(Permission.WRITE_PROJECT_TEAM);
 
   const currentTeamTableColumns = useProjectTeamTableColumns(TeamTableType.CURRENT_TEAM);
 
@@ -66,7 +66,7 @@ export const Team: FC = () => {
             ) : (
               <EmptyState iconName="users" label="No contributors here yet" />
             )}
-            {canEditProjectTeam && (
+            {canWriteProjectTeam && (
               <Button
                 variant={ButtonVariant.SECONDARY}
                 label="Add new member"
@@ -92,7 +92,7 @@ export const Team: FC = () => {
         close={closeAddNewMemberModalModal}
         projectId={projectId}
         projectMembersListIds={projectMembersListIds}
-        canEditProjectTeam={canEditProjectTeam}
+        canWriteProjectTeam={canWriteProjectTeam}
       />
     </>
   );

@@ -9,6 +9,7 @@ import React, { FC, useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 
 import { getFileExtension } from '~/utils/getFileExtension';
+import { DocsType } from '~/view/components/Docs/types';
 import { useFetchAllDocumentCategoriesQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useUploadDocumentForm } from './hooks/useUploadDocumentForm';
@@ -16,9 +17,10 @@ import { useUploadDocumentForm } from './hooks/useUploadDocumentForm';
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
   userId: number;
+  type: DocsType;
 }
 
-export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId }) => {
+export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId, type }) => {
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
   const {
@@ -29,6 +31,7 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
     onSubmitSuccessful: () => close(),
     projectId,
     userId,
+    type,
   });
 
   const documentCategoriesOptions = useSelectOptions(documentCategories?.documentCategoryList, {

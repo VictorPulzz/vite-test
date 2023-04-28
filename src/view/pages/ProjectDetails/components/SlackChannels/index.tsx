@@ -23,18 +23,20 @@ export const SlackChannels: FC<Props> = ({ projectId }) => {
   return (
     <SectionContainer title="Slack channels" containerClassName="h-full">
       {loading && <TableLoader className="mt-2" />}
-      {data && data.project.slackChannels?.length === 0 && (
+      {data && data.projectIntegrationPage.slackChannels?.length === 0 && (
         <div className="flex h-full items-center justify-center">
           <EmptyState iconName="list" label="No slack channels here yet" />
         </div>
       )}
-      {!loading && data?.project.slackChannels && data.project.slackChannels?.length > 0 && (
-        <Table
-          className="mt-2"
-          data={data?.project.slackChannels}
-          columns={SLACK_CHANNELS_TABLE_COLUMNS}
-        />
-      )}
+      {!loading &&
+        data?.projectIntegrationPage.slackChannels &&
+        data.projectIntegrationPage.slackChannels?.length > 0 && (
+          <Table
+            className="mt-2"
+            data={data?.projectIntegrationPage.slackChannels}
+            columns={SLACK_CHANNELS_TABLE_COLUMNS}
+          />
+        )}
     </SectionContainer>
   );
 };

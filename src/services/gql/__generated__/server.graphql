@@ -95,7 +95,6 @@ input DocumentGenerateFieldInput {
 input DocumentGenerateInput {
   categoryId: Int = null
   fields: [DocumentGenerateFieldInput!] = null
-  internal: Boolean = null
   projectId: Int = null
   templateId: Int!
   userId: Int = null
@@ -105,7 +104,6 @@ input DocumentInput {
   categoryId: Int = null
   file: Upload
   id: Int = null
-  internal: Boolean = null
   projectId: Int = null
   userId: Int = null
 }
@@ -306,17 +304,33 @@ type Mutation {
   """
   clientMakePointContact(data: ClientPointContactInput!): ClientType!
   """
-  Create or update document
+  Create or update client document
   """
-  documentCreateUpdate(data: DocumentInput!): DocumentType!
+  documentClientCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate client document
+  """
+  documentClientGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Delete document
   """
   documentDelete(data: IDInput!): MessageType!
   """
-  Generate document
+  Create or update internal document
   """
-  documentGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
+  documentInternalCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate internal document
+  """
+  documentInternalGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
+  """
+  Create or update project document
+  """
+  documentProjectCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate project document
+  """
+  documentProjectGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Create document template
   """
@@ -325,6 +339,14 @@ type Mutation {
   Delete document template
   """
   documentTemplateDelete(data: IDInput!): MessageType!
+  """
+  Create or update user document
+  """
+  documentUserCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate user document
+  """
+  documentUserGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Sending reset password email
   """
@@ -563,6 +585,11 @@ type PlatformTypePagination {
   results: [PlatformType!]!
 }
 
+type PorjectIntegrationsPage {
+  gitGroupId: String
+  slackChannels: [ProjectSlackType!]
+}
+
 input ProfileInput {
   address: String = null
   birthDate: Date = null
@@ -624,11 +651,17 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
+  inGit: Boolean = null
   statusId: Int = null
 }
 
 input ProjectGitIntegrationInput {
   id: Int!
+}
+
+type ProjectGlossaryType {
+  id: Int!
+  name: String!
 }
 
 input ProjectIntegrationInput {
@@ -688,10 +721,15 @@ enum ProjectPhaseChoice {
 
 type ProjectPreviewType {
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   id: Int!
   inTeam: Boolean!
   name: String!
+}
+
+type ProjectRepositoryType {
+  projectInGit: Boolean!
+  projectRepositories: [RepositoryType!]
 }
 
 input ProjectSlackInput {
@@ -726,10 +764,10 @@ enum ProjectTeamChoice {
 }
 
 type ProjectType {
-  PM: [UserType!]
+  PM: [ProfileType!]
   clientTeam: [ClientType!]
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   design: String
   endDate: Date
   gitGroupId: String
@@ -742,7 +780,6 @@ type ProjectType {
   phase: ProjectPhaseChoice
   platforms: [PlatformType!]
   roadmap: String
-  slackChannels: [ProjectSlackType!]
   startDate: Date
   status: ProjectStatusType
 }
@@ -784,9 +821,18 @@ type Query {
   """
   documentCategoryList: [DocumentCategoryType!]!
   """
-  Getting list of documents
+  Getting list of client documents
   """
-  documentList(
+  documentClientList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput!
+    search: String = null
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
+  """
+  Getting list of internal documents
+  """
+  documentInternalList(
     filters: DocumentFilter = null
     pagination: PaginationInput!
     search: String = null
@@ -796,6 +842,15 @@ type Query {
   Getting list of document templates
   """
   documentTemplateList: [DocumentTemplateType!]!
+  """
+  Getting list of user documents
+  """
+  documentUserList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput!
+    search: String = null
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
   """
   Getting git initial user by id
   """
@@ -845,9 +900,17 @@ type Query {
   """
   projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
   """
+  Getting glossary list of projects
+  """
+  projectGlossaryList(filters: ProjectFilter = null): [ProjectGlossaryType!]!
+  """
   Getting integrations for project by id
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
+  """
+  Getting project integration page by id
+  """
+  projectIntegrationPage(data: IDInput!): PorjectIntegrationsPage!
   """
   Getting history for project by id
   """
@@ -863,7 +926,7 @@ type Query {
   """
   Getting repositories for project by id
   """
-  projectRepositoryList(data: IDInput!): [RepositoryType!]!
+  projectRepositoryList(data: IDInput!): ProjectRepositoryType!
   """
   Getting project's statuses list
   """
@@ -880,6 +943,10 @@ type Query {
   Getting repository
   """
   repository(data: IDInput!): RepositoryType!
+  """
+  Getting glossary list of repository
+  """
+  repositoryGlossaryList: [RepositoryGlossaryType!]!
   """
   Getting repositories
   """
@@ -932,6 +999,10 @@ type Query {
   """
   userDetails(data: IDInput!): UserType!
   """
+  Getting glossary list of users
+  """
+  userGlossaryList: [UserGlossaryType!]!
+  """
   Getting project by user
   """
   userProjects(
@@ -979,6 +1050,11 @@ input RepositoryFilter {
   projectId: Int = null
   technologies: [Int!] = null
   type: RepositoryTypeChoice = null
+}
+
+type RepositoryGlossaryType {
+  id: Int!
+  name: String!
 }
 
 input RepositoryParticipantFilter {
@@ -1193,6 +1269,12 @@ input UserFilter {
   departmentId: [Int!] = null
   isActive: Boolean = null
   roleId: [Int!] = null
+}
+
+type UserGlossaryType {
+  fullName: String!
+  id: Int!
+  photo: ImageType
 }
 
 input UserInput {

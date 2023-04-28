@@ -19,7 +19,7 @@ import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
 
 export const Participants: FC = () => {
-  const canEditRepoParticipants = useHasAccess(Permission.EDIT_REPO_PARTICIPANTS);
+  const canWriteRepoParticipants = useHasAccess(Permission.WRITE_REPO_PARTICIPANTS);
 
   const { offset, setOffset } = useListQueryParams();
 
@@ -99,7 +99,7 @@ export const Participants: FC = () => {
                     </span>
                   </div>
                 </div>
-                {canEditRepoParticipants && (
+                {canWriteRepoParticipants && (
                   <ParticipantMenu
                     participant={user}
                     repositoryId={repositoryId}
@@ -121,7 +121,7 @@ export const Participants: FC = () => {
             fetchMore={fetchMore}
           />
         )}
-        {canEditRepoParticipants && (
+        {canWriteRepoParticipants && (
           <Button
             variant={ButtonVariant.SECONDARY}
             label="Add participant"

@@ -20,7 +20,7 @@ interface Props {
 export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
   const { name, project, technologies, createdAt, gitUrl, gitTerraformUrl, type } = repository;
 
-  const canEditRepository = useHasAccess(Permission.EDIT_REPOSITORY);
+  const canWriteRepository = useHasAccess(Permission.WRITE_REPOSITORY);
 
   const {
     value: isUpdateRepositoryModalOpen,
@@ -32,7 +32,7 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
     <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
       <div className="flex gap-2 mb-3 ">
         <h2 className="text-p1 font-bold">Info</h2>
-        {canEditRepository && (
+        {canWriteRepository && (
           <button type="button" className="hover:opacity-70" onClick={openUpdateRepositoryModal}>
             <Icon name="pencil" size={14} className="text-blue " />
           </button>
