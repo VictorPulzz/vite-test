@@ -2,8 +2,8 @@ import { EmptyState, Loader, SearchInput } from '@appello/web-ui';
 import { Select } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import clsx from 'clsx';
-import React, { FC, useEffect, useMemo, useState } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
+import React, { FC, useMemo, useState } from 'react';
+import { matchPath, useLocation, useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
@@ -34,17 +34,17 @@ import { DocsType } from './types';
 
 interface Props {
   type: DocsType;
-  isInternal?: boolean;
-  projectId?: number;
-  userId?: number;
 }
 
-export const Docs: FC<Props> = ({ type, isInternal, projectId, userId }) => {
+export const Docs: FC<Props> = ({ type }) => {
   const location = useLocation();
+  const params = useParams();
+  const projectId = params.id ? Number(params.id) : undefined;
+  const userId = params.id ? Number(params.id) : undefined;
 
   const canWriteUserDocs = useHasAccess(Permission.WRITE_USER_DOCS);
 
-  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams<DocumentFilter>();
+  const { searchValue, setSearchValue, offset } = useListQueryParams<DocumentFilter>();
 
   const isUserDetailsPage = !!matchPath(ROUTES.USER_DETAILS, location?.pathname);
 
@@ -158,10 +158,6 @@ export const Docs: FC<Props> = ({ type, isInternal, projectId, userId }) => {
     skip: !!userId,
     fetchPolicy: 'cache-and-network',
   });
-
-  useEffect(() => {
-    setOffset(0);
-  }, [isInternal, setOffset]);
 
   const projectsOptions = useMemo(
     () => (allProjects && [ALL_SELECT_OPTION, ...allProjects.projectsList.results]) ?? [],

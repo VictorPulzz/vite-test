@@ -6,8 +6,8 @@ import React, { FC, useMemo } from 'react';
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { copyTextValue } from '~/utils/copyTextValue';
-import { RequestCard } from '~/view/pages/ProjectDetails/components/Development/components/RequestCard';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
+import { RequestCard } from '~/view/pages/ProjectDetails/pages/Development/components/RequestCard';
 
 import { EnvironmentsListItemMenu } from './components/EnvironmentsListItemMenu';
 import { RequestEnvType } from './types';

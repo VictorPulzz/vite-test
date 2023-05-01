@@ -1,15 +1,15 @@
 import { Loader } from '@appello/web-ui';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
+import { useParams } from 'react-router';
 
 import { useFetchProjectIntegrationsQuery } from '../../__generated__/schema';
 import { BitbucketSection } from './components/BitbucketSection';
 import { SlackChannelsSection } from './components/SlackChannelsSection';
 
-interface Props {
-  projectId: number;
-}
+export const Integrations: FC = () => {
+  const params = useParams();
+  const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
-export const Integrations: FC<Props> = ({ projectId }) => {
   const { data, loading } = useFetchProjectIntegrationsQuery({
     variables: {
       data: { id: projectId },

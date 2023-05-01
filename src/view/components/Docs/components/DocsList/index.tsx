@@ -69,6 +69,7 @@ export const DocsList: FC<Props> = ({ type, data, fetchMore }) => {
             offset={offset}
             itemsCount={data.results.length}
             fetchMore={fetchMore}
+            pageSize={PAGE_SIZE}
           />
         )}
       </div>

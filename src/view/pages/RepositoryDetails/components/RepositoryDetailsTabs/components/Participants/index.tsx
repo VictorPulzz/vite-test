@@ -117,6 +117,7 @@ export const Participants: FC = () => {
             setOffset={setOffset}
             totalCount={data.repositoryParticipantList.count}
             offset={offset}
+            pageSize={PAGE_SIZE}
             itemsCount={data.repositoryParticipantList.results.length}
             fetchMore={fetchMore}
           />

@@ -10,33 +10,17 @@ import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
-import { Docs } from '~/view/components/Docs';
-import { DocsType } from '~/view/components/Docs/types';
 import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
-import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
-import { Integrations } from './components/ Integrations';
-import { Development } from './components/Development';
-import { History } from './components/History';
-import { Info } from './components/Info';
-import { Overview } from './components/Overview';
-import { Reports } from './components/Reports';
-import { Team } from './components/Team';
+import { useProjectTabs } from './hooks/useProjectTabs';
 import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
   const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
-  const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
-  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
-  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
-  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
-  const canReadWriteProjectDocs = useHasAccess(Permission.READ_WRITE_PROJECT_DOCS);
-  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
-  // const canReadWriteProjectIntegrations = useHasAccess(Permission.READ_WRITE_PROJECT_INTEGRATIONS);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -49,90 +33,21 @@ export const ProjectDetailsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const DocumentTabs = useMemo(
+  const projectTabs = useProjectTabs({ projectId, inTeam: data?.projectPreview.inTeam });
+
+  const projectTabsElement = useMemo(
     () => (
       <Tabs
         className={styles['tabs']}
         contentClassName="bg-gray-7 p-7 flex-auto"
-        items={[
-          {
-            title: 'Overview',
-            element: canReadProjectOverview ? (
-              <Overview />
-            ) : (
-              <NoAccessMessage className="h-[70vh]" />
-            ),
-          },
-          {
-            title: 'Info',
-            element: canReadProjectInfo ? (
-              <Info projectId={projectId} />
-            ) : (
-              <NoAccessMessage className="h-[70vh]" />
-            ),
-          },
-          {
-            title: 'Team',
-            element:
-              canReadProjectTeam && data?.projectPreview.inTeam ? (
-                <Team />
-              ) : (
-                <NoAccessMessage className="h-[70vh]" />
-              ),
-          },
-          {
-            title: 'Development',
-            element: canReadProjectDevelopment ? (
-              <Development />
-            ) : (
-              <NoAccessMessage className="h-[70vh]" />
-            ),
-          },
-          {
-            title: 'Docs',
-            element: canReadWriteProjectDocs ? (
-              <div className="h-full">
-                <SectionContainer containerClassName="h-full">
-                  <Docs type={DocsType.PROJECT} projectId={projectId} />
-                </SectionContainer>
-              </div>
-            ) : (
-              <NoAccessMessage className="h-[70vh]" />
-            ),
-          },
-          {
-            title: 'Reports',
-            element: <Reports />,
-          },
-          {
-            title: 'History',
-            element: canReadProjectHistory ? (
-              <History projectId={projectId} />
-            ) : (
-              <NoAccessMessage className="h-[70vh]" />
-            ),
-          },
-          {
-            title: 'Integrations',
-            element: <Integrations projectId={projectId} />,
-          },
-        ]}
+        items={projectTabs}
       />
     ),
-    [
-      canReadProjectDevelopment,
-      canReadProjectHistory,
-      canReadProjectInfo,
-      canReadProjectOverview,
-      canReadProjectTeam,
-      canReadWriteProjectDocs,
-      data?.projectPreview.inTeam,
-      projectId,
-    ],
+    [projectTabs],
   );
 
   return (
-    <TabLayout tabs={!loading && data?.projectPreview.inTeam && DocumentTabs}>
+    <TabLayout tabs={!loading && data?.projectPreview.inTeam && projectTabsElement}>
       {loading && <Loader full colorful />}
       {!loading && data && data.projectPreview.inTeam && (
         <div className="bg-white">

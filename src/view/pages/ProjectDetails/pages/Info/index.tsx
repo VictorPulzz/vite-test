@@ -6,6 +6,7 @@ import { TextLink } from '@appello/web-ui';
 import clsx from 'clsx';
 import { format, formatDuration, intervalToDuration, isPast, parseISO } from 'date-fns';
 import React, { FC, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
@@ -16,11 +17,9 @@ import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchProjectInfoQuery } from '../../__generated__/schema';
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';
 
-interface Props {
-  projectId: number;
-}
-
-export const Info: FC<Props> = ({ projectId }) => {
+export const Info: FC = () => {
+  const params = useParams();
+  const projectId = params.id ? Number(params.id) : 0;
   const { data, loading } = useFetchProjectInfoQuery({
     variables: {
       data: { id: projectId },

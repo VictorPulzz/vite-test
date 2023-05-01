@@ -44,6 +44,9 @@ const defaultComponentProps: AppelloKitComponents = {
   PhotoField: {
     photoPlaceholder,
   },
+  Table: {
+    pageSize: PAGE_SIZE,
+  },
 };
 
 root.render(
