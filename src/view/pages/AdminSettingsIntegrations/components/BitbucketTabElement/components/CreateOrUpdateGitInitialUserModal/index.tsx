@@ -4,9 +4,9 @@ import { SelectField } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { useFetchGitInitialUserDetailsQuery } from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useGitInitialUserForm } from './hooks/useGitInitialUserForm';
 
@@ -35,7 +35,7 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
     prefilledData: gitInitialUserDetails?.gitInitialUserDetails,
   });
 
-  const { data: allUsers, loading: isLoadingAllUsers } = useFetchAllUsersQuery({
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -43,7 +43,7 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
     },
   });
 
-  const usersOptions = useSelectOptions(allUsers?.usersList.results, {
+  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
     value: 'id',
     label: 'fullName',
   });

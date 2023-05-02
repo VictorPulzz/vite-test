@@ -1,4 +1,4 @@
-import { EmptyState, Loader, SearchInput } from '@appello/web-ui';
+import { EmptyState, Loader, SearchInput, useSelectOptions } from '@appello/web-ui';
 import { Select } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import clsx from 'clsx';
@@ -14,14 +14,14 @@ import {
   DocumentSort,
   OrderDirectionChoice,
 } from '~/services/gql/__generated__/globalTypes';
+import {
+  useFetchProjectGlossaryListQuery,
+  useFetchUserGlossaryListQuery,
+} from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
-import {
-  useFetchAllDocumentCategoriesQuery,
-  useFetchAllProjectsQuery,
-  useFetchAllUsersQuery,
-} from '../../pages/ProjectDetails/__generated__/schema';
+import { useFetchAllDocumentCategoriesQuery } from '../../pages/ProjectDetails/__generated__/schema';
 import {
   useFetchClientDocumentsQuery,
   useFetchInternalDocumentsQuery,
@@ -141,51 +141,51 @@ export const Docs: FC<Props> = ({ type }) => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const { data: allProjects } = useFetchAllProjectsQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
-    fetchPolicy: 'cache-and-network',
-    skip: !!projectId || !!userId,
-  });
-
   const { data: allDocumentCategories } = useFetchAllDocumentCategoriesQuery();
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
     },
     skip: !!userId,
     fetchPolicy: 'cache-and-network',
   });
 
-  const projectsOptions = useMemo(
-    () => (allProjects && [ALL_SELECT_OPTION, ...allProjects.projectsList.results]) ?? [],
-    [allProjects],
-  );
+  const { data: allProjects } = useFetchProjectGlossaryListQuery({
+    variables: {
+      pagination: {
+        limit: 0,
+      },
+    },
+    skip: !!projectId || !!userId,
+    fetchPolicy: 'cache-and-network',
+  });
 
-  const categoriesOptions = useMemo(
-    () =>
-      (allDocumentCategories && [
-        ALL_SELECT_OPTION,
-        ...allDocumentCategories.documentCategoryList,
-      ]) ??
-      [],
-    [allDocumentCategories],
-  );
+  const projectsOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(allProjects?.projectGlossaryList.results, {
+      value: 'id',
+      label: 'name',
+    }),
+  ];
 
-  const usersOptions = useMemo(
-    () =>
-      (allUsers && [
-        ALL_SELECT_OPTION,
-        ...allUsers.usersList.results.map(({ id, fullName }) => ({
-          value: id,
-          label: fullName,
-        })),
-      ]) ??
-      [],
-    [allUsers],
-  );
+  const categoriesOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(allDocumentCategories?.documentCategoryList, {
+      value: 'value',
+      label: 'label',
+    }),
+  ];
+
+  const usersOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(allUsers?.userGlossaryList.results, {
+      value: 'id',
+      label: 'fullName',
+    }),
+  ];
 
   const sortingOptions = enumToSelectOptions(OrderDirectionChoice);
 

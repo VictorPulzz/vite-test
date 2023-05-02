@@ -1,18 +1,18 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
-import React, { FC, useCallback, useMemo } from 'react';
+import React, { FC, useCallback } from 'react';
 
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { RequestFilter, RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { FetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { FetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useRequestsFilterForm } from './hooks/useRequestsFilterForm';
 
 export interface RequestsFilterModalProps extends Pick<ModalProps, 'isOpen' | 'close'> {
   setFilter: (filter: Nullable<RequestFilter>) => void;
-  users: FetchAllUsersQuery['usersList']['results'];
+  users: FetchUserGlossaryListQuery['userGlossaryList']['results'];
 }
 
 export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
@@ -28,16 +28,13 @@ export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
     },
   });
 
-  const usersOptions = useMemo(
-    () => [
-      ALL_SELECT_OPTION,
-      ...users.map(({ id, fullName }) => ({
-        value: id,
-        label: fullName,
-      })),
-    ],
-    [users],
-  );
+  const usersOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(users, {
+      value: 'id',
+      label: 'fullName',
+    }),
+  ];
 
   const requestTypesOptions = [ALL_SELECT_OPTION, ...enumToSelectOptions(RequestTypeChoice)];
 

@@ -651,6 +651,7 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
+  hasRepositories: Boolean = null
   inGit: Boolean = null
   statusId: Int = null
 }
@@ -662,6 +663,13 @@ input ProjectGitIntegrationInput {
 type ProjectGlossaryType {
   id: Int!
   name: String!
+}
+
+type ProjectGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectGlossaryType!]!
 }
 
 input ProjectIntegrationInput {
@@ -825,8 +833,8 @@ type Query {
   """
   documentClientList(
     filters: DocumentFilter = null
-    pagination: PaginationInput!
-    search: String = null
+    pagination: PaginationInput = null
+    search: String = ""
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
@@ -835,7 +843,7 @@ type Query {
   documentInternalList(
     filters: DocumentFilter = null
     pagination: PaginationInput = null
-    search: String! = ""
+    search: String = ""
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
@@ -847,8 +855,8 @@ type Query {
   """
   documentUserList(
     filters: DocumentFilter = null
-    pagination: PaginationInput!
-    search: String = null
+    pagination: PaginationInput = null
+    search: String = ""
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
@@ -902,7 +910,10 @@ type Query {
   """
   Getting glossary list of projects
   """
-  projectGlossaryList(filters: ProjectFilter = null): [ProjectGlossaryType!]!
+  projectGlossaryList(
+    filters: ProjectFilter = null
+    pagination: PaginationInput = null
+  ): ProjectGlossaryTypePagination!
   """
   Getting integrations for project by id
   """
@@ -946,7 +957,10 @@ type Query {
   """
   Getting glossary list of repository
   """
-  repositoryGlossaryList: [RepositoryGlossaryType!]!
+  repositoryGlossaryList(
+    filters: RepositoryFilter = null
+    pagination: PaginationInput = null
+  ): RepositoryGlossaryTypePagination!
   """
   Getting repositories
   """
@@ -1001,7 +1015,7 @@ type Query {
   """
   Getting glossary list of users
   """
-  userGlossaryList: [UserGlossaryType!]!
+  userGlossaryList(pagination: PaginationInput = null): UserGlossaryTypePagination!
   """
   Getting project by user
   """
@@ -1055,6 +1069,13 @@ input RepositoryFilter {
 type RepositoryGlossaryType {
   id: Int!
   name: String!
+}
+
+type RepositoryGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [RepositoryGlossaryType!]!
 }
 
 input RepositoryParticipantFilter {
@@ -1275,6 +1296,13 @@ type UserGlossaryType {
   fullName: String!
   id: Int!
   photo: FileType
+}
+
+type UserGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [UserGlossaryType!]!
 }
 
 input UserInput {

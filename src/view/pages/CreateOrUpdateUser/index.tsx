@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
 import { InlineFields } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
@@ -45,12 +45,15 @@ export const CreateOrUpdateUserPage: FC = () => {
     id: userId,
   });
 
-  const departmentsOptions = useMemo(
-    () => departmentsList?.departmentsList ?? [],
-    [departmentsList?.departmentsList],
-  );
+  const departmentsOptions = useSelectOptions(departmentsList?.departmentsList, {
+    value: 'value',
+    label: 'label',
+  });
 
-  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
+  const rolesOptions = useSelectOptions(rolesList?.rolesList, {
+    value: 'value',
+    label: 'label',
+  });
 
   const contractTypeOptions = enumToSelectOptions(ContractChoice);
 

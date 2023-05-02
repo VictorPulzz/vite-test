@@ -6,7 +6,7 @@ import { TextField } from '@appello/web-ui';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import clsx from 'clsx';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -15,15 +15,14 @@ import {
   RepositoryTypeChoice,
   RequestTypeChoice,
 } from '~/services/gql/__generated__/globalTypes';
+import {
+  useFetchProjectGlossaryListQuery,
+  useFetchRepositoryGlossaryListQuery,
+  useFetchUserGlossaryListQuery,
+} from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 
-import {
-  useFetchAllProjectsQuery,
-  useFetchAllRepositoriesQuery,
-  useFetchAllUsersQuery,
-  useFetchRolesListQuery,
-  useFetchTechnologiesListQuery,
-} from './__generated__/schema';
+import { useFetchRolesListQuery, useFetchTechnologiesListQuery } from './__generated__/schema';
 import { useCreateNewRequestForm } from './hooks/useCreateNewRequest';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
@@ -63,7 +62,7 @@ export const NewRequestModal: FC<Props> = ({
 
   const { data: rolesList, loading: isLoadingRolesList } = useFetchRolesListQuery();
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -72,16 +71,13 @@ export const NewRequestModal: FC<Props> = ({
     fetchPolicy: 'cache-and-network',
   });
 
-  const { data: allProjects, loading: isLoadingAllProjects } = useFetchAllProjectsQuery({
+  const { data: allProjects, loading: isLoadingAllProjects } = useFetchProjectGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
     },
     fetchPolicy: 'cache-and-network',
-  });
-
-  const usersOptions = useSelectOptions(allUsers?.usersList.results, {
-    value: 'id',
-    label: 'fullName',
   });
 
   const { data: allTechnologies, loading: isLoadingAllTechnologies } =
@@ -94,13 +90,40 @@ export const NewRequestModal: FC<Props> = ({
 
   const projectIdField = form.watch('projectId');
 
-  const { data: allRepositories } = useFetchAllRepositoriesQuery({
+  const { data: allRepositories } = useFetchRepositoryGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
       filters: { projectId: projectIdField },
     },
     skip: !projectIdField,
     fetchPolicy: 'cache-and-network',
+  });
+
+  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
+    value: 'id',
+    label: 'fullName',
+  });
+
+  const rolesOptions = useSelectOptions(rolesList?.rolesList, {
+    value: 'value',
+    label: 'label',
+  });
+
+  const projectsOptions = useSelectOptions(allProjects?.projectGlossaryList.results, {
+    value: 'id',
+    label: 'name',
+  });
+
+  const repositoriesOptions = useSelectOptions(allRepositories?.repositoryGlossaryList.results, {
+    value: 'id',
+    label: 'name',
+  });
+
+  const technologiesOptions = useSelectOptions(allTechnologies?.technologyList.results, {
+    value: 'value',
+    label: 'label',
   });
 
   const requestTypesOptions = enumToSelectOptions(RequestTypeChoice);
@@ -108,30 +131,10 @@ export const NewRequestModal: FC<Props> = ({
   const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
   const environmentOptions = enumToSelectOptions(ProjectEnvironmentChoice);
 
-  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
-
-  const projectsOptions = useMemo(
-    () => allProjects?.projectsList.results ?? [],
-    [allProjects?.projectsList.results],
-  );
-
-  const repositoriesOptions = useMemo(
-    () =>
-      allRepositories?.repositoryList.results.map(({ value, label }) => ({
-        value,
-        label: `${label}`,
-      })) ?? [],
-    [allRepositories?.repositoryList.results],
-  );
-
-  const technologiesOptions = useMemo(
-    () => allTechnologies?.technologyList.results ?? [],
-    [allTechnologies],
-  );
-
   const typeField = form.watch('type');
 
-  const isLoading = isLoadingRolesList || isLoadingAllProjects || isLoadingAllTechnologies;
+  const isLoading =
+    isLoadingRolesList || isLoadingAllUsers || isLoadingAllProjects || isLoadingAllTechnologies;
 
   return (
     <Modal

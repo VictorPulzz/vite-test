@@ -8,12 +8,12 @@ import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestSort } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TypeCell } from '~/view/pages/Requests/components/TypeCell';
 
-import { useFetchAllUsersQuery } from '../../ProjectDetails/__generated__/schema';
 import { AssignedTo, AssignedToVariant } from '../components/AssignedTo';
 import { DueDate, DueDateVariant } from '../components/DueDate';
 import { StatusCell } from '../components/StatusCell';
@@ -25,7 +25,7 @@ const columnHelper = createColumnHelper<RequestResultType>();
 export function useRequestsTableColumns() {
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -55,7 +55,7 @@ export function useRequestsTableColumns() {
         return (
           <AssignedTo
             variant={AssignedToVariant.CELL}
-            allUsers={allUsers?.usersList.results ?? []}
+            allUsers={allUsers?.userGlossaryList.results ?? []}
             canReadUserDetails={canReadUserDetails}
             id={id}
             status={status}

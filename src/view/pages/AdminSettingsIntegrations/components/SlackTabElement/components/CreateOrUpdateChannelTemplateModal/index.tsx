@@ -6,8 +6,8 @@ import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
 import React, { FC } from 'react';
 
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { useFetchSlackTemplateInfoQuery } from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useChannelTemplateForm } from './hooks/useChannelTemplateForm';
 
@@ -36,7 +36,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
     prefilledData: slackTemplateInfo?.slackTemplate,
   });
 
-  const { data: allUsers, loading: isLoadingAllUsers } = useFetchAllUsersQuery({
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -44,7 +44,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
     },
   });
 
-  const usersOptions = useSelectOptions(allUsers?.usersList.results, {
+  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
     value: 'id',
     label: 'fullName',
   });

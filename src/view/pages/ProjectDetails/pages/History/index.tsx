@@ -8,11 +8,9 @@ import { useParams } from 'react-router-dom';
 import { PAGE_SIZE } from '~/constants/pagination';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import {
-  useFetchAllUsersQuery,
-  useFetchHistoryLogsQuery,
-} from '~/view/pages/ProjectDetails/__generated__/schema';
+import { useFetchHistoryLogsQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useHistoryTableColumns } from './hooks/useHistoryTableColumns';
 
@@ -24,16 +22,13 @@ export const History: FC = () => {
 
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
-  const { data } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
     },
     fetchPolicy: 'cache-and-network',
-  });
-
-  const usersOptions = useSelectOptions(data?.usersList.results, {
-    value: 'id',
-    label: 'fullName',
   });
 
   const {
@@ -51,14 +46,20 @@ export const History: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const filterByUserOptions = [ALL_SELECT_OPTION, ...usersOptions];
+  const usersOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(allUsers?.userGlossaryList.results, {
+      value: 'id',
+      label: 'fullName',
+    }),
+  ];
 
   return (
     <div className="flex flex-col gap-5">
       <SectionContainer title="History">
         <Select
           className="w-40"
-          options={filterByUserOptions}
+          options={usersOptions}
           value={filter?.createdById}
           placeholder="Filter by user"
           onChange={value => setFilter({ createdById: value })}

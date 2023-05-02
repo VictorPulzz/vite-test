@@ -43,22 +43,6 @@ query FetchProjectInfo($data: IDInput!) {
   }
 }
 
-query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
-  usersList(filters: $filters, pagination: $pagination, search: $search) {
-    results {
-      id
-      photo {
-        url
-      }
-      fullName
-      role {
-        name
-      }
-      email
-    }
-  }
-}
-
 query FetchProjectMembers($data: IDInput!) {
   projectMemberList(data: $data) {
     currentTeam {
@@ -241,15 +225,6 @@ query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
       message
     }
     count
-  }
-}
-
-query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
-  projectsList(filters: $filters, pagination: $pagination, search: $search) {
-    results {
-      value: id
-      label: name
-    }
   }
 }
 

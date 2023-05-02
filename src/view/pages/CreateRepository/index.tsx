@@ -1,19 +1,19 @@
 import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
 import { Checkbox } from '@appello/web-ui';
 import { InlineFields } from '@appello/web-ui';
-import React, { FC, useEffect, useMemo } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { useFetchProjectGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
-import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
 import {
   useFetchBoilerplateListQuery,
   useFetchTechnologiesListQuery,
@@ -25,9 +25,12 @@ export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
   const searchParams = useSearchParams();
 
-  const { data: allProjects } = useFetchAllProjectsQuery({
+  const { data: allProjects } = useFetchProjectGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
+      filters: { inGit: true },
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -53,20 +56,20 @@ export const CreateRepositoryPage: FC = () => {
     }
   }, [searchParams.projectId, form.setValue, form]);
 
-  const projectsOptions = useMemo(
-    () => allProjects?.projectsList.results ?? [],
-    [allProjects?.projectsList.results],
-  );
+  const projectsOptions = useSelectOptions(allProjects?.projectGlossaryList.results, {
+    value: 'id',
+    label: 'name',
+  });
 
-  const technologiesOptions = useMemo(
-    () => allTechnologies?.technologyList.results ?? [],
-    [allTechnologies],
-  );
+  const technologiesOptions = useSelectOptions(allTechnologies?.technologyList.results, {
+    value: 'value',
+    label: 'label',
+  });
 
-  const boilerplatesOptions = useMemo(
-    () => allBoilerplates?.boilerplateList ?? [],
-    [allBoilerplates?.boilerplateList],
-  );
+  const boilerplatesOptions = useSelectOptions(allBoilerplates?.boilerplateList, {
+    value: 'value',
+    label: 'label',
+  });
 
   const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
 

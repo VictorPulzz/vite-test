@@ -754,6 +754,7 @@ export type ProjectEnvironmentType = {
 };
 
 export type ProjectFilter = {
+  hasRepositories?: InputMaybe<Scalars['Boolean']>;
   inGit?: InputMaybe<Scalars['Boolean']>;
   statusId?: InputMaybe<Scalars['Int']>;
 };
@@ -765,6 +766,13 @@ export type ProjectGitIntegrationInput = {
 export type ProjectGlossaryType = {
   id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type ProjectGlossaryTypePagination = {
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<ProjectGlossaryType>;
 };
 
 export type ProjectIntegrationInput = {
@@ -946,7 +954,7 @@ export type Query = {
   /** Getting environments for project by id */
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting glossary list of projects */
-  projectGlossaryList: Array<ProjectGlossaryType>;
+  projectGlossaryList: ProjectGlossaryTypePagination;
   /** Getting integrations for project by id */
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting project integration page by id */
@@ -966,7 +974,7 @@ export type Query = {
   /** Getting repository */
   repository: RepositoryType;
   /** Getting glossary list of repository */
-  repositoryGlossaryList: Array<RepositoryGlossaryType>;
+  repositoryGlossaryList: RepositoryGlossaryTypePagination;
   /** Getting repositories */
   repositoryList: RepositoryTypePagination;
   /** Getting repository participants */
@@ -988,7 +996,7 @@ export type Query = {
   /** Getting user by id */
   userDetails: UserType;
   /** Getting glossary list of users */
-  userGlossaryList: Array<UserGlossaryType>;
+  userGlossaryList: UserGlossaryTypePagination;
   /** Getting project by user */
   userProjects: ProjectMemberTypePagination;
   /** Getting list of users */
@@ -1001,7 +1009,7 @@ export type QueryBoilerplateListArgs = {
 
 export type QueryDocumentClientListArgs = {
   filters?: InputMaybe<DocumentFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
@@ -1009,13 +1017,13 @@ export type QueryDocumentClientListArgs = {
 export type QueryDocumentInternalListArgs = {
   filters?: InputMaybe<DocumentFilter>;
   pagination?: InputMaybe<PaginationInput>;
-  search?: Scalars['String'];
+  search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
 export type QueryDocumentUserListArgs = {
   filters?: InputMaybe<DocumentFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
@@ -1059,6 +1067,7 @@ export type QueryProjectEnvironmentListArgs = {
 
 export type QueryProjectGlossaryListArgs = {
   filters?: InputMaybe<ProjectFilter>;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryProjectIntegrationListArgs = {
@@ -1100,6 +1109,11 @@ export type QueryRepositoryArgs = {
   data: IdInput;
 };
 
+export type QueryRepositoryGlossaryListArgs = {
+  filters?: InputMaybe<RepositoryFilter>;
+  pagination?: InputMaybe<PaginationInput>;
+};
+
 export type QueryRepositoryListArgs = {
   filters?: InputMaybe<RepositoryFilter>;
   pagination: PaginationInput;
@@ -1135,6 +1149,10 @@ export type QueryTechnologyListArgs = {
 
 export type QueryUserDetailsArgs = {
   data: IdInput;
+};
+
+export type QueryUserGlossaryListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryUserProjectsArgs = {
@@ -1184,6 +1202,13 @@ export type RepositoryFilter = {
 export type RepositoryGlossaryType = {
   id: Scalars['Int'];
   name: Scalars['String'];
+};
+
+export type RepositoryGlossaryTypePagination = {
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<RepositoryGlossaryType>;
 };
 
 export type RepositoryParticipantFilter = {
@@ -1402,6 +1427,13 @@ export type UserGlossaryType = {
   fullName: Scalars['String'];
   id: Scalars['Int'];
   photo?: Maybe<FileType>;
+};
+
+export type UserGlossaryTypePagination = {
+  count: Scalars['Int'];
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<UserGlossaryType>;
 };
 
 export type UserInput = {

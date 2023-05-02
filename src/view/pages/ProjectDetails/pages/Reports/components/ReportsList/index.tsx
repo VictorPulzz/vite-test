@@ -3,9 +3,9 @@ import { SelectField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import React, { FC } from 'react';
 
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import comingSoon from '~/view/assets/images/coming-soon.svg';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useGetReportsForm } from '../../hooks/useGetReportsForm';
 import { ReportsCard } from './components/ReportCard';
@@ -55,14 +55,16 @@ const reportsTestData = [
 export const Reports: FC = () => {
   const { form } = useGetReportsForm();
 
-  const { data } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
     },
     fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useSelectOptions(data?.usersList.results, {
+  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
     value: 'id',
     label: 'fullName',
   });

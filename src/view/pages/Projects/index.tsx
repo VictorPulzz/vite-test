@@ -3,7 +3,7 @@ import { EmptyState } from '@appello/web-ui';
 import { SearchInput } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
-import { Select, SelectOption } from '@appello/web-ui';
+import { Select } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
@@ -50,12 +50,13 @@ export const ProjectsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const prepareStatusesOptions = useSelectOptions(statuses?.projectStatusesList.results, {
-    value: 'value',
-    label: 'label',
-  }) as SelectOption<number>[];
-
-  const statusOptions = [ALL_SELECT_OPTION, ...prepareStatusesOptions];
+  const statusOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(statuses?.projectStatusesList.results, {
+      value: 'value',
+      label: 'label',
+    }),
+  ];
 
   return (
     <SidebarLayout contentClassName="p-6">

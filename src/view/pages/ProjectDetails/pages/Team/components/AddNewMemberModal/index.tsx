@@ -4,7 +4,7 @@ import { SelectField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 
 import { useAddNewMemberForm } from './hooks/useAddNewMemberForm';
 
@@ -26,17 +26,20 @@ export const AddNewMemberModal: FC<Props> = ({
     projectId,
   });
 
-  const { data } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
     },
     skip: !canWriteProjectTeam,
     fetchPolicy: 'cache-and-network',
   });
 
   const outsideProjectTeamUsers = useMemo(
-    () => data?.usersList.results.filter(user => !projectMembersListIds.includes(user.id)),
-    [data?.usersList.results, projectMembersListIds],
+    () =>
+      allUsers?.userGlossaryList.results.filter(user => !projectMembersListIds.includes(user.id)),
+    [allUsers?.userGlossaryList, projectMembersListIds],
   );
 
   const usersOptions = useSelectOptions(outsideProjectTeamUsers, {

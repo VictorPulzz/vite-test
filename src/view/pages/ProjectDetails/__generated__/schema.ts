@@ -47,24 +47,6 @@ export type FetchProjectInfoQuery = {
   };
 };
 
-export type FetchAllUsersQueryVariables = Types.Exact<{
-  filters?: Types.InputMaybe<Types.UserFilter>;
-  pagination: Types.PaginationInput;
-  search?: Types.InputMaybe<Types.Scalars['String']>;
-}>;
-
-export type FetchAllUsersQuery = {
-  usersList: {
-    results: Array<{
-      id: number;
-      fullName: string;
-      email: string;
-      photo?: { url: string } | null;
-      role?: { name: string } | null;
-    }>;
-  };
-};
-
 export type FetchProjectMembersQueryVariables = Types.Exact<{
   data: Types.IdInput;
 }>;
@@ -240,16 +222,6 @@ export type FetchHistoryLogsQuery = {
   };
 };
 
-export type FetchAllProjectsQueryVariables = Types.Exact<{
-  filters?: Types.InputMaybe<Types.ProjectFilter>;
-  pagination: Types.PaginationInput;
-  search?: Types.InputMaybe<Types.Scalars['String']>;
-}>;
-
-export type FetchAllProjectsQuery = {
-  projectsList: { results: Array<{ value: number; label: string }> };
-};
-
 export type FetchAllDocumentCategoriesQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchAllDocumentCategoriesQuery = {
@@ -419,66 +391,6 @@ export type FetchProjectInfoLazyQueryHookResult = ReturnType<typeof useFetchProj
 export type FetchProjectInfoQueryResult = Apollo.QueryResult<
   FetchProjectInfoQuery,
   FetchProjectInfoQueryVariables
->;
-export const FetchAllUsersDocument = gql`
-  query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
-    usersList(filters: $filters, pagination: $pagination, search: $search) {
-      results {
-        id
-        photo {
-          url
-        }
-        fullName
-        role {
-          name
-        }
-        email
-      }
-    }
-  }
-`;
-
-/**
- * __useFetchAllUsersQuery__
- *
- * To run a query within a React component, call `useFetchAllUsersQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchAllUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchAllUsersQuery({
- *   variables: {
- *      filters: // value for 'filters'
- *      pagination: // value for 'pagination'
- *      search: // value for 'search'
- *   },
- * });
- */
-export function useFetchAllUsersQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchAllUsersQuery, FetchAllUsersQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchAllUsersQuery, FetchAllUsersQueryVariables>(
-    FetchAllUsersDocument,
-    options,
-  );
-}
-export function useFetchAllUsersLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FetchAllUsersQuery, FetchAllUsersQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchAllUsersQuery, FetchAllUsersQueryVariables>(
-    FetchAllUsersDocument,
-    options,
-  );
-}
-export type FetchAllUsersQueryHookResult = ReturnType<typeof useFetchAllUsersQuery>;
-export type FetchAllUsersLazyQueryHookResult = ReturnType<typeof useFetchAllUsersLazyQuery>;
-export type FetchAllUsersQueryResult = Apollo.QueryResult<
-  FetchAllUsersQuery,
-  FetchAllUsersQueryVariables
 >;
 export const FetchProjectMembersDocument = gql`
   query FetchProjectMembers($data: IDInput!) {
@@ -1286,59 +1198,6 @@ export type FetchHistoryLogsLazyQueryHookResult = ReturnType<typeof useFetchHist
 export type FetchHistoryLogsQueryResult = Apollo.QueryResult<
   FetchHistoryLogsQuery,
   FetchHistoryLogsQueryVariables
->;
-export const FetchAllProjectsDocument = gql`
-  query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
-    projectsList(filters: $filters, pagination: $pagination, search: $search) {
-      results {
-        value: id
-        label: name
-      }
-    }
-  }
-`;
-
-/**
- * __useFetchAllProjectsQuery__
- *
- * To run a query within a React component, call `useFetchAllProjectsQuery` and pass it any options that fit your needs.
- * When your component renders, `useFetchAllProjectsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useFetchAllProjectsQuery({
- *   variables: {
- *      filters: // value for 'filters'
- *      pagination: // value for 'pagination'
- *      search: // value for 'search'
- *   },
- * });
- */
-export function useFetchAllProjectsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>(
-    FetchAllProjectsDocument,
-    options,
-  );
-}
-export function useFetchAllProjectsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<FetchAllProjectsQuery, FetchAllProjectsQueryVariables>(
-    FetchAllProjectsDocument,
-    options,
-  );
-}
-export type FetchAllProjectsQueryHookResult = ReturnType<typeof useFetchAllProjectsQuery>;
-export type FetchAllProjectsLazyQueryHookResult = ReturnType<typeof useFetchAllProjectsLazyQuery>;
-export type FetchAllProjectsQueryResult = Apollo.QueryResult<
-  FetchAllProjectsQuery,
-  FetchAllProjectsQueryVariables
 >;
 export const FetchAllDocumentCategoriesDocument = gql`
   query FetchAllDocumentCategories {

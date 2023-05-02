@@ -6,9 +6,9 @@ import { generatePath } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { RequestStatusChoice } from '~/services/gql/__generated__/globalTypes';
+import { FetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { FetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import {
   FetchRequestDetailsQuery,
@@ -25,7 +25,7 @@ export enum AssignedToVariant {
 
 interface Props {
   variant: AssignedToVariant;
-  allUsers: FetchAllUsersQuery['usersList']['results'];
+  allUsers: Exclude<FetchUserGlossaryListQuery['userGlossaryList']['results'], null | undefined>;
   canReadUserDetails?: boolean;
   id: number;
   status: RequestStatusChoice;
@@ -60,7 +60,7 @@ export const AssignedTo: FC<Props> = ({
     () =>
       allUsers
         ? allUsers.map(user => ({
-            label: user.fullName ?? '',
+            label: user.fullName,
             onSelect: () => updateAssignedToRequest(user.id),
           }))
         : [],

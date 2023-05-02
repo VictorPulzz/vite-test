@@ -5,8 +5,8 @@ import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useAddParticipantForm } from './hooks/useAddParticipantForm';
 
@@ -26,18 +26,20 @@ export const AddParticipantModal: FC<Props> = ({
     repositoryId,
   });
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
       },
     },
-    fetchPolicy: 'cache-and-network',
   });
 
   const outsideRepositoryUsers = useMemo(
-    () => allUsers?.usersList.results.filter(user => !repositoryParticipantsIds?.includes(user.id)),
-    [allUsers?.usersList.results, repositoryParticipantsIds],
+    () =>
+      allUsers?.userGlossaryList.results.filter(
+        user => !repositoryParticipantsIds?.includes(user.id),
+      ),
+    [allUsers?.userGlossaryList, repositoryParticipantsIds],
   );
 
   const usersOptions = useSelectOptions(outsideRepositoryUsers, {

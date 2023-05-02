@@ -23,19 +23,6 @@ query FetchRepositories(
   }
 }
 
-query FetchAllRepositories(
-  $filters: RepositoryFilter
-  $pagination: PaginationInput!
-  $search: String
-) {
-  repositoryList(filters: $filters, pagination: $pagination, search: $search) {
-    results {
-      value: id
-      label: name
-    }
-  }
-}
-
 mutation RemoveRepository($input: IDInput!) {
   repositoryDelete(data: $input) {
     message

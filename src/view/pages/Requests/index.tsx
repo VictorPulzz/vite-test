@@ -8,12 +8,12 @@ import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { RequestFilter, RequestSort } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { useAppSelector } from '~/store/hooks';
 import { NewRequestModal } from '~/view/components/NewRequestModal';
 import { useSortingState } from '~/view/hooks/useSortingState';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
-import { useFetchAllUsersQuery } from '../ProjectDetails/__generated__/schema';
 import { useFetchRequestsListQuery } from './__generated__/schema';
 import { RequestsFilterModal } from './components/RequestsFilterModal';
 import { useRequestsTableColumns } from './hooks/useRequestsTableColumns';
@@ -52,7 +52,7 @@ export const RequestsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -108,7 +108,7 @@ export const RequestsPage: FC = () => {
         isOpen={isRequestsFilterModalOpen}
         close={closeRequestsFilterModal}
         setFilter={setFilter}
-        users={allUsers?.usersList.results ?? []}
+        users={allUsers?.userGlossaryList.results ?? []}
       />
     </SidebarLayout>
   );

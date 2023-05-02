@@ -1,6 +1,6 @@
 import { DateField, Icon } from '@appello/web-ui';
 import { InlineFields } from '@appello/web-ui';
-import { SelectField, SelectOption } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
 import { TextAreaField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
 import { useSelectOptions } from '@appello/web-ui';
@@ -49,12 +49,12 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
   const platformsOptions = useSelectOptions(platforms?.platformList.results, {
     value: 'value',
     label: 'label',
-  }) as SelectOption<number>[];
+  });
 
   const statusesOptions = useSelectOptions(statuses?.projectStatusesList.results, {
     value: 'value',
     label: 'label',
-  }) as SelectOption<number>[];
+  });
 
   const phasesOptions = enumToSelectOptions(ProjectPhaseChoice);
 

@@ -10,11 +10,11 @@ import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestStatusChoice } from '~/services/gql/__generated__/globalTypes';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import {
   FetchRequestsListDocument,
@@ -38,7 +38,7 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
     fetchPolicy: 'cache-and-network',
   });
 
-  const { data: allUsers } = useFetchAllUsersQuery({
+  const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
@@ -100,7 +100,7 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
           </div>
           <AssignedTo
             variant={AssignedToVariant.FIELD}
-            allUsers={allUsers?.usersList.results ?? []}
+            allUsers={allUsers?.userGlossaryList.results ?? []}
             id={requestId}
             status={request.requestDetails.status}
             assignedTo={request.requestDetails.assignedTo}
