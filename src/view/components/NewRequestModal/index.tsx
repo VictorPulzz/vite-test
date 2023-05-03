@@ -7,6 +7,7 @@ import { Button, ButtonVariant } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -49,6 +50,7 @@ export const NewRequestModal: FC<Props> = ({
         navigate(-1);
       }
       close();
+      toast.success('Your request has been sent', { duration: 2500 });
     },
     repositoryId,
   });
@@ -59,6 +61,8 @@ export const NewRequestModal: FC<Props> = ({
       form.setValue('projectId', Number(projectId));
     }
   }, [form, projectId, repositoryId, requestType]);
+
+  const typeField = form.watch('type');
 
   const { data: rolesList, loading: isLoadingRolesList } = useFetchRolesListQuery();
 
@@ -75,6 +79,9 @@ export const NewRequestModal: FC<Props> = ({
     variables: {
       pagination: {
         limit: 0,
+      },
+      filters: {
+        hasRepositories: typeField === RequestTypeChoice.ACCESS_REPOSITORY,
       },
     },
     fetchPolicy: 'cache-and-network',
@@ -130,8 +137,6 @@ export const NewRequestModal: FC<Props> = ({
   const repositoryAccessLevelOptions = enumToSelectOptions(RepositoryAccessLevelChoice);
   const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
   const environmentOptions = enumToSelectOptions(ProjectEnvironmentChoice);
-
-  const typeField = form.watch('type');
 
   const isLoading =
     isLoadingRolesList || isLoadingAllUsers || isLoadingAllProjects || isLoadingAllTechnologies;

@@ -48,12 +48,19 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
               className="w-[32px] h-[32px] bg-gray/10"
               iconClassName="w-[18px] h-[18px] text-gray-1"
             />
-            {isRequestResolved && dueDate ? (
-              <span className="text-p4">{format(new Date(dueDate), DateFormat.D_MMM_Y)}</span>
+            {isRequestResolved ? (
+              <span className="text-p4">
+                {dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}
+              </span>
             ) : (
               <DateInput
-                onChange={date => updateDueDate(date)}
-                value={dueDate ? new Date(dueDate) : new Date()}
+                onChange={date => {
+                  if (date) {
+                    updateDueDate(date);
+                  }
+                }}
+                value={dueDate ? new Date(dueDate) : null}
+                placeholder="Due date"
               />
             )}
           </div>
@@ -65,8 +72,13 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
             <span>{dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}</span>
           ) : (
             <DateInput
-              onChange={date => updateDueDate(date)}
-              value={dueDate ? new Date(dueDate) : new Date()}
+              onChange={date => {
+                if (date) {
+                  updateDueDate(date);
+                }
+              }}
+              value={dueDate ? new Date(dueDate) : null}
+              placeholder="Due date"
             />
           )}
         </div>

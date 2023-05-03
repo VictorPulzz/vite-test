@@ -11,6 +11,7 @@ import {
   RepositoryTypeChoice,
   RequestTypeChoice,
 } from '~/services/gql/__generated__/globalTypes';
+import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import {
   FetchEnvsRequestsListDocument,
   FetchIntegrationsRequestsListDocument,
@@ -172,26 +173,35 @@ export function useCreateNewRequestForm({
 
   const handleSubmit = useCallback(
     async (values: CreateNewRequestFormValues) => {
-      await createRequest({
-        variables: {
-          input: {
-            ...values,
-            type: values.type as RequestTypeChoice,
-            assignedRoleId: Number(values.assignedRoleId),
-            projectId: Number(values.projectId),
-            dueDate: values.dueDate ? formatISO(values.dueDate, { representation: 'date' }) : null,
+      try {
+        await createRequest({
+          variables: {
+            input: {
+              ...values,
+              type: values.type as RequestTypeChoice,
+              assignedRoleId: Number(values.assignedRoleId),
+              projectId: Number(values.projectId),
+              dueDate: values.dueDate
+                ? formatISO(values.dueDate, { representation: 'date' })
+                : null,
+            },
           },
-        },
-        refetchQueries: [
-          FetchRequestsListDocument,
-          FetchReposRequestsListDocument,
-          FetchEnvsRequestsListDocument,
-          FetchIntegrationsRequestsListDocument,
-        ],
-      });
-      onSubmitSuccessful?.();
+          refetchQueries: [
+            FetchRequestsListDocument,
+            FetchReposRequestsListDocument,
+            FetchEnvsRequestsListDocument,
+            FetchIntegrationsRequestsListDocument,
+          ],
+        });
+        onSubmitSuccessful?.();
+      } catch (e) {
+        processGqlErrorResponse<CreateNewRequestFormValues>(e, {
+          fields: ['description', 'integrationName'],
+          setFormError: form.setError,
+        });
+      }
     },
-    [createRequest, onSubmitSuccessful],
+    [createRequest, form.setError, onSubmitSuccessful],
   );
 
   return useMemo(

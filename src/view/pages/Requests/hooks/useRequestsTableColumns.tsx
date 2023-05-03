@@ -56,7 +56,6 @@ export function useRequestsTableColumns() {
           <AssignedTo
             variant={AssignedToVariant.CELL}
             allUsers={allUsers?.userGlossaryList.results ?? []}
-            canReadUserDetails={canReadUserDetails}
             id={id}
             status={status}
             assignedTo={assignedTo}
@@ -99,9 +98,6 @@ export function useRequestsTableColumns() {
         return (
           <DueDate variant={DueDateVariant.CELL} id={id} dueDate={dueDate ?? ''} status={status} />
         );
-      },
-      meta: {
-        className: 'max-w-[150px]',
       },
     }),
     columnHelper.accessor('status', {
