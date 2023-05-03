@@ -197,14 +197,16 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
               </span>
             </div>
           )}
-          <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={resolveRequest}
-            label={isRequestResolved ? 'Resolved' : 'Resolve'}
-            className="mt-6"
-            isLoading={isLoadingUpdateRequest}
-            disabled={isRequestResolved}
-          />
+          <div className="flex justify-end">
+            <Button
+              variant={ButtonVariant.PRIMARY}
+              onClick={resolveRequest}
+              label={isRequestResolved ? 'Resolved' : 'Resolve'}
+              className="mt-6 w-[150px]"
+              isLoading={isLoadingUpdateRequest}
+              disabled={isRequestResolved}
+            />
+          </div>
         </div>
       )}
     </Modal>

@@ -285,13 +285,15 @@ export const NewRequestModal: FC<Props> = ({
               <TextField name="integrationName" control={form.control} label="Name" required />
             </>
           )}
-          <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={handleSubmit}
-            label="Create request"
-            className="mt-6"
-            isLoading={form.formState.isSubmitting}
-          />
+          <div className="flex justify-end">
+            <Button
+              variant={ButtonVariant.PRIMARY}
+              onClick={handleSubmit}
+              label="Create request"
+              className="mt-6 w-[150px]"
+              isLoading={form.formState.isSubmitting}
+            />
+          </div>
         </>
       )}
     </Modal>
