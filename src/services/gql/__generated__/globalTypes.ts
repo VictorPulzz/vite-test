@@ -1188,6 +1188,7 @@ export type RepositoryCreateInput = {
   technologies?: InputMaybe<Array<Scalars['Int']>>;
   type: RepositoryTypeChoice;
   useTerraform?: InputMaybe<Scalars['Boolean']>;
+  withExistingRepo?: InputMaybe<Scalars['Boolean']>;
   withRelay?: InputMaybe<Scalars['Boolean']>;
 };
 

@@ -98,6 +98,7 @@ export type FetchProjectRepositoriesListQueryVariables = Types.Exact<{
 
 export type FetchProjectRepositoriesListQuery = {
   projectRepositoryList: {
+    projectInGit: boolean;
     projectRepositories?: Array<{
       id: number;
       name?: string | null;
@@ -579,6 +580,7 @@ export type RemoveProjectMemberMutationOptions = Apollo.BaseMutationOptions<
 export const FetchProjectRepositoriesListDocument = gql`
   query FetchProjectRepositoriesList($data: IDInput!) {
     projectRepositoryList(data: $data) {
+      projectInGit
       projectRepositories {
         id
         name

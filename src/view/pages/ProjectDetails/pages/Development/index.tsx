@@ -15,6 +15,7 @@ import {
 import { DevelopmentEnvironments } from './components/Environments';
 import { DevelopmentIntegrations } from './components/Integrations';
 import { DevelopmentRepositories } from './components/Repositories';
+import { RepositoriesEmptyState } from './components/Repositories/components/RepositoriesEmptyState';
 
 export const Development: FC = () => {
   const params = useParams();
@@ -121,7 +122,10 @@ export const Development: FC = () => {
         </div>
       ) : (
         <div className="flex flex-col gap-5">
-          <DevelopmentRepositories repositories={projectRepositories} projectId={projectId} />
+          {repositoriesList?.projectRepositoryList.projectInGit && (
+            <DevelopmentRepositories repositories={projectRepositories} projectId={projectId} />
+          )}
+          {!repositoriesList?.projectRepositoryList.projectInGit && <RepositoriesEmptyState />}
           <DevelopmentEnvironments
             environments={environmentsList?.projectEnvironmentList ?? []}
             envsRequests={envsRequests?.requestList.results ?? []}

@@ -98,6 +98,7 @@ mutation RemoveProjectMember($input: ProjectMemberInput!) {
 
 query FetchProjectRepositoriesList($data: IDInput!) {
   projectRepositoryList(data: $data) {
+    projectInGit
     projectRepositories {
       id
       name

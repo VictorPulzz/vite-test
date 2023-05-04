@@ -1055,6 +1055,7 @@ input RepositoryCreateInput {
   technologies: [Int!]
   type: RepositoryTypeChoice!
   useTerraform: Boolean = false
+  withExistingRepo: Boolean = null
   withRelay: Boolean = false
 }
 
