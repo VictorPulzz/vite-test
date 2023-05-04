@@ -19,6 +19,7 @@ const columnHelper = createColumnHelper<RepositoryResultType>();
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useRepositoriesTableColumns() {
   const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+  const canWriteRepository = useHasAccess(Permission.WRITE_REPOSITORY);
 
   return [
     columnHelper.accessor('name', {
@@ -116,6 +117,7 @@ export function useRepositoriesTableColumns() {
     }),
     columnHelper.group({
       id: 'more',
+      enableHiding: !canWriteRepository,
       cell: MoreCell,
       meta: {
         className: 'w-0',

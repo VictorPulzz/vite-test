@@ -18,6 +18,7 @@ const columnHelper = createColumnHelper<ProjectResultType>();
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useProjectsTableColumns() {
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+  const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
 
   return [
     columnHelper.accessor('name', {
@@ -94,6 +95,7 @@ export function useProjectsTableColumns() {
     }),
     columnHelper.group({
       id: 'more',
+      enableHiding: !canWriteProject,
       cell: MoreCell,
       meta: {
         className: 'w-0',

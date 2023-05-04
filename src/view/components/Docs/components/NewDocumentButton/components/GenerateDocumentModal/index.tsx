@@ -62,7 +62,6 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-1/3"

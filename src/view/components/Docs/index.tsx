@@ -3,11 +3,10 @@ import { Select } from '@appello/web-ui';
 import { useListQueryParams } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useMemo, useState } from 'react';
-import { matchPath, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
-import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import {
   DocumentFilter,
@@ -37,20 +36,18 @@ interface Props {
 }
 
 export const Docs: FC<Props> = ({ type }) => {
-  const location = useLocation();
   const params = useParams();
-  const projectId = params.id ? Number(params.id) : undefined;
-  const userId = params.id ? Number(params.id) : undefined;
+
+  const projectId = params.id && type === DocsType.PROJECT ? Number(params.id) : undefined;
+  const userId = params.id && type === DocsType.USER ? Number(params.id) : undefined;
 
   const canWriteUserDocs = useHasAccess(Permission.WRITE_USER_DOCS);
 
   const { searchValue, setSearchValue, offset } = useListQueryParams<DocumentFilter>();
 
-  const isUserDetailsPage = !!matchPath(ROUTES.USER_DETAILS, location?.pathname);
-
   const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
-    addedById: (!isUserDetailsPage && userId) || undefined,
-    userId: (isUserDetailsPage && userId) || undefined,
+    addedById: undefined,
+    userId: type === DocsType.USER ? userId : undefined,
     categoryId: undefined,
     projectId: projectId || undefined,
   });

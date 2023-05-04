@@ -45,7 +45,6 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-1/3"

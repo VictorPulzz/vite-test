@@ -66,7 +66,7 @@ export const RequestsPage: FC = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-h4">Requests</h1>
-          <p className="text-p5 text-gray-2">{data?.requestList.count ?? 0} requests in total</p>
+          <p className="text-p5 text-gray-2">Your department’s incoming requests</p>
         </div>
         <div className="flex items-center gap-3">
           <Button

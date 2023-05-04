@@ -49,7 +49,6 @@ export const AddNewMemberModal: FC<Props> = ({
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-[22.18rem]"

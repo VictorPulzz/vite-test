@@ -39,7 +39,6 @@ export const SettingsSecurityPage: React.FC = () => {
             label="Confirm new password"
             size={InputSize.LARGE}
             placeholder="New password"
-            autoFocus
             autoComplete="new-password"
             className="mb-4"
           />

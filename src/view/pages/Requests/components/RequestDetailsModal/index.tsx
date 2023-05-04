@@ -62,7 +62,6 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-[31.46rem]"

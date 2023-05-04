@@ -16,7 +16,7 @@ export const CLIENT_TEAM_TABLE_COLUMNS = [
       return (
         <div className="flex items-center gap-1">
           <span>{props.getValue()}</span>
-          {pointContact && <span className="text-green">point of contact</span>}
+          {pointContact && <span className="text-green whitespace-nowrap">point of contact</span>}
         </div>
       );
     },
@@ -36,6 +36,9 @@ export const CLIENT_TEAM_TABLE_COLUMNS = [
   columnHelper.accessor('notes', {
     id: 'notes',
     header: 'Notes',
+    meta: {
+      className: 'break-all',
+    },
   }),
 
   columnHelper.group({

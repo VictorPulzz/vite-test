@@ -54,7 +54,6 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"

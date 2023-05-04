@@ -35,7 +35,6 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-5/9"

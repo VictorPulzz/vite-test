@@ -51,7 +51,6 @@ export const AddParticipantModal: FC<Props> = ({
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       onAfterClose={resetForm}

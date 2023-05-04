@@ -23,7 +23,6 @@ export const UpdateRepositoryModal: FC<Props> = ({ isOpen, close, repository }) 
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-[400px]"
