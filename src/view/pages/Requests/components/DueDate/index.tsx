@@ -1,5 +1,4 @@
-import { IconContainer } from '@appello/web-ui';
-import { DateInput } from '@appello/web-ui';
+import { DatePicker, IconContainer } from '@appello/web-ui';
 import { format, formatISO } from 'date-fns';
 import React, { FC, useCallback } from 'react';
 
@@ -37,6 +36,24 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
 
   const isRequestResolved = status === RequestStatusChoice.RESOLVED;
 
+  const bodyElement = (
+    <div>
+      {isRequestResolved ? (
+        <span>{dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}</span>
+      ) : (
+        <DatePicker
+          onChange={date => {
+            if (date) {
+              updateDueDate(date);
+            }
+          }}
+          defaultValue={dueDate ? new Date(dueDate) : undefined}
+          placeholder="Due date"
+        />
+      )}
+    </div>
+  );
+
   return (
     <div>
       {variant === DueDateVariant.FIELD && (
@@ -48,41 +65,11 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
               className="w-[32px] h-[32px] bg-gray/10"
               iconClassName="w-[18px] h-[18px] text-gray-1"
             />
-            {isRequestResolved ? (
-              <span className="text-p4">
-                {dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}
-              </span>
-            ) : (
-              <DateInput
-                onChange={date => {
-                  if (date) {
-                    updateDueDate(date);
-                  }
-                }}
-                value={dueDate ? new Date(dueDate) : null}
-                placeholder="Due date"
-              />
-            )}
+            {bodyElement}
           </div>
         </div>
       )}
-      {variant === DueDateVariant.CELL && (
-        <div>
-          {isRequestResolved ? (
-            <span>{dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}</span>
-          ) : (
-            <DateInput
-              onChange={date => {
-                if (date) {
-                  updateDueDate(date);
-                }
-              }}
-              value={dueDate ? new Date(dueDate) : null}
-              placeholder="Due date"
-            />
-          )}
-        </div>
-      )}
+      {variant === DueDateVariant.CELL && bodyElement}
     </div>
   );
 };
