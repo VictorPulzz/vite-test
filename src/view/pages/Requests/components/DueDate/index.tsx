@@ -1,5 +1,6 @@
 import { DatePicker, IconContainer } from '@appello/web-ui';
-import { format, formatISO } from 'date-fns';
+import clsx from 'clsx';
+import { format, formatISO, isPast } from 'date-fns';
 import React, { FC, useCallback } from 'react';
 
 import { DateFormat } from '~/constants/dates';
@@ -36,19 +37,36 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
 
   const isRequestResolved = status === RequestStatusChoice.RESOLVED;
 
+  const handleDateChange = useCallback(
+    (date: Date | null) => {
+      if (date) {
+        updateDueDate(date);
+      }
+    },
+    [updateDueDate],
+  );
+
   const bodyElement = (
     <div>
       {isRequestResolved ? (
-        <span>{dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}</span>
+        <span className={clsx(variant === DueDateVariant.FIELD && 'text-p4')}>
+          {dueDate ? format(new Date(dueDate), DateFormat.D_MMM_Y) : 'Due date'}
+        </span>
       ) : (
         <DatePicker
-          onChange={date => {
-            if (date) {
-              updateDueDate(date);
-            }
-          }}
+          onChange={handleDateChange}
           defaultValue={dueDate ? new Date(dueDate) : undefined}
           placeholder="Due date"
+          disabledDate={isPast}
+          leftIconElement={
+            variant === DueDateVariant.FIELD ? (
+              <IconContainer
+                name="calendar"
+                className="w-[32px] h-[32px] bg-gray/10"
+                iconClassName="w-[18px] h-[18px] text-gray-1"
+              />
+            ) : undefined
+          }
         />
       )}
     </div>
@@ -59,14 +77,7 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
       {variant === DueDateVariant.FIELD && (
         <div className="flex items-center gap-[25px]">
           <span className="text-p4 text-gray-2">Due date</span>
-          <div className="flex gap-3 items-center ml-3">
-            <IconContainer
-              name="calendar"
-              className="w-[32px] h-[32px] bg-gray/10"
-              iconClassName="w-[18px] h-[18px] text-gray-1"
-            />
-            {bodyElement}
-          </div>
+          <div className="flex gap-3 items-center ml-3">{bodyElement}</div>
         </div>
       )}
       {variant === DueDateVariant.CELL && bodyElement}
