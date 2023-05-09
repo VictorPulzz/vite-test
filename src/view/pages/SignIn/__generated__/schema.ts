@@ -18,7 +18,7 @@ export type SignInMutation = {
       firstName: string;
       lastName: string;
       fullName: string;
-      photo?: { fileName: string; size: number; url: string } | null;
+      photo?: { url: string } | null;
       role?: { id: number; name: string; permissionsList: Array<string> } | null;
     };
   };
@@ -36,8 +36,6 @@ export const SignInDocument = gql`
         lastName
         fullName
         photo {
-          fileName
-          size
           url
         }
         role {

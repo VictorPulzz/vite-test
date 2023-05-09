@@ -14,7 +14,7 @@ export type MeQuery = {
     email: string;
     phone?: string | null;
     address?: string | null;
-    photo?: { url: string; fileName: string; size: number } | null;
+    photo?: { url: string } | null;
   };
 };
 
@@ -30,7 +30,7 @@ export type ProfileUpdateMutation = {
     email: string;
     phone?: string | null;
     address?: string | null;
-    photo?: { url: string; fileName: string; size: number } | null;
+    photo?: { url: string } | null;
     role?: { id: number; name: string; permissionsList: Array<string> } | null;
   };
 };
@@ -46,8 +46,6 @@ export const MeDocument = gql`
       address
       photo {
         url
-        fileName
-        size
       }
     }
   }
@@ -92,8 +90,6 @@ export const ProfileUpdateDocument = gql`
       address
       photo {
         url
-        fileName
-        size
       }
       role {
         id

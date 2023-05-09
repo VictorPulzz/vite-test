@@ -4,7 +4,6 @@ import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
-import { DocumentType } from '~/services/gql/__generated__/globalTypes';
 import { downloadFile } from '~/utils/downloadFile';
 
 import {
@@ -17,13 +16,17 @@ import {
 import { DocsType } from '../../types';
 
 interface Props {
-  file: DocumentType['file'];
+  fileUrl: string;
   documentId: number;
+  documentName: string;
   type: DocsType;
 }
 
-export const DocumentMenu: FC<Props> = ({ file, documentId, type }) => {
-  const downloadDocument = useCallback(() => downloadFile(file.url, file.fileName), [file]);
+export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, type }) => {
+  const downloadDocument = useCallback(
+    () => downloadFile(fileUrl, documentName),
+    [fileUrl, documentName],
+  );
 
   const refetchList = useMemo(() => {
     switch (true) {

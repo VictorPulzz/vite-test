@@ -9,8 +9,6 @@ mutation SignIn($data: LoginInput!) {
       lastName
       fullName
       photo {
-        fileName
-        size
         url
       }
       role {

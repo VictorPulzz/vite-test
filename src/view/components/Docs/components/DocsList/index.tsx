@@ -40,11 +40,11 @@ export const DocsList: FC<Props> = ({ type, data, fetchMore }) => {
             >
               <div className="flex gap-3 items-center min-w-0">
                 <div className="bg-blue/10 p-3 text-blue text-p5 rounded-md w-10 h-10 flex items-center justify-center">
-                  {getFileExtension(document.file.fileName)}
+                  {getFileExtension(document.name)}
                 </div>
                 <div className="flex flex-col gap-[5px] truncate">
                   <span className="text-p3 text-black leading-4 truncate">
-                    {document.file.fileName.split('.').slice(0, -1).join('.')}
+                    {document.name.split('.').slice(0, -1).join('.')}
                   </span>
                   <span className="text-p5 text-gray-2 leading-4 truncate">
                     {format(new Date(String(document.createdAt)), DateFormat.D_MMM_Y)} •{' '}
@@ -56,7 +56,12 @@ export const DocsList: FC<Props> = ({ type, data, fetchMore }) => {
                   </span>
                 </div>
               </div>
-              <DocumentMenu file={document.file} documentId={document.id} type={type} />
+              <DocumentMenu
+                fileUrl={document.file.url}
+                documentId={document.id}
+                documentName={document.name}
+                type={type}
+              />
             </div>
           ))}
         </div>

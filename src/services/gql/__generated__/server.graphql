@@ -94,7 +94,7 @@ input DocumentGenerateFieldInput {
 
 input DocumentGenerateInput {
   categoryId: Int = null
-  fields: [DocumentGenerateFieldInput!] = null
+  fields: [DocumentGenerateFieldInput!]!
   projectId: Int = null
   templateId: Int!
   userId: Int = null
@@ -147,6 +147,7 @@ type DocumentType {
   file: FileType!
   id: Int!
   internal: Boolean!
+  name: String!
   project: ProjectType
   user: ProfileType
 }
@@ -172,8 +173,7 @@ type EnvironmentCredentialsType {
 }
 
 type FileType {
-  fileName: String!
-  size: Int!
+  key: String!
   url: String!
 }
 

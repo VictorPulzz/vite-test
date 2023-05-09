@@ -16,9 +16,10 @@ export type FetchInternalDocumentsQuery = {
     count: number;
     results: Array<{
       id: number;
+      name: string;
       createdAt: string;
       project?: { name: string } | null;
-      file: { fileName: string; url: string; size: number };
+      file: { url: string };
       addedBy?: { fullName: string } | null;
     }>;
   };
@@ -36,9 +37,10 @@ export type FetchClientDocumentsQuery = {
     count: number;
     results: Array<{
       id: number;
+      name: string;
       createdAt: string;
       project?: { name: string } | null;
-      file: { fileName: string; url: string; size: number };
+      file: { url: string };
       addedBy?: { fullName: string } | null;
     }>;
   };
@@ -56,9 +58,10 @@ export type FetchProjectDocumentsQuery = {
     count: number;
     results: Array<{
       id: number;
+      name: string;
       createdAt: string;
       project?: { name: string } | null;
-      file: { fileName: string; url: string; size: number };
+      file: { url: string };
       addedBy?: { fullName: string } | null;
     }>;
   };
@@ -76,9 +79,10 @@ export type FetchUserDocumentsQuery = {
     count: number;
     results: Array<{
       id: number;
+      name: string;
       createdAt: string;
       project?: { name: string } | null;
-      file: { fileName: string; url: string; size: number };
+      file: { url: string };
       addedBy?: { fullName: string } | null;
     }>;
   };
@@ -143,10 +147,9 @@ export const FetchInternalDocumentsDocument = gql`
         project {
           name
         }
+        name
         file {
-          fileName
           url
-          size
         }
         createdAt
         addedBy {
@@ -224,10 +227,9 @@ export const FetchClientDocumentsDocument = gql`
         project {
           name
         }
+        name
         file {
-          fileName
           url
-          size
         }
         createdAt
         addedBy {
@@ -303,10 +305,9 @@ export const FetchProjectDocumentsDocument = gql`
         project {
           name
         }
+        name
         file {
-          fileName
           url
-          size
         }
         createdAt
         addedBy {
@@ -382,10 +383,9 @@ export const FetchUserDocumentsDocument = gql`
         project {
           name
         }
+        name
         file {
-          fileName
           url
-          size
         }
         createdAt
         addedBy {

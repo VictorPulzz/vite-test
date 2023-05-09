@@ -97,7 +97,7 @@ export type DocumentGenerateFieldInput = {
 
 export type DocumentGenerateInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
-  fields?: InputMaybe<Array<DocumentGenerateFieldInput>>;
+  fields: Array<DocumentGenerateFieldInput>;
   projectId?: InputMaybe<Scalars['Int']>;
   templateId: Scalars['Int'];
   userId?: InputMaybe<Scalars['Int']>;
@@ -150,6 +150,7 @@ export type DocumentType = {
   file: FileType;
   id: Scalars['Int'];
   internal: Scalars['Boolean'];
+  name: Scalars['String'];
   project?: Maybe<ProjectType>;
   user?: Maybe<ProfileType>;
 };
@@ -175,8 +176,7 @@ export type EnvironmentCredentialsType = {
 };
 
 export type FileType = {
-  fileName: Scalars['String'];
-  size: Scalars['Int'];
+  key: Scalars['String'];
   url: Scalars['String'];
 };
 

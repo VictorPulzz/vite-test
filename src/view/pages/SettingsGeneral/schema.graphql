@@ -8,8 +8,6 @@ query Me {
     address
     photo {
       url
-      fileName
-      size
     }
   }
 }
@@ -24,8 +22,6 @@ mutation ProfileUpdate($data: ProfileInput!) {
     address
     photo {
       url
-      fileName
-      size
     }
     role {
       id

@@ -5,8 +5,6 @@ fragment AuthorizedUser on ProfileType {
   lastName
   fullName
   photo {
-    fileName
-    size
     url
   }
   role {
