@@ -82,7 +82,7 @@ export const NewRequestModal: FC<Props> = ({
         limit: 0,
       },
       filters: {
-        hasRepositories: typeField === RequestTypeChoice.ACCESS_REPOSITORY,
+        hasRepositories: typeField === RequestTypeChoice.ACCESS_REPOSITORY ? true : null,
       },
     },
     fetchPolicy: 'cache-and-network',
