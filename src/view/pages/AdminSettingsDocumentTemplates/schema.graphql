@@ -1,0 +1,19 @@
+query FetchDocumentTemplatesList {
+  documentTemplateList {
+    id
+    name
+    url
+  }
+}
+
+mutation CreateDocumentTemplate($input: DocumentTemplateInput!) {
+  documentTemplateCreate(data: $input) {
+    id
+  }
+}
+
+mutation RemoveDocumentTemplate($input: IDInput!) {
+  documentTemplateDelete(data: $input) {
+    message
+  }
+}

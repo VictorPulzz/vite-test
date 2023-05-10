@@ -6,36 +6,36 @@ import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import {
-  FetchRepositoriesDocument,
-  useRemoveRepositoryMutation,
-} from '../../../../__generated__/schema';
+  FetchDocumentTemplatesListDocument,
+  useRemoveDocumentTemplateMutation,
+} from '~/view/pages/AdminSettingsDocumentTemplates/__generated__/schema';
 
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   id: number;
   name: string;
 }
 
-export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) => {
-  const [removeRepository] = useRemoveRepositoryMutation();
+export const DeleteDocumentTemplateModal: FC<Props> = ({ isOpen, close, id, name }) => {
+  const [removeDocumentTemplate] = useRemoveDocumentTemplateMutation();
 
-  const removeCurrentRepository = useCallback(() => {
+  const removeCurrentDocumentTamplate = useCallback(() => {
     toast.promise(
-      removeRepository({
+      removeDocumentTemplate({
         variables: {
           input: { id },
         },
-        refetchQueries: [FetchRepositoriesDocument],
+        refetchQueries: [FetchDocumentTemplatesListDocument],
       }),
       {
-        loading: 'Deleting repository...',
-        success: 'Repository deleted',
+        loading: 'Deleting document template...',
+        success: 'Document template deleted',
         error: e => {
           const errors = getGqlError(e?.graphQLErrors);
-          return `Error while deleting repository: ${JSON.stringify(errors)}`;
+          return `Error while deleting document template: ${JSON.stringify(errors)}`;
         },
       },
     );
-  }, [id, removeRepository]);
+  }, [id, removeDocumentTemplate]);
 
   return (
     <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">
@@ -43,12 +43,12 @@ export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) =>
         <div className="p-10 rounded-full bg-gray-7 mb-2">
           <Icon name="trash" size={31} className="text-primary m-auto" />
         </div>
-        <h1 className="text-h4 mb-2 ">Delete repository</h1>
+        <h1 className="text-h4 mb-2 ">Delete document template</h1>
         <p className="mb-6 text-center leading-6">Are you sure you want to delete {name}?</p>
         <div className="flex w-full">
           <Button
             variant={ButtonVariant.SECONDARY}
-            onClick={removeCurrentRepository}
+            onClick={removeCurrentDocumentTamplate}
             label="Yes, delete"
             className="mr-2 text-red"
           />

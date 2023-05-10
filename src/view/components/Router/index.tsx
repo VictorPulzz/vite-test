@@ -7,6 +7,7 @@ import { useAppSelector } from '~/store/hooks';
 import { Docs } from '~/view/components/Docs';
 import { DocsType } from '~/view/components/Docs/types';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { AdminSettingsDocumentTemplatesPage } from '~/view/pages/AdminSettingsDocumentTemplates';
 import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
@@ -204,6 +205,14 @@ export const Router: FC = () => {
               path: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
               element: canWriteAdminSettings ? (
                 <AdminSettingsIntegrationsPage />
+              ) : (
+                <Navigate to={ROUTES.HOME} />
+              ),
+            },
+            {
+              path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
+              element: canWriteAdminSettings ? (
+                <AdminSettingsDocumentTemplatesPage />
               ) : (
                 <Navigate to={ROUTES.HOME} />
               ),
