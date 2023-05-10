@@ -79,10 +79,6 @@ export function useSidebarItems(): SidebarItem[] {
             title: 'Integrations',
             link: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
           },
-          {
-            title: 'Document templates',
-            link: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
-          },
         ],
       },
     ],

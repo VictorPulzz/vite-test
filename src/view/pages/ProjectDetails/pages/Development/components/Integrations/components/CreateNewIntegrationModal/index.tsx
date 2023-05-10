@@ -5,7 +5,6 @@ import { TextField } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { nanoid } from '@reduxjs/toolkit';
-import clsx from 'clsx';
 import React, { FC } from 'react';
 import { useFieldArray } from 'react-hook-form';
 
@@ -66,19 +65,13 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
               <TextField name={`keys.${index}.title`} control={control} label="Key title" />
               <TextField name={`keys.${index}.value`} control={control} label="Key value" />
             </div>
-            <button
-              className={clsx('w-[20px] mt-4', {
-                'mb-4': !!formState.errors.keys?.[index],
-              })}
-              type="button"
-              onClick={() => remove(index)}
-            >
+            <button className="w-[20px] mt-4" type="button" onClick={() => remove(index)}>
               <Icon name="close" size={15} />
             </button>
           </div>
         ))}
       </div>
-      <button className="w-full" type="button" onClick={() => append(emptyKeysField)}>
+      <button type="button" onClick={() => append(emptyKeysField)}>
         <h2 className="mt-3 text-p2 text-blue hover:underline">+ Add key</h2>
       </button>
       <Button
