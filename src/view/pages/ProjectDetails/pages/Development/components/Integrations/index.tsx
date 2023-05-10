@@ -44,10 +44,10 @@ export const DevelopmentIntegrations: FC<Props> = ({
   return (
     <div>
       <SectionContainer title="Integrations">
-        {integrations.length === 0 && (
+        {integrations.length === 0 && integrationsRequests.length === 0 && (
           <EmptyState iconName="repositories" label="No integrations here yet" />
         )}
-        {!!integrations.length && (
+        {(!!integrations.length || !!integrationsRequests.length) && (
           <IntegrationsList
             integrations={integrations}
             integrationsRequests={integrationsRequests}

@@ -40,10 +40,10 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests,
   return (
     <div>
       <SectionContainer title="Environments">
-        {environments.length === 0 && (
+        {environments.length === 0 && envsRequests.length === 0 && (
           <EmptyState iconName="repositories" label="No environments here yet" />
         )}
-        {!!environments.length && (
+        {(!!environments.length || !!envsRequests.length) && (
           <EnvironmentsList environments={environments} envsRequests={envsRequests} />
         )}
         <Button
