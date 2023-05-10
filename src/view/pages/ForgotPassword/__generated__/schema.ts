@@ -8,10 +8,7 @@ export type ForgotPasswordMutationVariables = Types.Exact<{
   input: Types.ForgotPasswordInput;
 }>;
 
-export type ForgotPasswordMutation = {
-  __typename?: 'Mutation';
-  forgotPassword: { __typename?: 'ForgotPasswordType'; message: string };
-};
+export type ForgotPasswordMutation = { forgotPassword: { message: string } };
 
 export const ForgotPasswordDocument = gql`
   mutation ForgotPassword($input: ForgotPasswordInput!) {

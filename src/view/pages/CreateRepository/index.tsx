@@ -1,18 +1,19 @@
 import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { SelectField } from '@ui/components/form/SelectField';
-import { TextField } from '@ui/components/form/TextField';
-import React, { FC, useEffect, useMemo } from 'react';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import React, { FC, useEffect } from 'react';
+import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { useFetchProjectGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { InlineFields } from '~/view/ui/components/form/InlineFields';
 
-import { useFetchAllProjectsQuery } from '../ProjectDetails/__generated__/schema';
 import {
   useFetchBoilerplateListQuery,
   useFetchTechnologiesListQuery,
@@ -22,12 +23,14 @@ import styles from './styles.module.scss';
 
 export const CreateRepositoryPage: FC = () => {
   const navigate = useNavigate();
-
   const searchParams = useSearchParams();
 
-  const { data: allProjects } = useFetchAllProjectsQuery({
+  const { data: allProjects } = useFetchProjectGlossaryListQuery({
     variables: {
-      pagination: { limit: 0 },
+      pagination: {
+        limit: 0,
+      },
+      filters: { inGit: true },
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -41,33 +44,32 @@ export const CreateRepositoryPage: FC = () => {
 
   const { data: allBoilerplates } = useFetchBoilerplateListQuery();
 
-  const {
-    form: { register, control, formState, setValue },
-    handleSubmit,
-  } = useCreateRepositoryForm({
+  const { form, handleSubmit } = useCreateRepositoryForm({
     onSubmitSuccessful: () => navigate(-1),
   });
 
+  const withExistingRepo = useWatch({ control: form.control, name: 'withExistingRepo' });
+
   useEffect(() => {
     if (searchParams.projectId) {
-      setValue('projectId', +searchParams.projectId);
+      form.setValue('projectId', +searchParams.projectId);
     }
-  }, [searchParams.projectId, setValue]);
+  }, [searchParams.projectId, form.setValue, form]);
 
-  const projectsOptions = useMemo(
-    () => allProjects?.projectsList.results ?? [],
-    [allProjects?.projectsList.results],
-  );
+  const projectsOptions = useSelectOptions(allProjects?.projectGlossaryList.results, {
+    value: 'id',
+    label: 'name',
+  });
 
-  const technologiesOptions = useMemo(
-    () => allTechnologies?.technologyList.results ?? [],
-    [allTechnologies],
-  );
+  const technologiesOptions = useSelectOptions(allTechnologies?.technologyList.results, {
+    value: 'value',
+    label: 'label',
+  });
 
-  const boilerplatesOptions = useMemo(
-    () => allBoilerplates?.boilerplateList ?? [],
-    [allBoilerplates?.boilerplateList],
-  );
+  const boilerplatesOptions = useSelectOptions(allBoilerplates?.boilerplateList, {
+    value: 'value',
+    label: 'label',
+  });
 
   const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
 
@@ -82,35 +84,35 @@ export const CreateRepositoryPage: FC = () => {
             label="Create repository"
             className="w-36"
             onClick={handleSubmit}
-            isLoading={formState.isSubmitting}
+            isLoading={form.formState.isSubmitting}
           />
         }
       >
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
           <InlineFields>
-            <TextField name="name" control={control} label="Name" required />
+            <TextField name="name" control={form.control} label="Name" required />
             <SelectField
               name="projectId"
               options={projectsOptions}
-              control={control}
+              control={form.control}
               label="Project"
               required
-              // TODO add disabled if searchParams.projectId===true
+              disabled={!!searchParams.projectId}
             />
           </InlineFields>
           <InlineFields>
             <SelectField
               name="type"
               options={repositoryTypeOptions}
-              control={control}
+              control={form.control}
               label="Type"
               required
             />
             <SelectField
               name="technologies"
               options={technologiesOptions}
-              control={control}
+              control={form.control}
               label="Technologies"
               isMulti
               required
@@ -119,35 +121,48 @@ export const CreateRepositoryPage: FC = () => {
         </section>
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Git</h2>
+          <Checkbox
+            {...form.register('withExistingRepo')}
+            label="Add existing repository"
+            className="mt-4 mb-4"
+          />
           <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
-            <SelectField
-              name="boilerplateId"
-              options={boilerplatesOptions}
-              control={control}
-              label="Boilerplate"
-            />
-            <TextField name="gitRepoId" control={control} label="Git repo id" />
-            <TextField name="gitSlug" control={control} label="Git slug" />
+            {!withExistingRepo && (
+              <SelectField
+                name="boilerplateId"
+                options={boilerplatesOptions}
+                control={form.control}
+                label="Boilerplate"
+              />
+            )}
+            {withExistingRepo && (
+              <>
+                <TextField name="gitRepoId" control={form.control} label="Git repo id" />
+                {/* TODO: research if we really need this in UI <TextField name="gitSlug" control={form.control} label="Git slug" /> */}
+              </>
+            )}
           </div>
-          <div className="flex flex-col">
-            <Checkbox label="Use terraform" {...register('useTerraform')} className="mt-4" />
-            <div className="flex flex-col gap-1">
-              <Checkbox label="With relay" {...register('withRelay')} className="mt-4" />
-              <span className="text-c1 text-gray-2">
-                Works only for GraphQl Boilerplate. Please, consult backend developer if not sure
-              </span>
+          {!withExistingRepo && (
+            <div className="flex flex-col">
+              <Checkbox label="Use terraform" {...form.register('useTerraform')} className="mt-4" />
+              <div className="flex flex-col gap-1">
+                <Checkbox label="With relay" {...form.register('withRelay')} className="mt-4" />
+                <span className="text-p5 text-gray-2">
+                  Works only for GraphQl Boilerplate. Please, consult backend developer if not sure
+                </span>
+              </div>
             </div>
-          </div>
+          )}
         </section>
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>AWS</h2>
           <div className="flex flex-col gap-1">
             <Checkbox
               label="Do you need AWS secrets?"
-              {...register('awsSecrets')}
+              {...form.register('awsSecrets')}
               className="mt-4"
             />
-            <span className="text-c1 text-gray-2">
+            <span className="text-p5 text-gray-2">
               Set yes for backend repository, consult frontend developer for frontend
             </span>
           </div>

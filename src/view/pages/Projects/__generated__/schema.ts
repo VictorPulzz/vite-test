@@ -11,22 +11,15 @@ export type FetchProjectsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectsQuery = {
-  __typename?: 'Query';
   projectsList: {
-    __typename?: 'ProjectTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'ProjectType';
       id: number;
       name: string;
-      PM?: Array<{
-        __typename?: 'UserType';
-        id?: string | null;
-        fullName?: string | null;
-        photo?: { __typename?: 'ImageType'; url: string } | null;
-      }> | null;
-      status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
-      platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
+      phase?: Types.ProjectPhaseChoice | null;
+      PM?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
+      status?: { id: number; name: string } | null;
+      platforms?: Array<{ id: number; name: string }> | null;
     }>;
   };
 };
@@ -35,10 +28,7 @@ export type ChangeProjectStatusMutationVariables = Types.Exact<{
   input: Types.ProjectUpdateInput;
 }>;
 
-export type ChangeProjectStatusMutation = {
-  __typename?: 'Mutation';
-  projectUpdate: { __typename?: 'ProjectType'; id: number };
-};
+export type ChangeProjectStatusMutation = { projectUpdate: { id: number } };
 
 export const FetchProjectsDocument = gql`
   query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
@@ -61,6 +51,7 @@ export const FetchProjectsDocument = gql`
           id
           name
         }
+        phase
       }
       count
     }

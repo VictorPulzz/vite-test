@@ -9,9 +9,7 @@ export type FetchProjectQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectQuery = {
-  __typename?: 'Query';
   project: {
-    __typename?: 'ProjectType';
     id: number;
     name: string;
     hoursEstimated?: number | null;
@@ -21,9 +19,8 @@ export type FetchProjectQuery = {
     roadmap?: string | null;
     notes?: string | null;
     phase?: Types.ProjectPhaseChoice | null;
-    status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
+    status?: { id: number; name: string } | null;
     clientTeam?: Array<{
-      __typename?: 'ClientType';
       fullName: string;
       email: string;
       phone?: string | null;
@@ -31,7 +28,7 @@ export type FetchProjectQuery = {
       notes?: string | null;
       pointContact?: boolean | null;
     }> | null;
-    platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
+    platforms?: Array<{ id: number; name: string }> | null;
   };
 };
 
@@ -39,30 +36,20 @@ export type CreateProjectMutationVariables = Types.Exact<{
   input: Types.ProjectCreateInput;
 }>;
 
-export type CreateProjectMutation = {
-  __typename?: 'Mutation';
-  projectCreate: { __typename?: 'ProjectType'; id: number };
-};
+export type CreateProjectMutation = { projectCreate: { id: number } };
 
 export type UpdateProjectMutationVariables = Types.Exact<{
   input: Types.ProjectUpdateInput;
 }>;
 
-export type UpdateProjectMutation = {
-  __typename?: 'Mutation';
-  projectUpdate: { __typename?: 'ProjectType'; id: number };
-};
+export type UpdateProjectMutation = { projectUpdate: { id: number } };
 
 export type FetchPlatformsListQueryVariables = Types.Exact<{
   pagination: Types.PaginationInput;
 }>;
 
 export type FetchPlatformsListQuery = {
-  __typename?: 'Query';
-  platformList: {
-    __typename?: 'PlatformTypePagination';
-    results: Array<{ __typename?: 'PlatformType'; value?: number | null; label: string }>;
-  };
+  platformList: { results: Array<{ value: number; label: string }> };
 };
 
 export type FetchProjectStatusesListQueryVariables = Types.Exact<{
@@ -70,36 +57,17 @@ export type FetchProjectStatusesListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchProjectStatusesListQuery = {
-  __typename?: 'Query';
-  projectStatusesList: {
-    __typename?: 'ProjectStatusTypePagination';
-    results: Array<{ __typename?: 'ProjectStatusType'; value?: number | null; label: string }>;
-  };
+  projectStatusesList: { results: Array<{ value: number; label: string }> };
 };
 
 export type FetchDocumentTemplateListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchDocumentTemplateListQuery = {
-  __typename?: 'Query';
   documentTemplateList: Array<{
-    __typename?: 'DocumentTemplateType';
     id: number;
     name: string;
-    fields?: Array<{
-      __typename?: 'DocumentTemplateFieldType';
-      name: string;
-      description?: string | null;
-    }> | null;
+    fields?: Array<{ name: string; description?: string | null }> | null;
   }>;
-};
-
-export type DocumentGenerateMutationVariables = Types.Exact<{
-  input: Array<Types.DocumentGenerateInput> | Types.DocumentGenerateInput;
-}>;
-
-export type DocumentGenerateMutation = {
-  __typename?: 'Mutation';
-  documentGenerate: Array<{ __typename?: 'DocumentType'; createdAt: string }>;
 };
 
 export const FetchProjectDocument = gql`
@@ -440,51 +408,4 @@ export type FetchDocumentTemplateListLazyQueryHookResult = ReturnType<
 export type FetchDocumentTemplateListQueryResult = Apollo.QueryResult<
   FetchDocumentTemplateListQuery,
   FetchDocumentTemplateListQueryVariables
->;
-export const DocumentGenerateDocument = gql`
-  mutation DocumentGenerate($input: [DocumentGenerateInput!]!) {
-    documentGenerate(data: $input) {
-      createdAt
-    }
-  }
-`;
-export type DocumentGenerateMutationFn = Apollo.MutationFunction<
-  DocumentGenerateMutation,
-  DocumentGenerateMutationVariables
->;
-
-/**
- * __useDocumentGenerateMutation__
- *
- * To run a mutation, you first call `useDocumentGenerateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDocumentGenerateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [documentGenerateMutation, { data, loading, error }] = useDocumentGenerateMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useDocumentGenerateMutation(
-  baseOptions?: Apollo.MutationHookOptions<
-    DocumentGenerateMutation,
-    DocumentGenerateMutationVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useMutation<DocumentGenerateMutation, DocumentGenerateMutationVariables>(
-    DocumentGenerateDocument,
-    options,
-  );
-}
-export type DocumentGenerateMutationHookResult = ReturnType<typeof useDocumentGenerateMutation>;
-export type DocumentGenerateMutationResult = Apollo.MutationResult<DocumentGenerateMutation>;
-export type DocumentGenerateMutationOptions = Apollo.BaseMutationOptions<
-  DocumentGenerateMutation,
-  DocumentGenerateMutationVariables
 >;

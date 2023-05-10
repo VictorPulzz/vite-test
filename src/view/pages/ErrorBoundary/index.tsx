@@ -1,4 +1,4 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonVariant } from '@appello/web-ui';
 import React from 'react';
 
 import { useAppDispatch } from '~/store/hooks';

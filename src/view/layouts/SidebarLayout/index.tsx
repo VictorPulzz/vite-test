@@ -1,10 +1,10 @@
+import { Sidebar } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, ReactNode, useMemo } from 'react';
 
 import { useUserProfile } from '~/store/hooks';
 import logo from '~/view/assets/images/logo.svg';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
-import { Sidebar } from '~/view/ui/components/common/Sidebar';
 
 import { useSidebarItems } from './hooks/useSidebarItems';
 

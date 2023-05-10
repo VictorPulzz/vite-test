@@ -8,10 +8,7 @@ export type ResetPasswordMutationVariables = Types.Exact<{
   input: Types.ResetPasswordInput;
 }>;
 
-export type ResetPasswordMutation = {
-  __typename?: 'Mutation';
-  resetPassword: { __typename?: 'MessageType'; message: string };
-};
+export type ResetPasswordMutation = { resetPassword: { message: string } };
 
 export const ResetPasswordDocument = gql`
   mutation ResetPassword($input: ResetPasswordInput!) {

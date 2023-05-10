@@ -22,7 +22,7 @@ const formSchema = z.object({
     .nullable()
     .refine(value => {
       if (value instanceof File) {
-        return value.size < 500 * 1024;
+        return value.size < 2 * 1024 * 1024;
       }
       return true;
     }, formErrors.MAX_IMAGE_SIZE),

@@ -11,19 +11,16 @@ export type FetchRepositoriesQueryVariables = Types.Exact<{
 }>;
 
 export type FetchRepositoriesQuery = {
-  __typename?: 'Query';
   repositoryList: {
-    __typename?: 'RepositoryTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'RepositoryType';
-      id?: number | null;
+      id: number;
       name?: string | null;
       createdAt: string;
       type?: Types.RepositoryTypeChoice | null;
       gitUrl?: string | null;
-      project: { __typename?: 'ProjectType'; id: number; name: string };
-      technologies?: Array<{ __typename?: 'TechnologyType'; id: number; name: string }> | null;
+      project: { id: number; name: string };
+      technologies?: Array<{ id: number; name: string }> | null;
     }>;
   };
 };
@@ -32,10 +29,7 @@ export type RemoveRepositoryMutationVariables = Types.Exact<{
   input: Types.IdInput;
 }>;
 
-export type RemoveRepositoryMutation = {
-  __typename?: 'Mutation';
-  repositoryDelete: { __typename?: 'MessageType'; message: string };
-};
+export type RemoveRepositoryMutation = { repositoryDelete: { message: string } };
 
 export const FetchRepositoriesDocument = gql`
   query FetchRepositories(

@@ -1,13 +1,13 @@
-import React, { FC, useMemo } from 'react';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import React, { FC } from 'react';
 
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { useFetchSlackTemplateInfoQuery } from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
-import { useFetchAllUsersQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { Loader } from '~/view/ui/components/common/Loader';
-import { Modal, ModalProps } from '~/view/ui/components/common/Modal';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { SelectField } from '~/view/ui/components/form/SelectField';
-import { TextField } from '~/view/ui/components/form/TextField';
 
 import { useChannelTemplateForm } from './hooks/useChannelTemplateForm';
 
@@ -28,6 +28,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
         input: { id: Number(channelTemplateId) },
       },
       skip: !channelTemplateId,
+      fetchPolicy: 'cache-and-network',
     });
 
   const { form, handleSubmit, resetForm, isLoading } = useChannelTemplateForm({
@@ -35,24 +36,18 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
     prefilledData: slackTemplateInfo?.slackTemplate,
   });
 
-  const { data: allUsers, loading: isLoadingAllUsers } = useFetchAllUsersQuery({
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
     variables: {
       pagination: {
         limit: 0,
       },
     },
-    fetchPolicy: 'cache-and-network',
   });
 
-  const usersOptions = useMemo(() => {
-    if (allUsers?.usersList.results) {
-      return allUsers?.usersList.results.map(({ id, fullName }) => ({
-        value: Number(id),
-        label: fullName ?? '',
-      }));
-    }
-    return [];
-  }, [allUsers?.usersList.results]);
+  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
+    value: 'id',
+    label: 'fullName',
+  });
 
   const isDisableAccessibilityCheckbox =
     isEditMode && !!slackTemplateInfo?.slackTemplate?.isPrivate;
@@ -61,13 +56,11 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
 
   return (
     <Modal
-      withCloseButton
       isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"
       title={`${isEditMode ? 'Edit' : 'Add'} Custom template`}
       onAfterClose={resetForm}
-      shouldCloseOnOverlayClick={false}
     >
       {isLoadingQueries && (
         <div className="flex items-center h-[410px]">
@@ -106,7 +99,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
                 className="mt-4"
                 disabled={isDisableAccessibilityCheckbox}
               />
-              <span className="text-c1 text-gray-2">
+              <span className="text-p5 text-gray-2">
                 You’ll not be able to make it public later
               </span>
             </div>

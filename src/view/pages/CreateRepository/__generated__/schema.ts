@@ -9,28 +9,20 @@ export type FetchTechnologiesListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchTechnologiesListQuery = {
-  __typename?: 'Query';
-  technologyList: {
-    __typename?: 'TechnologyTypePagination';
-    results: Array<{ __typename?: 'TechnologyType'; value: number; label: string }>;
-  };
+  technologyList: { results: Array<{ value: number; label: string }> };
 };
 
 export type FetchBoilerplateListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchBoilerplateListQuery = {
-  __typename?: 'Query';
-  boilerplateList: Array<{ __typename?: 'BoilerplateType'; value: number; label: string }>;
+  boilerplateList: Array<{ value: number; label: string }>;
 };
 
 export type CreateRepositoryMutationVariables = Types.Exact<{
   input: Types.RepositoryCreateInput;
 }>;
 
-export type CreateRepositoryMutation = {
-  __typename?: 'Mutation';
-  repositoryCreate: { __typename?: 'RepositoryType'; name?: string | null };
-};
+export type CreateRepositoryMutation = { repositoryCreate: { name?: string | null } };
 
 export const FetchTechnologiesListDocument = gql`
   query FetchTechnologiesList($pagination: PaginationInput!) {

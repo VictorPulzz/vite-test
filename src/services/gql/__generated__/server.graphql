@@ -47,7 +47,7 @@ input ClientPointContactInput {
 type ClientType {
   email: String!
   fullName: String!
-  id: Int
+  id: Int!
   notes: String
   phone: String
   pointContact: Boolean
@@ -94,8 +94,7 @@ input DocumentGenerateFieldInput {
 
 input DocumentGenerateInput {
   categoryId: Int = null
-  fields: [DocumentGenerateFieldInput!] = null
-  internal: Boolean = null
+  fields: [DocumentGenerateFieldInput!]!
   projectId: Int = null
   templateId: Int!
   userId: Int = null
@@ -103,9 +102,8 @@ input DocumentGenerateInput {
 
 input DocumentInput {
   categoryId: Int = null
-  file: Upload
+  file: Upload!
   id: Int = null
-  internal: Boolean = null
   projectId: Int = null
   userId: Int = null
 }
@@ -119,9 +117,20 @@ input DocumentSortFieldInput {
   field: DocumentSort!
 }
 
+input DocumentTemplateFieldInput {
+  description: String = null
+  name: String!
+}
+
 type DocumentTemplateFieldType {
   description: String
   name: String!
+}
+
+input DocumentTemplateInput {
+  fields: [DocumentTemplateFieldInput!]!
+  name: String!
+  url: String!
 }
 
 type DocumentTemplateType {
@@ -132,14 +141,15 @@ type DocumentTemplateType {
 }
 
 type DocumentType {
-  addedBy: UserType
+  addedBy: ProfileType
   category: DocumentCategoryType
   createdAt: DateTime!
-  file: ImageType!
+  file: FileType!
   id: Int!
   internal: Boolean!
+  name: String!
   project: ProjectType
-  user: UserType
+  user: ProfileType
 }
 
 type DocumentTypePagination {
@@ -156,8 +166,14 @@ input EnvironmentCredentialsInput {
 }
 
 type EnvironmentCredentialsType {
+  id: Int!
   login: String!
   password: String!
+  url: String!
+}
+
+type FileType {
+  key: String!
   url: String!
 }
 
@@ -170,6 +186,44 @@ type ForgotPasswordType {
   message: String!
 }
 
+input GitInitialUserId {
+  userId: Int!
+}
+
+input GitInitialUserInput {
+  accessLevel: RepositoryAccessLevelChoice!
+  userId: Int!
+}
+
+enum GitInitialUserSort {
+  accessLevel
+  department
+  email
+  fullName
+}
+
+input GitInitialUserSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: GitInitialUserSort!
+}
+
+type GitInitialUserType {
+  accessLevel: RepositoryAccessLevelChoice!
+  user: ProfileType!
+}
+
+type GitInitialUserTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [GitInitialUserType!]!
+}
+
+enum GitPlatformEnum {
+  BITBUCKET
+  GITLAB
+}
+
 input IDInput {
   id: Int!
 }
@@ -177,12 +231,6 @@ input IDInput {
 input IDNameInput {
   id: Int = null
   name: String!
-}
-
-type ImageType {
-  fileName: String!
-  size: Int!
-  url: String!
 }
 
 input IntegrationCredentialsInput {
@@ -195,7 +243,7 @@ input IntegrationCredentialsInput {
 }
 
 type IntegrationCredentialsType {
-  id: Int
+  id: Int!
   key: String
   login: String
   name: String
@@ -210,7 +258,7 @@ input IntegrationKeyInput {
 }
 
 type IntegrationKeyType {
-  id: Int
+  id: Int!
   title: String!
   value: String!
 }
@@ -223,7 +271,7 @@ input LogFilter {
 
 type LogType {
   createdAt: DateTime!
-  createdBy: UserType!
+  createdBy: ProfileType!
   id: Int!
   message: String!
 }
@@ -256,21 +304,61 @@ type Mutation {
   """
   clientMakePointContact(data: ClientPointContactInput!): ClientType!
   """
-  Create or update document
+  Create or update client document
   """
-  documentCreateUpdate(data: DocumentInput!): DocumentType!
+  documentClientCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate client document
+  """
+  documentClientGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Delete document
   """
   documentDelete(data: IDInput!): MessageType!
   """
-  Generate document
+  Create or update internal document
   """
-  documentGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
+  documentInternalCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate internal document
+  """
+  documentInternalGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
+  """
+  Create or update project document
+  """
+  documentProjectCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate project document
+  """
+  documentProjectGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
+  """
+  Create document template
+  """
+  documentTemplateCreate(data: DocumentTemplateInput!): DocumentTemplateType!
+  """
+  Delete document template
+  """
+  documentTemplateDelete(data: IDInput!): MessageType!
+  """
+  Create or update user document
+  """
+  documentUserCreateUpdate(data: DocumentInput!): DocumentType!
+  """
+  Generate user document
+  """
+  documentUserGenerate(data: [DocumentGenerateInput!]!): [DocumentType!]!
   """
   Sending reset password email
   """
   forgotPassword(data: ForgotPasswordInput!): ForgotPasswordType!
+  """
+  Add or update git initial user
+  """
+  gitInitialUserCreateUpdate(data: GitInitialUserInput!): GitInitialUserType!
+  """
+  Delete git initial user
+  """
+  gitInitialUserDelete(data: GitInitialUserId!): MessageType!
   """
   Login
   """
@@ -279,6 +367,10 @@ type Mutation {
   User updating himself
   """
   meUpdate(data: ProfileInput!): ProfileType!
+  """
+  Update notification
+  """
+  notificationUpdate(data: NotificationUpdateInput!): NotificationType!
   """
   Change password
   """
@@ -295,6 +387,10 @@ type Mutation {
   Project add slack
   """
   projectAddSlackChannel(data: ProjectSlackInput!): ProjectSlackType!
+  """
+  Project integration with git
+  """
+  projectConnectToGit(data: ProjectGitIntegrationInput!): ProjectType!
   """
   Project creation
   """
@@ -425,6 +521,35 @@ type NoteType {
   text: String!
 }
 
+type NotificationType {
+  createdAt: DateTime!
+  externalId: Int!
+  id: Int!
+  isNew: Boolean!
+  message: String!
+  type: NotificationTypeChoice!
+}
+
+enum NotificationTypeChoice {
+  ADDED_PROJECT
+  ADDED_REPOSITORY
+  ASSIGNED_REQUEST
+  FILL_REPORT
+  UNASSIGNED_REQUEST
+}
+
+type NotificationTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [NotificationType!]!
+}
+
+input NotificationUpdateInput {
+  id: Int!
+  isNew: Boolean!
+}
+
 enum OrderDirectionChoice {
   ASC
   DESC
@@ -449,7 +574,7 @@ type PermissionType {
 }
 
 type PlatformType {
-  id: Int
+  id: Int!
   name: String!
 }
 
@@ -460,11 +585,16 @@ type PlatformTypePagination {
   results: [PlatformType!]!
 }
 
+type PorjectIntegrationsPage {
+  gitGroupId: String
+  slackChannels: [ProjectSlackType!]
+}
+
 input ProfileInput {
   address: String = null
   birthDate: Date = null
-  firstName: String = null
-  lastName: String = null
+  firstName: String!
+  lastName: String!
   phone: String = null
   photo: Upload
 }
@@ -474,11 +604,12 @@ type ProfileType {
   birthDate: Date
   department: DepartmentType
   email: String!
-  firstName: String
-  fullName: String
-  lastName: String
+  firstName: String!
+  fullName: String!
+  id: Int!
+  lastName: String!
   phone: String
-  photo: ImageType
+  photo: FileType
   role: RoleType
 }
 
@@ -486,6 +617,7 @@ input ProjectCreateInput {
   clientTeam: [ClientInput!] = null
   design: String = null
   endDate: Date = null
+  gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
   name: String!
   notes: String = null
@@ -513,13 +645,31 @@ input ProjectEnvironmentInput {
 type ProjectEnvironmentType {
   backendCredentials: EnvironmentCredentialsType
   frontendCredentials: EnvironmentCredentialsType
-  id: Int
+  id: Int!
   name: ProjectEnvironmentChoice!
   projectId: Int!
 }
 
 input ProjectFilter {
+  hasRepositories: Boolean = null
+  inGit: Boolean = null
   statusId: Int = null
+}
+
+input ProjectGitIntegrationInput {
+  id: Int!
+}
+
+type ProjectGlossaryType {
+  id: Int!
+  name: String!
+}
+
+type ProjectGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [ProjectGlossaryType!]!
 }
 
 input ProjectIntegrationInput {
@@ -534,7 +684,7 @@ input ProjectIntegrationInput {
 type ProjectIntegrationType {
   credential: IntegrationCredentialsType
   environment: ProjectEnvironmentChoice
-  id: Int
+  id: Int!
   keys: [IntegrationKeyType!]
   name: String!
   projectId: Int!
@@ -543,12 +693,13 @@ type ProjectIntegrationType {
 input ProjectMemberInput {
   currentTeam: Boolean!
   projectId: Int!
+  slackChannels: [Int!]
   userId: Int!
 }
 
 type ProjectMemberListType {
-  currentTeam: [UserType!]!
-  otherContrubutors: [UserType!]!
+  currentTeam: [ProjectMemberType!]!
+  otherContrubutors: [ProjectMemberType!]!
 }
 
 type ProjectMemberType {
@@ -556,7 +707,7 @@ type ProjectMemberType {
   endDate: DateTime
   project: ProjectType!
   startDate: DateTime!
-  user: UserType!
+  user: ProfileType!
 }
 
 type ProjectMemberTypePagination {
@@ -578,9 +729,15 @@ enum ProjectPhaseChoice {
 
 type ProjectPreviewType {
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   id: Int!
+  inTeam: Boolean!
   name: String!
+}
+
+type ProjectRepositoryType {
+  projectInGit: Boolean!
+  projectRepositories: [RepositoryType!]
 }
 
 input ProjectSlackInput {
@@ -598,7 +755,7 @@ type ProjectSlackType {
 }
 
 type ProjectStatusType {
-  id: Int
+  id: Int!
   name: String!
 }
 
@@ -609,11 +766,16 @@ type ProjectStatusTypePagination {
   results: [ProjectStatusType!]!
 }
 
+enum ProjectTeamChoice {
+  CURRENT
+  OTHER
+}
+
 type ProjectType {
-  PM: [UserType!]
+  PM: [ProfileType!]
   clientTeam: [ClientType!]
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   design: String
   endDate: Date
   gitGroupId: String
@@ -626,7 +788,6 @@ type ProjectType {
   phase: ProjectPhaseChoice
   platforms: [PlatformType!]
   roadmap: String
-  slackChannels: [ProjectSlackType!]
   startDate: Date
   status: ProjectStatusType
 }
@@ -642,8 +803,9 @@ input ProjectUpdateInput {
   clientTeam: [ClientInput!] = null
   design: String = null
   endDate: Date = null
+  gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
-  id: Int = null
+  id: Int!
   name: String = null
   notes: String = null
   phase: ProjectPhaseChoice = null
@@ -667,18 +829,47 @@ type Query {
   """
   documentCategoryList: [DocumentCategoryType!]!
   """
-  Getting list of documents
+  Getting list of client documents
   """
-  documentList(
+  documentClientList(
     filters: DocumentFilter = null
-    pagination: PaginationInput!
-    search: String = null
+    pagination: PaginationInput = null
+    search: String = ""
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
+  """
+  Getting list of internal documents
+  """
+  documentInternalList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput = null
+    search: String = ""
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
   Getting list of document templates
   """
   documentTemplateList: [DocumentTemplateType!]!
+  """
+  Getting list of user documents
+  """
+  documentUserList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput = null
+    search: String = ""
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
+  """
+  Getting git initial user by id
+  """
+  gitInitialUserDetails(data: GitInitialUserId!): GitInitialUserType!
+  """
+  Getting git initial user list
+  """
+  gitInitialUserList(
+    pagination: PaginationInput!
+    sort: [GitInitialUserSortFieldInput!] = null
+  ): GitInitialUserTypePagination!
   """
   Getting list of logs
   """
@@ -687,6 +878,10 @@ type Query {
   Getting authenticated user
   """
   me: ProfileType!
+  """
+  Getting list of notifications
+  """
+  notificationList(pagination: PaginationInput!): NotificationTypePagination!
   """
   Getting list of roles and permissions
   """
@@ -700,13 +895,37 @@ type Query {
   """
   project(data: IDInput!): ProjectType!
   """
+  Getting documents for project by id
+  """
+  projectDocumentList(
+    filters: DocumentFilter = null
+    pagination: PaginationInput = null
+    search: String! = ""
+    sort: [DocumentSortFieldInput!] = null
+  ): DocumentTypePagination!
+  """
   Getting environments for project by id
   """
   projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
   """
+  Getting glossary list of projects
+  """
+  projectGlossaryList(
+    filters: ProjectFilter = null
+    pagination: PaginationInput = null
+  ): ProjectGlossaryTypePagination!
+  """
   Getting integrations for project by id
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
+  """
+  Getting project integration page by id
+  """
+  projectIntegrationPage(data: IDInput!): PorjectIntegrationsPage!
+  """
+  Getting history for project by id
+  """
+  projectLogList(filters: LogFilter = null, pagination: PaginationInput!): LogTypePagination!
   """
   Getting members for project by id
   """
@@ -718,7 +937,7 @@ type Query {
   """
   Getting repositories for project by id
   """
-  projectRepositoryList(data: IDInput!): [RepositoryType!]!
+  projectRepositoryList(data: IDInput!): ProjectRepositoryType!
   """
   Getting project's statuses list
   """
@@ -736,6 +955,13 @@ type Query {
   """
   repository(data: IDInput!): RepositoryType!
   """
+  Getting glossary list of repository
+  """
+  repositoryGlossaryList(
+    filters: RepositoryFilter = null
+    pagination: PaginationInput = null
+  ): RepositoryGlossaryTypePagination!
+  """
   Getting repositories
   """
   repositoryList(
@@ -751,9 +977,21 @@ type Query {
     pagination: PaginationInput!
   ): RepositoryParticipantTypePagination!
   """
+  Getting repository preview
+  """
+  repositoryPreview(data: IDInput!): RepositoryPreviewType!
+  """
+  Getting request by id
+  """
+  requestDetails(data: IDInput!): RequestType!
+  """
   Getting list of requests
   """
-  requestList(filters: RequestFilter = null, pagination: PaginationInput!): RequestTypePagination!
+  requestList(
+    filters: RequestFilter = null
+    pagination: PaginationInput!
+    sort: [RequestSortFieldInput!] = null
+  ): RequestTypePagination!
   """
   Getting list of users' roles
   """
@@ -774,6 +1012,10 @@ type Query {
   Getting user by id
   """
   userDetails(data: IDInput!): UserType!
+  """
+  Getting glossary list of users
+  """
+  userGlossaryList(pagination: PaginationInput = null): UserGlossaryTypePagination!
   """
   Getting project by user
   """
@@ -813,6 +1055,7 @@ input RepositoryCreateInput {
   technologies: [Int!]
   type: RepositoryTypeChoice!
   useTerraform: Boolean = false
+  withExistingRepo: Boolean = null
   withRelay: Boolean = false
 }
 
@@ -822,6 +1065,18 @@ input RepositoryFilter {
   projectId: Int = null
   technologies: [Int!] = null
   type: RepositoryTypeChoice = null
+}
+
+type RepositoryGlossaryType {
+  id: Int!
+  name: String!
+}
+
+type RepositoryGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [RepositoryGlossaryType!]!
 }
 
 input RepositoryParticipantFilter {
@@ -839,7 +1094,7 @@ input RepositoryParticipantInput {
 type RepositoryParticipantType {
   accessLevel: RepositoryAccessLevelChoice!
   repository: RepositoryType!
-  user: UserType!
+  user: ProfileType!
 }
 
 type RepositoryParticipantTypePagination {
@@ -854,6 +1109,12 @@ enum RepositoryPlatformChoice {
   MOBILE
 }
 
+type RepositoryPreviewType {
+  id: Int!
+  name: String!
+  projectId: Int
+}
+
 input RepositorySecretsInput {
   environment: ProjectEnvironmentChoice!
   key: String!
@@ -864,13 +1125,13 @@ input RepositorySecretsInput {
 type RepositoryType {
   boilerplate: BoilerplateType
   createdAt: DateTime!
-  createdBy: UserType
+  createdBy: ProfileType
   gitRepoId: String
   gitSlug: String
   gitTerraformRepoId: String
   gitTerraformUrl: String
   gitUrl: String
-  id: Int
+  id: Int!
   name: String
   project: ProjectType!
   technologies: [TechnologyType!]
@@ -897,21 +1158,42 @@ input RepositoryUpdateInput {
 }
 
 input RequestCreateInput {
-  accessLevel: String = null
+  accessLevel: RepositoryAccessLevelChoice = null
   assignedRoleId: Int!
   assignedToId: Int = null
   description: String = null
   dueDate: Date = null
-  projectId: Int = null
+  environment: ProjectEnvironmentChoice = null
+  integrationName: String = null
+  projectId: Int!
   repositoryId: Int = null
+  repositoryType: RepositoryTypeChoice = null
+  technologies: [Int!]
   type: RequestTypeChoice!
 }
 
 input RequestFilter {
-  createdById: Int = null
-  projectId: Int = null
+  assignedRole: Int = null
+  assignedTo: Int = null
+  createdBy: Int = null
+  project: Int = null
   status: RequestStatusChoice = null
   type: RequestTypeChoice = null
+}
+
+enum RequestSort {
+  assigned_role
+  assigned_to
+  created_at
+  created_by
+  due_date
+  status
+  type
+}
+
+input RequestSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: RequestSort!
 }
 
 enum RequestStatusChoice {
@@ -920,17 +1202,22 @@ enum RequestStatusChoice {
 }
 
 type RequestType {
-  accessLevel: String
-  assignedRole: RoleType!
-  assignedTo: UserType
+  accessLevel: RepositoryAccessLevelChoice
+  assignedRole: RoleType
+  assignedTo: ProfileType
   createdAt: DateTime!
-  createdBy: UserType!
+  createdBy: ProfileType
   description: String
   dueDate: Date
+  environment: ProjectEnvironmentChoice
   id: Int!
+  integrationName: String
   project: ProjectType
+  projectTeam: ProjectTeamChoice
   repository: RepositoryType
+  repositoryType: RepositoryTypeChoice
   status: RequestStatusChoice!
+  technologies: [TechnologyType!]
   type: RequestTypeChoice!
 }
 
@@ -950,9 +1237,10 @@ type RequestTypePagination {
 }
 
 input RequestUpdateInput {
+  assignedRoleId: Int = null
+  assignedToId: Int = null
   dueDate: Date = null
   id: Int!
-  ssignedRoleId: Int = null
   status: RequestStatusChoice = null
 }
 
@@ -979,7 +1267,7 @@ input SlackChannelTemplateInput {
 
 type SlackChannelTemplateType {
   id: Int!
-  initialUsers: [UserType!]
+  initialUsers: [ProfileType!]
   isPrivate: Boolean
   label: String
   prefix: String!
@@ -1005,17 +1293,30 @@ input UserFilter {
   roleId: [Int!] = null
 }
 
+type UserGlossaryType {
+  fullName: String!
+  id: Int!
+  photo: FileType
+}
+
+type UserGlossaryTypePagination {
+  count: Int!
+  limit: Int!
+  offset: Int!
+  results: [UserGlossaryType!]!
+}
+
 input UserInput {
   address: String = null
   birthDate: Date = null
   contractType: ContractChoice = null
   departmentId: Int = null
   email: String = null
-  firstName: String = null
+  firstName: String!
   id: Int = null
   isActive: Boolean = null
   isSuperuser: Boolean = null
-  lastName: String = null
+  lastName: String!
   phone: String = null
   photo: Upload
   roleId: Int = null
@@ -1028,15 +1329,15 @@ type UserType {
   contractType: ContractChoice
   department: DepartmentType
   email: String!
-  firstName: String
-  fullName: String
-  id: String
+  firstName: String!
+  fullName: String!
+  id: Int!
   isActive: Boolean
   isSuperuser: Boolean
-  lastName: String
+  lastName: String!
   notes: [NoteType!]
   phone: String
-  photo: ImageType
+  photo: FileType
   role: RoleType
 }
 

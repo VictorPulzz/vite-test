@@ -1,4 +1,4 @@
-import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
 import React from 'react';
 
 import { ROUTES } from '~/constants/routes';

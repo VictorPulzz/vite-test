@@ -9,18 +9,17 @@ export type SignInMutationVariables = Types.Exact<{
 }>;
 
 export type SignInMutation = {
-  __typename?: 'Mutation';
   login: {
-    __typename?: 'LoginSuccessType';
     accessToken: string;
     refreshToken: string;
     user: {
-      __typename?: 'UserType';
-      id?: string | null;
+      id: number;
       email: string;
-      fullName?: string | null;
-      photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
-      role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
+      firstName: string;
+      lastName: string;
+      fullName: string;
+      photo?: { url: string } | null;
+      role?: { id: number; name: string; permissionsList: Array<string> } | null;
     };
   };
 };
@@ -33,13 +32,14 @@ export const SignInDocument = gql`
       user {
         id
         email
+        firstName
+        lastName
         fullName
         photo {
-          fileName
-          size
           url
         }
         role {
+          id
           name
           permissionsList
         }

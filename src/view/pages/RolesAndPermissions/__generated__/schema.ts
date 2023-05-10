@@ -7,19 +7,12 @@ const defaultOptions = {} as const;
 export type FetchPermissionsListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchPermissionsListQuery = {
-  __typename?: 'Query';
   permissionsList: Array<{
-    __typename?: 'PermissionType';
     id: number;
     name: string;
     rolesList?: Array<string> | null;
     title?: string | null;
-    roles?: Array<{
-      __typename?: 'RoleType';
-      id: number;
-      name: string;
-      color?: string | null;
-    }> | null;
+    roles?: Array<{ id: number; name: string; color?: string | null }> | null;
   }>;
 };
 
@@ -27,10 +20,7 @@ export type UpdatePermissionsListMutationVariables = Types.Exact<{
   input: Array<Types.PermissionInput> | Types.PermissionInput;
 }>;
 
-export type UpdatePermissionsListMutation = {
-  __typename?: 'Mutation';
-  permissionsUpdate: Array<{ __typename?: 'PermissionType'; name: string }>;
-};
+export type UpdatePermissionsListMutation = { permissionsUpdate: Array<{ name: string }> };
 
 export const FetchPermissionsListDocument = gql`
   query FetchPermissionsList {

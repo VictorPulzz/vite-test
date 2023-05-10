@@ -9,21 +9,19 @@ export type FetchUserDetailsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchUserDetailsQuery = {
-  __typename?: 'Query';
   userDetails: {
-    __typename?: 'UserType';
-    id?: string | null;
-    fullName?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    fullName: string;
+    firstName: string;
+    lastName: string;
     email: string;
     isActive?: boolean | null;
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     address?: string | null;
-    photo?: { __typename?: 'ImageType'; url: string } | null;
-    department?: { __typename?: 'DepartmentType'; id: number; name: string } | null;
-    role?: { __typename?: 'RoleType'; id: number; name: string } | null;
+    photo?: { url: string } | null;
+    department?: { id: number; name: string } | null;
+    role?: { id: number; name: string } | null;
   };
 };
 
@@ -33,19 +31,11 @@ export type FetchUserProjectsListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchUserProjectsListQuery = {
-  __typename?: 'Query';
   userProjects: {
-    __typename?: 'ProjectMemberTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'ProjectMemberType';
       currentTeam: boolean;
-      project: {
-        __typename?: 'ProjectType';
-        id: number;
-        name: string;
-        status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
-      };
+      project: { id: number; name: string; status?: { id: number; name: string } | null };
     }>;
   };
 };
@@ -56,12 +46,7 @@ export type FetchUserHistoryListQueryVariables = Types.Exact<{
 }>;
 
 export type FetchUserHistoryListQuery = {
-  __typename?: 'Query';
-  logList: {
-    __typename?: 'LogTypePagination';
-    count: number;
-    results: Array<{ __typename?: 'LogType'; id: number; message: string; createdAt: string }>;
-  };
+  logList: { count: number; results: Array<{ id: number; message: string; createdAt: string }> };
 };
 
 export type ConnectUserToBitbucketMutationVariables = Types.Exact<{
@@ -69,8 +54,7 @@ export type ConnectUserToBitbucketMutationVariables = Types.Exact<{
 }>;
 
 export type ConnectUserToBitbucketMutation = {
-  __typename?: 'Mutation';
-  userConnectBitbucket: { __typename?: 'UserType'; bitbucketId?: string | null };
+  userConnectBitbucket: { bitbucketId?: string | null };
 };
 
 export const FetchUserDetailsDocument = gql`

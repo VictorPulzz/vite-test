@@ -1,6 +1,5 @@
+import { Icon } from '@appello/web-ui';
 import React from 'react';
-
-import { Icon } from '~/view/ui/components/common/Icon';
 
 interface Props {
   uri?: Nullable<string>;

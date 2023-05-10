@@ -1,10 +1,10 @@
-import { EmptyState } from '@ui/components/common/EmptyState';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { PermissionType } from '~/services/gql/__generated__/globalTypes';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
 
 import { useFetchPermissionsListQuery } from './__generated__/schema';
 import { ROLES_AND_PERMISSIONS_TABLE_COLUMNS } from './consts';

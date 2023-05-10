@@ -1,7 +1,7 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { SelectField } from '@ui/components/form/SelectField';
-import React, { FC, useCallback, useMemo } from 'react';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import React, { FC, useCallback } from 'react';
 
 import { UserFilter } from '~/services/gql/__generated__/globalTypes';
 
@@ -23,12 +23,15 @@ export const UsersFilterModal: FC<UsersFilterModalProps> = ({ isOpen, close, set
     },
   });
 
-  const departmentsOptions = useMemo(
-    () => departmentsList?.departmentsList ?? [],
-    [departmentsList?.departmentsList],
-  );
+  const departmentsOptions = useSelectOptions(departmentsList?.departmentsList, {
+    value: 'value',
+    label: 'label',
+  });
 
-  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
+  const rolesOptions = useSelectOptions(rolesList?.rolesList, {
+    value: 'value',
+    label: 'label',
+  });
 
   const statusOptions = [
     {

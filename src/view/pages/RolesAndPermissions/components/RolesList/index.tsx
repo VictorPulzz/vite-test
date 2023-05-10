@@ -1,8 +1,8 @@
+import { Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 
 import { PermissionType, RoleType } from '~/services/gql/__generated__/globalTypes';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import {
   FetchPermissionsListDocument,
@@ -56,7 +56,7 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
           )}
           style={{ backgroundColor: color ?? undefined }}
         >
-          <span className=" text-c1 font-medium">{name}</span>
+          <span className=" text-p5 font-medium">{name}</span>
           {name !== ADMIN_ROLE && (
             <button
               type="button"

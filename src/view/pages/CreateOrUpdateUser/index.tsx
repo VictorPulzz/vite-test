@@ -1,7 +1,10 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { SelectField } from '@ui/components/form/SelectField';
-import { TextField } from '@ui/components/form/TextField';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
+import { DateField } from '@appello/web-ui';
+import { PhotoField } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,9 +14,6 @@ import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
-import { DateField } from '~/view/ui/components/form/DateField';
-import { PhotoField } from '~/view/ui/components/form/PhotoField';
 
 import { useFetchUserDetailsQuery } from '../UserDetails/__generated__/schema';
 import {
@@ -45,12 +45,15 @@ export const CreateOrUpdateUserPage: FC = () => {
     id: userId,
   });
 
-  const departmentsOptions = useMemo(
-    () => departmentsList?.departmentsList ?? [],
-    [departmentsList?.departmentsList],
-  );
+  const departmentsOptions = useSelectOptions(departmentsList?.departmentsList, {
+    value: 'value',
+    label: 'label',
+  });
 
-  const rolesOptions = useMemo(() => rolesList?.rolesList ?? [], [rolesList?.rolesList]);
+  const rolesOptions = useSelectOptions(rolesList?.rolesList, {
+    value: 'value',
+    label: 'label',
+  });
 
   const contractTypeOptions = enumToSelectOptions(ContractChoice);
 
@@ -73,20 +76,27 @@ export const CreateOrUpdateUserPage: FC = () => {
           <h2 className={styles['section__heading']}>User info</h2>
           <PhotoField name="photo" control={form.control} label="Photo" />
           <InlineFields>
-            <TextField name="firstName" control={form.control} label="First name" />
-            <TextField name="lastName" control={form.control} label="Last name" />
+            <TextField name="firstName" control={form.control} label="First name" required />
+            <TextField name="lastName" control={form.control} label="Last name" required />
           </InlineFields>
           <InlineFields>
-            <TextField name="email" control={form.control} label="Email" />
+            <TextField name="email" control={form.control} label="Email" required />
             <SelectField
               name="department"
               options={departmentsOptions}
               control={form.control}
               label="Department"
+              required
             />
           </InlineFields>
           <InlineFields>
-            <SelectField name="role" options={rolesOptions} control={form.control} label="Role" />
+            <SelectField
+              name="role"
+              options={rolesOptions}
+              control={form.control}
+              label="Role"
+              required
+            />
             <TextField name="address" control={form.control} label="Address" />
           </InlineFields>
           <InlineFields>
@@ -95,8 +105,9 @@ export const CreateOrUpdateUserPage: FC = () => {
               options={contractTypeOptions}
               control={form.control}
               label="Contract type"
+              required
             />
-            <DateField name="birthDate" control={form.control} label="Birth date" />
+            <DateField name="birthDate" control={form.control} label="Birth date" required />
           </InlineFields>
           <InlineFields>
             <Checkbox label="Active" {...form.register('isActive')} className="mt-4" />

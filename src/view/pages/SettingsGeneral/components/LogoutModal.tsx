@@ -1,6 +1,6 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Icon } from '@ui/components/common/Icon';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { useAppDispatch } from '~/store/hooks';

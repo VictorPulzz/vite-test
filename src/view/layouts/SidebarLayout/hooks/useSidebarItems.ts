@@ -1,16 +1,21 @@
+import { SidebarItem } from '@appello/web-ui';
 import { useMemo } from 'react';
 
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
-import { SidebarItem } from '~/view/ui/components/common/Sidebar';
 
 export function useSidebarItems(): SidebarItem[] {
-  const canEditPermissions = useHasAccess(Permission.EDIT_PERMISSIONS);
+  const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
+  const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
 
   const hiddenRoutes = useMemo(
-    () => [!canEditPermissions && ROUTES.ROLES_AND_PERMISSIONS].filter(Boolean),
-    [canEditPermissions],
+    () =>
+      [
+        !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
+        !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
+      ].filter(Boolean),
+    [canWriteAdminSettings, canWritePermissions],
   );
 
   const navItems = useMemo(

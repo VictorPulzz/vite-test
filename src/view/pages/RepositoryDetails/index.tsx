@@ -1,42 +1,99 @@
+import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+import { Permission } from '~/constants/permissions';
+import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
+import { useUserProfile } from '~/store/hooks';
+import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Loader } from '~/view/ui/components/common/Loader';
 
-import { useFetchRepositoryDetailsQuery } from './__generated__/schema';
+import {
+  useFetchRepositoryDetailsQuery,
+  useFetchRepositoryParticipantsIdsQuery,
+  useFetchRepositoryPreviewQuery,
+} from './__generated__/schema';
 import { RepositoryDetailsTabs } from './components/RepositoryDetailsTabs';
 import { RepositoryMainInfo } from './components/RepositoryMainInfo';
 
 export const RepositoryDetailsPage: FC = () => {
   const params = useParams();
-  const navigate = useNavigate();
+
+  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+
+  const profile = useUserProfile();
+
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
-  const { data, loading } = useFetchRepositoryDetailsQuery({
-    variables: {
-      input: { id: repositoryId },
-    },
-  });
+  const { data: repositoryParticipantsIdsData, loading: isLoadingRepositoryParticipantsIdsData } =
+    useFetchRepositoryParticipantsIdsQuery({
+      variables: {
+        pagination: {
+          limit: 0,
+        },
+        filters: { repositoryId },
+      },
+    });
+
+  const repositoryParticipantsIds = useMemo(
+    () =>
+      repositoryParticipantsIdsData?.repositoryParticipantList.results.map(
+        participant => participant.user.id,
+      ) ?? [],
+    [repositoryParticipantsIdsData?.repositoryParticipantList.results],
+  );
+
+  const isUserInRepository = canReadRepoDetails && repositoryParticipantsIds.includes(profile.id);
+
+  const { data: repositoryDetails, loading: isLoadingRepositoryDetails } =
+    useFetchRepositoryDetailsQuery({
+      variables: {
+        input: { id: repositoryId },
+      },
+      skip: !isUserInRepository,
+    });
+
+  const { data: repositoryPreview, loading: isLoadingRepositoryPreview } =
+    useFetchRepositoryPreviewQuery({
+      variables: {
+        input: { id: repositoryId },
+      },
+      skip: isUserInRepository,
+    });
+
+  const isLoading =
+    isLoadingRepositoryParticipantsIdsData ||
+    isLoadingRepositoryPreview ||
+    isLoadingRepositoryDetails;
 
   return (
     <SidebarLayout>
       <DetailLayout
-        title="Repository details"
-        onClickBackButton={() => navigate(-1)}
+        title={isUserInRepository ? 'Repository details' : ''}
         contentClassName="flex-auto"
       >
-        {loading && (
+        {isLoading && (
           <div className="flex h-full items-center">
             <Loader full colorful />
           </div>
         )}
-        {data && (
+        {!isLoading && repositoryDetails && isUserInRepository && (
           <div className="flex gap-5 p-6 h-full">
-            <RepositoryMainInfo repository={data?.repository} />
+            <RepositoryMainInfo repository={repositoryDetails?.repository} />
             <RepositoryDetailsTabs />
           </div>
+        )}
+        {!isLoading && repositoryPreview && !isUserInRepository && (
+          <NoAccessMessage
+            className="h-full"
+            title={repositoryPreview.repositoryPreview.name}
+            variant={NoAccessMessageVariant.REQUEST}
+            requestType={RequestTypeChoice.ACCESS_REPOSITORY}
+            projectId={repositoryPreview.repositoryPreview.projectId}
+            repositoryId={repositoryId}
+          />
         )}
       </DetailLayout>
     </SidebarLayout>

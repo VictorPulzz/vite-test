@@ -98,14 +98,21 @@ export const useSettingsGeneralForm = ({
           },
           refetchQueries: [MeDocument],
         });
-        dispatch(
-          setUser({
-            email: data?.meUpdate.email ?? '',
-            fullName: `${data?.meUpdate.firstName} ${data?.meUpdate.lastName}` ?? '',
-            photo: data?.meUpdate.photo,
-            role: data?.meUpdate.role,
-          }),
-        );
+        if (data) {
+          dispatch(
+            setUser({
+              id: data.meUpdate.id,
+              email: data.meUpdate.email,
+              firstName: data.meUpdate.firstName,
+              lastName: data.meUpdate.lastName,
+              fullName: `${data.meUpdate.firstName} ${data.meUpdate.lastName}`,
+              photo: data.meUpdate.photo,
+              role: data.meUpdate.role,
+            }),
+          );
+        } else {
+          throw new Error('Server error');
+        }
         toast.success('Profile updated');
       } catch (e) {
         processGqlErrorResponse<SettingsGeneralFormValues>(e, {

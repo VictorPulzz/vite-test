@@ -14,7 +14,7 @@ const formSchema = z.object({
 
 type UsersFilterFormValues = z.infer<typeof formSchema>;
 
-interface UseClientFilterFormReturn {
+interface UseUsersFilterFormReturn {
   form: UseFormReturn<UsersFilterFormValues>;
   handleSubmit: ReturnType<UseFormHandleSubmit<UsersFilterFormValues>>;
   resetForm: () => void;
@@ -33,7 +33,7 @@ const defaultValues: UsersFilterFormValues = {
 export function useUserFilterForm({
   setFilter,
   onSubmitSuccessful,
-}: UseUsersFilterFormProps): UseClientFilterFormReturn {
+}: UseUsersFilterFormProps): UseUsersFilterFormReturn {
   const form = useForm<UsersFilterFormValues>({
     defaultValues,
     mode: 'onChange',
@@ -41,7 +41,7 @@ export function useUserFilterForm({
   });
 
   const handleSubmit = useCallback(
-    async (values: UsersFilterFormValues) => {
+    (values: UsersFilterFormValues) => {
       setFilter({
         roleId: isNil(values.role) ? undefined : [+values.role],
         departmentId: isNil(values.department) ? undefined : [+values.department],
