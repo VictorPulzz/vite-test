@@ -36,7 +36,7 @@ export type UpdateRepositoryMutationVariables = Types.Exact<{
 export type UpdateRepositoryMutation = { repositoryUpdate: { name?: string | null } };
 
 export type FetchRepositoryParticipantsQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   filters?: Types.InputMaybe<Types.RepositoryParticipantFilter>;
 }>;
 
@@ -51,7 +51,7 @@ export type FetchRepositoryParticipantsQuery = {
 };
 
 export type FetchRepositoryParticipantsIdsQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   filters?: Types.InputMaybe<Types.RepositoryParticipantFilter>;
 }>;
 
@@ -255,7 +255,7 @@ export type UpdateRepositoryMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const FetchRepositoryParticipantsDocument = gql`
   query FetchRepositoryParticipants(
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $filters: RepositoryParticipantFilter
   ) {
     repositoryParticipantList(pagination: $pagination, filters: $filters) {
@@ -292,7 +292,7 @@ export const FetchRepositoryParticipantsDocument = gql`
  * });
  */
 export function useFetchRepositoryParticipantsQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchRepositoryParticipantsQuery,
     FetchRepositoryParticipantsQueryVariables
   >,
@@ -327,7 +327,7 @@ export type FetchRepositoryParticipantsQueryResult = Apollo.QueryResult<
 >;
 export const FetchRepositoryParticipantsIdsDocument = gql`
   query FetchRepositoryParticipantsIds(
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $filters: RepositoryParticipantFilter
   ) {
     repositoryParticipantList(pagination: $pagination, filters: $filters) {
@@ -358,7 +358,7 @@ export const FetchRepositoryParticipantsIdsDocument = gql`
  * });
  */
 export function useFetchRepositoryParticipantsIdsQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchRepositoryParticipantsIdsQuery,
     FetchRepositoryParticipantsIdsQueryVariables
   >,

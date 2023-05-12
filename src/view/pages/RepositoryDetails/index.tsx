@@ -30,9 +30,6 @@ export const RepositoryDetailsPage: FC = () => {
   const { data: repositoryParticipantsIdsData, loading: isLoadingRepositoryParticipantsIdsData } =
     useFetchRepositoryParticipantsIdsQuery({
       variables: {
-        pagination: {
-          limit: 0,
-        },
         filters: { repositoryId },
       },
     });

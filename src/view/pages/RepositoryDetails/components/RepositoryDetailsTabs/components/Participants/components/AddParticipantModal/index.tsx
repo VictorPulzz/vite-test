@@ -26,13 +26,7 @@ export const AddParticipantModal: FC<Props> = ({
     repositoryId,
   });
 
-  const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
-  });
+  const { data: allUsers } = useFetchUserGlossaryListQuery();
 
   const outsideRepositoryUsers = useMemo(
     () =>

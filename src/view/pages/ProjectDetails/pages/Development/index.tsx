@@ -31,9 +31,6 @@ export const Development: FC = () => {
 
   const { data: reposRequests, loading: isLoadingReposRequests } = useFetchReposRequestsListQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: {
         type: RequestTypeChoice.CREATION_REPOSITORY,
         status: RequestStatusChoice.PENDING,
@@ -52,9 +49,6 @@ export const Development: FC = () => {
 
   const { data: envsRequests, loading: isLoadingEnvsRequests } = useFetchEnvsRequestsListQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: {
         type: RequestTypeChoice.CREATION_ENVIRONMENT,
         status: RequestStatusChoice.PENDING,
@@ -74,9 +68,6 @@ export const Development: FC = () => {
   const { data: integrationsRequests, loading: isLoadingIntegrationsRequests } =
     useFetchIntegrationsRequestsListQuery({
       variables: {
-        pagination: {
-          limit: 0,
-        },
         filters: {
           type: RequestTypeChoice.CREATION_INTEGRATION,
           status: RequestStatusChoice.PENDING,

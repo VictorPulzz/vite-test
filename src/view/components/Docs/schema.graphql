@@ -1,6 +1,6 @@
 query FetchInternalDocuments(
   $filters: DocumentFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $search: String
   $sort: [DocumentSortFieldInput!]
 ) {
@@ -25,7 +25,7 @@ query FetchInternalDocuments(
 
 query FetchClientDocuments(
   $filters: DocumentFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $search: String
   $sort: [DocumentSortFieldInput!]
 ) {
@@ -50,7 +50,7 @@ query FetchClientDocuments(
 
 query FetchProjectDocuments(
   $filters: DocumentFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $search: String
   $sort: [DocumentSortFieldInput!]
 ) {
@@ -75,7 +75,7 @@ query FetchProjectDocuments(
 
 query FetchUserDocuments(
   $filters: DocumentFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $search: String
   $sort: [DocumentSortFieldInput!]
 ) {

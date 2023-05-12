@@ -53,11 +53,6 @@ export const RequestsPage: FC = () => {
   });
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

@@ -14,9 +14,7 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
   const { status, id } = row.original;
 
   const { data: statuses } = useFetchProjectStatusesListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
+    variables: {},
     fetchPolicy: 'cache-and-network',
   });
 

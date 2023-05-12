@@ -1,6 +1,6 @@
 query FetchRequestsList(
   $filters: RequestFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $sort: [RequestSortFieldInput!]
 ) {
   requestList(filters: $filters, pagination: $pagination, sort: $sort) {

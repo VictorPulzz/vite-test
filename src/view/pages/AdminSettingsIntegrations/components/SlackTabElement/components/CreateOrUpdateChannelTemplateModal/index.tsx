@@ -36,13 +36,7 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
     prefilledData: slackTemplateInfo?.slackTemplate,
   });
 
-  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
-  });
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery();
 
   const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
     value: 'id',

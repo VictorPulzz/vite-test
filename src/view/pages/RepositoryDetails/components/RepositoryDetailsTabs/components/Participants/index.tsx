@@ -34,9 +34,6 @@ export const Participants: FC = () => {
 
   const { data: allRepositoryParticipants } = useFetchRepositoryParticipantsQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: { repositoryId },
     },
   });

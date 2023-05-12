@@ -68,19 +68,11 @@ export const NewRequestModal: FC<Props> = ({
   const { data: rolesList, loading: isLoadingRolesList } = useFetchRolesListQuery();
 
   const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 
   const { data: allProjects, loading: isLoadingAllProjects } = useFetchProjectGlossaryListQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: {
         hasRepositories: typeField === RequestTypeChoice.ACCESS_REPOSITORY ? true : null,
       },
@@ -90,9 +82,7 @@ export const NewRequestModal: FC<Props> = ({
 
   const { data: allTechnologies, loading: isLoadingAllTechnologies } =
     useFetchTechnologiesListQuery({
-      variables: {
-        pagination: { limit: 0 },
-      },
+      variables: {},
       fetchPolicy: 'cache-and-network',
     });
 
@@ -100,9 +90,6 @@ export const NewRequestModal: FC<Props> = ({
 
   const { data: allRepositories } = useFetchRepositoryGlossaryListQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: { projectId: projectIdField },
     },
     skip: !projectIdField,

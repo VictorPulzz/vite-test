@@ -49,7 +49,7 @@ export type DeleteSlackTemplateMutationVariables = Types.Exact<{
 export type DeleteSlackTemplateMutation = { slackTemplateDelete: { message: string } };
 
 export type FetchGitInitialUsersListQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   sort?: Types.InputMaybe<
     Array<Types.GitInitialUserSortFieldInput> | Types.GitInitialUserSortFieldInput
   >;
@@ -377,7 +377,7 @@ export type DeleteSlackTemplateMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const FetchGitInitialUsersListDocument = gql`
   query FetchGitInitialUsersList(
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $sort: [GitInitialUserSortFieldInput!]
   ) {
     gitInitialUserList(pagination: $pagination, sort: $sort) {
@@ -419,7 +419,7 @@ export const FetchGitInitialUsersListDocument = gql`
  * });
  */
 export function useFetchGitInitialUsersListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchGitInitialUsersListQuery,
     FetchGitInitialUsersListQueryVariables
   >,

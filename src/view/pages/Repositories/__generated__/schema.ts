@@ -6,7 +6,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchRepositoriesQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RepositoryFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
@@ -34,7 +34,7 @@ export type RemoveRepositoryMutation = { repositoryDelete: { message: string } }
 export const FetchRepositoriesDocument = gql`
   query FetchRepositories(
     $filters: RepositoryFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $search: String
   ) {
     repositoryList(filters: $filters, pagination: $pagination, search: $search) {
@@ -77,7 +77,7 @@ export const FetchRepositoriesDocument = gql`
  * });
  */
 export function useFetchRepositoriesQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchRepositoriesQuery, FetchRepositoriesQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchRepositoriesQuery, FetchRepositoriesQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchRepositoriesQuery, FetchRepositoriesQueryVariables>(

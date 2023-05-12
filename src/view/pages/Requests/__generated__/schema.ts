@@ -6,7 +6,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchRequestsListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RequestFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
 }>;
 
@@ -83,7 +83,7 @@ export type UpdateRequestMutation = { requestUpdate: { id: number } };
 export const FetchRequestsListDocument = gql`
   query FetchRequestsList(
     $filters: RequestFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $sort: [RequestSortFieldInput!]
   ) {
     requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -143,7 +143,7 @@ export const FetchRequestsListDocument = gql`
  * });
  */
 export function useFetchRequestsListQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchRequestsListQuery, FetchRequestsListQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchRequestsListQuery, FetchRequestsListQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchRequestsListQuery, FetchRequestsListQueryVariables>(

@@ -27,7 +27,7 @@ export type FetchUserDetailsQuery = {
 
 export type FetchUserProjectsListQueryVariables = Types.Exact<{
   input: Types.IdInput;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchUserProjectsListQuery = {
@@ -42,7 +42,7 @@ export type FetchUserProjectsListQuery = {
 
 export type FetchUserHistoryListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.LogFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchUserHistoryListQuery = {
@@ -125,7 +125,7 @@ export type FetchUserDetailsQueryResult = Apollo.QueryResult<
   FetchUserDetailsQueryVariables
 >;
 export const FetchUserProjectsListDocument = gql`
-  query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
+  query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput) {
     userProjects(data: $input, pagination: $pagination) {
       results {
         project {
@@ -193,7 +193,7 @@ export type FetchUserProjectsListQueryResult = Apollo.QueryResult<
   FetchUserProjectsListQueryVariables
 >;
 export const FetchUserHistoryListDocument = gql`
-  query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
+  query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput) {
     logList(filters: $filters, pagination: $pagination) {
       results {
         id
@@ -223,7 +223,7 @@ export const FetchUserHistoryListDocument = gql`
  * });
  */
 export function useFetchUserHistoryListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchUserHistoryListQuery,
     FetchUserHistoryListQueryVariables
   >,

@@ -9,7 +9,7 @@ export type FetchRolesListQueryVariables = Types.Exact<{ [key: string]: never }>
 export type FetchRolesListQuery = { rolesList: Array<{ value: number; label: string }> };
 
 export type FetchTechnologiesListQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchTechnologiesListQuery = {
@@ -71,7 +71,7 @@ export type FetchRolesListQueryResult = Apollo.QueryResult<
   FetchRolesListQueryVariables
 >;
 export const FetchTechnologiesListDocument = gql`
-  query FetchTechnologiesList($pagination: PaginationInput!) {
+  query FetchTechnologiesList($pagination: PaginationInput) {
     technologyList(pagination: $pagination) {
       results {
         value: id
@@ -98,7 +98,7 @@ export const FetchTechnologiesListDocument = gql`
  * });
  */
 export function useFetchTechnologiesListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchTechnologiesListQuery,
     FetchTechnologiesListQueryVariables
   >,

@@ -1,4 +1,4 @@
-query FetchTechnologiesList($pagination: PaginationInput!) {
+query FetchTechnologiesList($pagination: PaginationInput) {
   technologyList(pagination: $pagination) {
     results {
       value: id

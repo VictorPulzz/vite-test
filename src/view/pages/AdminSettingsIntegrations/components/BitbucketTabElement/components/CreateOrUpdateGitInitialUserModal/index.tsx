@@ -35,13 +35,7 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
     prefilledData: gitInitialUserDetails?.gitInitialUserDetails,
   });
 
-  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
-  });
+  const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery();
 
   const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
     value: 'id',

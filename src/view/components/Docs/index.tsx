@@ -141,21 +141,11 @@ export const Docs: FC<Props> = ({ type }) => {
   const { data: allDocumentCategories } = useFetchAllDocumentCategoriesQuery();
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     skip: !!userId,
     fetchPolicy: 'cache-and-network',
   });
 
   const { data: allProjects } = useFetchProjectGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     skip: !!projectId || !!userId,
     fetchPolicy: 'cache-and-network',
   });
