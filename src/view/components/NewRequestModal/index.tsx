@@ -82,7 +82,6 @@ export const NewRequestModal: FC<Props> = ({
 
   const { data: allTechnologies, loading: isLoadingAllTechnologies } =
     useFetchTechnologiesListQuery({
-      variables: {},
       fetchPolicy: 'cache-and-network',
     });
 

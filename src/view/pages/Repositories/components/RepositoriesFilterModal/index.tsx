@@ -19,7 +19,6 @@ export const RepositoriesFilterModal: FC<RepositoriesFilterModalProps> = ({
   setFilter,
 }) => {
   const { data: technologies } = useFetchTechnologiesListQuery({
-    variables: {},
     fetchPolicy: 'cache-and-network',
   });
 

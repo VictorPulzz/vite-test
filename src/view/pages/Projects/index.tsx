@@ -44,7 +44,6 @@ export const ProjectsPage: FC = () => {
   });
 
   const { data: statuses } = useFetchProjectStatusesListQuery({
-    variables: {},
     fetchPolicy: 'cache-and-network',
   });
 

@@ -33,7 +33,6 @@ export const CreateRepositoryPage: FC = () => {
   });
 
   const { data: allTechnologies } = useFetchTechnologiesListQuery({
-    variables: {},
     fetchPolicy: 'cache-and-network',
   });
 
