@@ -1046,10 +1046,6 @@ export type QueryNotificationListArgs = {
   pagination?: InputMaybe<PaginationInput>;
 };
 
-export type QueryNotificationListArgs = {
-  pagination: PaginationInput;
-};
-
 export type QueryPlatformListArgs = {
   pagination?: InputMaybe<PaginationInput>;
 };
@@ -1127,14 +1123,6 @@ export type QueryRepositoryListArgs = {
 export type QueryRepositoryParticipantListArgs = {
   filters?: InputMaybe<RepositoryParticipantFilter>;
   pagination?: InputMaybe<PaginationInput>;
-};
-
-export type QueryRepositoryPreviewArgs = {
-  data: IdInput;
-};
-
-export type QueryRequestDetailsArgs = {
-  data: IdInput;
 };
 
 export type QueryRepositoryPreviewArgs = {
