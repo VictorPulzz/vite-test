@@ -27,18 +27,12 @@ export const CreateRepositoryPage: FC = () => {
 
   const { data: allProjects } = useFetchProjectGlossaryListQuery({
     variables: {
-      pagination: {
-        limit: 0,
-      },
       filters: { inGit: true },
     },
     fetchPolicy: 'cache-and-network',
   });
 
   const { data: allTechnologies } = useFetchTechnologiesListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

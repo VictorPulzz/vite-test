@@ -56,11 +56,6 @@ export const Reports: FC = () => {
   const { form } = useGetReportsForm();
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

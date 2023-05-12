@@ -28,15 +28,9 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
   const { control, setValue } = useFormContext<ProjectFormValues>();
 
   const { data: platforms } = useFetchPlatformsListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
     fetchPolicy: 'cache-and-network',
   });
   const { data: statuses } = useFetchProjectStatusesListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

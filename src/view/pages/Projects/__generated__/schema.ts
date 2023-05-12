@@ -6,7 +6,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
@@ -31,7 +31,7 @@ export type ChangeProjectStatusMutationVariables = Types.Exact<{
 export type ChangeProjectStatusMutation = { projectUpdate: { id: number } };
 
 export const FetchProjectsDocument = gql`
-  query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
+  query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $search: String) {
     projectsList(filters: $filters, pagination: $pagination, search: $search) {
       results {
         id
@@ -77,7 +77,7 @@ export const FetchProjectsDocument = gql`
  * });
  */
 export function useFetchProjectsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchProjectsQuery, FetchProjectsQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchProjectsQuery, FetchProjectsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchProjectsQuery, FetchProjectsQueryVariables>(

@@ -32,7 +32,7 @@ mutation UpdateRepository($input: RepositoryUpdateInput!) {
 }
 
 query FetchRepositoryParticipants(
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $filters: RepositoryParticipantFilter
 ) {
   repositoryParticipantList(pagination: $pagination, filters: $filters) {
@@ -51,7 +51,7 @@ query FetchRepositoryParticipants(
 }
 
 query FetchRepositoryParticipantsIds(
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $filters: RepositoryParticipantFilter
 ) {
   repositoryParticipantList(pagination: $pagination, filters: $filters) {

@@ -27,11 +27,6 @@ export const AddNewMemberModal: FC<Props> = ({
   });
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     skip: !canWriteProjectTeam,
     fetchPolicy: 'cache-and-network',
   });

@@ -23,7 +23,7 @@ query FetchUserDetails($input: IDInput!) {
   }
 }
 
-query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
+query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput) {
   userProjects(data: $input, pagination: $pagination) {
     results {
       project {
@@ -40,7 +40,7 @@ query FetchUserProjectsList($input: IDInput!, $pagination: PaginationInput!) {
   }
 }
 
-query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput!) {
+query FetchUserHistoryList($filters: LogFilter, $pagination: PaginationInput) {
   logList(filters: $filters, pagination: $pagination) {
     results {
       id

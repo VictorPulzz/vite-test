@@ -111,7 +111,7 @@ export type FetchProjectRepositoriesListQuery = {
 
 export type FetchReposRequestsListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RequestFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
 }>;
 
@@ -150,7 +150,7 @@ export type FetchProjectEnvironmentsListQuery = {
 
 export type FetchEnvsRequestsListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RequestFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
 }>;
 
@@ -190,7 +190,7 @@ export type FetchProjectIntegrationsListQuery = {
 
 export type FetchIntegrationsRequestsListQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.RequestFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   sort?: Types.InputMaybe<Array<Types.RequestSortFieldInput> | Types.RequestSortFieldInput>;
 }>;
 
@@ -208,7 +208,7 @@ export type RequestNewProjectIntegrationMutation = {
 
 export type FetchHistoryLogsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.LogFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchHistoryLogsQuery = {
@@ -648,7 +648,7 @@ export type FetchProjectRepositoriesListQueryResult = Apollo.QueryResult<
 export const FetchReposRequestsListDocument = gql`
   query FetchReposRequestsList(
     $filters: RequestFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $sort: [RequestSortFieldInput!]
   ) {
     requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -684,7 +684,7 @@ export const FetchReposRequestsListDocument = gql`
  * });
  */
 export function useFetchReposRequestsListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchReposRequestsListQuery,
     FetchReposRequestsListQueryVariables
   >,
@@ -842,7 +842,7 @@ export type FetchProjectEnvironmentsListQueryResult = Apollo.QueryResult<
 export const FetchEnvsRequestsListDocument = gql`
   query FetchEnvsRequestsList(
     $filters: RequestFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $sort: [RequestSortFieldInput!]
   ) {
     requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -873,7 +873,7 @@ export const FetchEnvsRequestsListDocument = gql`
  * });
  */
 export function useFetchEnvsRequestsListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchEnvsRequestsListQuery,
     FetchEnvsRequestsListQueryVariables
   >,
@@ -1029,7 +1029,7 @@ export type FetchProjectIntegrationsListQueryResult = Apollo.QueryResult<
 export const FetchIntegrationsRequestsListDocument = gql`
   query FetchIntegrationsRequestsList(
     $filters: RequestFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $sort: [RequestSortFieldInput!]
   ) {
     requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -1060,7 +1060,7 @@ export const FetchIntegrationsRequestsListDocument = gql`
  * });
  */
 export function useFetchIntegrationsRequestsListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchIntegrationsRequestsListQuery,
     FetchIntegrationsRequestsListQueryVariables
   >,
@@ -1144,7 +1144,7 @@ export type RequestNewProjectIntegrationMutationOptions = Apollo.BaseMutationOpt
   RequestNewProjectIntegrationMutationVariables
 >;
 export const FetchHistoryLogsDocument = gql`
-  query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
+  query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput) {
     logList(filters: $filters, pagination: $pagination) {
       results {
         createdAt
@@ -1178,7 +1178,7 @@ export const FetchHistoryLogsDocument = gql`
  * });
  */
 export function useFetchHistoryLogsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchHistoryLogsQuery, FetchHistoryLogsQueryVariables>(

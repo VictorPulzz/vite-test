@@ -26,11 +26,6 @@ export function useRequestsTableColumns() {
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

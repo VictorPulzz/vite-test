@@ -23,11 +23,6 @@ export const History: FC = () => {
   const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

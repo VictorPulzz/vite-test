@@ -157,7 +157,7 @@ export type DocumentType = {
 
 export type DocumentTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<DocumentType>;
 };
@@ -217,7 +217,7 @@ export type GitInitialUserType = {
 
 export type GitInitialUserTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<GitInitialUserType>;
 };
@@ -281,7 +281,7 @@ export type LogType = {
 
 export type LogTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<LogType>;
 };
@@ -643,7 +643,7 @@ export enum NotificationTypeChoice {
 
 export type NotificationTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<NotificationType>;
 };
@@ -683,7 +683,7 @@ export type PlatformType = {
 
 export type PlatformTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<PlatformType>;
 };
@@ -770,7 +770,7 @@ export type ProjectGlossaryType = {
 
 export type ProjectGlossaryTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ProjectGlossaryType>;
 };
@@ -815,7 +815,7 @@ export type ProjectMemberType = {
 
 export type ProjectMemberTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ProjectMemberType>;
 };
@@ -864,7 +864,7 @@ export type ProjectStatusType = {
 
 export type ProjectStatusTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ProjectStatusType>;
 };
@@ -897,7 +897,7 @@ export type ProjectType = {
 
 export type ProjectTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ProjectType>;
 };
@@ -1033,13 +1033,17 @@ export type QueryGitInitialUserDetailsArgs = {
 };
 
 export type QueryGitInitialUserListArgs = {
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   sort?: InputMaybe<Array<GitInitialUserSortFieldInput>>;
 };
 
 export type QueryLogListArgs = {
   filters?: InputMaybe<LogFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
+};
+
+export type QueryNotificationListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryNotificationListArgs = {
@@ -1047,7 +1051,7 @@ export type QueryNotificationListArgs = {
 };
 
 export type QueryPlatformListArgs = {
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryProjectArgs = {
@@ -1080,7 +1084,7 @@ export type QueryProjectIntegrationPageArgs = {
 
 export type QueryProjectLogListArgs = {
   filters?: InputMaybe<LogFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryProjectMemberListArgs = {
@@ -1096,12 +1100,12 @@ export type QueryProjectRepositoryListArgs = {
 };
 
 export type QueryProjectStatusesListArgs = {
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
 };
 
@@ -1116,13 +1120,21 @@ export type QueryRepositoryGlossaryListArgs = {
 
 export type QueryRepositoryListArgs = {
   filters?: InputMaybe<RepositoryFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryRepositoryParticipantListArgs = {
   filters?: InputMaybe<RepositoryParticipantFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
+};
+
+export type QueryRepositoryPreviewArgs = {
+  data: IdInput;
+};
+
+export type QueryRequestDetailsArgs = {
+  data: IdInput;
 };
 
 export type QueryRepositoryPreviewArgs = {
@@ -1135,7 +1147,7 @@ export type QueryRequestDetailsArgs = {
 
 export type QueryRequestListArgs = {
   filters?: InputMaybe<RequestFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   sort?: InputMaybe<Array<RequestSortFieldInput>>;
 };
 
@@ -1144,7 +1156,7 @@ export type QuerySlackTemplateArgs = {
 };
 
 export type QueryTechnologyListArgs = {
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
 };
 
 export type QueryUserDetailsArgs = {
@@ -1158,13 +1170,13 @@ export type QueryUserGlossaryListArgs = {
 export type QueryUserProjectsArgs = {
   data: IdInput;
   filters?: InputMaybe<ProjectFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUsersListArgs = {
   filters?: InputMaybe<UserFilter>;
-  pagination: PaginationInput;
+  pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
 };
 
@@ -1207,7 +1219,7 @@ export type RepositoryGlossaryType = {
 
 export type RepositoryGlossaryTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<RepositoryGlossaryType>;
 };
@@ -1232,7 +1244,7 @@ export type RepositoryParticipantType = {
 
 export type RepositoryParticipantTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<RepositoryParticipantType>;
 };
@@ -1279,7 +1291,7 @@ export enum RepositoryTypeChoice {
 
 export type RepositoryTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<RepositoryType>;
 };
@@ -1364,7 +1376,7 @@ export enum RequestTypeChoice {
 
 export type RequestTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<RequestType>;
 };
@@ -1413,7 +1425,7 @@ export type TechnologyType = {
 
 export type TechnologyTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<TechnologyType>;
 };
@@ -1432,7 +1444,7 @@ export type UserGlossaryType = {
 
 export type UserGlossaryTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<UserGlossaryType>;
 };
@@ -1474,7 +1486,7 @@ export type UserType = {
 
 export type UserTypePagination = {
   count: Scalars['Int'];
-  limit: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<UserType>;
 };

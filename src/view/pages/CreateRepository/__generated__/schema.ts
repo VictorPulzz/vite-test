@@ -5,7 +5,7 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchTechnologiesListQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchTechnologiesListQuery = {
@@ -25,7 +25,7 @@ export type CreateRepositoryMutationVariables = Types.Exact<{
 export type CreateRepositoryMutation = { repositoryCreate: { name?: string | null } };
 
 export const FetchTechnologiesListDocument = gql`
-  query FetchTechnologiesList($pagination: PaginationInput!) {
+  query FetchTechnologiesList($pagination: PaginationInput) {
     technologyList(pagination: $pagination) {
       results {
         value: id
@@ -52,7 +52,7 @@ export const FetchTechnologiesListDocument = gql`
  * });
  */
 export function useFetchTechnologiesListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchTechnologiesListQuery,
     FetchTechnologiesListQueryVariables
   >,

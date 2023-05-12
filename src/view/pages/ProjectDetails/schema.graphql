@@ -114,7 +114,7 @@ query FetchProjectRepositoriesList($data: IDInput!) {
 
 query FetchReposRequestsList(
   $filters: RequestFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $sort: [RequestSortFieldInput!]
 ) {
   requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -158,7 +158,7 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
 
 query FetchEnvsRequestsList(
   $filters: RequestFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $sort: [RequestSortFieldInput!]
 ) {
   requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -197,7 +197,7 @@ query FetchProjectIntegrationsList($data: IDInput!) {
 
 query FetchIntegrationsRequestsList(
   $filters: RequestFilter
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $sort: [RequestSortFieldInput!]
 ) {
   requestList(filters: $filters, pagination: $pagination, sort: $sort) {
@@ -214,7 +214,7 @@ mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
   }
 }
 
-query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
+query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput) {
   logList(filters: $filters, pagination: $pagination) {
     results {
       createdAt

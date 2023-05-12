@@ -49,7 +49,7 @@ mutation DeleteSlackTemplate($input: IDInput!) {
 }
 
 query FetchGitInitialUsersList(
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $sort: [GitInitialUserSortFieldInput!]
 ) {
   gitInitialUserList(pagination: $pagination, sort: $sort) {

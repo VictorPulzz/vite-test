@@ -89,23 +89,23 @@ input DocumentFilter {
 
 input DocumentGenerateFieldInput {
   name: String!
-  value: String = null
+  value: String
 }
 
 input DocumentGenerateInput {
-  categoryId: Int = null
+  categoryId: Int
   fields: [DocumentGenerateFieldInput!]!
-  projectId: Int = null
+  projectId: Int
   templateId: Int!
-  userId: Int = null
+  userId: Int
 }
 
 input DocumentInput {
-  categoryId: Int = null
+  categoryId: Int
   file: Upload!
-  id: Int = null
-  projectId: Int = null
-  userId: Int = null
+  id: Int
+  projectId: Int
+  userId: Int
 }
 
 enum DocumentSort {
@@ -118,7 +118,7 @@ input DocumentSortFieldInput {
 }
 
 input DocumentTemplateFieldInput {
-  description: String = null
+  description: String
   name: String!
 }
 
@@ -154,7 +154,7 @@ type DocumentType {
 
 type DocumentTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [DocumentType!]!
 }
@@ -214,7 +214,7 @@ type GitInitialUserType {
 
 type GitInitialUserTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [GitInitialUserType!]!
 }
@@ -278,7 +278,7 @@ type LogType {
 
 type LogTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [LogType!]!
 }
@@ -540,7 +540,7 @@ enum NotificationTypeChoice {
 
 type NotificationTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [NotificationType!]!
 }
@@ -556,7 +556,7 @@ enum OrderDirectionChoice {
 }
 
 input PaginationInput {
-  limit: Int = 10
+  limit: Int = null
   offset: Int = 0
 }
 
@@ -580,7 +580,7 @@ type PlatformType {
 
 type PlatformTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [PlatformType!]!
 }
@@ -591,11 +591,11 @@ type PorjectIntegrationsPage {
 }
 
 input ProfileInput {
-  address: String = null
-  birthDate: Date = null
+  address: String
+  birthDate: Date
   firstName: String!
   lastName: String!
-  phone: String = null
+  phone: String
   photo: Upload
 }
 
@@ -667,7 +667,7 @@ type ProjectGlossaryType {
 
 type ProjectGlossaryTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [ProjectGlossaryType!]!
 }
@@ -712,7 +712,7 @@ type ProjectMemberType {
 
 type ProjectMemberTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [ProjectMemberType!]!
 }
@@ -761,7 +761,7 @@ type ProjectStatusType {
 
 type ProjectStatusTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [ProjectStatusType!]!
 }
@@ -794,7 +794,7 @@ type ProjectType {
 
 type ProjectTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [ProjectType!]!
 }
@@ -867,13 +867,13 @@ type Query {
   Getting git initial user list
   """
   gitInitialUserList(
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
     sort: [GitInitialUserSortFieldInput!] = null
   ): GitInitialUserTypePagination!
   """
   Getting list of logs
   """
-  logList(filters: LogFilter = null, pagination: PaginationInput!): LogTypePagination!
+  logList(filters: LogFilter = null, pagination: PaginationInput = null): LogTypePagination!
   """
   Getting authenticated user
   """
@@ -881,7 +881,7 @@ type Query {
   """
   Getting list of notifications
   """
-  notificationList(pagination: PaginationInput!): NotificationTypePagination!
+  notificationList(pagination: PaginationInput = null): NotificationTypePagination!
   """
   Getting list of roles and permissions
   """
@@ -889,7 +889,7 @@ type Query {
   """
   Getting platform list
   """
-  platformList(pagination: PaginationInput!): PlatformTypePagination!
+  platformList(pagination: PaginationInput = null): PlatformTypePagination!
   """
   Getting project by id
   """
@@ -925,7 +925,7 @@ type Query {
   """
   Getting history for project by id
   """
-  projectLogList(filters: LogFilter = null, pagination: PaginationInput!): LogTypePagination!
+  projectLogList(filters: LogFilter = null, pagination: PaginationInput = null): LogTypePagination!
   """
   Getting members for project by id
   """
@@ -941,13 +941,13 @@ type Query {
   """
   Getting project's statuses list
   """
-  projectStatusesList(pagination: PaginationInput!): ProjectStatusTypePagination!
+  projectStatusesList(pagination: PaginationInput = null): ProjectStatusTypePagination!
   """
   Getting list of projects
   """
   projectsList(
     filters: ProjectFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
     search: String = null
   ): ProjectTypePagination!
   """
@@ -966,7 +966,7 @@ type Query {
   """
   repositoryList(
     filters: RepositoryFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput
     search: String = null
   ): RepositoryTypePagination!
   """
@@ -974,7 +974,7 @@ type Query {
   """
   repositoryParticipantList(
     filters: RepositoryParticipantFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
   ): RepositoryParticipantTypePagination!
   """
   Getting repository preview
@@ -989,7 +989,7 @@ type Query {
   """
   requestList(
     filters: RequestFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
     sort: [RequestSortFieldInput!] = null
   ): RequestTypePagination!
   """
@@ -1007,7 +1007,7 @@ type Query {
   """
   Getting technologies list
   """
-  technologyList(pagination: PaginationInput!): TechnologyTypePagination!
+  technologyList(pagination: PaginationInput = null): TechnologyTypePagination!
   """
   Getting user by id
   """
@@ -1022,7 +1022,7 @@ type Query {
   userProjects(
     data: IDInput!
     filters: ProjectFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
     search: String = null
   ): ProjectMemberTypePagination!
   """
@@ -1030,7 +1030,7 @@ type Query {
   """
   usersList(
     filters: UserFilter = null
-    pagination: PaginationInput!
+    pagination: PaginationInput = null
     search: String = null
   ): UserTypePagination!
 }
@@ -1074,7 +1074,7 @@ type RepositoryGlossaryType {
 
 type RepositoryGlossaryTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [RepositoryGlossaryType!]!
 }
@@ -1099,7 +1099,7 @@ type RepositoryParticipantType {
 
 type RepositoryParticipantTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [RepositoryParticipantType!]!
 }
@@ -1146,7 +1146,7 @@ enum RepositoryTypeChoice {
 
 type RepositoryTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [RepositoryType!]!
 }
@@ -1231,7 +1231,7 @@ enum RequestTypeChoice {
 
 type RequestTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [RequestType!]!
 }
@@ -1280,7 +1280,7 @@ type TechnologyType {
 
 type TechnologyTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [TechnologyType!]!
 }
@@ -1301,25 +1301,25 @@ type UserGlossaryType {
 
 type UserGlossaryTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [UserGlossaryType!]!
 }
 
 input UserInput {
-  address: String = null
-  birthDate: Date = null
-  contractType: ContractChoice = null
-  departmentId: Int = null
-  email: String = null
+  address: String
+  birthDate: Date
+  contractType: ContractChoice
+  departmentId: Int
+  email: String
   firstName: String!
-  id: Int = null
-  isActive: Boolean = null
-  isSuperuser: Boolean = null
+  id: Int
+  isActive: Boolean
+  isSuperuser: Boolean
   lastName: String!
-  phone: String = null
+  phone: String
   photo: Upload
-  roleId: Int = null
+  roleId: Int
 }
 
 type UserType {
@@ -1343,7 +1343,7 @@ type UserType {
 
 type UserTypePagination {
   count: Int!
-  limit: Int!
+  limit: Int
   offset: Int!
   results: [UserType!]!
 }

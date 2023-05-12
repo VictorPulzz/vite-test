@@ -6,7 +6,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchUsersQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.UserFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
@@ -44,7 +44,7 @@ export type ChangeUserStatusMutation = {
 };
 
 export const FetchUsersDocument = gql`
-  query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+  query FetchUsers($filters: UserFilter, $pagination: PaginationInput, $search: String) {
     usersList(filters: $filters, pagination: $pagination, search: $search) {
       results {
         id
@@ -87,7 +87,7 @@ export const FetchUsersDocument = gql`
  * });
  */
 export function useFetchUsersQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchUsersQuery, FetchUsersQueryVariables>(FetchUsersDocument, options);

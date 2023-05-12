@@ -45,7 +45,7 @@ export type UpdateProjectMutationVariables = Types.Exact<{
 export type UpdateProjectMutation = { projectUpdate: { id: number } };
 
 export type FetchPlatformsListQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchPlatformsListQuery = {
@@ -53,7 +53,7 @@ export type FetchPlatformsListQuery = {
 };
 
 export type FetchProjectStatusesListQueryVariables = Types.Exact<{
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
 }>;
 
 export type FetchProjectStatusesListQuery = {
@@ -231,7 +231,7 @@ export type UpdateProjectMutationOptions = Apollo.BaseMutationOptions<
   UpdateProjectMutationVariables
 >;
 export const FetchPlatformsListDocument = gql`
-  query FetchPlatformsList($pagination: PaginationInput!) {
+  query FetchPlatformsList($pagination: PaginationInput) {
     platformList(pagination: $pagination) {
       results {
         value: id
@@ -258,7 +258,7 @@ export const FetchPlatformsListDocument = gql`
  * });
  */
 export function useFetchPlatformsListQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchPlatformsListQuery, FetchPlatformsListQueryVariables>(
@@ -287,7 +287,7 @@ export type FetchPlatformsListQueryResult = Apollo.QueryResult<
   FetchPlatformsListQueryVariables
 >;
 export const FetchProjectStatusesListDocument = gql`
-  query FetchProjectStatusesList($pagination: PaginationInput!) {
+  query FetchProjectStatusesList($pagination: PaginationInput) {
     projectStatusesList(pagination: $pagination) {
       results {
         value: id
@@ -314,7 +314,7 @@ export const FetchProjectStatusesListDocument = gql`
  * });
  */
 export function useFetchProjectStatusesListQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchProjectStatusesListQuery,
     FetchProjectStatusesListQueryVariables
   >,

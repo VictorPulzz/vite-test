@@ -39,11 +39,6 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
   });
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
-    variables: {
-      pagination: {
-        limit: 0,
-      },
-    },
     fetchPolicy: 'cache-and-network',
   });
 

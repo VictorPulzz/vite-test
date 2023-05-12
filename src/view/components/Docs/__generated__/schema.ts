@@ -6,7 +6,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchInternalDocumentsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.DocumentFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
   sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
 }>;
@@ -27,7 +27,7 @@ export type FetchInternalDocumentsQuery = {
 
 export type FetchClientDocumentsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.DocumentFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
   sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
 }>;
@@ -48,7 +48,7 @@ export type FetchClientDocumentsQuery = {
 
 export type FetchProjectDocumentsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.DocumentFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
   sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
 }>;
@@ -69,7 +69,7 @@ export type FetchProjectDocumentsQuery = {
 
 export type FetchUserDocumentsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.DocumentFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
   sort?: Types.InputMaybe<Array<Types.DocumentSortFieldInput> | Types.DocumentSortFieldInput>;
 }>;
@@ -137,7 +137,7 @@ export type RemoveDocumentMutation = { documentDelete: { message: string } };
 export const FetchInternalDocumentsDocument = gql`
   query FetchInternalDocuments(
     $filters: DocumentFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $search: String
     $sort: [DocumentSortFieldInput!]
   ) {
@@ -181,7 +181,7 @@ export const FetchInternalDocumentsDocument = gql`
  * });
  */
 export function useFetchInternalDocumentsQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchInternalDocumentsQuery,
     FetchInternalDocumentsQueryVariables
   >,
@@ -217,7 +217,7 @@ export type FetchInternalDocumentsQueryResult = Apollo.QueryResult<
 export const FetchClientDocumentsDocument = gql`
   query FetchClientDocuments(
     $filters: DocumentFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $search: String
     $sort: [DocumentSortFieldInput!]
   ) {
@@ -261,7 +261,7 @@ export const FetchClientDocumentsDocument = gql`
  * });
  */
 export function useFetchClientDocumentsQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchClientDocumentsQuery,
     FetchClientDocumentsQueryVariables
   >,
@@ -295,7 +295,7 @@ export type FetchClientDocumentsQueryResult = Apollo.QueryResult<
 export const FetchProjectDocumentsDocument = gql`
   query FetchProjectDocuments(
     $filters: DocumentFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $search: String
     $sort: [DocumentSortFieldInput!]
   ) {
@@ -339,7 +339,7 @@ export const FetchProjectDocumentsDocument = gql`
  * });
  */
 export function useFetchProjectDocumentsQuery(
-  baseOptions: Apollo.QueryHookOptions<
+  baseOptions?: Apollo.QueryHookOptions<
     FetchProjectDocumentsQuery,
     FetchProjectDocumentsQueryVariables
   >,
@@ -373,7 +373,7 @@ export type FetchProjectDocumentsQueryResult = Apollo.QueryResult<
 export const FetchUserDocumentsDocument = gql`
   query FetchUserDocuments(
     $filters: DocumentFilter
-    $pagination: PaginationInput!
+    $pagination: PaginationInput
     $search: String
     $sort: [DocumentSortFieldInput!]
   ) {
@@ -417,7 +417,7 @@ export const FetchUserDocumentsDocument = gql`
  * });
  */
 export function useFetchUserDocumentsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchUserDocumentsQuery, FetchUserDocumentsQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchUserDocumentsQuery, FetchUserDocumentsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchUserDocumentsQuery, FetchUserDocumentsQueryVariables>(
