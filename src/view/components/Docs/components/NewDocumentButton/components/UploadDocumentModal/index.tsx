@@ -77,7 +77,11 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
             )}
             {!fileName && (
               <>
-                <FileUpload onUpload={onChange}>
+                <FileUpload
+                  onUpload={onChange}
+                  accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
+text/plain, application/pdf, image/*"
+                >
                   {({ onClick }) => (
                     <Button
                       onClick={onClick}
