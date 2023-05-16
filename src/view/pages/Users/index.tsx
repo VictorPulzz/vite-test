@@ -69,7 +69,12 @@ export const UsersPage: FC = () => {
             )}
           </div>
           <div className="mt-5 flex gap-3">
-            <SearchInput onChange={setSearchValue} placeholder="Search users" className="flex-1" />
+            <SearchInput
+              defaultValue={searchValue}
+              onChange={setSearchValue}
+              placeholder="Search users"
+              className="flex-1"
+            />
             <Button
               variant={ButtonVariant.SECONDARY}
               label="Filter"
