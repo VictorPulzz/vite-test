@@ -25,10 +25,12 @@ export default defineConfig(({ mode }) => {
       svgSpritemap({
         pattern: 'src/view/assets/icons/*.svg',
         filename: 'icons/spritemap.svg',
+        prefix: 'sprite',
       }),
       svgSpritemap({
         pattern: 'src/view/assets/icons/raw/*.svg',
         filename: 'icons/raw-spritemap.svg',
+        prefix: 'sprite',
       }),
     ],
   };
