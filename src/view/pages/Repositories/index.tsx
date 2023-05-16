@@ -70,6 +70,7 @@ export const RepositoriesPage: FC = () => {
           </div>
           <div className="mt-5 flex gap-3 items-start">
             <SearchInput
+              defaultValue={searchValue}
               onChange={setSearchValue}
               placeholder="Search repositories"
               className="flex-1"

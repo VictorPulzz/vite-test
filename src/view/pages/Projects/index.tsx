@@ -78,6 +78,7 @@ export const ProjectsPage: FC = () => {
           </div>
           <div className="mt-5 flex gap-3">
             <SearchInput
+              defaultValue={searchValue}
               onChange={setSearchValue}
               placeholder="Search projects"
               className="flex-1"
