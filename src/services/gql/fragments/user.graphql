@@ -1,14 +1,14 @@
 fragment AuthorizedUser on ProfileType {
+  id
   email
   firstName
   lastName
   fullName
   photo {
-    fileName
-    size
     url
   }
   role {
+    id
     name
     permissionsList
   }

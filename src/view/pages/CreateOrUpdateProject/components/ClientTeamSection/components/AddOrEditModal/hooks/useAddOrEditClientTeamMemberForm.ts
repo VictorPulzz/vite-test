@@ -21,7 +21,7 @@ const formSchema = z.object({
   email: z.string().email(formErrors.INVALID_EMAIL),
   phone: z.string().and(phoneNumberValidation),
   position: z.string(),
-  notes: z.string(),
+  notes: z.string().trim(),
   pointContact: z.boolean(),
 });
 
@@ -68,7 +68,7 @@ export function useAddOrEditClientTeamMemberForm({
   });
 
   const handleSubmit = useCallback(
-    async (values: AddOrEditClientTeamMemberFormValues) => {
+    (values: AddOrEditClientTeamMemberFormValues) => {
       try {
         if (prefilledData) {
           update(prefilledData.index, { ...values });

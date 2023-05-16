@@ -9,20 +9,18 @@ export type CreateOrUpdateUserMutationVariables = Types.Exact<{
 }>;
 
 export type CreateOrUpdateUserMutation = {
-  __typename?: 'Mutation';
   userCreateUpdate: {
-    __typename?: 'UserType';
-    id?: string | null;
-    firstName?: string | null;
-    lastName?: string | null;
+    id: number;
+    firstName: string;
+    lastName: string;
     email: string;
     address?: string | null;
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     isActive?: boolean | null;
-    photo?: { __typename?: 'ImageType'; url: string } | null;
-    department?: { __typename?: 'DepartmentType'; id: number; name: string } | null;
-    role?: { __typename?: 'RoleType'; id: number; name: string } | null;
+    photo?: { url: string } | null;
+    department?: { id: number; name: string } | null;
+    role?: { id: number; name: string } | null;
   };
 };
 

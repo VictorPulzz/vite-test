@@ -1,13 +1,13 @@
-import { Button, ButtonSize, ButtonVariant } from '@ui/components/common/Button';
-import { PasswordField } from '@ui/components/form/PasswordField';
-import { TextField } from '@ui/components/form/TextField';
-import { InputSize } from '@ui/components/form/TextInput';
+import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
+import { PasswordField } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { InputSize } from '@appello/web-ui';
+import { TextLink } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
 import { AuthLayout } from '~/view/layouts/AuthLayout';
-import { TextLink } from '~/view/ui/components/common/TextLink';
 
 import { useSignInForm } from './hooks/useSignInForm';
 

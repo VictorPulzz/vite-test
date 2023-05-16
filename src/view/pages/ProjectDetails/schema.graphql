@@ -6,6 +6,7 @@ query FetchProjectPreview($data: IDInput!) {
     createdBy {
       fullName
     }
+    inTeam
   }
 }
 
@@ -42,45 +43,37 @@ query FetchProjectInfo($data: IDInput!) {
   }
 }
 
-query FetchAllUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
-  usersList(filters: $filters, pagination: $pagination, search: $search) {
-    results {
-      id
-      photo {
-        url
-      }
-      fullName
-      role {
-        name
-      }
-      email
-    }
-  }
-}
-
 query FetchProjectMembers($data: IDInput!) {
   projectMemberList(data: $data) {
     currentTeam {
-      id
-      photo {
-        url
+      startDate
+      endDate
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
       }
-      fullName
-      role {
-        name
-      }
-      email
     }
     otherContrubutors {
-      id
-      photo {
-        url
+      startDate
+      endDate
+      user {
+        id
+        photo {
+          url
+        }
+        fullName
+        role {
+          name
+        }
+        email
       }
-      fullName
-      role {
-        name
-      }
-      email
     }
   }
 }
@@ -105,14 +98,35 @@ mutation RemoveProjectMember($input: ProjectMemberInput!) {
 
 query FetchProjectRepositoriesList($data: IDInput!) {
   projectRepositoryList(data: $data) {
-    id
-    name
-    type
-    technologies {
+    projectInGit
+    projectRepositories {
       id
       name
+      type
+      technologies {
+        id
+        name
+      }
+      createdAt
     }
-    createdAt
+  }
+}
+
+query FetchReposRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      repositoryType
+      technologies {
+        id
+        name
+      }
+      createdAt
+    }
   }
 }
 
@@ -128,14 +142,29 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     projectId
     name
     frontendCredentials {
+      id
       url
       login
       password
     }
     backendCredentials {
+      id
       url
       login
       password
+    }
+  }
+}
+
+query FetchEnvsRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      environment
     }
   }
 }
@@ -158,9 +187,23 @@ query FetchProjectIntegrationsList($data: IDInput!) {
       value
     }
     credential {
+      id
       url
       login
       password
+    }
+  }
+}
+
+query FetchIntegrationsRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
+    results {
+      id
+      integrationName
     }
   }
 }
@@ -171,7 +214,7 @@ mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
   }
 }
 
-query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
+query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput) {
   logList(filters: $filters, pagination: $pagination) {
     results {
       createdAt
@@ -186,54 +229,6 @@ query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput!) {
   }
 }
 
-query FetchDocuments(
-  $filters: DocumentFilter
-  $pagination: PaginationInput!
-  $search: String
-  $sort: [DocumentSortFieldInput!]
-) {
-  documentList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
-    results {
-      id
-      project {
-        name
-      }
-      file {
-        fileName
-        url
-        size
-        __typename
-      }
-      createdAt
-      addedBy {
-        fullName
-      }
-    }
-    count
-  }
-}
-
-mutation UploadDocument($input: DocumentInput!) {
-  documentCreateUpdate(data: $input) {
-    id
-  }
-}
-
-mutation RemoveDocument($input: IDInput!) {
-  documentDelete(data: $input) {
-    message
-  }
-}
-
-query FetchAllProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
-  projectsList(filters: $filters, pagination: $pagination, search: $search) {
-    results {
-      value: id
-      label: name
-    }
-  }
-}
-
 query FetchAllDocumentCategories {
   documentCategoryList {
     value: id
@@ -241,8 +236,9 @@ query FetchAllDocumentCategories {
   }
 }
 
-query FetchProjectSlackChannels($data: IDInput!) {
-  project(data: $data) {
+query FetchProjectIntegrations($data: IDInput!) {
+  projectIntegrationPage(data: $data) {
+    gitGroupId
     slackChannels {
       template {
         label
@@ -252,6 +248,12 @@ query FetchProjectSlackChannels($data: IDInput!) {
       createdAt
       channelUrl
     }
+  }
+}
+
+mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
+  projectConnectToGit(data: $input) {
+    id
   }
 }
 

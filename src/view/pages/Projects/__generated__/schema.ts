@@ -6,27 +6,20 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 export type FetchProjectsQuery = {
-  __typename?: 'Query';
   projectsList: {
-    __typename?: 'ProjectTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'ProjectType';
       id: number;
       name: string;
-      PM?: Array<{
-        __typename?: 'UserType';
-        id?: string | null;
-        fullName?: string | null;
-        photo?: { __typename?: 'ImageType'; url: string } | null;
-      }> | null;
-      status?: { __typename?: 'ProjectStatusType'; id?: number | null; name: string } | null;
-      platforms?: Array<{ __typename?: 'PlatformType'; id?: number | null; name: string }> | null;
+      phase?: Types.ProjectPhaseChoice | null;
+      PM?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
+      status?: { id: number; name: string } | null;
+      platforms?: Array<{ id: number; name: string }> | null;
     }>;
   };
 };
@@ -35,13 +28,10 @@ export type ChangeProjectStatusMutationVariables = Types.Exact<{
   input: Types.ProjectUpdateInput;
 }>;
 
-export type ChangeProjectStatusMutation = {
-  __typename?: 'Mutation';
-  projectUpdate: { __typename?: 'ProjectType'; id: number };
-};
+export type ChangeProjectStatusMutation = { projectUpdate: { id: number } };
 
 export const FetchProjectsDocument = gql`
-  query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput!, $search: String) {
+  query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $search: String) {
     projectsList(filters: $filters, pagination: $pagination, search: $search) {
       results {
         id
@@ -61,6 +51,7 @@ export const FetchProjectsDocument = gql`
           id
           name
         }
+        phase
       }
       count
     }
@@ -86,7 +77,7 @@ export const FetchProjectsDocument = gql`
  * });
  */
 export function useFetchProjectsQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchProjectsQuery, FetchProjectsQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchProjectsQuery, FetchProjectsQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchProjectsQuery, FetchProjectsQueryVariables>(

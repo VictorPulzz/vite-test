@@ -7,19 +7,12 @@ const defaultOptions = {} as const;
 export type FetchSlackTemplatesListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchSlackTemplatesListQuery = {
-  __typename?: 'Query';
   slackTemplateList: Array<{
-    __typename?: 'SlackChannelTemplateType';
     id: number;
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
-      fullName?: string | null;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-    }> | null;
+    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
   }>;
 };
 
@@ -28,19 +21,12 @@ export type FetchSlackTemplateInfoQueryVariables = Types.Exact<{
 }>;
 
 export type FetchSlackTemplateInfoQuery = {
-  __typename?: 'Query';
   slackTemplate: {
-    __typename?: 'SlackChannelTemplateType';
     id: number;
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
-      fullName?: string | null;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-    }> | null;
+    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
   };
 };
 
@@ -48,28 +34,64 @@ export type CreateSlackTemplateMutationVariables = Types.Exact<{
   input: Types.SlackChannelTemplateInput;
 }>;
 
-export type CreateSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateCreate: { __typename?: 'SlackChannelTemplateType'; id: number };
-};
+export type CreateSlackTemplateMutation = { slackTemplateCreate: { id: number } };
 
 export type UpdateSlackTemplateMutationVariables = Types.Exact<{
   input: Types.SlackChannelTemplateInput;
 }>;
 
-export type UpdateSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateUpdate: { __typename?: 'SlackChannelTemplateType'; id: number };
-};
+export type UpdateSlackTemplateMutation = { slackTemplateUpdate: { id: number } };
 
 export type DeleteSlackTemplateMutationVariables = Types.Exact<{
   input: Types.IdInput;
 }>;
 
-export type DeleteSlackTemplateMutation = {
-  __typename?: 'Mutation';
-  slackTemplateDelete: { __typename?: 'MessageType'; message: string };
+export type DeleteSlackTemplateMutation = { slackTemplateDelete: { message: string } };
+
+export type FetchGitInitialUsersListQueryVariables = Types.Exact<{
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+  sort?: Types.InputMaybe<
+    Array<Types.GitInitialUserSortFieldInput> | Types.GitInitialUserSortFieldInput
+  >;
+}>;
+
+export type FetchGitInitialUsersListQuery = {
+  gitInitialUserList: {
+    count: number;
+    results: Array<{
+      accessLevel: Types.RepositoryAccessLevelChoice;
+      user: {
+        id: number;
+        fullName: string;
+        email: string;
+        photo?: { url: string } | null;
+        department?: { id: number; name: string } | null;
+      };
+    }>;
+  };
 };
+
+export type FetchGitInitialUserDetailsQueryVariables = Types.Exact<{
+  input: Types.GitInitialUserId;
+}>;
+
+export type FetchGitInitialUserDetailsQuery = {
+  gitInitialUserDetails: { accessLevel: Types.RepositoryAccessLevelChoice; user: { id: number } };
+};
+
+export type CreateOrUpdateGitInitialUserMutationVariables = Types.Exact<{
+  input: Types.GitInitialUserInput;
+}>;
+
+export type CreateOrUpdateGitInitialUserMutation = {
+  gitInitialUserCreateUpdate: { accessLevel: Types.RepositoryAccessLevelChoice };
+};
+
+export type RemoveGitInitialUserMutationVariables = Types.Exact<{
+  input: Types.GitInitialUserId;
+}>;
+
+export type RemoveGitInitialUserMutation = { gitInitialUserDelete: { message: string } };
 
 export const FetchSlackTemplatesListDocument = gql`
   query FetchSlackTemplatesList {
@@ -352,4 +374,242 @@ export type DeleteSlackTemplateMutationResult = Apollo.MutationResult<DeleteSlac
 export type DeleteSlackTemplateMutationOptions = Apollo.BaseMutationOptions<
   DeleteSlackTemplateMutation,
   DeleteSlackTemplateMutationVariables
+>;
+export const FetchGitInitialUsersListDocument = gql`
+  query FetchGitInitialUsersList(
+    $pagination: PaginationInput
+    $sort: [GitInitialUserSortFieldInput!]
+  ) {
+    gitInitialUserList(pagination: $pagination, sort: $sort) {
+      results {
+        user {
+          id
+          fullName
+          photo {
+            url
+          }
+          department {
+            id
+            name
+          }
+          email
+        }
+        accessLevel
+      }
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchGitInitialUsersListQuery__
+ *
+ * To run a query within a React component, call `useFetchGitInitialUsersListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchGitInitialUsersListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchGitInitialUsersListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchGitInitialUsersListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchGitInitialUsersListQuery,
+    FetchGitInitialUsersListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchGitInitialUsersListQuery, FetchGitInitialUsersListQueryVariables>(
+    FetchGitInitialUsersListDocument,
+    options,
+  );
+}
+export function useFetchGitInitialUsersListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchGitInitialUsersListQuery,
+    FetchGitInitialUsersListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchGitInitialUsersListQuery, FetchGitInitialUsersListQueryVariables>(
+    FetchGitInitialUsersListDocument,
+    options,
+  );
+}
+export type FetchGitInitialUsersListQueryHookResult = ReturnType<
+  typeof useFetchGitInitialUsersListQuery
+>;
+export type FetchGitInitialUsersListLazyQueryHookResult = ReturnType<
+  typeof useFetchGitInitialUsersListLazyQuery
+>;
+export type FetchGitInitialUsersListQueryResult = Apollo.QueryResult<
+  FetchGitInitialUsersListQuery,
+  FetchGitInitialUsersListQueryVariables
+>;
+export const FetchGitInitialUserDetailsDocument = gql`
+  query FetchGitInitialUserDetails($input: GitInitialUserId!) {
+    gitInitialUserDetails(data: $input) {
+      user {
+        id
+      }
+      accessLevel
+    }
+  }
+`;
+
+/**
+ * __useFetchGitInitialUserDetailsQuery__
+ *
+ * To run a query within a React component, call `useFetchGitInitialUserDetailsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchGitInitialUserDetailsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchGitInitialUserDetailsQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFetchGitInitialUserDetailsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchGitInitialUserDetailsQuery,
+    FetchGitInitialUserDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchGitInitialUserDetailsQuery, FetchGitInitialUserDetailsQueryVariables>(
+    FetchGitInitialUserDetailsDocument,
+    options,
+  );
+}
+export function useFetchGitInitialUserDetailsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchGitInitialUserDetailsQuery,
+    FetchGitInitialUserDetailsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchGitInitialUserDetailsQuery,
+    FetchGitInitialUserDetailsQueryVariables
+  >(FetchGitInitialUserDetailsDocument, options);
+}
+export type FetchGitInitialUserDetailsQueryHookResult = ReturnType<
+  typeof useFetchGitInitialUserDetailsQuery
+>;
+export type FetchGitInitialUserDetailsLazyQueryHookResult = ReturnType<
+  typeof useFetchGitInitialUserDetailsLazyQuery
+>;
+export type FetchGitInitialUserDetailsQueryResult = Apollo.QueryResult<
+  FetchGitInitialUserDetailsQuery,
+  FetchGitInitialUserDetailsQueryVariables
+>;
+export const CreateOrUpdateGitInitialUserDocument = gql`
+  mutation CreateOrUpdateGitInitialUser($input: GitInitialUserInput!) {
+    gitInitialUserCreateUpdate(data: $input) {
+      accessLevel
+    }
+  }
+`;
+export type CreateOrUpdateGitInitialUserMutationFn = Apollo.MutationFunction<
+  CreateOrUpdateGitInitialUserMutation,
+  CreateOrUpdateGitInitialUserMutationVariables
+>;
+
+/**
+ * __useCreateOrUpdateGitInitialUserMutation__
+ *
+ * To run a mutation, you first call `useCreateOrUpdateGitInitialUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateGitInitialUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrUpdateGitInitialUserMutation, { data, loading, error }] = useCreateOrUpdateGitInitialUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrUpdateGitInitialUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    CreateOrUpdateGitInitialUserMutation,
+    CreateOrUpdateGitInitialUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    CreateOrUpdateGitInitialUserMutation,
+    CreateOrUpdateGitInitialUserMutationVariables
+  >(CreateOrUpdateGitInitialUserDocument, options);
+}
+export type CreateOrUpdateGitInitialUserMutationHookResult = ReturnType<
+  typeof useCreateOrUpdateGitInitialUserMutation
+>;
+export type CreateOrUpdateGitInitialUserMutationResult =
+  Apollo.MutationResult<CreateOrUpdateGitInitialUserMutation>;
+export type CreateOrUpdateGitInitialUserMutationOptions = Apollo.BaseMutationOptions<
+  CreateOrUpdateGitInitialUserMutation,
+  CreateOrUpdateGitInitialUserMutationVariables
+>;
+export const RemoveGitInitialUserDocument = gql`
+  mutation RemoveGitInitialUser($input: GitInitialUserId!) {
+    gitInitialUserDelete(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveGitInitialUserMutationFn = Apollo.MutationFunction<
+  RemoveGitInitialUserMutation,
+  RemoveGitInitialUserMutationVariables
+>;
+
+/**
+ * __useRemoveGitInitialUserMutation__
+ *
+ * To run a mutation, you first call `useRemoveGitInitialUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveGitInitialUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeGitInitialUserMutation, { data, loading, error }] = useRemoveGitInitialUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveGitInitialUserMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveGitInitialUserMutation,
+    RemoveGitInitialUserMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveGitInitialUserMutation, RemoveGitInitialUserMutationVariables>(
+    RemoveGitInitialUserDocument,
+    options,
+  );
+}
+export type RemoveGitInitialUserMutationHookResult = ReturnType<
+  typeof useRemoveGitInitialUserMutation
+>;
+export type RemoveGitInitialUserMutationResult =
+  Apollo.MutationResult<RemoveGitInitialUserMutation>;
+export type RemoveGitInitialUserMutationOptions = Apollo.BaseMutationOptions<
+  RemoveGitInitialUserMutation,
+  RemoveGitInitialUserMutationVariables
 >;

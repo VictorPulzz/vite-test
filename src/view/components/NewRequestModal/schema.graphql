@@ -1,0 +1,21 @@
+query FetchRolesList {
+  rolesList {
+    value: id
+    label: name
+  }
+}
+
+query FetchTechnologiesList($pagination: PaginationInput) {
+  technologyList(pagination: $pagination) {
+    results {
+      value: id
+      label: name
+    }
+  }
+}
+
+mutation CreateRequest($input: RequestCreateInput!) {
+  requestCreate(data: $input) {
+    id
+  }
+}

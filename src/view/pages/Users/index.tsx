@@ -1,8 +1,10 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { EmptyState } from '@ui/components/common/EmptyState';
-import { Table } from '@ui/components/common/Table';
-import { TableLoader } from '@ui/components/common/TableLoader';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { SearchInput } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -12,17 +14,16 @@ import { UserFilter } from '~/services/gql/__generated__/globalTypes';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUsersQuery } from './__generated__/schema';
 import { UsersFilterModal } from './components/UsersFilterModal';
-import { USERS_TABLE_COLUMNS, USERS_TABLE_COLUMNS_NO_DETAILS } from './consts';
+import { useUsersTableColumns } from './hooks/useUsersTableColumns';
 
 export const UsersPage: FC = () => {
   const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
   const canCreateUser = useHasAccess(Permission.CREATE_USER);
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+
+  const usersTableColumns = useUsersTableColumns();
 
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter, filtersCount } =
     useListQueryParams<UserFilter>();
@@ -53,7 +54,7 @@ export const UsersPage: FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-h4">Users</h1>
-              <p className="text-c1 text-gray-2">
+              <p className="text-p5 text-gray-2">
                 {(data && data.usersList.count) ?? 0} users in total
               </p>
             </div>
@@ -85,7 +86,7 @@ export const UsersPage: FC = () => {
             <Table
               className="mt-6"
               data={data.usersList.results}
-              columns={canReadUserDetails ? USERS_TABLE_COLUMNS : USERS_TABLE_COLUMNS_NO_DETAILS}
+              columns={usersTableColumns}
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

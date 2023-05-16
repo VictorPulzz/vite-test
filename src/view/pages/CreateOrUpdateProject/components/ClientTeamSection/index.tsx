@@ -1,13 +1,13 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { AddOrEditModal } from '~/view/pages/CreateOrUpdateProject/components/ClientTeamSection/components/AddOrEditModal';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
 
 import { CLIENT_TEAM_TABLE_COLUMNS } from './consts';
 

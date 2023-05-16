@@ -3,9 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import './reset.scss';
 @import './fonts.scss';
-@import '../ui/styles/index.scss';
 
 @function pxToRem($value) {
   $remValue: math.div($value, 16) + rem;
@@ -56,15 +54,16 @@
   --p4-font-size: #{pxToRem(12)};
   --p4-line-height: #{pxToRem(18)};
 
-  --c1-font-size: #{pxToRem(11)};
-  --c1-line-height: #{pxToRem(19)};
+  --p5-font-size: #{pxToRem(11)};
+  --p5-line-height: #{pxToRem(19)};
 
-  --c2-font-size: #{pxToRem(10)};
-  --c2-line-height: #{pxToRem(16)};
-}
+  --p6-font-size: #{pxToRem(10)};
+  --p6-line-height: #{pxToRem(16)};
 
-html {
-  font-size: 15px;
+  --shadow-1: 0px 8px 20px rgba(205, 205, 205, 0.1);
+  --shadow-2: 0px 4px 4px rgba(176, 176, 176, 0.1);
+  --shadow-3: 0px -4px 20px rgba(199, 199, 199, 0.1);
+  --shadow-4: 0px 4px 17px rgba(6, 6, 11, 0.06);
 }
 
 body {

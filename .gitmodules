@@ -1,4 +1,0 @@
-[submodule "src/view/ui"]
-	path = src/view/ui
-	url = ../web-ui-kit.git
-	branch = main

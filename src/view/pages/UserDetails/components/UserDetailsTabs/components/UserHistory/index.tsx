@@ -1,21 +1,20 @@
-import { Table } from '@ui/components/common/Table';
-import { TableLoader } from '@ui/components/common/TableLoader';
-import React, { FC, useEffect } from 'react';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
+import React, { FC } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchUserHistoryListQuery } from '../../../../__generated__/schema';
 import { USERS_HISTORY_TABLE_COLUMNS } from './consts';
 
-interface Props {
-  userId: number;
-}
-
-export const UserHistory: FC<Props> = ({ userId }) => {
+export const UserHistory: FC = () => {
   const { offset, setOffset } = useListQueryParams<LogFilter>();
+  const params = useParams();
+  const userId = Number(params.id);
 
   const { data, loading, fetchMore } = useFetchUserHistoryListQuery({
     variables: {
@@ -29,10 +28,6 @@ export const UserHistory: FC<Props> = ({ userId }) => {
     },
     fetchPolicy: 'cache-and-network',
   });
-
-  useEffect(() => {
-    setOffset(0);
-  }, []);
 
   return (
     <>

@@ -1,7 +1,7 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { Modal, ModalProps } from '@ui/components/common/Modal';
-import { SelectField } from '@ui/components/form/SelectField';
-import React, { FC, useCallback, useMemo } from 'react';
+import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
+import { Modal, ModalProps } from '@appello/web-ui';
+import { SelectField } from '@appello/web-ui';
+import React, { FC, useCallback } from 'react';
 
 import { RepositoryFilter, RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
@@ -19,16 +19,13 @@ export const RepositoriesFilterModal: FC<RepositoriesFilterModalProps> = ({
   setFilter,
 }) => {
   const { data: technologies } = useFetchTechnologiesListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
     fetchPolicy: 'cache-and-network',
   });
 
-  const technologiesOptions = useMemo(
-    () => technologies?.technologyList.results ?? [],
-    [technologies],
-  );
+  const technologiesOptions = useSelectOptions(technologies?.technologyList.results, {
+    value: 'value',
+    label: 'label',
+  });
 
   const repositoryTypeOptions = enumToSelectOptions(RepositoryTypeChoice);
 

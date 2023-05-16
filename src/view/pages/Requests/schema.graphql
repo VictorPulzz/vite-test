@@ -1,13 +1,91 @@
-query FetchRequests($filters: RequestFilter, $pagination: PaginationInput!) {
-  requestList(filters: $filters, pagination: $pagination) {
+query FetchRequestsList(
+  $filters: RequestFilter
+  $pagination: PaginationInput
+  $sort: [RequestSortFieldInput!]
+) {
+  requestList(filters: $filters, pagination: $pagination, sort: $sort) {
     results {
+      id
+      type
+      description
       createdAt
-      createdBy {
+      assignedTo {
         id
+        photo {
+          url
+        }
+        email
         fullName
       }
-      type
+      createdBy {
+        id
+        photo {
+          url
+        }
+        email
+        fullName
+      }
+      createdAt
+      dueDate
+      status
+      environment
+      integrationName
+      repositoryType
+      technologies {
+        id
+        name
+      }
     }
     count
+  }
+}
+
+query FetchRequestDetails($data: IDInput!) {
+  requestDetails(data: $data) {
+    id
+    type
+    description
+    createdAt
+    assignedTo {
+      id
+      photo {
+        url
+      }
+      fullName
+      email
+    }
+    createdBy {
+      id
+      photo {
+        url
+      }
+      fullName
+      email
+    }
+    createdAt
+    dueDate
+    project {
+      id
+      name
+    }
+    repository {
+      id
+      name
+    }
+    accessLevel
+    status
+    environment
+    integrationName
+    repositoryType
+    technologies {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateRequest($input: RequestUpdateInput!) {
+  requestUpdate(data: $input) {
+    id
   }
 }

@@ -1,11 +1,11 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Button, ButtonVariant } from '~/view/ui/components/common/Button';
-import { EmptyState } from '~/view/ui/components/common/EmptyState';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
 
 import { useFetchSlackTemplatesListQuery } from '../../__generated__/schema';
 import { CreateOrUpdateChannelTemplateModal } from './components/CreateOrUpdateChannelTemplateModal';

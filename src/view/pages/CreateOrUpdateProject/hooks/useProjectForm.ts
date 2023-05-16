@@ -13,6 +13,7 @@ import { ROUTES } from '~/constants/routes';
 import { DocumentTemplateType, ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
+import { useGenerateProjectDocumentMutation } from '~/view/components/Docs/__generated__/schema';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
 import { FetchProjectPreviewDocument } from '../../ProjectDetails/__generated__/schema';
@@ -20,7 +21,6 @@ import {
   FetchProjectDocument,
   FetchProjectQuery,
   useCreateProjectMutation,
-  useDocumentGenerateMutation,
   useUpdateProjectMutation,
 } from '../__generated__/schema';
 
@@ -144,7 +144,7 @@ export function useProjectForm({
   const [projectCreate, { loading: loadingProjectCreate }] = useCreateProjectMutation();
   const [projectUpdate, { loading: loadingProjectUpdate }] = useUpdateProjectMutation();
 
-  const [documentGenerate] = useDocumentGenerateMutation();
+  const [generateProjectDocument] = useGenerateProjectDocumentMutation();
 
   const handleSubmit = useCallback(
     async (values: ProjectFormValues) => {
@@ -214,7 +214,7 @@ export function useProjectForm({
               }));
 
             toast.promise(
-              documentGenerate({
+              generateProjectDocument({
                 variables: {
                   input: documentGenerateValues,
                 },
@@ -237,7 +237,15 @@ export function useProjectForm({
         });
       }
     },
-    [documentGenerate, form.setError, id, isEditMode, navigate, projectCreate, projectUpdate],
+    [
+      form.setError,
+      generateProjectDocument,
+      id,
+      isEditMode,
+      navigate,
+      projectCreate,
+      projectUpdate,
+    ],
   );
 
   return useMemo(

@@ -74,24 +74,24 @@ module.exports = {
           lineHeight: 'var(--p4-line-height)',
         },
       ],
-      c1: [
-        'var(--c1-font-size)',
+      p5: [
+        'var(--p5-font-size)',
         {
-          lineHeight: 'var(--c1-line-height)',
+          lineHeight: 'var(--p5-line-height)',
         },
       ],
-      c2: [
-        'var(--c2-font-size)',
+      p6: [
+        'var(--p6-font-size)',
         {
-          lineHeight: 'var(--c2-line-height)',
+          lineHeight: 'var(--p6-line-height)',
         },
       ],
     },
     boxShadow: {
-      1: '0px 8px 20px rgba(205, 205, 205, 0.1)',
-      2: '0px 4px 4px rgba(176, 176, 176, 0.1)',
-      3: '0px -4px 20px rgba(199, 199, 199, 0.1)',
-      4: '0px 4px 17px rgba(6, 6, 11, 0.06)',
+      1: 'var(--shadow-1)',
+      2: 'var(--shadow-2)',
+      3: 'var(--shadow-3)',
+      4: 'var(--shadow-4)',
     },
   },
   plugins: [],

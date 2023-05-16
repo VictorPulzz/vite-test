@@ -1,11 +1,11 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
 import { useFetchProjectStatusesListQuery } from '~/view/pages/CreateOrUpdateProject/__generated__/schema';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import { FetchProjectsDocument, useChangeProjectStatusMutation } from '../../__generated__/schema';
 import { ProjectResultType } from '../../types';
@@ -14,9 +14,6 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
   const { status, id } = row.original;
 
   const { data: statuses } = useFetchProjectStatusesListQuery({
-    variables: {
-      pagination: { limit: 0 },
-    },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -50,7 +47,7 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
       iconBefore: <Icon name="connection" size={16} />,
       items: statuses?.projectStatusesList.results.map(projectStatus => ({
         label: projectStatus.label,
-        onSelect: () => setProjectStatus(Number(projectStatus.value)),
+        onSelect: () => setProjectStatus(projectStatus.value),
         iconAfter: projectStatus.value === status?.id && (
           <Icon name="check" className="text-green" size={18} />
         ),

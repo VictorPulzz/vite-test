@@ -17,6 +17,7 @@ generates:
       - 'typescript-operations'
       - 'fragment-matcher'
     config:
+      skipTypename: true
       apolloClientVersion: 3
       namingConvention:
         enumValues: 'upper-case#upperCase'
@@ -52,6 +53,7 @@ generates:
       - 'typescript-operations'
       - 'typescript-react-apollo'
     config:
+      skipTypename: true
       withHooks: true
       withHOC: false
       withComponent: false

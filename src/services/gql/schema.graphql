@@ -4,3 +4,33 @@ mutation RefreshTokens($input: RefreshTokenInput!) {
     refresh: refreshToken
   }
 }
+
+query FetchUserGlossaryList($pagination: PaginationInput) {
+  userGlossaryList(pagination: $pagination) {
+    results {
+      id
+      fullName
+      photo {
+        url
+      }
+    }
+  }
+}
+
+query FetchProjectGlossaryList($filters: ProjectFilter, $pagination: PaginationInput) {
+  projectGlossaryList(filters: $filters, pagination: $pagination) {
+    results {
+      id
+      name
+    }
+  }
+}
+
+query FetchRepositoryGlossaryList($filters: RepositoryFilter, $pagination: PaginationInput) {
+  repositoryGlossaryList(filters: $filters, pagination: $pagination) {
+    results {
+      id
+      name
+    }
+  }
+}

@@ -8,9 +8,34 @@ export type RefreshTokensMutationVariables = Types.Exact<{
   input: Types.RefreshTokenInput;
 }>;
 
-export type RefreshTokensMutation = {
-  __typename?: 'Mutation';
-  tokens: { __typename?: 'LoginSuccessType'; access: string; refresh: string };
+export type RefreshTokensMutation = { tokens: { access: string; refresh: string } };
+
+export type FetchUserGlossaryListQueryVariables = Types.Exact<{
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+}>;
+
+export type FetchUserGlossaryListQuery = {
+  userGlossaryList: {
+    results: Array<{ id: number; fullName: string; photo?: { url: string } | null }>;
+  };
+};
+
+export type FetchProjectGlossaryListQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.ProjectFilter>;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+}>;
+
+export type FetchProjectGlossaryListQuery = {
+  projectGlossaryList: { results: Array<{ id: number; name: string }> };
+};
+
+export type FetchRepositoryGlossaryListQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.RepositoryFilter>;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+}>;
+
+export type FetchRepositoryGlossaryListQuery = {
+  repositoryGlossaryList: { results: Array<{ id: number; name: string }> };
 };
 
 export const RefreshTokensDocument = gql`
@@ -57,4 +82,190 @@ export type RefreshTokensMutationResult = Apollo.MutationResult<RefreshTokensMut
 export type RefreshTokensMutationOptions = Apollo.BaseMutationOptions<
   RefreshTokensMutation,
   RefreshTokensMutationVariables
+>;
+export const FetchUserGlossaryListDocument = gql`
+  query FetchUserGlossaryList($pagination: PaginationInput) {
+    userGlossaryList(pagination: $pagination) {
+      results {
+        id
+        fullName
+        photo {
+          url
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchUserGlossaryListQuery__
+ *
+ * To run a query within a React component, call `useFetchUserGlossaryListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchUserGlossaryListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchUserGlossaryListQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchUserGlossaryListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchUserGlossaryListQuery,
+    FetchUserGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchUserGlossaryListQuery, FetchUserGlossaryListQueryVariables>(
+    FetchUserGlossaryListDocument,
+    options,
+  );
+}
+export function useFetchUserGlossaryListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchUserGlossaryListQuery,
+    FetchUserGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchUserGlossaryListQuery, FetchUserGlossaryListQueryVariables>(
+    FetchUserGlossaryListDocument,
+    options,
+  );
+}
+export type FetchUserGlossaryListQueryHookResult = ReturnType<typeof useFetchUserGlossaryListQuery>;
+export type FetchUserGlossaryListLazyQueryHookResult = ReturnType<
+  typeof useFetchUserGlossaryListLazyQuery
+>;
+export type FetchUserGlossaryListQueryResult = Apollo.QueryResult<
+  FetchUserGlossaryListQuery,
+  FetchUserGlossaryListQueryVariables
+>;
+export const FetchProjectGlossaryListDocument = gql`
+  query FetchProjectGlossaryList($filters: ProjectFilter, $pagination: PaginationInput) {
+    projectGlossaryList(filters: $filters, pagination: $pagination) {
+      results {
+        id
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectGlossaryListQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectGlossaryListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectGlossaryListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectGlossaryListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchProjectGlossaryListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchProjectGlossaryListQuery,
+    FetchProjectGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectGlossaryListQuery, FetchProjectGlossaryListQueryVariables>(
+    FetchProjectGlossaryListDocument,
+    options,
+  );
+}
+export function useFetchProjectGlossaryListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectGlossaryListQuery,
+    FetchProjectGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectGlossaryListQuery, FetchProjectGlossaryListQueryVariables>(
+    FetchProjectGlossaryListDocument,
+    options,
+  );
+}
+export type FetchProjectGlossaryListQueryHookResult = ReturnType<
+  typeof useFetchProjectGlossaryListQuery
+>;
+export type FetchProjectGlossaryListLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectGlossaryListLazyQuery
+>;
+export type FetchProjectGlossaryListQueryResult = Apollo.QueryResult<
+  FetchProjectGlossaryListQuery,
+  FetchProjectGlossaryListQueryVariables
+>;
+export const FetchRepositoryGlossaryListDocument = gql`
+  query FetchRepositoryGlossaryList($filters: RepositoryFilter, $pagination: PaginationInput) {
+    repositoryGlossaryList(filters: $filters, pagination: $pagination) {
+      results {
+        id
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchRepositoryGlossaryListQuery__
+ *
+ * To run a query within a React component, call `useFetchRepositoryGlossaryListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchRepositoryGlossaryListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchRepositoryGlossaryListQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchRepositoryGlossaryListQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchRepositoryGlossaryListQuery,
+    FetchRepositoryGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchRepositoryGlossaryListQuery,
+    FetchRepositoryGlossaryListQueryVariables
+  >(FetchRepositoryGlossaryListDocument, options);
+}
+export function useFetchRepositoryGlossaryListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchRepositoryGlossaryListQuery,
+    FetchRepositoryGlossaryListQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchRepositoryGlossaryListQuery,
+    FetchRepositoryGlossaryListQueryVariables
+  >(FetchRepositoryGlossaryListDocument, options);
+}
+export type FetchRepositoryGlossaryListQueryHookResult = ReturnType<
+  typeof useFetchRepositoryGlossaryListQuery
+>;
+export type FetchRepositoryGlossaryListLazyQueryHookResult = ReturnType<
+  typeof useFetchRepositoryGlossaryListLazyQuery
+>;
+export type FetchRepositoryGlossaryListQueryResult = Apollo.QueryResult<
+  FetchRepositoryGlossaryListQuery,
+  FetchRepositoryGlossaryListQueryVariables
 >;

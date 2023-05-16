@@ -1,7 +1,6 @@
+import { Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC } from 'react';
-
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import styles from './styles.module.scss';
 
@@ -40,7 +39,7 @@ export const ProgressBarWithSteps: FC<Props> = ({ currentStep }) => {
             )}
           </div>
           <span
-            className={`text-c1 ${
+            className={`text-p5 ${
               currentStep > count || currentStep === steps.length ? 'opacity-40' : 'text-gray-1'
             }`}
           >

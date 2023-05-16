@@ -1,3 +1,4 @@
+import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Dropdown, DropdownItem } from 'react-nested-dropdown';
 
@@ -7,7 +8,6 @@ import {
   useUpdatePermissionsListMutation,
 } from '~/view/pages/RolesAndPermissions/__generated__/schema';
 import { useFetchRolesListQuery } from '~/view/pages/Users/__generated__/schema';
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import styles from './styles.module.scss';
 

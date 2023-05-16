@@ -1,9 +1,8 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Dropdown, DropdownItem } from '@appello/web-ui';
+import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import { Dropdown, DropdownItem } from '@ui/components/common/Dropdown';
 import React, { FC } from 'react';
-
-import { Icon } from '~/view/ui/components/common/Icon';
 
 import { RepositoryResultType } from '../../types';
 import { DeleteRepositoryModal } from './components/DeleteRepositoryModal';
@@ -36,7 +35,7 @@ export const MoreCell: FC<CellContext<RepositoryResultType, unknown>> = ({ row }
       <DeleteRepositoryModal
         isOpen={isDeleteRepositoryModalOpen}
         close={closeDeleteRepositoryModal}
-        id={id as number}
+        id={id}
         // TODO fix this later
         name={name ?? 'Requested'}
       />

@@ -1,8 +1,17 @@
+query FetchRepositoryPreview($input: IDInput!) {
+  repositoryPreview(data: $input) {
+    id
+    name
+    projectId
+  }
+}
+
 query FetchRepositoryDetails($input: IDInput!) {
   repository(data: $input) {
     id
     name
     project {
+      id
       name
     }
     createdAt
@@ -23,7 +32,7 @@ mutation UpdateRepository($input: RepositoryUpdateInput!) {
 }
 
 query FetchRepositoryParticipants(
-  $pagination: PaginationInput!
+  $pagination: PaginationInput
   $filters: RepositoryParticipantFilter
 ) {
   repositoryParticipantList(pagination: $pagination, filters: $filters) {
@@ -38,6 +47,19 @@ query FetchRepositoryParticipants(
       accessLevel
     }
     count
+  }
+}
+
+query FetchRepositoryParticipantsIds(
+  $pagination: PaginationInput
+  $filters: RepositoryParticipantFilter
+) {
+  repositoryParticipantList(pagination: $pagination, filters: $filters) {
+    results {
+      user {
+        id
+      }
+    }
   }
 }
 

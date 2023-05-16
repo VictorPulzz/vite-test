@@ -6,40 +6,33 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type FetchUsersQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.UserFilter>;
-  pagination: Types.PaginationInput;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 export type FetchUsersQuery = {
-  __typename?: 'Query';
   usersList: {
-    __typename?: 'UserTypePagination';
     count: number;
     results: Array<{
-      __typename?: 'UserType';
-      id?: string | null;
-      fullName?: string | null;
+      id: number;
+      fullName: string;
       email: string;
       isActive?: boolean | null;
-      photo?: { __typename?: 'ImageType'; url: string } | null;
-      department?: { __typename?: 'DepartmentType'; id: number; name: string } | null;
-      role?: { __typename?: 'RoleType'; id: number; name: string } | null;
+      photo?: { url: string } | null;
+      department?: { id: number; name: string } | null;
+      role?: { id: number; name: string } | null;
     }>;
   };
 };
 
 export type FetchRolesListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
-export type FetchRolesListQuery = {
-  __typename?: 'Query';
-  rolesList: Array<{ __typename?: 'RoleType'; value: number; label: string }>;
-};
+export type FetchRolesListQuery = { rolesList: Array<{ value: number; label: string }> };
 
 export type FetchDepartmentsListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchDepartmentsListQuery = {
-  __typename?: 'Query';
-  departmentsList: Array<{ __typename?: 'DepartmentType'; value: number; label: string }>;
+  departmentsList: Array<{ value: number; label: string }>;
 };
 
 export type ChangeUserStatusMutationVariables = Types.Exact<{
@@ -47,12 +40,11 @@ export type ChangeUserStatusMutationVariables = Types.Exact<{
 }>;
 
 export type ChangeUserStatusMutation = {
-  __typename?: 'Mutation';
-  userChangeStatus: { __typename?: 'UserType'; id?: string | null; isActive?: boolean | null };
+  userChangeStatus: { id: number; isActive?: boolean | null };
 };
 
 export const FetchUsersDocument = gql`
-  query FetchUsers($filters: UserFilter, $pagination: PaginationInput!, $search: String) {
+  query FetchUsers($filters: UserFilter, $pagination: PaginationInput, $search: String) {
     usersList(filters: $filters, pagination: $pagination, search: $search) {
       results {
         id
@@ -95,7 +87,7 @@ export const FetchUsersDocument = gql`
  * });
  */
 export function useFetchUsersQuery(
-  baseOptions: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
+  baseOptions?: Apollo.QueryHookOptions<FetchUsersQuery, FetchUsersQueryVariables>,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useQuery<FetchUsersQuery, FetchUsersQueryVariables>(FetchUsersDocument, options);

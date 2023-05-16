@@ -1,8 +1,4 @@
-query FetchRepositories(
-  $filters: RepositoryFilter
-  $pagination: PaginationInput!
-  $search: String
-) {
+query FetchRepositories($filters: RepositoryFilter, $pagination: PaginationInput, $search: String) {
   repositoryList(filters: $filters, pagination: $pagination, search: $search) {
     results {
       id

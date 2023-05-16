@@ -8,15 +8,14 @@ const defaultOptions = {} as const;
 export type CurrentUserQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type CurrentUserQuery = {
-  __typename?: 'Query';
   me: {
-    __typename?: 'ProfileType';
+    id: number;
     email: string;
-    firstName?: string | null;
-    lastName?: string | null;
-    fullName?: string | null;
-    photo?: { __typename?: 'ImageType'; fileName: string; size: number; url: string } | null;
-    role?: { __typename?: 'RoleType'; name: string; permissionsList: Array<string> } | null;
+    firstName: string;
+    lastName: string;
+    fullName: string;
+    photo?: { url: string } | null;
+    role?: { id: number; name: string; permissionsList: Array<string> } | null;
   };
 };
 

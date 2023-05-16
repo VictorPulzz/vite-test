@@ -1,6 +1,10 @@
 import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { EmptyState } from '@ui/components/common/EmptyState';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { EmptyState } from '@appello/web-ui';
+import { SearchInput } from '@appello/web-ui';
+import { Table } from '@appello/web-ui';
+import { TableLoader } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -10,22 +14,19 @@ import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { SearchInput } from '~/view/ui/components/common/SearchInput';
-import { Table } from '~/view/ui/components/common/Table';
-import { TableLoader } from '~/view/ui/components/common/TableLoader';
-import { useListQueryParams } from '~/view/ui/hooks/useListQueryParams';
 
 import { useFetchRepositoriesQuery } from './__generated__/schema';
 import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
-import { REPOSITORIES_TABLE_COLUMNS, REPOSITORIES_TABLE_COLUMNS_NO_DETAILS } from './consts';
+import { useRepositoriesTableColumns } from './hooks/useRepositoriesTableColumns';
 
 export const RepositoriesPage: FC = () => {
   const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
   const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
-  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter, filtersCount } =
     useListQueryParams<RepositoryFilter>();
+
+  const repositoriesTableColumns = useRepositoriesTableColumns();
 
   const {
     value: isFilterModalOpen,
@@ -53,7 +54,7 @@ export const RepositoriesPage: FC = () => {
           <div className="flex justify-between items-center">
             <div>
               <h1 className="text-h4">Repositories</h1>
-              <p className="text-c1 text-gray-2">
+              <p className="text-p5 text-gray-2">
                 {(data && data.repositoryList.count) ?? 0} repositories in total
               </p>
             </div>
@@ -89,11 +90,7 @@ export const RepositoriesPage: FC = () => {
             <Table
               className="mt-6"
               data={data?.repositoryList.results}
-              columns={
-                canReadRepoDetails
-                  ? REPOSITORIES_TABLE_COLUMNS
-                  : REPOSITORIES_TABLE_COLUMNS_NO_DETAILS
-              }
+              columns={repositoriesTableColumns}
               setOffset={setOffset}
               offset={offset}
               fetchMore={fetchMore}

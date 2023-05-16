@@ -1,4 +1,5 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { ExtractRouteParams } from 'react-router';
@@ -8,7 +9,6 @@ import { ROUTES } from '~/constants/routes';
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { Loader } from '~/view/ui/components/common/Loader';
 
 import { useFetchDocumentTemplateListQuery, useFetchProjectQuery } from './__generated__/schema';
 import { ClientTeamSection } from './components/ClientTeamSection';

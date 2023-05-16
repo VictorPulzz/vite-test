@@ -1,7 +1,7 @@
-import { Button, ButtonVariant } from '@ui/components/common/Button';
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { PasswordField } from '@ui/components/form/PasswordField';
-import { InputSize } from '@ui/components/form/TextInput';
+import { Button, ButtonVariant } from '@appello/web-ui';
+import { InlineFields } from '@appello/web-ui';
+import { PasswordField } from '@appello/web-ui';
+import { InputSize } from '@appello/web-ui';
 import React from 'react';
 
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -39,7 +39,6 @@ export const SettingsSecurityPage: React.FC = () => {
             label="Confirm new password"
             size={InputSize.LARGE}
             placeholder="New password"
-            autoFocus
             autoComplete="new-password"
             className="mb-4"
           />

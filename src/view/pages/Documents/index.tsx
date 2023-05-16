@@ -1,71 +1,77 @@
+import { Tabs } from '@appello/web-ui';
 import React, { FC, useMemo, useState } from 'react';
+import { Outlet } from 'react-router';
 
 import { Permission } from '~/constants/permissions';
+import { ROUTES } from '~/constants/routes';
+import { NewDocumentButton } from '~/view/components/Docs/components/NewDocumentButton';
+import { DocsType } from '~/view/components/Docs/types';
 import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
-import { Docs } from '~/view/pages/ProjectDetails/components/Docs';
-import { NewDocumentButton } from '~/view/pages/ProjectDetails/components/Docs/components/NewDocumentButton';
-import { Tabs } from '~/view/ui/components/common/Tabs';
 
 import styles from './styles.module.scss';
 
+enum DocsTab {
+  INTERNAL = 0,
+  CLIENT = 1,
+}
+
 export const DocumentsPage: FC = () => {
-  const canReadDocuments = useHasAccess(Permission.READ_DOCUMENTS);
-  const canAddInternalDocs = useHasAccess(Permission.ADD_INTERNAL_DOCS);
+  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
+  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
 
-  const [docsCount, setDocsCount] = useState<number>(0);
-  const [isInternal, setIsInternal] = useState<boolean>(false);
+  const [selectedTab, setSelectedTab] = useState(DocsTab.CLIENT);
 
-  const DocumentTabs = useMemo(
+  const tabsElement = useMemo(
     () => (
       <Tabs
         className={styles['tabs']}
         contentClassName={styles['tabs__body']}
+        selected={selectedTab}
+        onSelect={setSelectedTab}
         items={[
           {
             title: 'Internal',
-            element: (
+            path: ROUTES.DOCUMENTS,
+            element: canReadWriteInternalDocuments ? (
               <div className="h-full p-7">
                 <SectionContainer containerClassName="h-full">
-                  <Docs isInternal setDocsCount={setDocsCount} setIsInternal={setIsInternal} />
+                  <Outlet />
                 </SectionContainer>
               </div>
+            ) : (
+              <NoAccessMessage className="h-full" />
             ),
           },
           {
             title: 'Client',
-            element: (
+            path: ROUTES.DOCUMENTS_CLIENTS,
+            element: canReadWriteClientsDocuments ? (
               <div className="h-full p-7">
                 <SectionContainer containerClassName="h-full">
-                  <Docs
-                    isInternal={false}
-                    setDocsCount={setDocsCount}
-                    setIsInternal={setIsInternal}
-                  />
+                  <Outlet />
                 </SectionContainer>
               </div>
+            ) : (
+              <NoAccessMessage className="h-full" />
             ),
           },
         ]}
       />
     ),
-    [],
+    [canReadWriteClientsDocuments, canReadWriteInternalDocuments, selectedTab],
   );
+
   return (
-    <TabLayout tabs={canReadDocuments ? DocumentTabs : []}>
-      {canReadDocuments ? (
-        <div className="flex items-end justify-between px-6 pt-6 bg-white">
-          <div className="flex flex-col gap-[2px]">
-            <h2 className="text-h4 font-bold">Documents</h2>
-            <p className="text-c1 text-gray-2">{docsCount} docs in total</p>
-          </div>
-          {isInternal && canAddInternalDocs && <NewDocumentButton />}
-        </div>
-      ) : (
-        <NoAccessMessage className="flex-auto bg-white" />
-      )}
+    <TabLayout tabs={tabsElement}>
+      <div className="flex items-center justify-between px-6 pt-6 bg-white">
+        <h2 className="text-h4 font-bold pb-[10px]">Documents</h2>
+        {selectedTab === DocsTab.INTERNAL && canReadWriteInternalDocuments && (
+          <NewDocumentButton type={DocsType.INTERNAL} />
+        )}
+      </div>
     </TabLayout>
   );
 };

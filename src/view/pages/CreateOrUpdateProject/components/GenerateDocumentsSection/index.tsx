@@ -1,11 +1,11 @@
-import { InlineFields } from '@ui/components/form/InlineFields';
-import { TextField } from '@ui/components/form/TextField';
+import { InlineFields } from '@appello/web-ui';
+import { TextField } from '@appello/web-ui';
+import { Checkbox } from '@appello/web-ui';
 import React, { FC, Fragment } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { Checkbox } from '~/view/ui/components/form/Checkbox';
 
 interface Props {
   templates: DocumentTemplateType[];
