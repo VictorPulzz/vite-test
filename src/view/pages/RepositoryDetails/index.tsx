@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
+import { UserRole } from '~/constants/roles';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { useUserProfile } from '~/store/hooks';
 import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
@@ -42,7 +43,9 @@ export const RepositoryDetailsPage: FC = () => {
     [repositoryParticipantsIdsData?.repositoryParticipantList.results],
   );
 
-  const isUserInRepository = canReadRepoDetails && repositoryParticipantsIds.includes(profile.id);
+  const isUserInRepository =
+    profile?.role?.name === UserRole.ADMIN ||
+    (canReadRepoDetails && repositoryParticipantsIds.includes(profile.id));
 
   const { data: repositoryDetails, loading: isLoadingRepositoryDetails } =
     useFetchRepositoryDetailsQuery({
