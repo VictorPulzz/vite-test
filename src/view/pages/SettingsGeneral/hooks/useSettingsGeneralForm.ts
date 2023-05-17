@@ -1,6 +1,5 @@
 import { isString } from '@appello/common/lib/utils/string/isString';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { parsePhoneNumber } from 'libphonenumber-js';
 import { useEffect } from 'react';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
@@ -10,7 +9,7 @@ import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { setUser } from '~/store/modules/user';
-import { fileValidation, phoneNumberValidation } from '~/utils/validations';
+import { fileValidation, withPhoneValidation } from '~/utils/validations';
 import {
   MeDocument,
   MeQuery,
@@ -22,18 +21,7 @@ const formSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   email: z.string(),
-  phone: z
-    .string()
-    .min(1)
-    .and(phoneNumberValidation)
-    .transform(value => {
-      try {
-        const phoneNumber = parsePhoneNumber(value, 'AU');
-        return phoneNumber.number.toString();
-      } catch (e) {
-        return value;
-      }
-    }),
+  phone: withPhoneValidation(z.string().min(1)),
   address: z.string(),
 });
 
