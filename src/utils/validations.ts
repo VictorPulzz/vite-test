@@ -42,3 +42,15 @@ export const fileValidation = z
     }
     return true;
   }, formErrors.MAX_IMAGE_SIZE);
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+export function withPhoneValidation(schema: z.ZodString) {
+  return schema.and(phoneNumberValidation).transform(value => {
+    try {
+      const phoneNumber = parsePhoneNumber(value, 'AU');
+      return phoneNumber.number.toString();
+    } catch (e) {
+      return value;
+    }
+  });
+}
