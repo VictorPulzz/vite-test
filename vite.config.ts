@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => {
         pattern: 'src/view/assets/icons/raw/*.svg',
         filename: 'icons/raw-spritemap.svg',
         prefix: 'sprite',
+        currentColor: false,
       }),
     ],
   };
