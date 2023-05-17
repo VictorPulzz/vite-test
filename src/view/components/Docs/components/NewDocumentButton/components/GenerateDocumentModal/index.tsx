@@ -39,10 +39,13 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
     type,
   });
 
-  const documentTemplatesOptions = useSelectOptions(documentTemplates?.documentTemplateList, {
-    value: 'id',
-    label: 'name',
-  });
+  const documentTemplatesOptions = useSelectOptions(
+    documentTemplates?.documentTemplateList.results,
+    {
+      value: 'id',
+      label: 'name',
+    },
+  );
 
   const documentCategoriesOptions = useSelectOptions(documentCategories?.documentCategoryList, {
     value: 'value',
@@ -52,7 +55,8 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
   const selectedTemplateId = watch('templateId');
 
   const selectedTemplate = useMemo(
-    () => documentTemplates?.documentTemplateList.find(({ id }) => id === selectedTemplateId),
+    () =>
+      documentTemplates?.documentTemplateList.results.find(({ id }) => id === selectedTemplateId),
     [documentTemplates?.documentTemplateList, selectedTemplateId],
   );
 

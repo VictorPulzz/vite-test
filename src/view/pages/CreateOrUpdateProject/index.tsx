@@ -6,7 +6,6 @@ import { ExtractRouteParams } from 'react-router';
 import { useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -33,7 +32,7 @@ export const CreateOrUpdateProject: FC = () => {
   const { form, handleSubmit, isLoading } = useProjectForm({
     prefilledData: projectInfo?.project,
     id: projectId,
-    templates: documentTemplates?.documentTemplateList as DocumentTemplateType[],
+    templates: documentTemplates?.documentTemplateList.results ?? [],
   });
 
   return (
@@ -60,9 +59,9 @@ export const CreateOrUpdateProject: FC = () => {
           {!loading && (
             <div className="flex flex-col gap-4">
               <GeneralSection projectId={projectId} />
-              {!projectId && documentTemplates?.documentTemplateList.length !== 0 && (
+              {!projectId && documentTemplates?.documentTemplateList.results.length !== 0 && (
                 <GenerateDocumentsSection
-                  templates={documentTemplates?.documentTemplateList as DocumentTemplateType[]}
+                  templates={documentTemplates?.documentTemplateList.results ?? []}
                 />
               )}
               <ClientTeamSection />

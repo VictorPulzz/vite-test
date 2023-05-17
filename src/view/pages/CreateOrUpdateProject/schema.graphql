@@ -60,11 +60,15 @@ query FetchProjectStatusesList($pagination: PaginationInput) {
 
 query FetchDocumentTemplateList {
   documentTemplateList {
-    id
-    name
-    fields {
+    count
+    limit
+    results {
+      id
       name
-      description
+      fields {
+        name
+        description
+      }
     }
   }
 }

@@ -122,25 +122,47 @@ export type DocumentSortFieldInput = {
 
 export type DocumentTemplateFieldInput = {
   description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
 };
 
 export type DocumentTemplateFieldType = {
   description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type DocumentTemplateInput = {
+  description?: InputMaybe<Scalars['String']>;
   fields: Array<DocumentTemplateFieldInput>;
+  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
   url: Scalars['String'];
 };
 
+export enum DocumentTemplateSort {
+  NAME = 'name',
+  URL = 'url',
+}
+
+export type DocumentTemplateSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: DocumentTemplateSort;
+};
+
 export type DocumentTemplateType = {
+  description?: Maybe<Scalars['String']>;
   fields?: Maybe<Array<DocumentTemplateFieldType>>;
   id: Scalars['Int'];
   name: Scalars['String'];
   url?: Maybe<Scalars['String']>;
+};
+
+export type DocumentTemplateTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<DocumentTemplateType>;
 };
 
 export type DocumentType = {
@@ -319,7 +341,7 @@ export type Mutation = {
   /** Generate project document */
   documentProjectGenerate: Array<DocumentType>;
   /** Create document template */
-  documentTemplateCreate: DocumentTemplateType;
+  documentTemplateCreateUpdate: DocumentTemplateType;
   /** Delete document template */
   documentTemplateDelete: MessageType;
   /** Create or update user document */
@@ -440,7 +462,7 @@ export type MutationDocumentProjectGenerateArgs = {
   data: Array<DocumentGenerateInput>;
 };
 
-export type MutationDocumentTemplateCreateArgs = {
+export type MutationDocumentTemplateCreateUpdateArgs = {
   data: DocumentTemplateInput;
 };
 
@@ -929,8 +951,10 @@ export type Query = {
   documentClientList: DocumentTypePagination;
   /** Getting list of internal documents */
   documentInternalList: DocumentTypePagination;
+  /** Getting document template by id */
+  documentTemplate: DocumentTemplateType;
   /** Getting list of document templates */
-  documentTemplateList: Array<DocumentTemplateType>;
+  documentTemplateList: DocumentTemplateTypePagination;
   /** Getting list of user documents */
   documentUserList: DocumentTypePagination;
   /** Getting git initial user by id */
@@ -1019,6 +1043,15 @@ export type QueryDocumentInternalListArgs = {
   pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
+};
+
+export type QueryDocumentTemplateArgs = {
+  data: IdInput;
+};
+
+export type QueryDocumentTemplateListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<Array<DocumentTemplateSortFieldInput>>;
 };
 
 export type QueryDocumentUserListArgs = {
