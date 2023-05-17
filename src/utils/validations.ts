@@ -32,3 +32,13 @@ export const phoneNumberValidation = z
 export const numberValidation = z
   .string()
   .refine(value => value === '' || !Number.isNaN(+value), formErrors.SHOULD_BE_NUMBER);
+
+export const fileValidation = z
+  .union([z.string(), z.instanceof(File)])
+  .nullable()
+  .refine(value => {
+    if (value instanceof File) {
+      return value.size < 2 * 1024 * 1024;
+    }
+    return true;
+  }, formErrors.MAX_IMAGE_SIZE);

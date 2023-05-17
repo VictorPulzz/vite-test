@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { setUser } from '~/store/modules/user';
-import { phoneNumberValidation } from '~/utils/validations';
+import { fileValidation, phoneNumberValidation } from '~/utils/validations';
 import {
   MeDocument,
   MeQuery,
@@ -18,7 +18,7 @@ import {
 } from '~/view/pages/SettingsGeneral/__generated__/schema';
 
 const formSchema = z.object({
-  photo: z.union([z.string(), z.instanceof(File)]).nullable(),
+  photo: fileValidation,
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   email: z.string(),
