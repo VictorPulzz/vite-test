@@ -1,0 +1,29 @@
+query FetchNotificationsList($pagination: PaginationInput, $filters: NotificationFilter) {
+  notificationList(pagination: $pagination, filters: $filters) {
+    results {
+      id
+      isNew
+      message
+      createdAt
+      externalId
+      type
+    }
+
+    newCount
+  }
+}
+
+mutation UpdateNotificationsList($input: [Int!]!) {
+  notificationUpdate(data: $input) {
+    results {
+      id
+      isNew
+      message
+      createdAt
+      externalId
+      type
+    }
+
+    newCount
+  }
+}

@@ -185,16 +185,16 @@ export type DocumentTypePagination = {
 };
 
 export type EnvironmentCredentialsInput = {
-  login: Scalars['String'];
-  password: Scalars['String'];
-  url: Scalars['String'];
+  login?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
 };
 
 export type EnvironmentCredentialsType = {
   id: Scalars['Int'];
-  login: Scalars['String'];
-  password: Scalars['String'];
-  url: Scalars['String'];
+  login?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type FileType = {
@@ -358,8 +358,10 @@ export type Mutation = {
   login: LoginSuccessType;
   /** User updating himself */
   meUpdate: ProfileType;
+  /** Unread all notification */
+  notificationUnread: MessageType;
   /** Update notification */
-  notificationUpdate: NotificationType;
+  notificationUpdate: NotificationPaginationType;
   /** Change password */
   passwordChange: MessageType;
   /** Update permissions */
@@ -390,6 +392,8 @@ export type Mutation = {
   projectStatusDelete: MessageType;
   /** Project update */
   projectUpdate: ProjectType;
+  /** Project update member */
+  projectUpdateMember: ProjectMemberType;
   /** Repository creation */
   repositoryCreate: RepositoryType;
   /** Repository deletion */
@@ -499,7 +503,7 @@ export type MutationMeUpdateArgs = {
 };
 
 export type MutationNotificationUpdateArgs = {
-  data: NotificationUpdateInput;
+  data: Array<Scalars['Int']>;
 };
 
 export type MutationPasswordChangeArgs = {
@@ -560,6 +564,10 @@ export type MutationProjectStatusDeleteArgs = {
 
 export type MutationProjectUpdateArgs = {
   data: ProjectUpdateInput;
+};
+
+export type MutationProjectUpdateMemberArgs = {
+  data: ProjectMemberInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -646,6 +654,18 @@ export type NoteType = {
   text: Scalars['String'];
 };
 
+export type NotificationFilter = {
+  isNew?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type NotificationPaginationType = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  newCount: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<NotificationType>;
+};
+
 export type NotificationType = {
   createdAt: Scalars['DateTime'];
   externalId: Scalars['Int'];
@@ -662,18 +682,6 @@ export enum NotificationTypeChoice {
   FILL_REPORT = 'FILL_REPORT',
   UNASSIGNED_REQUEST = 'UNASSIGNED_REQUEST',
 }
-
-export type NotificationTypePagination = {
-  count: Scalars['Int'];
-  limit?: Maybe<Scalars['Int']>;
-  offset: Scalars['Int'];
-  results: Array<NotificationType>;
-};
-
-export type NotificationUpdateInput = {
-  id: Scalars['Int'];
-  isNew: Scalars['Boolean'];
-};
 
 export enum OrderDirectionChoice {
   ASC = 'ASC',
@@ -831,6 +839,7 @@ export type ProjectMemberType = {
   currentTeam: Scalars['Boolean'];
   endDate?: Maybe<Scalars['DateTime']>;
   project: ProjectType;
+  slackChannels: Array<Scalars['Int']>;
   startDate: Scalars['DateTime'];
   user: ProfileType;
 };
@@ -876,6 +885,7 @@ export type ProjectSlackType = {
   channelTemplate?: Maybe<Scalars['String']>;
   channelUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
   template?: Maybe<SlackChannelTemplateType>;
 };
 
@@ -966,7 +976,7 @@ export type Query = {
   /** Getting authenticated user */
   me: ProfileType;
   /** Getting list of notifications */
-  notificationList: NotificationTypePagination;
+  notificationList: NotificationPaginationType;
   /** Getting list of roles and permissions */
   permissionsList: Array<PermissionType>;
   /** Getting platform list */
@@ -1076,6 +1086,7 @@ export type QueryLogListArgs = {
 };
 
 export type QueryNotificationListArgs = {
+  filters?: InputMaybe<NotificationFilter>;
   pagination?: InputMaybe<PaginationInput>;
 };
 
@@ -1109,6 +1120,7 @@ export type QueryProjectIntegrationListArgs = {
 
 export type QueryProjectIntegrationPageArgs = {
   data: IdInput;
+  slackCreatedOnly?: Scalars['Boolean'];
 };
 
 export type QueryProjectLogListArgs = {

@@ -182,16 +182,16 @@ type DocumentTypePagination {
 }
 
 input EnvironmentCredentialsInput {
-  login: String!
-  password: String!
-  url: String!
+  login: String
+  password: String
+  url: String
 }
 
 type EnvironmentCredentialsType {
   id: Int!
-  login: String!
-  password: String!
-  url: String!
+  login: String
+  password: String
+  url: String
 }
 
 type FileType {
@@ -390,9 +390,13 @@ type Mutation {
   """
   meUpdate(data: ProfileInput!): ProfileType!
   """
+  Unread all notification
+  """
+  notificationUnread: MessageType!
+  """
   Update notification
   """
-  notificationUpdate(data: NotificationUpdateInput!): NotificationType!
+  notificationUpdate(data: [Int!]!): NotificationPaginationType!
   """
   Change password
   """
@@ -453,6 +457,10 @@ type Mutation {
   Project update
   """
   projectUpdate(data: ProjectUpdateInput!): ProjectType!
+  """
+  Project update member
+  """
+  projectUpdateMember(data: ProjectMemberInput!): ProjectMemberType!
   """
   Repository creation
   """
@@ -543,6 +551,18 @@ type NoteType {
   text: String!
 }
 
+input NotificationFilter {
+  isNew: Boolean = null
+}
+
+type NotificationPaginationType {
+  count: Int!
+  limit: Int
+  newCount: Int!
+  offset: Int!
+  results: [NotificationType!]!
+}
+
 type NotificationType {
   createdAt: DateTime!
   externalId: Int!
@@ -558,18 +578,6 @@ enum NotificationTypeChoice {
   ASSIGNED_REQUEST
   FILL_REPORT
   UNASSIGNED_REQUEST
-}
-
-type NotificationTypePagination {
-  count: Int!
-  limit: Int
-  offset: Int!
-  results: [NotificationType!]!
-}
-
-input NotificationUpdateInput {
-  id: Int!
-  isNew: Boolean!
 }
 
 enum OrderDirectionChoice {
@@ -657,8 +665,8 @@ enum ProjectEnvironmentChoice {
 }
 
 input ProjectEnvironmentInput {
-  backendCredentials: EnvironmentCredentialsInput = null
-  frontendCredentials: EnvironmentCredentialsInput = null
+  backendCredentials: EnvironmentCredentialsInput
+  frontendCredentials: EnvironmentCredentialsInput
   id: Int = null
   name: ProjectEnvironmentChoice!
   projectId: Int!
@@ -728,6 +736,7 @@ type ProjectMemberType {
   currentTeam: Boolean!
   endDate: DateTime
   project: ProjectType!
+  slackChannels: [Int!]!
   startDate: DateTime!
   user: ProfileType!
 }
@@ -773,6 +782,7 @@ type ProjectSlackType {
   channelTemplate: String
   channelUrl: String
   createdAt: DateTime!
+  id: Int!
   template: SlackChannelTemplateType
 }
 
@@ -910,7 +920,10 @@ type Query {
   """
   Getting list of notifications
   """
-  notificationList(pagination: PaginationInput = null): NotificationTypePagination!
+  notificationList(
+    filters: NotificationFilter = null
+    pagination: PaginationInput = null
+  ): NotificationPaginationType!
   """
   Getting list of roles and permissions
   """
@@ -950,7 +963,10 @@ type Query {
   """
   Getting project integration page by id
   """
-  projectIntegrationPage(data: IDInput!): PorjectIntegrationsPage!
+  projectIntegrationPage(
+    data: IDInput!
+    slackCreatedOnly: Boolean! = false
+  ): PorjectIntegrationsPage!
   """
   Getting history for project by id
   """

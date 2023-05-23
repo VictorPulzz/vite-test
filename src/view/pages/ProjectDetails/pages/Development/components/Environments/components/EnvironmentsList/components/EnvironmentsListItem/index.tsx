@@ -60,7 +60,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
                     <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
                     <button
                       type="button"
-                      onClick={() => copyTextValue(value)}
+                      onClick={() => copyTextValue(value ?? '')}
                       className="text-p5 truncate hover:underline cursor-pointer"
                     >
                       {value}
@@ -77,7 +77,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
                     <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
                     <button
                       type="button"
-                      onClick={() => copyTextValue(value)}
+                      onClick={() => copyTextValue(value ?? '')}
                       className="text-p5 truncate hover:underline cursor-pointer"
                     >
                       {value}

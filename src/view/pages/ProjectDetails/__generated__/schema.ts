@@ -143,8 +143,18 @@ export type FetchProjectEnvironmentsListQuery = {
     id: number;
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
-    frontendCredentials?: { id: number; url: string; login: string; password: string } | null;
-    backendCredentials?: { id: number; url: string; login: string; password: string } | null;
+    frontendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
+    backendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
   }>;
 };
 
