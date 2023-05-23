@@ -137,14 +137,11 @@ export const CreateRepositoryPage: FC = () => {
             )}
           </div>
           {!withExistingRepo && (
-            <div className="flex flex-col">
-              <Checkbox label="Use terraform" {...form.register('useTerraform')} className="mt-4" />
-              <div className="flex flex-col gap-1">
-                <Checkbox label="With relay" {...form.register('withRelay')} className="mt-4" />
-                <span className="text-p5 text-gray-2">
-                  Works only for GraphQl Boilerplate. Please, consult backend developer if not sure
-                </span>
-              </div>
+            <div className="flex flex-col gap-1">
+              <Checkbox label="With relay" {...form.register('withRelay')} className="mt-4" />
+              <span className="text-p5 text-gray-2">
+                Works only for GraphQl Boilerplate. Please, consult backend developer if not sure
+              </span>
             </div>
           )}
         </section>
