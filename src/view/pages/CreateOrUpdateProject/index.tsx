@@ -27,7 +27,9 @@ export const CreateOrUpdateProject: FC = () => {
     skip: !projectId,
   });
 
-  const { data: documentTemplates, loading } = useFetchDocumentTemplateListQuery();
+  const { data: documentTemplates, loading } = useFetchDocumentTemplateListQuery({
+    fetchPolicy: 'cache-and-network',
+  });
 
   const { form, handleSubmit, isLoading } = useProjectForm({
     prefilledData: projectInfo?.project,

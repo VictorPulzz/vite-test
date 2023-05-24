@@ -70,6 +70,7 @@ export function useUploadDocumentForm({
           file: values.document as File,
           projectId: projectId || undefined,
           userId: userId || undefined,
+          name: values.document?.name ?? '',
         },
       };
       try {

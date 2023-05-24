@@ -1,5 +1,5 @@
 import { TextLink } from '@appello/web-ui';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/table-core';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 

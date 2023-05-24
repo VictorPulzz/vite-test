@@ -104,6 +104,7 @@ input DocumentInput {
   categoryId: Int
   file: Upload!
   id: Int
+  name: String!
   projectId: Int
   userId: Int
 }
@@ -640,12 +641,13 @@ type ProfileType {
   lastName: String!
   phone: String
   photo: FileType
+  photoThumbnail: FileType
   role: RoleType
 }
 
 input ProjectCreateInput {
   clientTeam: [ClientInput!] = null
-  design: String = null
+  design: String
   endDate: Date = null
   gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
@@ -653,7 +655,7 @@ input ProjectCreateInput {
   notes: String = null
   phase: ProjectPhaseChoice = null
   platforms: [Int!]
-  roadmap: String = null
+  roadmap: String
   startDate: Date = null
   statusId: Int = null
 }
@@ -772,7 +774,6 @@ type ProjectRepositoryType {
 }
 
 input ProjectSlackInput {
-  channelId: String = null
   channelTemplate: SlackChannelTemplateInput!
   projectId: Int!
 }
@@ -833,7 +834,7 @@ type ProjectTypePagination {
 
 input ProjectUpdateInput {
   clientTeam: [ClientInput!] = null
-  design: String = null
+  design: String
   endDate: Date = null
   gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
@@ -842,7 +843,7 @@ input ProjectUpdateInput {
   notes: String = null
   phase: ProjectPhaseChoice = null
   platforms: [Int!]
-  roadmap: String = null
+  roadmap: String
   startDate: Date = null
   statusId: Int = null
 }
@@ -1342,6 +1343,7 @@ type UserGlossaryType {
   fullName: String!
   id: Int!
   photo: FileType
+  photoThumbnail: FileType
 }
 
 type UserGlossaryTypePagination {
@@ -1383,6 +1385,7 @@ type UserType {
   notes: [NoteType!]
   phone: String
   photo: FileType
+  photoThumbnail: FileType
   role: RoleType
 }
 

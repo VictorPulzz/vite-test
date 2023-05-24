@@ -19,8 +19,8 @@ import { useCreateOrUpdateUserMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
   photo: fileValidation,
-  firstName: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  lastName: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   email: z
     .string()
     .email(formErrors.INVALID_EMAIL)

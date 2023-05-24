@@ -107,6 +107,7 @@ export type DocumentInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
   file: Scalars['Upload'];
   id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
   projectId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
@@ -743,6 +744,7 @@ export type ProfileType = {
   lastName: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
 };
 
@@ -875,7 +877,6 @@ export type ProjectRepositoryType = {
 };
 
 export type ProjectSlackInput = {
-  channelId?: InputMaybe<Scalars['String']>;
   channelTemplate: SlackChannelTemplateInput;
   projectId: Scalars['Int'];
 };
@@ -1473,6 +1474,7 @@ export type UserGlossaryType = {
   fullName: Scalars['String'];
   id: Scalars['Int'];
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
 };
 
 export type UserGlossaryTypePagination = {
@@ -1514,6 +1516,7 @@ export type UserType = {
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
 };
 

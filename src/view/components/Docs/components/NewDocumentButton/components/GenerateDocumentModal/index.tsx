@@ -22,7 +22,9 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 }
 
 export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId, type }) => {
-  const { data: documentTemplates } = useFetchDocumentTemplateListQuery();
+  const { data: documentTemplates } = useFetchDocumentTemplateListQuery({
+    fetchPolicy: 'cache-and-network',
+  });
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
   const [template, setTemplate] = useState<DocumentTemplateType>();

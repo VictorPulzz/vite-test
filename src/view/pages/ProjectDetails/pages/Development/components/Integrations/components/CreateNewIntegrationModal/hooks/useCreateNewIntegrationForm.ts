@@ -14,7 +14,7 @@ import {
 } from '../../../../../../../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  name: z.string().min(1),
   environment: z
     .nativeEnum(ProjectEnvironmentChoice)
     .nullable()
@@ -26,8 +26,8 @@ const formSchema = z.object({
   }),
   keys: z
     .object({
-      title: z.string().refine(value => value !== '', formErrors.REQUIRED),
-      value: z.string().refine(value => value !== '', formErrors.REQUIRED),
+      title: z.string().min(1),
+      value: z.string().min(1),
     })
     .array(),
 });

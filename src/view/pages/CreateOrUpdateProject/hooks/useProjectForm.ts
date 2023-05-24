@@ -27,7 +27,7 @@ import {
 
 const formSchema = z
   .object({
-    name: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    name: z.string().min(1),
     phase: z.nativeEnum(ProjectPhaseChoice),
     status: z.number().nullable(),
     hoursEstimated: z.string().and(numberValidation),

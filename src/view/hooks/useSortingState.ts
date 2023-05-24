@@ -1,4 +1,4 @@
-import { SortingState } from '@tanstack/react-table';
+import { SortingState } from '@tanstack/table-core';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 
 import { OrderDirectionChoice } from '~/services/gql/__generated__/globalTypes';

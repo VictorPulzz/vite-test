@@ -1,5 +1,5 @@
 import { Button, ButtonVariant, TextLink } from '@appello/web-ui';
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';

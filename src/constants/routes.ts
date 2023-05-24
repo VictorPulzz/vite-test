@@ -39,4 +39,5 @@ export const ROUTES = {
 
   ADMIN_SETTINGS: '/admin-settings',
   ADMIN_SETTINGS_INTEGRATIONS: '/admin-settings/integrations',
+  ADMIN_SETTINGS_DOCUMENT_TEMPLATES: '/admin-settings/document-templates',
 }; /* as const satisfies Record<string, string> */ // todo: uncomment and fix related errors asap

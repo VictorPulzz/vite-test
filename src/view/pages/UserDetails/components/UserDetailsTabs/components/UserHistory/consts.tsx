@@ -1,4 +1,4 @@
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
 import React from 'react';
 

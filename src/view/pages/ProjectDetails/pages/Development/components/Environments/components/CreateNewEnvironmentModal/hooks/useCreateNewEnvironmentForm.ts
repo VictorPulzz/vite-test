@@ -19,14 +19,14 @@ const formSchema = z.object({
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
   frontendCredentials: z.object({
-    url: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    login: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    password: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    url: z.string().min(1),
+    login: z.string().min(1),
+    password: z.string().min(1),
   }),
   backendCredentials: z.object({
-    url: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    login: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    password: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    url: z.string().min(1),
+    login: z.string().min(1),
+    password: z.string().min(1),
   }),
 });
 

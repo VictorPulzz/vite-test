@@ -13,7 +13,7 @@ import { FetchProjectRepositoriesListDocument } from '../../ProjectDetails/__gen
 import { useCreateRepositoryMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
-  name: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  name: z.string().min(1),
   projectId: z
     .number()
     .nullable()

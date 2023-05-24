@@ -1,0 +1,39 @@
+query FetchDocumentTemplatesList(
+  $pagination: PaginationInput
+  $sort: [DocumentTemplateSortFieldInput!]
+) {
+  documentTemplateList(pagination: $pagination, sort: $sort) {
+    results {
+      id
+      name
+      description
+      url
+    }
+    count
+  }
+}
+
+query FetchDocumentTemplateInfo($input: IDInput!) {
+  documentTemplate(data: $input) {
+    id
+    name
+    description
+    url
+    fields {
+      name
+      description
+    }
+  }
+}
+
+mutation CreateOrUpdateDocumentTemplate($input: DocumentTemplateInput!) {
+  documentTemplateCreateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation RemoveDocumentTemplate($input: IDInput!) {
+  documentTemplateDelete(data: $input) {
+    message
+  }
+}

@@ -3,7 +3,7 @@ import { Modal, ModalProps } from '@appello/web-ui';
 import { InlineFields } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
 import { TextAreaField } from '@appello/web-ui';
-import { Row } from '@tanstack/react-table';
+import { Row } from '@tanstack/table-core';
 import React, { FC } from 'react';
 
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
