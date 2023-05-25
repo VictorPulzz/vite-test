@@ -643,6 +643,7 @@ type ProfileType {
   photo: FileType
   photoThumbnail: FileType
   role: RoleType
+  slackUrl: String
 }
 
 input ProjectCreateInput {
@@ -683,8 +684,10 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
+  currentTeam: Boolean = null
   hasRepositories: Boolean = null
   inGit: Boolean = null
+  my: Boolean = null
   statusId: Int = null
 }
 
@@ -947,6 +950,10 @@ type Query {
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
+  Getting environment by id
+  """
+  projectEnvironment(data: IDInput!): ProjectEnvironmentType!
+  """
   Getting environments for project by id
   """
   projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
@@ -1061,7 +1068,10 @@ type Query {
   """
   Getting glossary list of users
   """
-  userGlossaryList(pagination: PaginationInput = null): UserGlossaryTypePagination!
+  userGlossaryList(
+    filters: UserFilter = null
+    pagination: PaginationInput = null
+  ): UserGlossaryTypePagination!
   """
   Getting project by user
   """
@@ -1387,6 +1397,7 @@ type UserType {
   photo: FileType
   photoThumbnail: FileType
   role: RoleType
+  slackUrl: String
 }
 
 type UserTypePagination {

@@ -746,6 +746,7 @@ export type ProfileType = {
   photo?: Maybe<FileType>;
   photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
+  slackUrl?: Maybe<Scalars['String']>;
 };
 
 export type ProjectCreateInput = {
@@ -786,8 +787,10 @@ export type ProjectEnvironmentType = {
 };
 
 export type ProjectFilter = {
+  currentTeam?: InputMaybe<Scalars['Boolean']>;
   hasRepositories?: InputMaybe<Scalars['Boolean']>;
   inGit?: InputMaybe<Scalars['Boolean']>;
+  my?: InputMaybe<Scalars['Boolean']>;
   statusId?: InputMaybe<Scalars['Int']>;
 };
 
@@ -986,6 +989,8 @@ export type Query = {
   project: ProjectType;
   /** Getting documents for project by id */
   projectDocumentList: DocumentTypePagination;
+  /** Getting environment by id */
+  projectEnvironment: ProjectEnvironmentType;
   /** Getting environments for project by id */
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting glossary list of projects */
@@ -1106,6 +1111,10 @@ export type QueryProjectDocumentListArgs = {
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
+export type QueryProjectEnvironmentArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectEnvironmentListArgs = {
   data: IdInput;
 };
@@ -1198,6 +1207,7 @@ export type QueryUserDetailsArgs = {
 };
 
 export type QueryUserGlossaryListArgs = {
+  filters?: InputMaybe<UserFilter>;
   pagination?: InputMaybe<PaginationInput>;
 };
 
@@ -1518,6 +1528,7 @@ export type UserType = {
   photo?: Maybe<FileType>;
   photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
+  slackUrl?: Maybe<Scalars['String']>;
 };
 
 export type UserTypePagination = {

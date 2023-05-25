@@ -72,14 +72,21 @@ export function useProjectTeamTableColumns(
     }),
     columnHelper.group({
       id: 'slack',
-      cell: ctx => (
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Slack"
-          onClick={() => ctx}
-          className="w-[100px]"
-        />
-      ),
+      cell: ctx => {
+        const teamMemberSlackUrl = ctx.row.original.user.slackUrl;
+        return (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Go to Slack"
+            onClick={() => {
+              if (teamMemberSlackUrl) {
+                window.open(teamMemberSlackUrl, '_blank');
+              }
+            }}
+            className="w-[100px]"
+          />
+        );
+      },
       meta: {
         className: 'w-0',
       },

@@ -3,7 +3,7 @@ import { Button, ButtonVariant } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import { Loader } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
-import React, { FC, useMemo } from 'react';
+import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
@@ -37,6 +37,16 @@ export const Team: FC = () => {
       data: { id: projectId },
     },
   });
+
+  const [isCurrentTeam, setIsCurrentTeam] = useState<boolean>(false);
+
+  const handleAddNewMember = useCallback(
+    (isCurrentTeam: boolean) => {
+      setIsCurrentTeam(isCurrentTeam);
+      openAddNewMemberModalModal();
+    },
+    [openAddNewMemberModalModal],
+  );
 
   const projectMembersListIds = useMemo(
     () =>
@@ -72,19 +82,30 @@ export const Team: FC = () => {
                 label="Add new member"
                 withIcon="add"
                 className="mt-3 w-[170px]"
-                onClick={openAddNewMemberModalModal}
+                onClick={() => handleAddNewMember(true)}
               />
             )}
           </SectionContainer>
-          {!!data?.projectMemberList.otherContrubutors.length && (
-            <SectionContainer title="Other contributors">
+          <SectionContainer title="Other contributors">
+            {data && !!data?.projectMemberList.otherContrubutors.length ? (
               <Table
                 className="mt-3"
                 data={data.projectMemberList.otherContrubutors}
                 columns={otherContributorsTableColumns}
               />
-            </SectionContainer>
-          )}
+            ) : (
+              <EmptyState iconName="users" label="No contributors here yet" />
+            )}
+            {canWriteProjectTeam && (
+              <Button
+                variant={ButtonVariant.SECONDARY}
+                label="Add new member"
+                withIcon="add"
+                className="mt-3 w-[170px]"
+                onClick={() => handleAddNewMember(false)}
+              />
+            )}
+          </SectionContainer>
         </div>
       )}
       <AddNewMemberModal
@@ -93,6 +114,7 @@ export const Team: FC = () => {
         projectId={projectId}
         projectMembersListIds={projectMembersListIds}
         canWriteProjectTeam={canWriteProjectTeam}
+        isCurrentTeam={isCurrentTeam}
       />
     </>
   );

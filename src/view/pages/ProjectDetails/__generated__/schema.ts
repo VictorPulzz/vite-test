@@ -60,6 +60,7 @@ export type FetchProjectMembersQuery = {
         id: number;
         fullName: string;
         email: string;
+        slackUrl?: string | null;
         photo?: { url: string } | null;
         role?: { name: string } | null;
       };
@@ -71,6 +72,7 @@ export type FetchProjectMembersQuery = {
         id: number;
         fullName: string;
         email: string;
+        slackUrl?: string | null;
         photo?: { url: string } | null;
         role?: { name: string } | null;
       };
@@ -419,6 +421,7 @@ export const FetchProjectMembersDocument = gql`
             name
           }
           email
+          slackUrl
         }
       }
       otherContrubutors {
@@ -434,6 +437,7 @@ export const FetchProjectMembersDocument = gql`
             name
           }
           email
+          slackUrl
         }
       }
     }

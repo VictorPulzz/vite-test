@@ -58,6 +58,7 @@ query FetchProjectMembers($data: IDInput!) {
           name
         }
         email
+        slackUrl
       }
     }
     otherContrubutors {
@@ -73,6 +74,7 @@ query FetchProjectMembers($data: IDInput!) {
           name
         }
         email
+        slackUrl
       }
     }
   }

@@ -100,7 +100,7 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
       onSelect: () => moveProjectMember(id),
     },
     {
-      label: 'Remove',
+      label: 'Remove from project',
       onSelect: () => removeFromOtherContributors(id),
       className: 'text-red',
     },
