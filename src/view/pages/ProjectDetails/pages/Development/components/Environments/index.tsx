@@ -13,7 +13,7 @@ import {
   FetchProjectEnvironmentsListQuery,
 } from '~/view/pages/ProjectDetails/__generated__/schema';
 
-import { CreateNewEnvironmentModal } from './components/CreateNewEnvironmentModal';
+import { CreateOrUpdateEnvironmentModal } from './components/CreateOrUpdateEnvironmentModal';
 import { EnvironmentsList } from './components/EnvironmentsList';
 
 interface Props {
@@ -26,9 +26,9 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests,
   const canWriteProjectEnvs = useHasAccess(Permission.WRITE_PROJECT_ENVS);
 
   const {
-    value: isCreateNewEnvironmentModalOpen,
-    on: openCreateNewEnvironmentModal,
-    off: closeCreateNewEnvironmentModal,
+    value: isCreateOrUpdateEnvironmentModalOpen,
+    on: openCreateOrUpdateEnvironmentModal,
+    off: closeCreateOrUpdateEnvironmentModal,
   } = useSwitchValue(false);
 
   const {
@@ -50,12 +50,12 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests,
           variant={ButtonVariant.SECONDARY}
           label={`${canWriteProjectEnvs ? 'Create' : 'Request'} new environment`}
           className="mt-6 w-[190px]"
-          onClick={canWriteProjectEnvs ? openCreateNewEnvironmentModal : openNewRequestModal}
+          onClick={canWriteProjectEnvs ? openCreateOrUpdateEnvironmentModal : openNewRequestModal}
         />
       </SectionContainer>
-      <CreateNewEnvironmentModal
-        isOpen={isCreateNewEnvironmentModalOpen}
-        close={closeCreateNewEnvironmentModal}
+      <CreateOrUpdateEnvironmentModal
+        isOpen={isCreateOrUpdateEnvironmentModalOpen}
+        close={closeCreateOrUpdateEnvironmentModal}
       />
       {isNewRequestModalOpen && (
         <NewRequestModal

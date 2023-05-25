@@ -10,7 +10,7 @@ import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorRes
 
 import {
   FetchProjectIntegrationsListDocument,
-  useRequestNewProjectIntegrationMutation,
+  useCreateNewProjectIntegrationMutation,
 } from '../../../../../../../__generated__/schema';
 
 const formSchema = z.object({
@@ -66,12 +66,12 @@ export function useCreateNewIntegrationForm({
   const params = useParams();
   const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
-  const [requestNewProjectIntegration] = useRequestNewProjectIntegrationMutation();
+  const [createNewProjectIntegration] = useCreateNewProjectIntegrationMutation();
 
   const handleSubmit = useCallback(
     async (values: CreateNewIntegrationFormValues) => {
       try {
-        await requestNewProjectIntegration({
+        await createNewProjectIntegration({
           variables: {
             input: {
               projectId,
@@ -88,7 +88,7 @@ export function useCreateNewIntegrationForm({
         });
       }
     },
-    [form.setError, onSubmitSuccessful, projectId, requestNewProjectIntegration],
+    [createNewProjectIntegration, form.setError, onSubmitSuccessful, projectId],
   );
 
   return useMemo(

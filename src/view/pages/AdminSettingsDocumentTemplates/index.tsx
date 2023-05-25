@@ -60,7 +60,7 @@ export const AdminSettingsDocumentTemplatesPage: FC = () => {
 
       {loading && <TableLoader className="mt-6" />}
       {data && data.documentTemplateList.results.length === 0 && (
-        <EmptyState iconName="documentTemplate" label="No document templates here yet" />
+        <EmptyState iconName="documentLayout" label="No document templates here yet" />
       )}
       {!loading && data && data.documentTemplateList.results.length > 0 && (
         <Table
