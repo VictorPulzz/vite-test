@@ -11,7 +11,6 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -49,64 +48,58 @@ export const RepositoriesPage: FC = () => {
 
   return (
     <SidebarLayout contentClassName="p-6">
-      {canReadReposList ? (
-        <>
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-h4">Repositories</h1>
-              <p className="text-p5 text-gray-2">
-                {(data && data.repositoryList.count) ?? 0} repositories in total
-              </p>
-            </div>
-            {canCreateRepository && (
-              <Button
-                label="Add repository"
-                withIcon="plus"
-                variant={ButtonVariant.PRIMARY}
-                className="w-40"
-                to={ROUTES.ADD_REPOSITORY}
-              />
-            )}
-          </div>
-          <div className="mt-5 flex gap-3 items-start">
-            <SearchInput
-              defaultValue={searchValue}
-              onChange={setSearchValue}
-              placeholder="Search repositories"
-              className="flex-1"
-            />
-            <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Filter"
-              className="w-28"
-              onClick={openFilterModal}
-              count={filtersCount || undefined}
-            />
-          </div>
-          {loading && <TableLoader className="mt-10" />}
-          {data && data.repositoryList.results.length === 0 && (
-            <EmptyState iconName="repositories" label="No repositories here yet" />
-          )}
-          {!loading && data && data.repositoryList.results?.length > 0 && (
-            <Table
-              className="mt-6"
-              data={data?.repositoryList.results}
-              columns={repositoriesTableColumns}
-              setOffset={setOffset}
-              offset={offset}
-              fetchMore={fetchMore}
-              totalCount={data.repositoryList.count}
-            />
-          )}
-          <RepositoriesFilterModal
-            isOpen={isFilterModalOpen}
-            close={closeFilterModal}
-            setFilter={setFilter}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-h4">Repositories</h1>
+          <p className="text-p5 text-gray-2">
+            {(data && data.repositoryList.count) ?? 0} repositories in total
+          </p>
+        </div>
+        {canCreateRepository && (
+          <Button
+            label="Add repository"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_REPOSITORY}
           />
-        </>
-      ) : (
-        <NoAccessMessage className="flex-auto bg-white" />
+        )}
+      </div>
+      <div className="mt-5 flex gap-3 items-start">
+        <SearchInput
+          defaultValue={searchValue}
+          onChange={setSearchValue}
+          placeholder="Search repositories"
+          className="flex-1"
+        />
+        <Button
+          variant={ButtonVariant.SECONDARY}
+          label="Filter"
+          className="w-28"
+          onClick={openFilterModal}
+          count={filtersCount || undefined}
+        />
+      </div>
+      {loading && <TableLoader className="mt-10" />}
+      {data && data.repositoryList.results.length === 0 && (
+        <EmptyState iconName="repositories" label="No repositories here yet" />
       )}
+      {!loading && data && data.repositoryList.results?.length > 0 && (
+        <Table
+          className="mt-6"
+          data={data?.repositoryList.results}
+          columns={repositoriesTableColumns}
+          setOffset={setOffset}
+          offset={offset}
+          fetchMore={fetchMore}
+          totalCount={data.repositoryList.count}
+        />
+      )}
+      <RepositoriesFilterModal
+        isOpen={isFilterModalOpen}
+        close={closeFilterModal}
+        setFilter={setFilter}
+      />
     </SidebarLayout>
   );
 };

@@ -6,7 +6,7 @@ import { Permission } from '~/constants/permissions';
 import { UserRole } from '~/constants/roles';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { useUserProfile } from '~/store/hooks';
-import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
+import { RequestAccessMessage } from '~/view/components/RequestAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -86,10 +86,9 @@ export const RepositoryDetailsPage: FC = () => {
           </div>
         )}
         {!isLoading && repositoryPreview && !isUserInRepository && (
-          <NoAccessMessage
+          <RequestAccessMessage
             className="h-full"
             title={repositoryPreview.repositoryPreview.name}
-            variant={NoAccessMessageVariant.REQUEST}
             requestType={RequestTypeChoice.ACCESS_REPOSITORY}
             projectId={repositoryPreview.repositoryPreview.projectId}
             repositoryId={repositoryId}

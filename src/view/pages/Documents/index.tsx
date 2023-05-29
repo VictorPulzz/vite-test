@@ -1,4 +1,4 @@
-import { Tabs } from '@appello/web-ui';
+import { Tab, Tabs } from '@appello/web-ui';
 import React, { FC, useMemo, useState } from 'react';
 import { Outlet } from 'react-router';
 
@@ -6,7 +6,6 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { NewDocumentButton } from '~/view/components/Docs/components/NewDocumentButton';
 import { DocsType } from '~/view/components/Docs/types';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
@@ -22,7 +21,35 @@ export const DocumentsPage: FC = () => {
   const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
   const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
 
-  const [selectedTab, setSelectedTab] = useState(DocsTab.CLIENT);
+  const [selectedTab, setSelectedTab] = useState(DocsTab.INTERNAL);
+
+  const docsTabs: (Tab | false)[] = useMemo(
+    () => [
+      canReadWriteInternalDocuments && {
+        title: 'Internal',
+        path: ROUTES.DOCUMENTS,
+        element: (
+          <div className="h-full p-7">
+            <SectionContainer containerClassName="h-full">
+              <Outlet />
+            </SectionContainer>
+          </div>
+        ),
+      },
+      canReadWriteClientsDocuments && {
+        title: 'Client',
+        path: ROUTES.DOCUMENTS_CLIENTS,
+        element: (
+          <div className="h-full p-7">
+            <SectionContainer containerClassName="h-full">
+              <Outlet />
+            </SectionContainer>
+          </div>
+        ),
+      },
+    ],
+    [canReadWriteClientsDocuments, canReadWriteInternalDocuments],
+  );
 
   const tabsElement = useMemo(
     () => (
@@ -31,37 +58,10 @@ export const DocumentsPage: FC = () => {
         contentClassName={styles['tabs__body']}
         selected={selectedTab}
         onSelect={setSelectedTab}
-        items={[
-          {
-            title: 'Internal',
-            path: ROUTES.DOCUMENTS,
-            element: canReadWriteInternalDocuments ? (
-              <div className="h-full p-7">
-                <SectionContainer containerClassName="h-full">
-                  <Outlet />
-                </SectionContainer>
-              </div>
-            ) : (
-              <NoAccessMessage className="h-full" />
-            ),
-          },
-          {
-            title: 'Client',
-            path: ROUTES.DOCUMENTS_CLIENTS,
-            element: canReadWriteClientsDocuments ? (
-              <div className="h-full p-7">
-                <SectionContainer containerClassName="h-full">
-                  <Outlet />
-                </SectionContainer>
-              </div>
-            ) : (
-              <NoAccessMessage className="h-full" />
-            ),
-          },
-        ]}
+        items={docsTabs.filter((tab): tab is Tab => !!tab)}
       />
     ),
-    [canReadWriteClientsDocuments, canReadWriteInternalDocuments, selectedTab],
+    [docsTabs, selectedTab],
   );
 
   return (

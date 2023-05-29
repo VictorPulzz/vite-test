@@ -13,7 +13,6 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -57,58 +56,52 @@ export const ProjectsPage: FC = () => {
 
   return (
     <SidebarLayout contentClassName="p-6">
-      {canReadProjectsList ? (
-        <>
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-h4">Projects</h1>
-              <p className="text-p5 text-gray-2">
-                {(data && data.projectsList.count) ?? 0} projects in total
-              </p>
-            </div>
-            {canCreateProject && (
-              <Button
-                label="New project"
-                withIcon="plus"
-                variant={ButtonVariant.PRIMARY}
-                className="w-40"
-                to={ROUTES.ADD_PROJECT}
-              />
-            )}
-          </div>
-          <div className="mt-5 flex gap-3">
-            <SearchInput
-              defaultValue={searchValue}
-              onChange={setSearchValue}
-              placeholder="Search projects"
-              className="flex-1"
-            />
-            <Select
-              className="w-40"
-              options={statusOptions}
-              value={filter?.statusId}
-              placeholder="Status"
-              onChange={value => setFilter({ statusId: value })}
-            />
-          </div>
-          {loading && <TableLoader className="mt-10" />}
-          {data && data.projectsList.results.length === 0 && (
-            <EmptyState iconName="projects" label="No projects here yet" />
-          )}
-          {!loading && data && data.projectsList.results.length > 0 && (
-            <Table
-              className="mt-6"
-              data={data.projectsList.results}
-              columns={projectsListColumns}
-              setOffset={setOffset}
-              offset={offset}
-              fetchMore={fetchMore}
-              totalCount={data.projectsList.count}
-            />
-          )}
-        </>
-      ) : (
-        <NoAccessMessage className="flex-auto bg-white" />
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-h4">Projects</h1>
+          <p className="text-p5 text-gray-2">
+            {(data && data.projectsList.count) ?? 0} projects in total
+          </p>
+        </div>
+        {canCreateProject && (
+          <Button
+            label="New project"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_PROJECT}
+          />
+        )}
+      </div>
+      <div className="mt-5 flex gap-3">
+        <SearchInput
+          defaultValue={searchValue}
+          onChange={setSearchValue}
+          placeholder="Search projects"
+          className="flex-1"
+        />
+        <Select
+          className="w-40"
+          options={statusOptions}
+          value={filter?.statusId}
+          placeholder="Status"
+          onChange={value => setFilter({ statusId: value })}
+        />
+      </div>
+      {loading && <TableLoader className="mt-10" />}
+      {data && data.projectsList.results.length === 0 && (
+        <EmptyState iconName="projects" label="No projects here yet" />
+      )}
+      {!loading && data && data.projectsList.results.length > 0 && (
+        <Table
+          className="mt-6"
+          data={data.projectsList.results}
+          columns={projectsListColumns}
+          setOffset={setOffset}
+          offset={offset}
+          fetchMore={fetchMore}
+          totalCount={data.projectsList.count}
+        />
       )}
     </SidebarLayout>
   );

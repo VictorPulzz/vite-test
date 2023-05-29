@@ -4,6 +4,9 @@ export const ROUTES = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
 
+  DOCUMENTS: '/documents',
+  DOCUMENTS_CLIENTS: '/documents/clients',
+
   PROJECTS: '/projects',
   ADD_PROJECT: '/projects/add',
   EDIT_PROJECT: '/projects/:id/edit',
@@ -23,9 +26,6 @@ export const ROUTES = {
   USER_DETAILS_DOCUMENTS: '/users/:id/documents',
   USER_DETAILS_HISTORY: '/users/:id/history',
 
-  DOCUMENTS: '/documents',
-  DOCUMENTS_CLIENTS: '/documents/clients',
-
   REPOSITORIES: '/repositories',
   ADD_REPOSITORY: '/repositories/add',
   REPOSITORY_DETAILS: '/repositories/:id',
@@ -38,6 +38,5 @@ export const ROUTES = {
   SETTINGS_SECURITY: '/settings/security',
 
   ADMIN_SETTINGS: '/admin-settings',
-  ADMIN_SETTINGS_INTEGRATIONS: '/admin-settings/integrations',
   ADMIN_SETTINGS_DOCUMENT_TEMPLATES: '/admin-settings/document-templates',
 }; /* as const satisfies Record<string, string> */ // todo: uncomment and fix related errors asap

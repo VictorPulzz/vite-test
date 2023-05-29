@@ -6,16 +6,33 @@ import { ROUTES } from '~/constants/routes';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
 export function useSidebarItems(): SidebarItem[] {
+  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
+  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
+  const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
+  const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
+  const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
   const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
   const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
+  const canReadDocuments = canReadWriteInternalDocuments || canReadWriteClientsDocuments;
 
   const hiddenRoutes = useMemo(
     () =>
       [
+        !canReadDocuments && ROUTES.DOCUMENTS,
+        !canReadUsersList && ROUTES.USERS,
+        !canReadProjectsList && ROUTES.PROJECTS,
+        !canReadReposList && ROUTES.REPOSITORIES,
         !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
         !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
       ].filter(Boolean),
-    [canWriteAdminSettings, canWritePermissions],
+    [
+      canReadDocuments,
+      canReadProjectsList,
+      canReadReposList,
+      canReadUsersList,
+      canWriteAdminSettings,
+      canWritePermissions,
+    ],
   );
 
   const navItems = useMemo(
@@ -77,7 +94,7 @@ export function useSidebarItems(): SidebarItem[] {
         items: [
           {
             title: 'Integrations',
-            link: ROUTES.ADMIN_SETTINGS_INTEGRATIONS,
+            link: ROUTES.ADMIN_SETTINGS,
           },
           {
             title: 'Document templates',
