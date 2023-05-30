@@ -18,6 +18,7 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $sear
         id
         name
       }
+      inCurrentTeam
       phase
     }
     count

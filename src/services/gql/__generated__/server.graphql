@@ -314,7 +314,7 @@ input LoginInput {
 type LoginSuccessType {
   accessToken: String!
   refreshToken: String!
-  user: UserType!
+  user: ProfileType!
 }
 
 type MessageType {
@@ -819,6 +819,7 @@ type ProjectType {
   gitUrl: String
   hoursEstimated: Int
   id: Int!
+  inCurrentTeam: Boolean
   name: String!
   notes: String
   phase: ProjectPhaseChoice
@@ -1167,6 +1168,7 @@ enum RepositoryPlatformChoice {
 
 type RepositoryPreviewType {
   id: Int!
+  inParticipant: Boolean
   name: String!
   projectId: Int
 }
@@ -1188,6 +1190,7 @@ type RepositoryType {
   gitTerraformUrl: String
   gitUrl: String
   id: Int!
+  inParticipant: Boolean
   name: String
   project: ProjectType!
   technologies: [TechnologyType!]

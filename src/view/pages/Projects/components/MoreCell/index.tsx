@@ -11,7 +11,7 @@ import { FetchProjectsDocument, useChangeProjectStatusMutation } from '../../__g
 import { ProjectResultType } from '../../types';
 
 export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) => {
-  const { status, id } = row.original;
+  const { status, id, inCurrentTeam } = row.original;
 
   const { data: statuses } = useFetchProjectStatusesListQuery({
     fetchPolicy: 'cache-and-network',
@@ -58,7 +58,7 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
   return (
     <Dropdown items={options} containerWidth="14.93rem">
       {({ onClick }) => (
-        <button type="button" onClick={onClick}>
+        <button type="button" onClick={onClick} disabled={!inCurrentTeam}>
           <Icon name="menu" size={16} />
         </button>
       )}

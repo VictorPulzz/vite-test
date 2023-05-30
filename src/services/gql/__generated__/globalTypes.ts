@@ -317,7 +317,7 @@ export type LoginInput = {
 export type LoginSuccessType = {
   accessToken: Scalars['String'];
   refreshToken: Scalars['String'];
-  user: UserType;
+  user: ProfileType;
 };
 
 export type MessageType = {
@@ -922,6 +922,7 @@ export type ProjectType = {
   gitUrl?: Maybe<Scalars['String']>;
   hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
+  inCurrentTeam?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
@@ -1300,6 +1301,7 @@ export enum RepositoryPlatformChoice {
 
 export type RepositoryPreviewType = {
   id: Scalars['Int'];
+  inParticipant?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   projectId?: Maybe<Scalars['Int']>;
 };
@@ -1321,6 +1323,7 @@ export type RepositoryType = {
   gitTerraformUrl?: Maybe<Scalars['String']>;
   gitUrl?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  inParticipant?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   project: ProjectType;
   technologies?: Maybe<Array<TechnologyType>>;
