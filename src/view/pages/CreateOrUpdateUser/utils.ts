@@ -7,7 +7,7 @@ export function transformUserPrefilledData(
   data: FetchUserDetailsQuery['userDetails'],
 ): UserFormValues {
   return {
-    photo: data?.photo?.url as string,
+    photo: data?.photoThumbnail?.url as string,
     firstName: data.firstName as string,
     lastName: data.lastName as string,
     email: data.email,

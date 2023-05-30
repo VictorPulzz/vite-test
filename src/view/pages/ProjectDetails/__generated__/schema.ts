@@ -61,7 +61,7 @@ export type FetchProjectMembersQuery = {
         fullName: string;
         email: string;
         slackUrl?: string | null;
-        photo?: { url: string } | null;
+        photoThumbnail?: { url: string } | null;
         role?: { name: string } | null;
       };
     }>;
@@ -73,7 +73,7 @@ export type FetchProjectMembersQuery = {
         fullName: string;
         email: string;
         slackUrl?: string | null;
-        photo?: { url: string } | null;
+        photoThumbnail?: { url: string } | null;
         role?: { name: string } | null;
       };
     }>;
@@ -445,7 +445,7 @@ export const FetchProjectMembersDocument = gql`
         endDate
         user {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName
@@ -461,7 +461,7 @@ export const FetchProjectMembersDocument = gql`
         endDate
         user {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName

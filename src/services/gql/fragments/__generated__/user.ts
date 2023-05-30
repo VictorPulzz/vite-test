@@ -8,7 +8,7 @@ export type AuthorizedUserFragment = {
   firstName: string;
   lastName: string;
   fullName: string;
-  photo?: { url: string } | null;
+  photoThumbnail?: { url: string } | null;
   role?: { id: number; name: string; permissionsList: Array<string> } | null;
 };
 
@@ -19,7 +19,7 @@ export const AuthorizedUserFragmentDoc = gql`
     firstName
     lastName
     fullName
-    photo {
+    photoThumbnail {
       url
     }
     role {

@@ -14,7 +14,7 @@ export type CurrentUserQuery = {
     firstName: string;
     lastName: string;
     fullName: string;
-    photo?: { url: string } | null;
+    photoThumbnail?: { url: string } | null;
     role?: { id: number; name: string; permissionsList: Array<string> } | null;
   };
 };

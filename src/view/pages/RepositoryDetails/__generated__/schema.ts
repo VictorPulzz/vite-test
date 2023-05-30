@@ -50,7 +50,7 @@ export type FetchRepositoryParticipantsQuery = {
     count: number;
     results: Array<{
       accessLevel: Types.RepositoryAccessLevelChoice;
-      user: { id: number; fullName: string; photo?: { url: string } | null };
+      user: { id: number; fullName: string; photoThumbnail?: { url: string } | null };
     }>;
   };
 };
@@ -268,7 +268,7 @@ export const FetchRepositoryParticipantsDocument = gql`
       results {
         user {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName

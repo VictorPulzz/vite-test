@@ -6,7 +6,7 @@ query Me {
     email
     phone
     address
-    photo {
+    photoThumbnail {
       url
     }
   }
@@ -14,19 +14,6 @@ query Me {
 
 mutation ProfileUpdate($data: ProfileInput!) {
   meUpdate(data: $data) {
-    id
-    firstName
-    lastName
-    email
-    phone
-    address
-    photo {
-      url
-    }
-    role {
-      id
-      name
-      permissionsList
-    }
+    ...AuthorizedUser
   }
 }

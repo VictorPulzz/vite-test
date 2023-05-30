@@ -64,7 +64,7 @@ export function useSignInForm({ onSubmitSuccessful }: UseSignInFormProps): UseSi
               firstName: user.firstName,
               lastName: user.lastName,
               fullName: user.fullName,
-              photo: user.photo,
+              photoThumbnail: user.photoThumbnail,
               role: user.role,
             }),
           );

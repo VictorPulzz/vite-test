@@ -19,7 +19,7 @@ export type FetchUserDetailsQuery = {
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     address?: string | null;
-    photo?: { url: string } | null;
+    photoThumbnail?: { url: string } | null;
     department?: { id: number; name: string } | null;
     role?: { id: number; name: string } | null;
   };
@@ -65,7 +65,7 @@ export const FetchUserDetailsDocument = gql`
       firstName
       lastName
       email
-      photo {
+      photoThumbnail {
         url
       }
       department {

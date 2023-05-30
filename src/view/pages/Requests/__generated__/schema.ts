@@ -27,13 +27,13 @@ export type FetchRequestsListQuery = {
         id: number;
         email: string;
         fullName: string;
-        photo?: { url: string } | null;
+        photoThumbnail?: { url: string } | null;
       } | null;
       createdBy?: {
         id: number;
         email: string;
         fullName: string;
-        photo?: { url: string } | null;
+        photoThumbnail?: { url: string } | null;
       } | null;
       technologies?: Array<{ id: number; name: string }> | null;
     }>;
@@ -60,13 +60,13 @@ export type FetchRequestDetailsQuery = {
       id: number;
       fullName: string;
       email: string;
-      photo?: { url: string } | null;
+      photoThumbnail?: { url: string } | null;
     } | null;
     createdBy?: {
       id: number;
       fullName: string;
       email: string;
-      photo?: { url: string } | null;
+      photoThumbnail?: { url: string } | null;
     } | null;
     project?: { id: number; name: string } | null;
     repository?: { id: number; name?: string | null } | null;
@@ -94,7 +94,7 @@ export const FetchRequestsListDocument = gql`
         createdAt
         assignedTo {
           id
-          photo {
+          photoThumbnail {
             url
           }
           email
@@ -102,7 +102,7 @@ export const FetchRequestsListDocument = gql`
         }
         createdBy {
           id
-          photo {
+          photoThumbnail {
             url
           }
           email
@@ -178,7 +178,7 @@ export const FetchRequestDetailsDocument = gql`
       createdAt
       assignedTo {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName
@@ -186,7 +186,7 @@ export const FetchRequestDetailsDocument = gql`
       }
       createdBy {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName

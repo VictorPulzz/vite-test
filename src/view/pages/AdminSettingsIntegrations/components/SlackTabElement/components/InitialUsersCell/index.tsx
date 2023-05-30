@@ -53,7 +53,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
       hiddenUsers
         ? hiddenUsers?.map(user => ({
             label: `${user.fullName}`,
-            iconBefore: <Avatar uri={user.photo?.url || photoPlaceholder} size={24} />,
+            iconBefore: <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={24} />,
             className: 'flex item-center gap-2',
             onSelect: () => showUserDetails(user.id),
           }))
@@ -68,7 +68,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
           key={user.id}
           className="group relative border-solid border-[3px] border-white rounded-[50%] ml-[-10px] cursor-pointer"
         >
-          <Avatar uri={user.photo?.url || photoPlaceholder} size={32} />
+          <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={32} />
           <UserNameTooltip userName={user?.fullName ?? ''} />
         </div>
       ))}

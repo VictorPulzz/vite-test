@@ -46,7 +46,7 @@ export function useProjectsTableColumns() {
           <div>
             {ctx.getValue()?.map(pm => (
               <div key={pm.id} className="flex gap-3 items-center">
-                <Avatar uri={pm.photo?.url || photoPlaceholder} size={26} />
+                <Avatar uri={pm.photoThumbnail?.url || photoPlaceholder} size={26} />
                 {canReadUserDetails ? (
                   <TextLink
                     to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}

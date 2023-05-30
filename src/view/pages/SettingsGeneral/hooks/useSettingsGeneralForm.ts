@@ -10,11 +10,8 @@ import { z } from 'zod';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { setUser } from '~/store/modules/user';
 import { fileValidation, withPhoneValidation } from '~/utils/validations';
-import {
-  MeDocument,
-  MeQuery,
-  useProfileUpdateMutation,
-} from '~/view/pages/SettingsGeneral/__generated__/schema';
+
+import { MeDocument, MeQuery, useProfileUpdateMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
   photo: fileValidation,
@@ -61,7 +58,7 @@ export const useSettingsGeneralForm = ({
   useEffect(() => {
     if (settingsData) {
       form.reset({
-        photo: settingsData.photo?.url,
+        photo: settingsData.photoThumbnail?.url,
         phone: settingsData?.phone || '',
         lastName: settingsData.lastName ?? '',
         firstName: settingsData.firstName ?? '',
@@ -94,7 +91,7 @@ export const useSettingsGeneralForm = ({
               firstName: data.meUpdate.firstName,
               lastName: data.meUpdate.lastName,
               fullName: `${data.meUpdate.firstName} ${data.meUpdate.lastName}`,
-              photo: data.meUpdate.photo,
+              photoThumbnail: data.meUpdate.photoThumbnail,
               role: data.meUpdate.role,
             }),
           );

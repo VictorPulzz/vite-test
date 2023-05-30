@@ -3,19 +3,7 @@ mutation SignIn($data: LoginInput!) {
     accessToken
     refreshToken
     user {
-      id
-      email
-      firstName
-      lastName
-      fullName
-      photo {
-        url
-      }
-      role {
-        id
-        name
-        permissionsList
-      }
+      ...AuthorizedUser
     }
   }
 }

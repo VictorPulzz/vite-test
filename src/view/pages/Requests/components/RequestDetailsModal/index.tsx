@@ -83,7 +83,7 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
             <span className="text-p4 text-gray-2">Created by</span>
             <div className="flex gap-3 items-center">
               <Avatar
-                uri={request.requestDetails.createdBy?.photo?.url || photoPlaceholder}
+                uri={request.requestDetails.createdBy?.photoThumbnail?.url || photoPlaceholder}
                 size={32}
               />
               <div className="flex flex-col">

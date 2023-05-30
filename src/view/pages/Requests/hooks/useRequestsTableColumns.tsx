@@ -65,7 +65,7 @@ export function useRequestsTableColumns() {
         const createdBy = ctx.getValue();
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={createdBy?.photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={createdBy?.photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink
                 to={generatePath(ROUTES.USER_DETAILS, { id: createdBy?.id })}

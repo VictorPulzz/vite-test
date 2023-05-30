@@ -5,7 +5,7 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $sear
       name
       PM {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName

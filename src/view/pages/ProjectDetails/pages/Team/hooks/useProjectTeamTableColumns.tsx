@@ -32,10 +32,10 @@ export function useProjectTeamTableColumns(
       id: 'fullName',
       header: 'Name',
       cell: ctx => {
-        const { photo, fullName, id } = ctx.row.original.user;
+        const { photoThumbnail, fullName, id } = ctx.row.original.user;
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
                 {fullName}

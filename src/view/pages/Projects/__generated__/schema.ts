@@ -18,7 +18,7 @@ export type FetchProjectsQuery = {
       name: string;
       inCurrentTeam?: boolean | null;
       phase?: Types.ProjectPhaseChoice | null;
-      PM?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
+      PM?: Array<{ id: number; fullName: string; photoThumbnail?: { url: string } | null }> | null;
       status?: { id: number; name: string } | null;
       platforms?: Array<{ id: number; name: string }> | null;
     }>;
@@ -39,7 +39,7 @@ export const FetchProjectsDocument = gql`
         name
         PM {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName

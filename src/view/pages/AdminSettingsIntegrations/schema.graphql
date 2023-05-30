@@ -5,7 +5,7 @@ query FetchSlackTemplatesList {
     prefix
     initialUsers {
       id
-      photo {
+      photoThumbnail {
         url
       }
       fullName
@@ -21,7 +21,7 @@ query FetchSlackTemplateInfo($input: IDInput!) {
     prefix
     initialUsers {
       id
-      photo {
+      photoThumbnail {
         url
       }
       fullName
@@ -57,7 +57,7 @@ query FetchGitInitialUsersList(
       user {
         id
         fullName
-        photo {
+        photoThumbnail {
           url
         }
         department {

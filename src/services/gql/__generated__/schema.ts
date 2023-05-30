@@ -16,7 +16,7 @@ export type FetchUserGlossaryListQueryVariables = Types.Exact<{
 
 export type FetchUserGlossaryListQuery = {
   userGlossaryList: {
-    results: Array<{ id: number; fullName: string; photo?: { url: string } | null }>;
+    results: Array<{ id: number; fullName: string; photoThumbnail?: { url: string } | null }>;
   };
 };
 
@@ -89,7 +89,7 @@ export const FetchUserGlossaryListDocument = gql`
       results {
         id
         fullName
-        photo {
+        photoThumbnail {
           url
         }
       }

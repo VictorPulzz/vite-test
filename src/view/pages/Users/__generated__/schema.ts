@@ -18,7 +18,7 @@ export type FetchUsersQuery = {
       fullName: string;
       email: string;
       isActive?: boolean | null;
-      photo?: { url: string } | null;
+      photoThumbnail?: { url: string } | null;
       department?: { id: number; name: string } | null;
       role?: { id: number; name: string } | null;
     }>;
@@ -49,7 +49,7 @@ export const FetchUsersDocument = gql`
       results {
         id
         fullName
-        photo {
+        photoThumbnail {
           url
         }
         email

@@ -21,7 +21,7 @@ export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
   const user = useMemo(
     () => ({
       fullName: profile.fullName ?? '',
-      photo: profile.photo?.url || photoPlaceholder,
+      photo: profile.photoThumbnail?.url || photoPlaceholder,
       email: profile.email,
     }),
     [profile],

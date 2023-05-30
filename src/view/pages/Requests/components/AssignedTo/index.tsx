@@ -66,7 +66,7 @@ export const AssignedTo: FC<Props> = ({ variant, allUsers, id, status, assignedT
             >
               <span className="text-p4 text-gray-2">Assigned to </span>
               <div className="flex gap-3 items-center">
-                <Avatar uri={assignedTo?.photo?.url || photoPlaceholder} size={32} />
+                <Avatar uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} size={32} />
                 <div className="flex flex-col text-left">
                   <p className="text-p4">{assignedTo?.fullName ?? 'No assignee'}</p>
                   <p className="text-p4 text-gray-1">{assignedTo?.email}</p>
@@ -89,7 +89,7 @@ export const AssignedTo: FC<Props> = ({ variant, allUsers, id, status, assignedT
               disabled={isRequestResolved}
             >
               <div className="flex gap-3 items-center">
-                <Avatar uri={assignedTo?.photo?.url || photoPlaceholder} size={26} />
+                <Avatar uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} size={26} />
                 <span>{assignedTo?.fullName ?? 'No assignee'}</span>
               </div>
               {!isRequestResolved && (
