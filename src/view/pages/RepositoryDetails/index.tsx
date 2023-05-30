@@ -3,9 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Permission } from '~/constants/permissions';
-import { UserRole } from '~/constants/roles';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
-import { useUserProfile } from '~/store/hooks';
 import { RequestAccessMessage } from '~/view/components/RequestAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
@@ -13,46 +11,21 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import {
   useFetchRepositoryDetailsQuery,
-  useFetchRepositoryParticipantsIdsQuery,
   useFetchRepositoryPreviewQuery,
 } from './__generated__/schema';
 import { RepositoryDetailsTabs } from './components/RepositoryDetailsTabs';
 import { RepositoryMainInfo } from './components/RepositoryMainInfo';
 
 export const RepositoryDetailsPage: FC = () => {
-  const params = useParams();
-
   const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
-
-  const profile = useUserProfile();
-
+  const params = useParams();
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
-
-  const { data: repositoryParticipantsIdsData, loading: isLoadingRepositoryParticipantsIdsData } =
-    useFetchRepositoryParticipantsIdsQuery({
-      variables: {
-        filters: { repositoryId },
-      },
-    });
-
-  const repositoryParticipantsIds = useMemo(
-    () =>
-      repositoryParticipantsIdsData?.repositoryParticipantList.results.map(
-        participant => participant.user.id,
-      ) ?? [],
-    [repositoryParticipantsIdsData?.repositoryParticipantList.results],
-  );
-
-  const isUserInRepository =
-    profile?.role?.name === UserRole.ADMIN ||
-    (canReadRepoDetails && repositoryParticipantsIds.includes(profile.id));
 
   const { data: repositoryDetails, loading: isLoadingRepositoryDetails } =
     useFetchRepositoryDetailsQuery({
       variables: {
         input: { id: repositoryId },
       },
-      skip: !isUserInRepository,
     });
 
   const { data: repositoryPreview, loading: isLoadingRepositoryPreview } =
@@ -60,18 +33,17 @@ export const RepositoryDetailsPage: FC = () => {
       variables: {
         input: { id: repositoryId },
       },
-      skip: isUserInRepository,
     });
 
-  const isLoading =
-    isLoadingRepositoryParticipantsIdsData ||
-    isLoadingRepositoryPreview ||
-    isLoadingRepositoryDetails;
+  const isHasAccessToRepository =
+    canReadRepoDetails || repositoryPreview?.repositoryPreview.inParticipant;
+
+  const isLoading = isLoadingRepositoryPreview || isLoadingRepositoryDetails;
 
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isUserInRepository ? 'Repository details' : ''}
+        title={isHasAccessToRepository ? 'Repository details' : ''}
         contentClassName="flex-auto"
       >
         {isLoading && (
@@ -79,13 +51,13 @@ export const RepositoryDetailsPage: FC = () => {
             <Loader full colorful />
           </div>
         )}
-        {!isLoading && repositoryDetails && isUserInRepository && (
+        {!isLoading && repositoryDetails && isHasAccessToRepository && (
           <div className="flex gap-5 p-6 h-full">
             <RepositoryMainInfo repository={repositoryDetails?.repository} />
             <RepositoryDetailsTabs />
           </div>
         )}
-        {!isLoading && repositoryPreview && !isUserInRepository && (
+        {!isLoading && repositoryPreview && !isHasAccessToRepository && (
           <RequestAccessMessage
             className="h-full"
             title={repositoryPreview.repositoryPreview.name}

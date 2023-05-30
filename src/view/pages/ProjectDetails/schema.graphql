@@ -104,11 +104,13 @@ query FetchProjectRepositoriesList($data: IDInput!) {
     projectRepositories {
       id
       name
+      inParticipant
       type
       technologies {
         id
         name
       }
+      gitUrl
       createdAt
     }
   }

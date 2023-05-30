@@ -3,6 +3,7 @@ query FetchRepositoryPreview($input: IDInput!) {
     id
     name
     projectId
+    inParticipant
   }
 }
 

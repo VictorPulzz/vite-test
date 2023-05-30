@@ -18,7 +18,6 @@ const columnHelper = createColumnHelper<RepositoryResultType>();
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useRepositoriesTableColumns() {
-  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
   const canWriteRepository = useHasAccess(Permission.WRITE_REPOSITORY);
 
   return [
@@ -29,23 +28,12 @@ export function useRepositoriesTableColumns() {
         const { id, name } = ctx.row.original;
         return (
           <div>
-            {canReadRepoDetails ? (
-              <div>
-                {name ? (
-                  <TextLink
-                    to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })}
-                    className="underline"
-                  >
-                    {ctx.getValue()}
-                  </TextLink>
-                ) : (
-                  <span className="text-red">Requested</span>
-                )}
-              </div>
+            {name ? (
+              <TextLink to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })} className="underline">
+                {ctx.getValue()}
+              </TextLink>
             ) : (
-              <div>
-                {name ? <span>{ctx.getValue()}</span> : <span className="text-red">Requested</span>}
-              </div>
+              <span className="text-red">Requested</span>
             )}
           </div>
         );
@@ -88,11 +76,15 @@ export function useRepositoriesTableColumns() {
       id: 'gitUrl',
       header: 'Git url',
       cell: ctx => {
-        const gitUrl = ctx.getValue();
+        const { gitUrl, inParticipant } = ctx.row.original;
         return (
-          <TextLink external to={gitUrl ?? ''} className="underline">
-            {gitUrl}
-          </TextLink>
+          <div>
+            {inParticipant && (
+              <TextLink external to={gitUrl ?? ''} className="underline">
+                {gitUrl}
+              </TextLink>
+            )}
+          </div>
         );
       },
     }),

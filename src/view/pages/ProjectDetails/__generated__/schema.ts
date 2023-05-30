@@ -104,7 +104,9 @@ export type FetchProjectRepositoriesListQuery = {
     projectRepositories?: Array<{
       id: number;
       name?: string | null;
+      inParticipant?: boolean | null;
       type?: Types.RepositoryTypeChoice | null;
+      gitUrl?: string | null;
       createdAt: string;
       technologies?: Array<{ id: number; name: string }> | null;
     }> | null;
@@ -628,11 +630,13 @@ export const FetchProjectRepositoriesListDocument = gql`
       projectRepositories {
         id
         name
+        inParticipant
         type
         technologies {
           id
           name
         }
+        gitUrl
         createdAt
       }
     }

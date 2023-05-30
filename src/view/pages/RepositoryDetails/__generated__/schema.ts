@@ -9,7 +9,12 @@ export type FetchRepositoryPreviewQueryVariables = Types.Exact<{
 }>;
 
 export type FetchRepositoryPreviewQuery = {
-  repositoryPreview: { id: number; name: string; projectId?: number | null };
+  repositoryPreview: {
+    id: number;
+    name: string;
+    projectId?: number | null;
+    inParticipant?: boolean | null;
+  };
 };
 
 export type FetchRepositoryDetailsQueryVariables = Types.Exact<{
@@ -81,6 +86,7 @@ export const FetchRepositoryPreviewDocument = gql`
       id
       name
       projectId
+      inParticipant
     }
   }
 `;

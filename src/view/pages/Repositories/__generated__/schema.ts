@@ -16,6 +16,7 @@ export type FetchRepositoriesQuery = {
     results: Array<{
       id: number;
       name?: string | null;
+      inParticipant?: boolean | null;
       createdAt: string;
       type?: Types.RepositoryTypeChoice | null;
       gitUrl?: string | null;
@@ -41,6 +42,7 @@ export const FetchRepositoriesDocument = gql`
       results {
         id
         name
+        inParticipant
         project {
           id
           name
