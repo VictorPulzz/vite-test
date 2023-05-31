@@ -2,6 +2,7 @@ import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError'
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
+import clsx from 'clsx';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
@@ -59,7 +60,11 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
     <Dropdown items={options} containerWidth="14.93rem">
       {({ onClick }) => (
         <button type="button" onClick={onClick} disabled={!inCurrentTeam}>
-          <Icon name="menu" size={16} />
+          <Icon
+            name="menu"
+            size={16}
+            className={clsx(!inCurrentTeam && 'text-gray-3 cursor-not-allowed')}
+          />
         </button>
       )}
     </Dropdown>
