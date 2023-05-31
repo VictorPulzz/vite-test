@@ -11,6 +11,7 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestStatusChoice } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
+import { useAppSelector } from '~/store/hooks';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
@@ -29,6 +30,8 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 }
 
 export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => {
+  const roleId = useAppSelector(state => state.user.profile?.role?.id);
+
   const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
 
   const { data: request, loading: isLoadingRequestDetails } = useFetchRequestDetailsQuery({
@@ -39,6 +42,9 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
   });
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
+    variables: {
+      filters: { roleId: [Number(roleId)] },
+    },
     fetchPolicy: 'cache-and-network',
   });
 
