@@ -25,7 +25,7 @@ export const MoreCell: FC<CellContext<GitInitialUsersResultType, unknown>> = ({ 
 
   const options: DropdownItem[] = [
     {
-      label: 'Edit',
+      label: 'Edit access level',
       iconBefore: <Icon name="pencil" size={16} />,
       onSelect: openCreateOrUpdateGitInitialUserModal,
     },
