@@ -41,6 +41,8 @@ import { UsersPage } from '~/view/pages/Users';
 
 import { NoAccessMessage } from '../NoAccessMessage';
 import { NoAccessPage } from '../NoAccessPage';
+import { AvailableDocumentsRouteRedirect } from './components/AvailableDocumentsRouteRedirect';
+import { AvailableProjectRouteRedirect } from './components/AvailableProjectRouteRedirect';
 
 const authRoutes: RouteObject[] = [
   {
@@ -89,6 +91,10 @@ export const Router: FC = () => {
       children: [
         {
           index: true,
+          element: <AvailableDocumentsRouteRedirect />,
+        },
+        {
+          path: ROUTES.DOCUMENTS_INTERNAL,
           element: canReadWriteInternalDocuments ? (
             <Docs type={DocsType.INTERNAL} />
           ) : (
@@ -96,7 +102,7 @@ export const Router: FC = () => {
           ),
         },
         {
-          path: ROUTES.DOCUMENTS_CLIENTS,
+          path: ROUTES.DOCUMENTS_CLIENT,
           element: canReadWriteClientsDocuments ? (
             <Docs type={DocsType.CLIENT} />
           ) : (
@@ -123,6 +129,10 @@ export const Router: FC = () => {
       children: [
         {
           index: true,
+          element: <AvailableProjectRouteRedirect />,
+        },
+        {
+          path: ROUTES.PROJECT_DETAILS_OVERVIEW,
           element: canReadProjectOverview ? (
             <Overview />
           ) : (

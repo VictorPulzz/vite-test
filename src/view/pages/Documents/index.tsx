@@ -27,7 +27,7 @@ export const DocumentsPage: FC = () => {
     () => [
       canReadWriteInternalDocuments && {
         title: 'Internal',
-        path: ROUTES.DOCUMENTS,
+        path: ROUTES.DOCUMENTS_INTERNAL,
         element: (
           <div className="h-full p-7">
             <SectionContainer containerClassName="h-full">
@@ -38,7 +38,7 @@ export const DocumentsPage: FC = () => {
       },
       canReadWriteClientsDocuments && {
         title: 'Client',
-        path: ROUTES.DOCUMENTS_CLIENTS,
+        path: ROUTES.DOCUMENTS_CLIENT,
         element: (
           <div className="h-full p-7">
             <SectionContainer containerClassName="h-full">
