@@ -3,6 +3,7 @@ query FetchRepositoryPreview($input: IDInput!) {
     id
     name
     projectId
+    inParticipant
   }
 }
 
@@ -39,7 +40,7 @@ query FetchRepositoryParticipants(
     results {
       user {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName

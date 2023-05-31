@@ -42,6 +42,8 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
     label: 'fullName',
   });
 
+  const userIdField = form.watch('userId');
+
   const repositoryAccessLevelOptions = enumToSelectOptions(RepositoryAccessLevelChoice);
 
   const isLoadingQueries = isLoadingGitInitialUserDetails || isLoadingAllUsers;
@@ -51,7 +53,7 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
       isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"
-      title={`${isEditMode ? 'Edit' : 'Add'} user`}
+      title={isEditMode ? 'Edit access level' : 'Add user'}
       onAfterClose={resetForm}
     >
       {isLoadingQueries && (
@@ -67,6 +69,7 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
             control={form.control}
             label="User"
             required
+            disabled={isEditMode && !!userIdField}
           />
           <SelectField
             name="accessLevel"

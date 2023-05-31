@@ -12,7 +12,11 @@ export type FetchSlackTemplatesListQuery = {
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
+    initialUsers?: Array<{
+      id: number;
+      fullName: string;
+      photoThumbnail?: { url: string } | null;
+    }> | null;
   }>;
 };
 
@@ -26,7 +30,11 @@ export type FetchSlackTemplateInfoQuery = {
     label?: string | null;
     prefix: string;
     isPrivate?: boolean | null;
-    initialUsers?: Array<{ id: number; fullName: string; photo?: { url: string } | null }> | null;
+    initialUsers?: Array<{
+      id: number;
+      fullName: string;
+      photoThumbnail?: { url: string } | null;
+    }> | null;
   };
 };
 
@@ -64,7 +72,7 @@ export type FetchGitInitialUsersListQuery = {
         id: number;
         fullName: string;
         email: string;
-        photo?: { url: string } | null;
+        photoThumbnail?: { url: string } | null;
         department?: { id: number; name: string } | null;
       };
     }>;
@@ -101,7 +109,7 @@ export const FetchSlackTemplatesListDocument = gql`
       prefix
       initialUsers {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName
@@ -168,7 +176,7 @@ export const FetchSlackTemplateInfoDocument = gql`
       prefix
       initialUsers {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName
@@ -385,7 +393,7 @@ export const FetchGitInitialUsersListDocument = gql`
         user {
           id
           fullName
-          photo {
+          photoThumbnail {
             url
           }
           department {

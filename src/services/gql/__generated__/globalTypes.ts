@@ -107,6 +107,7 @@ export type DocumentInput = {
   categoryId?: InputMaybe<Scalars['Int']>;
   file: Scalars['Upload'];
   id?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
   projectId?: InputMaybe<Scalars['Int']>;
   userId?: InputMaybe<Scalars['Int']>;
 };
@@ -122,25 +123,47 @@ export type DocumentSortFieldInput = {
 
 export type DocumentTemplateFieldInput = {
   description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
 };
 
 export type DocumentTemplateFieldType = {
   description?: Maybe<Scalars['String']>;
+  id: Scalars['Int'];
   name: Scalars['String'];
 };
 
 export type DocumentTemplateInput = {
+  description?: InputMaybe<Scalars['String']>;
   fields: Array<DocumentTemplateFieldInput>;
+  id?: InputMaybe<Scalars['Int']>;
   name: Scalars['String'];
   url: Scalars['String'];
 };
 
+export enum DocumentTemplateSort {
+  NAME = 'name',
+  URL = 'url',
+}
+
+export type DocumentTemplateSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: DocumentTemplateSort;
+};
+
 export type DocumentTemplateType = {
+  description?: Maybe<Scalars['String']>;
   fields?: Maybe<Array<DocumentTemplateFieldType>>;
   id: Scalars['Int'];
   name: Scalars['String'];
   url?: Maybe<Scalars['String']>;
+};
+
+export type DocumentTemplateTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<DocumentTemplateType>;
 };
 
 export type DocumentType = {
@@ -163,16 +186,16 @@ export type DocumentTypePagination = {
 };
 
 export type EnvironmentCredentialsInput = {
-  login: Scalars['String'];
-  password: Scalars['String'];
-  url: Scalars['String'];
+  login?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
 };
 
 export type EnvironmentCredentialsType = {
   id: Scalars['Int'];
-  login: Scalars['String'];
-  password: Scalars['String'];
-  url: Scalars['String'];
+  login?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
 };
 
 export type FileType = {
@@ -294,7 +317,7 @@ export type LoginInput = {
 export type LoginSuccessType = {
   accessToken: Scalars['String'];
   refreshToken: Scalars['String'];
-  user: UserType;
+  user: ProfileType;
 };
 
 export type MessageType = {
@@ -319,7 +342,7 @@ export type Mutation = {
   /** Generate project document */
   documentProjectGenerate: Array<DocumentType>;
   /** Create document template */
-  documentTemplateCreate: DocumentTemplateType;
+  documentTemplateCreateUpdate: DocumentTemplateType;
   /** Delete document template */
   documentTemplateDelete: MessageType;
   /** Create or update user document */
@@ -336,8 +359,10 @@ export type Mutation = {
   login: LoginSuccessType;
   /** User updating himself */
   meUpdate: ProfileType;
+  /** Unread all notification */
+  notificationUnread: MessageType;
   /** Update notification */
-  notificationUpdate: NotificationType;
+  notificationUpdate: NotificationPaginationType;
   /** Change password */
   passwordChange: MessageType;
   /** Update permissions */
@@ -368,6 +393,8 @@ export type Mutation = {
   projectStatusDelete: MessageType;
   /** Project update */
   projectUpdate: ProjectType;
+  /** Project update member */
+  projectUpdateMember: ProjectMemberType;
   /** Repository creation */
   repositoryCreate: RepositoryType;
   /** Repository deletion */
@@ -440,7 +467,7 @@ export type MutationDocumentProjectGenerateArgs = {
   data: Array<DocumentGenerateInput>;
 };
 
-export type MutationDocumentTemplateCreateArgs = {
+export type MutationDocumentTemplateCreateUpdateArgs = {
   data: DocumentTemplateInput;
 };
 
@@ -477,7 +504,7 @@ export type MutationMeUpdateArgs = {
 };
 
 export type MutationNotificationUpdateArgs = {
-  data: NotificationUpdateInput;
+  data: Array<Scalars['Int']>;
 };
 
 export type MutationPasswordChangeArgs = {
@@ -538,6 +565,10 @@ export type MutationProjectStatusDeleteArgs = {
 
 export type MutationProjectUpdateArgs = {
   data: ProjectUpdateInput;
+};
+
+export type MutationProjectUpdateMemberArgs = {
+  data: ProjectMemberInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -624,6 +655,18 @@ export type NoteType = {
   text: Scalars['String'];
 };
 
+export type NotificationFilter = {
+  isNew?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type NotificationPaginationType = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  newCount: Scalars['Int'];
+  offset: Scalars['Int'];
+  results: Array<NotificationType>;
+};
+
 export type NotificationType = {
   createdAt: Scalars['DateTime'];
   externalId: Scalars['Int'];
@@ -640,18 +683,6 @@ export enum NotificationTypeChoice {
   FILL_REPORT = 'FILL_REPORT',
   UNASSIGNED_REQUEST = 'UNASSIGNED_REQUEST',
 }
-
-export type NotificationTypePagination = {
-  count: Scalars['Int'];
-  limit?: Maybe<Scalars['Int']>;
-  offset: Scalars['Int'];
-  results: Array<NotificationType>;
-};
-
-export type NotificationUpdateInput = {
-  id: Scalars['Int'];
-  isNew: Scalars['Boolean'];
-};
 
 export enum OrderDirectionChoice {
   ASC = 'ASC',
@@ -713,7 +744,9 @@ export type ProfileType = {
   lastName: Scalars['String'];
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
+  slackUrl?: Maybe<Scalars['String']>;
 };
 
 export type ProjectCreateInput = {
@@ -754,8 +787,10 @@ export type ProjectEnvironmentType = {
 };
 
 export type ProjectFilter = {
+  currentTeam?: InputMaybe<Scalars['Boolean']>;
   hasRepositories?: InputMaybe<Scalars['Boolean']>;
   inGit?: InputMaybe<Scalars['Boolean']>;
+  my?: InputMaybe<Scalars['Boolean']>;
   statusId?: InputMaybe<Scalars['Int']>;
 };
 
@@ -809,6 +844,7 @@ export type ProjectMemberType = {
   currentTeam: Scalars['Boolean'];
   endDate?: Maybe<Scalars['DateTime']>;
   project: ProjectType;
+  slackChannels: Array<Scalars['Int']>;
   startDate: Scalars['DateTime'];
   user: ProfileType;
 };
@@ -844,7 +880,6 @@ export type ProjectRepositoryType = {
 };
 
 export type ProjectSlackInput = {
-  channelId?: InputMaybe<Scalars['String']>;
   channelTemplate: SlackChannelTemplateInput;
   projectId: Scalars['Int'];
 };
@@ -854,6 +889,7 @@ export type ProjectSlackType = {
   channelTemplate?: Maybe<Scalars['String']>;
   channelUrl?: Maybe<Scalars['String']>;
   createdAt: Scalars['DateTime'];
+  id: Scalars['Int'];
   template?: Maybe<SlackChannelTemplateType>;
 };
 
@@ -886,6 +922,7 @@ export type ProjectType = {
   gitUrl?: Maybe<Scalars['String']>;
   hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
+  inCurrentTeam?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
@@ -929,8 +966,10 @@ export type Query = {
   documentClientList: DocumentTypePagination;
   /** Getting list of internal documents */
   documentInternalList: DocumentTypePagination;
+  /** Getting document template by id */
+  documentTemplate: DocumentTemplateType;
   /** Getting list of document templates */
-  documentTemplateList: Array<DocumentTemplateType>;
+  documentTemplateList: DocumentTemplateTypePagination;
   /** Getting list of user documents */
   documentUserList: DocumentTypePagination;
   /** Getting git initial user by id */
@@ -942,7 +981,7 @@ export type Query = {
   /** Getting authenticated user */
   me: ProfileType;
   /** Getting list of notifications */
-  notificationList: NotificationTypePagination;
+  notificationList: NotificationPaginationType;
   /** Getting list of roles and permissions */
   permissionsList: Array<PermissionType>;
   /** Getting platform list */
@@ -951,6 +990,8 @@ export type Query = {
   project: ProjectType;
   /** Getting documents for project by id */
   projectDocumentList: DocumentTypePagination;
+  /** Getting environment by id */
+  projectEnvironment: ProjectEnvironmentType;
   /** Getting environments for project by id */
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting glossary list of projects */
@@ -1021,6 +1062,15 @@ export type QueryDocumentInternalListArgs = {
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
+export type QueryDocumentTemplateArgs = {
+  data: IdInput;
+};
+
+export type QueryDocumentTemplateListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<Array<DocumentTemplateSortFieldInput>>;
+};
+
 export type QueryDocumentUserListArgs = {
   filters?: InputMaybe<DocumentFilter>;
   pagination?: InputMaybe<PaginationInput>;
@@ -1043,6 +1093,7 @@ export type QueryLogListArgs = {
 };
 
 export type QueryNotificationListArgs = {
+  filters?: InputMaybe<NotificationFilter>;
   pagination?: InputMaybe<PaginationInput>;
 };
 
@@ -1061,6 +1112,10 @@ export type QueryProjectDocumentListArgs = {
   sort?: InputMaybe<Array<DocumentSortFieldInput>>;
 };
 
+export type QueryProjectEnvironmentArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectEnvironmentListArgs = {
   data: IdInput;
 };
@@ -1076,6 +1131,7 @@ export type QueryProjectIntegrationListArgs = {
 
 export type QueryProjectIntegrationPageArgs = {
   data: IdInput;
+  slackCreatedOnly?: Scalars['Boolean'];
 };
 
 export type QueryProjectLogListArgs = {
@@ -1152,6 +1208,7 @@ export type QueryUserDetailsArgs = {
 };
 
 export type QueryUserGlossaryListArgs = {
+  filters?: InputMaybe<UserFilter>;
   pagination?: InputMaybe<PaginationInput>;
 };
 
@@ -1244,6 +1301,7 @@ export enum RepositoryPlatformChoice {
 
 export type RepositoryPreviewType = {
   id: Scalars['Int'];
+  inParticipant?: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   projectId?: Maybe<Scalars['Int']>;
 };
@@ -1265,6 +1323,7 @@ export type RepositoryType = {
   gitTerraformUrl?: Maybe<Scalars['String']>;
   gitUrl?: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  inParticipant?: Maybe<Scalars['Boolean']>;
   name?: Maybe<Scalars['String']>;
   project: ProjectType;
   technologies?: Maybe<Array<TechnologyType>>;
@@ -1428,6 +1487,7 @@ export type UserGlossaryType = {
   fullName: Scalars['String'];
   id: Scalars['Int'];
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
 };
 
 export type UserGlossaryTypePagination = {
@@ -1469,7 +1529,9 @@ export type UserType = {
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
+  photoThumbnail?: Maybe<FileType>;
   role?: Maybe<RoleType>;
+  slackUrl?: Maybe<Scalars['String']>;
 };
 
 export type UserTypePagination = {

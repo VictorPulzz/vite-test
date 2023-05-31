@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Row } from '@tanstack/react-table';
+import { Row } from '@tanstack/table-core';
 import { useCallback, useMemo } from 'react';
 import {
   useFieldArray,
@@ -13,13 +13,13 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { ClientType } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import { phoneNumberValidation } from '~/utils/validations';
+import { withPhoneValidation } from '~/utils/validations';
 import { transformClientTeamMemberPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
 const formSchema = z.object({
-  fullName: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  fullName: z.string().min(1),
   email: z.string().email(formErrors.INVALID_EMAIL),
-  phone: z.string().and(phoneNumberValidation),
+  phone: withPhoneValidation(z.string()),
   position: z.string(),
   notes: z.string().trim(),
   pointContact: z.boolean(),

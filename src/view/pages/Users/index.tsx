@@ -11,7 +11,6 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { UserFilter } from '~/services/gql/__generated__/globalTypes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -49,64 +48,54 @@ export const UsersPage: FC = () => {
 
   return (
     <SidebarLayout contentClassName="p-6">
-      {canReadUsersList ? (
-        <>
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="text-h4">Users</h1>
-              <p className="text-p5 text-gray-2">
-                {(data && data.usersList.count) ?? 0} users in total
-              </p>
-            </div>
-            {canCreateUser && (
-              <Button
-                label="Add user"
-                withIcon="plus"
-                variant={ButtonVariant.PRIMARY}
-                className="w-40"
-                to={ROUTES.ADD_USER}
-              />
-            )}
-          </div>
-          <div className="mt-5 flex gap-3">
-            <SearchInput
-              defaultValue={searchValue}
-              onChange={setSearchValue}
-              placeholder="Search users"
-              className="flex-1"
-            />
-            <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Filter"
-              className="w-28"
-              onClick={openFilterModal}
-              count={filtersCount || undefined}
-            />
-          </div>
-          {loading && <TableLoader className="mt-10" />}
-          {data && data.usersList.results.length === 0 && (
-            <EmptyState iconName="users" label="No users here yet" />
-          )}
-          {!loading && data && data.usersList.results.length > 0 && (
-            <Table
-              className="mt-6"
-              data={data.usersList.results}
-              columns={usersTableColumns}
-              setOffset={setOffset}
-              offset={offset}
-              fetchMore={fetchMore}
-              totalCount={data.usersList.count}
-            />
-          )}
-          <UsersFilterModal
-            isOpen={isFilterModalOpen}
-            close={closeFilterModal}
-            setFilter={setFilter}
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-h4">Users</h1>
+          <p className="text-p5 text-gray-2">
+            {(data && data.usersList.count) ?? 0} users in total
+          </p>
+        </div>
+        {canCreateUser && (
+          <Button
+            label="Add user"
+            withIcon="plus"
+            variant={ButtonVariant.PRIMARY}
+            className="w-40"
+            to={ROUTES.ADD_USER}
           />
-        </>
-      ) : (
-        <NoAccessMessage className="flex-auto bg-white" />
+        )}
+      </div>
+      <div className="mt-5 flex gap-3">
+        <SearchInput
+          defaultValue={searchValue}
+          onChange={setSearchValue}
+          placeholder="Search users"
+          className="flex-1"
+        />
+        <Button
+          variant={ButtonVariant.SECONDARY}
+          label="Filter"
+          className="w-28"
+          onClick={openFilterModal}
+          count={filtersCount || undefined}
+        />
+      </div>
+      {loading && <TableLoader className="mt-10" />}
+      {data && data.usersList.results.length === 0 && (
+        <EmptyState iconName="users" label="No users here yet" />
       )}
+      {!loading && data && data.usersList.results.length > 0 && (
+        <Table
+          className="mt-6"
+          data={data.usersList.results}
+          columns={usersTableColumns}
+          setOffset={setOffset}
+          offset={offset}
+          fetchMore={fetchMore}
+          totalCount={data.usersList.count}
+        />
+      )}
+      <UsersFilterModal isOpen={isFilterModalOpen} close={closeFilterModal} setFilter={setFilter} />
     </SidebarLayout>
   );
 };

@@ -19,27 +19,14 @@ interface Props {
   user: FetchUserDetailsQuery['userDetails'];
 }
 
-export const UserMainInfo: FC<Props> = ({
-  user: {
-    id,
-    photo,
-    fullName,
-    email,
-    department,
-    role,
-    isActive,
-    contractType,
-    birthDate,
-    address,
-  },
-}) => {
+export const UserMainInfo: FC<Props> = ({ user }) => {
   const [connectUserToBitbucket, { loading }] = useConnectUserToBitbucketMutation();
 
   const handleConnectUserToBitbucket = useCallback(() => {
     toast.promise(
       connectUserToBitbucket({
         variables: {
-          input: { id },
+          input: { id: user.id },
         },
       }),
       {
@@ -51,15 +38,15 @@ export const UserMainInfo: FC<Props> = ({
         },
       },
     );
-  }, [connectUserToBitbucket, id]);
+  }, [connectUserToBitbucket, user.id]);
 
   return (
     <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
       <div className="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
-        <Avatar uri={photo?.url || photoPlaceholder} size={50} />
+        <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={50} />
         <div className="flex flex-col gap-2">
-          <h2 className="text-p1 text-primary font-bold leading-none">{fullName}</h2>
-          <span className="text-p4 text-gray-2">{email}</span>
+          <h2 className="text-p1 text-primary font-bold leading-none">{user.fullName}</h2>
+          <span className="text-p4 text-gray-2">{user.email}</span>
         </div>
       </div>
       <div className="flex flex-col gap-4 pt-7">
@@ -70,44 +57,44 @@ export const UserMainInfo: FC<Props> = ({
           onClick={handleConnectUserToBitbucket}
           isLoading={loading}
         />
-        {department && (
+        {user.department && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Department</span>
-            <span className="text-p3 text-primary leading-none">{department.name}</span>
+            <span className="text-p3 text-primary leading-none">{user.department.name}</span>
           </div>
         )}
-        {role && (
+        {user.role && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Role</span>
-            <span className="text-p3 text-primary leading-none">{role.name}</span>
+            <span className="text-p3 text-primary leading-none">{user.role.name}</span>
           </div>
         )}
         <div className="flex flex-col gap-[2px]">
           <span className="text-p5 text-gray-2">Status</span>
-          <span className={`text-p3 leading-none ${isActive ? 'text-green' : 'text-primary'}`}>
-            {isActive ? 'Active' : 'Inactive'}
+          <span className={`text-p3 leading-none ${user.isActive ? 'text-green' : 'text-primary'}`}>
+            {user.isActive ? 'Active' : 'Inactive'}
           </span>
         </div>
-        {contractType && (
+        {user.contractType && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Contract type</span>
             <span className="text-p3 text-primary leading-none">
-              {convertUppercaseToReadable(contractType)}
+              {convertUppercaseToReadable(user.contractType)}
             </span>
           </div>
         )}
-        {birthDate && (
+        {user.birthDate && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Date of Birth</span>
             <span className="text-p3 text-primary leading-none">
-              {format(new Date(birthDate), DateFormat.DMY)}
+              {format(new Date(user.birthDate), DateFormat.DMY)}
             </span>
           </div>
         )}
-        {address && (
+        {user.address && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Address</span>
-            <span className="text-p3 text-primary  break-words leading-4">{address}</span>
+            <span className="text-p3 text-primary  break-words leading-4">{user.address}</span>
           </div>
         )}
       </div>

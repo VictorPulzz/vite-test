@@ -1,7 +1,7 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
-import { CellContext } from '@tanstack/react-table';
+import { CellContext } from '@tanstack/table-core';
 import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
@@ -100,7 +100,7 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
       onSelect: () => moveProjectMember(id),
     },
     {
-      label: 'Remove',
+      label: 'Remove from project',
       onSelect: () => removeFromOtherContributors(id),
       className: 'text-red',
     },

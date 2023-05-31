@@ -1,7 +1,7 @@
 mutation CreateOrUpdateUser($input: UserInput!) {
   userCreateUpdate(data: $input) {
     id
-    photo {
+    photoThumbnail {
       url
     }
     firstName

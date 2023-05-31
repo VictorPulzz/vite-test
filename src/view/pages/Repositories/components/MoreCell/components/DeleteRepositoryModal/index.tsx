@@ -16,11 +16,11 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 }
 
 export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) => {
-  const [removeDocument] = useRemoveRepositoryMutation();
+  const [removeRepository] = useRemoveRepositoryMutation();
 
   const removeCurrentRepository = useCallback(() => {
     toast.promise(
-      removeDocument({
+      removeRepository({
         variables: {
           input: { id },
         },
@@ -35,7 +35,7 @@ export const DeleteRepositoryModal: FC<Props> = ({ isOpen, close, id, name }) =>
         },
       },
     );
-  }, [id, removeDocument]);
+  }, [id, removeRepository]);
 
   return (
     <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">

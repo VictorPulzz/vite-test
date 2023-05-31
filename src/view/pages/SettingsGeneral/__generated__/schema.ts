@@ -2,6 +2,7 @@
 import * as Types from '~/services/gql/__generated__/globalTypes';
 
 import { gql } from '@apollo/client';
+import { AuthorizedUserFragmentDoc } from '../../../../services/gql/fragments/__generated__/user';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type MeQueryVariables = Types.Exact<{ [key: string]: never }>;
@@ -14,7 +15,7 @@ export type MeQuery = {
     email: string;
     phone?: string | null;
     address?: string | null;
-    photo?: { url: string } | null;
+    photoThumbnail?: { url: string } | null;
   };
 };
 
@@ -25,12 +26,11 @@ export type ProfileUpdateMutationVariables = Types.Exact<{
 export type ProfileUpdateMutation = {
   meUpdate: {
     id: number;
+    email: string;
     firstName: string;
     lastName: string;
-    email: string;
-    phone?: string | null;
-    address?: string | null;
-    photo?: { url: string } | null;
+    fullName: string;
+    photoThumbnail?: { url: string } | null;
     role?: { id: number; name: string; permissionsList: Array<string> } | null;
   };
 };
@@ -44,7 +44,7 @@ export const MeDocument = gql`
       email
       phone
       address
-      photo {
+      photoThumbnail {
         url
       }
     }
@@ -82,22 +82,10 @@ export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const ProfileUpdateDocument = gql`
   mutation ProfileUpdate($data: ProfileInput!) {
     meUpdate(data: $data) {
-      id
-      firstName
-      lastName
-      email
-      phone
-      address
-      photo {
-        url
-      }
-      role {
-        id
-        name
-        permissionsList
-      }
+      ...AuthorizedUser
     }
   }
+  ${AuthorizedUserFragmentDoc}
 `;
 export type ProfileUpdateMutationFn = Apollo.MutationFunction<
   ProfileUpdateMutation,

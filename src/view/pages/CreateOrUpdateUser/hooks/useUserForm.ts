@@ -8,6 +8,7 @@ import { z } from 'zod';
 import { formErrors } from '~/constants/form';
 import { ContractChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
+import { fileValidation } from '~/utils/validations';
 import { transformUserPrefilledData } from '~/view/pages/CreateOrUpdateUser/utils';
 
 import {
@@ -17,17 +18,9 @@ import {
 import { useCreateOrUpdateUserMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
-  photo: z
-    .union([z.string(), z.instanceof(File)])
-    .nullable()
-    .refine(value => {
-      if (value instanceof File) {
-        return value.size < 2 * 1024 * 1024;
-      }
-      return true;
-    }, formErrors.MAX_IMAGE_SIZE),
-  firstName: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  lastName: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  photo: fileValidation,
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   email: z
     .string()
     .email(formErrors.INVALID_EMAIL)

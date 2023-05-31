@@ -1,5 +1,5 @@
 import { Button, ButtonVariant, TextLink } from '@appello/web-ui';
-import { ColumnDef, createColumnHelper } from '@tanstack/react-table';
+import { ColumnDef, createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -32,10 +32,10 @@ export function useProjectTeamTableColumns(
       id: 'fullName',
       header: 'Name',
       cell: ctx => {
-        const { photo, fullName, id } = ctx.row.original.user;
+        const { photoThumbnail, fullName, id } = ctx.row.original.user;
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
                 {fullName}
@@ -72,14 +72,21 @@ export function useProjectTeamTableColumns(
     }),
     columnHelper.group({
       id: 'slack',
-      cell: ctx => (
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Slack"
-          onClick={() => ctx}
-          className="w-[100px]"
-        />
-      ),
+      cell: ctx => {
+        const teamMemberSlackUrl = ctx.row.original.user.slackUrl;
+        return (
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Go to Slack"
+            onClick={() => {
+              if (teamMemberSlackUrl) {
+                window.open(teamMemberSlackUrl, '_blank');
+              }
+            }}
+            className="w-[100px]"
+          />
+        );
+      },
       meta: {
         className: 'w-0',
       },

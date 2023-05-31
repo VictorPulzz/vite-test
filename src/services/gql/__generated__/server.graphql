@@ -104,6 +104,7 @@ input DocumentInput {
   categoryId: Int
   file: Upload!
   id: Int
+  name: String!
   projectId: Int
   userId: Int
 }
@@ -119,25 +120,47 @@ input DocumentSortFieldInput {
 
 input DocumentTemplateFieldInput {
   description: String
+  id: Int
   name: String!
 }
 
 type DocumentTemplateFieldType {
   description: String
+  id: Int!
   name: String!
 }
 
 input DocumentTemplateInput {
+  description: String
   fields: [DocumentTemplateFieldInput!]!
+  id: Int
   name: String!
   url: String!
 }
 
+enum DocumentTemplateSort {
+  name
+  url
+}
+
+input DocumentTemplateSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: DocumentTemplateSort!
+}
+
 type DocumentTemplateType {
+  description: String
   fields: [DocumentTemplateFieldType!]
   id: Int!
   name: String!
   url: String
+}
+
+type DocumentTemplateTypePagination {
+  count: Int!
+  limit: Int
+  offset: Int!
+  results: [DocumentTemplateType!]!
 }
 
 type DocumentType {
@@ -160,16 +183,16 @@ type DocumentTypePagination {
 }
 
 input EnvironmentCredentialsInput {
-  login: String!
-  password: String!
-  url: String!
+  login: String
+  password: String
+  url: String
 }
 
 type EnvironmentCredentialsType {
   id: Int!
-  login: String!
-  password: String!
-  url: String!
+  login: String
+  password: String
+  url: String
 }
 
 type FileType {
@@ -291,7 +314,7 @@ input LoginInput {
 type LoginSuccessType {
   accessToken: String!
   refreshToken: String!
-  user: UserType!
+  user: ProfileType!
 }
 
 type MessageType {
@@ -334,7 +357,7 @@ type Mutation {
   """
   Create document template
   """
-  documentTemplateCreate(data: DocumentTemplateInput!): DocumentTemplateType!
+  documentTemplateCreateUpdate(data: DocumentTemplateInput!): DocumentTemplateType!
   """
   Delete document template
   """
@@ -368,9 +391,13 @@ type Mutation {
   """
   meUpdate(data: ProfileInput!): ProfileType!
   """
+  Unread all notification
+  """
+  notificationUnread: MessageType!
+  """
   Update notification
   """
-  notificationUpdate(data: NotificationUpdateInput!): NotificationType!
+  notificationUpdate(data: [Int!]!): NotificationPaginationType!
   """
   Change password
   """
@@ -431,6 +458,10 @@ type Mutation {
   Project update
   """
   projectUpdate(data: ProjectUpdateInput!): ProjectType!
+  """
+  Project update member
+  """
+  projectUpdateMember(data: ProjectMemberInput!): ProjectMemberType!
   """
   Repository creation
   """
@@ -521,6 +552,18 @@ type NoteType {
   text: String!
 }
 
+input NotificationFilter {
+  isNew: Boolean = null
+}
+
+type NotificationPaginationType {
+  count: Int!
+  limit: Int
+  newCount: Int!
+  offset: Int!
+  results: [NotificationType!]!
+}
+
 type NotificationType {
   createdAt: DateTime!
   externalId: Int!
@@ -536,18 +579,6 @@ enum NotificationTypeChoice {
   ASSIGNED_REQUEST
   FILL_REPORT
   UNASSIGNED_REQUEST
-}
-
-type NotificationTypePagination {
-  count: Int!
-  limit: Int
-  offset: Int!
-  results: [NotificationType!]!
-}
-
-input NotificationUpdateInput {
-  id: Int!
-  isNew: Boolean!
 }
 
 enum OrderDirectionChoice {
@@ -610,12 +641,14 @@ type ProfileType {
   lastName: String!
   phone: String
   photo: FileType
+  photoThumbnail: FileType
   role: RoleType
+  slackUrl: String
 }
 
 input ProjectCreateInput {
   clientTeam: [ClientInput!] = null
-  design: String = null
+  design: String
   endDate: Date = null
   gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
@@ -623,7 +656,7 @@ input ProjectCreateInput {
   notes: String = null
   phase: ProjectPhaseChoice = null
   platforms: [Int!]
-  roadmap: String = null
+  roadmap: String
   startDate: Date = null
   statusId: Int = null
 }
@@ -635,8 +668,8 @@ enum ProjectEnvironmentChoice {
 }
 
 input ProjectEnvironmentInput {
-  backendCredentials: EnvironmentCredentialsInput = null
-  frontendCredentials: EnvironmentCredentialsInput = null
+  backendCredentials: EnvironmentCredentialsInput
+  frontendCredentials: EnvironmentCredentialsInput
   id: Int = null
   name: ProjectEnvironmentChoice!
   projectId: Int!
@@ -651,8 +684,10 @@ type ProjectEnvironmentType {
 }
 
 input ProjectFilter {
+  currentTeam: Boolean = null
   hasRepositories: Boolean = null
   inGit: Boolean = null
+  my: Boolean = null
   statusId: Int = null
 }
 
@@ -706,6 +741,7 @@ type ProjectMemberType {
   currentTeam: Boolean!
   endDate: DateTime
   project: ProjectType!
+  slackChannels: [Int!]!
   startDate: DateTime!
   user: ProfileType!
 }
@@ -741,7 +777,6 @@ type ProjectRepositoryType {
 }
 
 input ProjectSlackInput {
-  channelId: String = null
   channelTemplate: SlackChannelTemplateInput!
   projectId: Int!
 }
@@ -751,6 +786,7 @@ type ProjectSlackType {
   channelTemplate: String
   channelUrl: String
   createdAt: DateTime!
+  id: Int!
   template: SlackChannelTemplateType
 }
 
@@ -783,6 +819,7 @@ type ProjectType {
   gitUrl: String
   hoursEstimated: Int
   id: Int!
+  inCurrentTeam: Boolean
   name: String!
   notes: String
   phase: ProjectPhaseChoice
@@ -801,7 +838,7 @@ type ProjectTypePagination {
 
 input ProjectUpdateInput {
   clientTeam: [ClientInput!] = null
-  design: String = null
+  design: String
   endDate: Date = null
   gitPlatform: GitPlatformEnum = null
   hoursEstimated: Int = null
@@ -810,7 +847,7 @@ input ProjectUpdateInput {
   notes: String = null
   phase: ProjectPhaseChoice = null
   platforms: [Int!]
-  roadmap: String = null
+  roadmap: String
   startDate: Date = null
   statusId: Int = null
 }
@@ -847,9 +884,16 @@ type Query {
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
+  Getting document template by id
+  """
+  documentTemplate(data: IDInput!): DocumentTemplateType!
+  """
   Getting list of document templates
   """
-  documentTemplateList: [DocumentTemplateType!]!
+  documentTemplateList(
+    pagination: PaginationInput = null
+    sort: [DocumentTemplateSortFieldInput!] = null
+  ): DocumentTemplateTypePagination!
   """
   Getting list of user documents
   """
@@ -881,7 +925,10 @@ type Query {
   """
   Getting list of notifications
   """
-  notificationList(pagination: PaginationInput = null): NotificationTypePagination!
+  notificationList(
+    filters: NotificationFilter = null
+    pagination: PaginationInput = null
+  ): NotificationPaginationType!
   """
   Getting list of roles and permissions
   """
@@ -904,6 +951,10 @@ type Query {
     sort: [DocumentSortFieldInput!] = null
   ): DocumentTypePagination!
   """
+  Getting environment by id
+  """
+  projectEnvironment(data: IDInput!): ProjectEnvironmentType!
+  """
   Getting environments for project by id
   """
   projectEnvironmentList(data: IDInput!): [ProjectEnvironmentType!]!
@@ -921,7 +972,10 @@ type Query {
   """
   Getting project integration page by id
   """
-  projectIntegrationPage(data: IDInput!): PorjectIntegrationsPage!
+  projectIntegrationPage(
+    data: IDInput!
+    slackCreatedOnly: Boolean! = false
+  ): PorjectIntegrationsPage!
   """
   Getting history for project by id
   """
@@ -966,7 +1020,7 @@ type Query {
   """
   repositoryList(
     filters: RepositoryFilter = null
-    pagination: PaginationInput
+    pagination: PaginationInput = null
     search: String = null
   ): RepositoryTypePagination!
   """
@@ -1015,7 +1069,10 @@ type Query {
   """
   Getting glossary list of users
   """
-  userGlossaryList(pagination: PaginationInput = null): UserGlossaryTypePagination!
+  userGlossaryList(
+    filters: UserFilter = null
+    pagination: PaginationInput = null
+  ): UserGlossaryTypePagination!
   """
   Getting project by user
   """
@@ -1111,6 +1168,7 @@ enum RepositoryPlatformChoice {
 
 type RepositoryPreviewType {
   id: Int!
+  inParticipant: Boolean
   name: String!
   projectId: Int
 }
@@ -1132,6 +1190,7 @@ type RepositoryType {
   gitTerraformUrl: String
   gitUrl: String
   id: Int!
+  inParticipant: Boolean
   name: String
   project: ProjectType!
   technologies: [TechnologyType!]
@@ -1297,6 +1356,7 @@ type UserGlossaryType {
   fullName: String!
   id: Int!
   photo: FileType
+  photoThumbnail: FileType
 }
 
 type UserGlossaryTypePagination {
@@ -1338,7 +1398,9 @@ type UserType {
   notes: [NoteType!]
   phone: String
   photo: FileType
+  photoThumbnail: FileType
   role: RoleType
+  slackUrl: String
 }
 
 type UserTypePagination {

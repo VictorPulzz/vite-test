@@ -60,7 +60,8 @@ export type FetchProjectMembersQuery = {
         id: number;
         fullName: string;
         email: string;
-        photo?: { url: string } | null;
+        slackUrl?: string | null;
+        photoThumbnail?: { url: string } | null;
         role?: { name: string } | null;
       };
     }>;
@@ -71,7 +72,8 @@ export type FetchProjectMembersQuery = {
         id: number;
         fullName: string;
         email: string;
-        photo?: { url: string } | null;
+        slackUrl?: string | null;
+        photoThumbnail?: { url: string } | null;
         role?: { name: string } | null;
       };
     }>;
@@ -102,7 +104,9 @@ export type FetchProjectRepositoriesListQuery = {
     projectRepositories?: Array<{
       id: number;
       name?: string | null;
+      inParticipant?: boolean | null;
       type?: Types.RepositoryTypeChoice | null;
+      gitUrl?: string | null;
       createdAt: string;
       technologies?: Array<{ id: number; name: string }> | null;
     }> | null;
@@ -143,9 +147,43 @@ export type FetchProjectEnvironmentsListQuery = {
     id: number;
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
-    frontendCredentials?: { id: number; url: string; login: string; password: string } | null;
-    backendCredentials?: { id: number; url: string; login: string; password: string } | null;
+    frontendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
+    backendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
   }>;
+};
+
+export type FetchProjectEnvironmentQueryVariables = Types.Exact<{
+  input: Types.IdInput;
+}>;
+
+export type FetchProjectEnvironmentQuery = {
+  projectEnvironment: {
+    id: number;
+    projectId: number;
+    name: Types.ProjectEnvironmentChoice;
+    frontendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
+    backendCredentials?: {
+      id: number;
+      url?: string | null;
+      login?: string | null;
+      password?: string | null;
+    } | null;
+  };
 };
 
 export type FetchEnvsRequestsListQueryVariables = Types.Exact<{
@@ -160,13 +198,19 @@ export type FetchEnvsRequestsListQuery = {
   };
 };
 
-export type RequestNewProjectEnvironmentMutationVariables = Types.Exact<{
+export type CreateOrUpdateNewProjectEnvironmentMutationVariables = Types.Exact<{
   input: Types.ProjectEnvironmentInput;
 }>;
 
-export type RequestNewProjectEnvironmentMutation = {
+export type CreateOrUpdateNewProjectEnvironmentMutation = {
   projectEnvironmentCreateUpdate: { name: Types.ProjectEnvironmentChoice };
 };
+
+export type RemoveProjectEnvironmentMutationVariables = Types.Exact<{
+  input: Types.IdInput;
+}>;
+
+export type RemoveProjectEnvironmentMutation = { projectEnvironmentDelete: { message: string } };
 
 export type FetchProjectIntegrationsListQueryVariables = Types.Exact<{
   data: Types.IdInput;
@@ -198,11 +242,11 @@ export type FetchIntegrationsRequestsListQuery = {
   requestList: { results: Array<{ id: number; integrationName?: string | null }> };
 };
 
-export type RequestNewProjectIntegrationMutationVariables = Types.Exact<{
+export type CreateNewProjectIntegrationMutationVariables = Types.Exact<{
   input: Types.ProjectIntegrationInput;
 }>;
 
-export type RequestNewProjectIntegrationMutation = {
+export type CreateNewProjectIntegrationMutation = {
   projectIntegrationCreateUpdate: { name: string };
 };
 
@@ -401,7 +445,7 @@ export const FetchProjectMembersDocument = gql`
         endDate
         user {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName
@@ -409,6 +453,7 @@ export const FetchProjectMembersDocument = gql`
             name
           }
           email
+          slackUrl
         }
       }
       otherContrubutors {
@@ -416,7 +461,7 @@ export const FetchProjectMembersDocument = gql`
         endDate
         user {
           id
-          photo {
+          photoThumbnail {
             url
           }
           fullName
@@ -424,6 +469,7 @@ export const FetchProjectMembersDocument = gql`
             name
           }
           email
+          slackUrl
         }
       }
     }
@@ -584,11 +630,13 @@ export const FetchProjectRepositoriesListDocument = gql`
       projectRepositories {
         id
         name
+        inParticipant
         type
         technologies {
           id
           name
         }
+        gitUrl
         createdAt
       }
     }
@@ -839,6 +887,78 @@ export type FetchProjectEnvironmentsListQueryResult = Apollo.QueryResult<
   FetchProjectEnvironmentsListQuery,
   FetchProjectEnvironmentsListQueryVariables
 >;
+export const FetchProjectEnvironmentDocument = gql`
+  query FetchProjectEnvironment($input: IDInput!) {
+    projectEnvironment(data: $input) {
+      id
+      projectId
+      name
+      frontendCredentials {
+        id
+        url
+        login
+        password
+      }
+      backendCredentials {
+        id
+        url
+        login
+        password
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectEnvironmentQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectEnvironmentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectEnvironmentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectEnvironmentQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useFetchProjectEnvironmentQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectEnvironmentQuery,
+    FetchProjectEnvironmentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectEnvironmentQuery, FetchProjectEnvironmentQueryVariables>(
+    FetchProjectEnvironmentDocument,
+    options,
+  );
+}
+export function useFetchProjectEnvironmentLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectEnvironmentQuery,
+    FetchProjectEnvironmentQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectEnvironmentQuery, FetchProjectEnvironmentQueryVariables>(
+    FetchProjectEnvironmentDocument,
+    options,
+  );
+}
+export type FetchProjectEnvironmentQueryHookResult = ReturnType<
+  typeof useFetchProjectEnvironmentQuery
+>;
+export type FetchProjectEnvironmentLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectEnvironmentLazyQuery
+>;
+export type FetchProjectEnvironmentQueryResult = Apollo.QueryResult<
+  FetchProjectEnvironmentQuery,
+  FetchProjectEnvironmentQueryVariables
+>;
 export const FetchEnvsRequestsListDocument = gql`
   query FetchEnvsRequestsList(
     $filters: RequestFilter
@@ -904,55 +1024,105 @@ export type FetchEnvsRequestsListQueryResult = Apollo.QueryResult<
   FetchEnvsRequestsListQuery,
   FetchEnvsRequestsListQueryVariables
 >;
-export const RequestNewProjectEnvironmentDocument = gql`
-  mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
+export const CreateOrUpdateNewProjectEnvironmentDocument = gql`
+  mutation CreateOrUpdateNewProjectEnvironment($input: ProjectEnvironmentInput!) {
     projectEnvironmentCreateUpdate(data: $input) {
       name
     }
   }
 `;
-export type RequestNewProjectEnvironmentMutationFn = Apollo.MutationFunction<
-  RequestNewProjectEnvironmentMutation,
-  RequestNewProjectEnvironmentMutationVariables
+export type CreateOrUpdateNewProjectEnvironmentMutationFn = Apollo.MutationFunction<
+  CreateOrUpdateNewProjectEnvironmentMutation,
+  CreateOrUpdateNewProjectEnvironmentMutationVariables
 >;
 
 /**
- * __useRequestNewProjectEnvironmentMutation__
+ * __useCreateOrUpdateNewProjectEnvironmentMutation__
  *
- * To run a mutation, you first call `useRequestNewProjectEnvironmentMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestNewProjectEnvironmentMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateOrUpdateNewProjectEnvironmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrUpdateNewProjectEnvironmentMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [requestNewProjectEnvironmentMutation, { data, loading, error }] = useRequestNewProjectEnvironmentMutation({
+ * const [createOrUpdateNewProjectEnvironmentMutation, { data, loading, error }] = useCreateOrUpdateNewProjectEnvironmentMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useRequestNewProjectEnvironmentMutation(
+export function useCreateOrUpdateNewProjectEnvironmentMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    RequestNewProjectEnvironmentMutation,
-    RequestNewProjectEnvironmentMutationVariables
+    CreateOrUpdateNewProjectEnvironmentMutation,
+    CreateOrUpdateNewProjectEnvironmentMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
-    RequestNewProjectEnvironmentMutation,
-    RequestNewProjectEnvironmentMutationVariables
-  >(RequestNewProjectEnvironmentDocument, options);
+    CreateOrUpdateNewProjectEnvironmentMutation,
+    CreateOrUpdateNewProjectEnvironmentMutationVariables
+  >(CreateOrUpdateNewProjectEnvironmentDocument, options);
 }
-export type RequestNewProjectEnvironmentMutationHookResult = ReturnType<
-  typeof useRequestNewProjectEnvironmentMutation
+export type CreateOrUpdateNewProjectEnvironmentMutationHookResult = ReturnType<
+  typeof useCreateOrUpdateNewProjectEnvironmentMutation
 >;
-export type RequestNewProjectEnvironmentMutationResult =
-  Apollo.MutationResult<RequestNewProjectEnvironmentMutation>;
-export type RequestNewProjectEnvironmentMutationOptions = Apollo.BaseMutationOptions<
-  RequestNewProjectEnvironmentMutation,
-  RequestNewProjectEnvironmentMutationVariables
+export type CreateOrUpdateNewProjectEnvironmentMutationResult =
+  Apollo.MutationResult<CreateOrUpdateNewProjectEnvironmentMutation>;
+export type CreateOrUpdateNewProjectEnvironmentMutationOptions = Apollo.BaseMutationOptions<
+  CreateOrUpdateNewProjectEnvironmentMutation,
+  CreateOrUpdateNewProjectEnvironmentMutationVariables
+>;
+export const RemoveProjectEnvironmentDocument = gql`
+  mutation RemoveProjectEnvironment($input: IDInput!) {
+    projectEnvironmentDelete(data: $input) {
+      message
+    }
+  }
+`;
+export type RemoveProjectEnvironmentMutationFn = Apollo.MutationFunction<
+  RemoveProjectEnvironmentMutation,
+  RemoveProjectEnvironmentMutationVariables
+>;
+
+/**
+ * __useRemoveProjectEnvironmentMutation__
+ *
+ * To run a mutation, you first call `useRemoveProjectEnvironmentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveProjectEnvironmentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeProjectEnvironmentMutation, { data, loading, error }] = useRemoveProjectEnvironmentMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveProjectEnvironmentMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveProjectEnvironmentMutation,
+    RemoveProjectEnvironmentMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    RemoveProjectEnvironmentMutation,
+    RemoveProjectEnvironmentMutationVariables
+  >(RemoveProjectEnvironmentDocument, options);
+}
+export type RemoveProjectEnvironmentMutationHookResult = ReturnType<
+  typeof useRemoveProjectEnvironmentMutation
+>;
+export type RemoveProjectEnvironmentMutationResult =
+  Apollo.MutationResult<RemoveProjectEnvironmentMutation>;
+export type RemoveProjectEnvironmentMutationOptions = Apollo.BaseMutationOptions<
+  RemoveProjectEnvironmentMutation,
+  RemoveProjectEnvironmentMutationVariables
 >;
 export const FetchProjectIntegrationsListDocument = gql`
   query FetchProjectIntegrationsList($data: IDInput!) {
@@ -1093,55 +1263,55 @@ export type FetchIntegrationsRequestsListQueryResult = Apollo.QueryResult<
   FetchIntegrationsRequestsListQuery,
   FetchIntegrationsRequestsListQueryVariables
 >;
-export const RequestNewProjectIntegrationDocument = gql`
-  mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
+export const CreateNewProjectIntegrationDocument = gql`
+  mutation CreateNewProjectIntegration($input: ProjectIntegrationInput!) {
     projectIntegrationCreateUpdate(data: $input) {
       name
     }
   }
 `;
-export type RequestNewProjectIntegrationMutationFn = Apollo.MutationFunction<
-  RequestNewProjectIntegrationMutation,
-  RequestNewProjectIntegrationMutationVariables
+export type CreateNewProjectIntegrationMutationFn = Apollo.MutationFunction<
+  CreateNewProjectIntegrationMutation,
+  CreateNewProjectIntegrationMutationVariables
 >;
 
 /**
- * __useRequestNewProjectIntegrationMutation__
+ * __useCreateNewProjectIntegrationMutation__
  *
- * To run a mutation, you first call `useRequestNewProjectIntegrationMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useRequestNewProjectIntegrationMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateNewProjectIntegrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNewProjectIntegrationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [requestNewProjectIntegrationMutation, { data, loading, error }] = useRequestNewProjectIntegrationMutation({
+ * const [createNewProjectIntegrationMutation, { data, loading, error }] = useCreateNewProjectIntegrationMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useRequestNewProjectIntegrationMutation(
+export function useCreateNewProjectIntegrationMutation(
   baseOptions?: Apollo.MutationHookOptions<
-    RequestNewProjectIntegrationMutation,
-    RequestNewProjectIntegrationMutationVariables
+    CreateNewProjectIntegrationMutation,
+    CreateNewProjectIntegrationMutationVariables
   >,
 ) {
   const options = { ...defaultOptions, ...baseOptions };
   return Apollo.useMutation<
-    RequestNewProjectIntegrationMutation,
-    RequestNewProjectIntegrationMutationVariables
-  >(RequestNewProjectIntegrationDocument, options);
+    CreateNewProjectIntegrationMutation,
+    CreateNewProjectIntegrationMutationVariables
+  >(CreateNewProjectIntegrationDocument, options);
 }
-export type RequestNewProjectIntegrationMutationHookResult = ReturnType<
-  typeof useRequestNewProjectIntegrationMutation
+export type CreateNewProjectIntegrationMutationHookResult = ReturnType<
+  typeof useCreateNewProjectIntegrationMutation
 >;
-export type RequestNewProjectIntegrationMutationResult =
-  Apollo.MutationResult<RequestNewProjectIntegrationMutation>;
-export type RequestNewProjectIntegrationMutationOptions = Apollo.BaseMutationOptions<
-  RequestNewProjectIntegrationMutation,
-  RequestNewProjectIntegrationMutationVariables
+export type CreateNewProjectIntegrationMutationResult =
+  Apollo.MutationResult<CreateNewProjectIntegrationMutation>;
+export type CreateNewProjectIntegrationMutationOptions = Apollo.BaseMutationOptions<
+  CreateNewProjectIntegrationMutation,
+  CreateNewProjectIntegrationMutationVariables
 >;
 export const FetchHistoryLogsDocument = gql`
   query FetchHistoryLogs($filters: LogFilter, $pagination: PaginationInput) {

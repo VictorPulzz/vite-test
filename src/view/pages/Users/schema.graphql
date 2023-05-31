@@ -3,7 +3,7 @@ query FetchUsers($filters: UserFilter, $pagination: PaginationInput, $search: St
     results {
       id
       fullName
-      photo {
+      photoThumbnail {
         url
       }
       email

@@ -63,11 +63,15 @@ export type FetchProjectStatusesListQuery = {
 export type FetchDocumentTemplateListQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type FetchDocumentTemplateListQuery = {
-  documentTemplateList: Array<{
-    id: number;
-    name: string;
-    fields?: Array<{ name: string; description?: string | null }> | null;
-  }>;
+  documentTemplateList: {
+    count: number;
+    limit?: number | null;
+    results: Array<{
+      id: number;
+      name: string;
+      fields?: Array<{ name: string; description?: string | null }> | null;
+    }>;
+  };
 };
 
 export const FetchProjectDocument = gql`
@@ -350,11 +354,15 @@ export type FetchProjectStatusesListQueryResult = Apollo.QueryResult<
 export const FetchDocumentTemplateListDocument = gql`
   query FetchDocumentTemplateList {
     documentTemplateList {
-      id
-      name
-      fields {
+      count
+      limit
+      results {
+        id
         name
-        description
+        fields {
+          name
+          description
+        }
       }
     }
   }

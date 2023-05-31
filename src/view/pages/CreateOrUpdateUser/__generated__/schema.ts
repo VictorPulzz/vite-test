@@ -18,7 +18,7 @@ export type CreateOrUpdateUserMutation = {
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     isActive?: boolean | null;
-    photo?: { url: string } | null;
+    photoThumbnail?: { url: string } | null;
     department?: { id: number; name: string } | null;
     role?: { id: number; name: string } | null;
   };
@@ -28,7 +28,7 @@ export const CreateOrUpdateUserDocument = gql`
   mutation CreateOrUpdateUser($input: UserInput!) {
     userCreateUpdate(data: $input) {
       id
-      photo {
+      photoThumbnail {
         url
       }
       firstName

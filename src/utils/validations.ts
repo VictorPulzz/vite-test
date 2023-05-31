@@ -32,3 +32,25 @@ export const phoneNumberValidation = z
 export const numberValidation = z
   .string()
   .refine(value => value === '' || !Number.isNaN(+value), formErrors.SHOULD_BE_NUMBER);
+
+export const fileValidation = z
+  .union([z.string(), z.instanceof(File)])
+  .nullable()
+  .refine(value => {
+    if (value instanceof File) {
+      return value.size < 2 * 1024 * 1024;
+    }
+    return true;
+  }, formErrors.MAX_IMAGE_SIZE);
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+export function withPhoneValidation(schema: z.ZodString) {
+  return schema.and(phoneNumberValidation).transform(value => {
+    try {
+      const phoneNumber = parsePhoneNumber(value, 'AU');
+      return phoneNumber.number.toString();
+    } catch (e) {
+      return value;
+    }
+  });
+}

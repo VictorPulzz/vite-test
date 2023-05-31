@@ -1,5 +1,5 @@
 import { TextLink } from '@appello/web-ui';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/table-core';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -28,7 +28,7 @@ export function useGitInitialUsersTableColumns() {
         const user = ctx.getValue();
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={user?.photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={user?.photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink
                 to={generatePath(ROUTES.USER_DETAILS, { id: user?.id })}

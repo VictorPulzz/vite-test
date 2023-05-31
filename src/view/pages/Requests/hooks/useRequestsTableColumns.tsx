@@ -1,5 +1,5 @@
 import { TextLink } from '@appello/web-ui';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestSort } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
+import { useAppSelector } from '~/store/hooks';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
@@ -23,9 +24,14 @@ const columnHelper = createColumnHelper<RequestResultType>();
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useRequestsTableColumns() {
+  const roleId = useAppSelector(state => state.user.profile?.role?.id);
+
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
+    variables: {
+      filters: { roleId: [Number(roleId)] },
+    },
     fetchPolicy: 'cache-and-network',
   });
 
@@ -65,7 +71,7 @@ export function useRequestsTableColumns() {
         const createdBy = ctx.getValue();
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={createdBy?.photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={createdBy?.photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink
                 to={generatePath(ROUTES.USER_DETAILS, { id: createdBy?.id })}

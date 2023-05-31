@@ -3,6 +3,7 @@ query FetchRepositories($filters: RepositoryFilter, $pagination: PaginationInput
     results {
       id
       name
+      inParticipant
       project {
         id
         name

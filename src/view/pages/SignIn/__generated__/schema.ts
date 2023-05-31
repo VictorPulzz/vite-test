@@ -2,6 +2,7 @@
 import * as Types from '~/services/gql/__generated__/globalTypes';
 
 import { gql } from '@apollo/client';
+import { AuthorizedUserFragmentDoc } from '../../../../services/gql/fragments/__generated__/user';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type SignInMutationVariables = Types.Exact<{
@@ -18,7 +19,7 @@ export type SignInMutation = {
       firstName: string;
       lastName: string;
       fullName: string;
-      photo?: { url: string } | null;
+      photoThumbnail?: { url: string } | null;
       role?: { id: number; name: string; permissionsList: Array<string> } | null;
     };
   };
@@ -30,22 +31,11 @@ export const SignInDocument = gql`
       accessToken
       refreshToken
       user {
-        id
-        email
-        firstName
-        lastName
-        fullName
-        photo {
-          url
-        }
-        role {
-          id
-          name
-          permissionsList
-        }
+        ...AuthorizedUser
       }
     }
   }
+  ${AuthorizedUserFragmentDoc}
 `;
 export type SignInMutationFn = Apollo.MutationFunction<SignInMutation, SignInMutationVariables>;
 

@@ -64,10 +64,16 @@ export const NewRequestModal: FC<Props> = ({
   }, [form, projectId, repositoryId, requestType]);
 
   const typeField = form.watch('type');
+  const assignedRoleIdField = form.watch('assignedRoleId');
+  const projectIdField = form.watch('projectId');
 
   const { data: rolesList, loading: isLoadingRolesList } = useFetchRolesListQuery();
 
   const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
+    variables: {
+      filters: { roleId: [Number(assignedRoleIdField)] },
+    },
+    skip: !assignedRoleIdField,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -84,8 +90,6 @@ export const NewRequestModal: FC<Props> = ({
     useFetchTechnologiesListQuery({
       fetchPolicy: 'cache-and-network',
     });
-
-  const projectIdField = form.watch('projectId');
 
   const { data: allRepositories } = useFetchRepositoryGlossaryListQuery({
     variables: {
@@ -165,6 +169,7 @@ export const NewRequestModal: FC<Props> = ({
               options={usersOptions}
               control={form.control}
               label="Assigned to person"
+              disabled={!assignedRoleIdField}
             />
             <DateField
               name="dueDate"

@@ -1,6 +1,5 @@
 import { isString } from '@appello/common/lib/utils/string/isString';
 import { zodResolver } from '@hookform/resolvers/zod/dist/zod';
-import { parsePhoneNumber } from 'libphonenumber-js';
 import { useEffect } from 'react';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
@@ -10,30 +9,16 @@ import { z } from 'zod';
 
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { setUser } from '~/store/modules/user';
-import { phoneNumberValidation } from '~/utils/validations';
-import {
-  MeDocument,
-  MeQuery,
-  useProfileUpdateMutation,
-} from '~/view/pages/SettingsGeneral/__generated__/schema';
+import { fileValidation, withPhoneValidation } from '~/utils/validations';
+
+import { MeDocument, MeQuery, useProfileUpdateMutation } from '../__generated__/schema';
 
 const formSchema = z.object({
-  photo: z.union([z.string(), z.instanceof(File)]).nullable(),
+  photo: fileValidation,
   firstName: z.string().min(1),
   lastName: z.string().min(1),
   email: z.string(),
-  phone: z
-    .string()
-    .min(1)
-    .and(phoneNumberValidation)
-    .transform(value => {
-      try {
-        const phoneNumber = parsePhoneNumber(value, 'AU');
-        return phoneNumber.number.toString();
-      } catch (e) {
-        return value;
-      }
-    }),
+  phone: withPhoneValidation(z.string().min(1)),
   address: z.string(),
 });
 
@@ -73,7 +58,7 @@ export const useSettingsGeneralForm = ({
   useEffect(() => {
     if (settingsData) {
       form.reset({
-        photo: settingsData.photo?.url,
+        photo: settingsData.photoThumbnail?.url,
         phone: settingsData?.phone || '',
         lastName: settingsData.lastName ?? '',
         firstName: settingsData.firstName ?? '',
@@ -106,7 +91,7 @@ export const useSettingsGeneralForm = ({
               firstName: data.meUpdate.firstName,
               lastName: data.meUpdate.lastName,
               fullName: `${data.meUpdate.firstName} ${data.meUpdate.lastName}`,
-              photo: data.meUpdate.photo,
+              photoThumbnail: data.meUpdate.photoThumbnail,
               role: data.meUpdate.role,
             }),
           );

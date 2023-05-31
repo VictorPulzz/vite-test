@@ -12,6 +12,7 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   projectId: number;
   projectMembersListIds: number[];
   canWriteProjectTeam: boolean;
+  isCurrentTeam: boolean;
 }
 
 export const AddNewMemberModal: FC<Props> = ({
@@ -20,10 +21,12 @@ export const AddNewMemberModal: FC<Props> = ({
   projectId,
   projectMembersListIds,
   canWriteProjectTeam,
+  isCurrentTeam,
 }) => {
   const { form, handleSubmit, resetForm } = useAddNewMemberForm({
     onSubmitSuccessful: () => close(),
     projectId,
+    isCurrentTeam,
   });
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({

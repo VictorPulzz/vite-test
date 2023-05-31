@@ -9,9 +9,11 @@ import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTyp
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import {
+  FetchProjectEnvironmentQuery,
   FetchProjectEnvironmentsListDocument,
-  useRequestNewProjectEnvironmentMutation,
+  useCreateOrUpdateNewProjectEnvironmentMutation,
 } from '../../../../../../../__generated__/schema';
+import { transformProjectEnvironmentPrefilledData } from '../utils';
 
 const formSchema = z.object({
   environment: z
@@ -19,30 +21,31 @@ const formSchema = z.object({
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
   frontendCredentials: z.object({
-    url: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    login: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    password: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    url: z.string(),
+    login: z.string(),
+    password: z.string(),
   }),
   backendCredentials: z.object({
-    url: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    login: z.string().refine(value => value !== '', formErrors.REQUIRED),
-    password: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    url: z.string(),
+    login: z.string(),
+    password: z.string(),
   }),
 });
 
-type CreateNewEnvironmentFormValues = z.infer<typeof formSchema>;
+export type ProjectEnvironmentFormValues = z.infer<typeof formSchema>;
 
-interface UseCreateNewEnvironmentFormReturn {
-  form: UseFormReturn<CreateNewEnvironmentFormValues>;
-  handleSubmit: ReturnType<UseFormHandleSubmit<CreateNewEnvironmentFormValues>>;
+interface UseProjectEnvironmentFormReturn {
+  form: UseFormReturn<ProjectEnvironmentFormValues>;
+  handleSubmit: ReturnType<UseFormHandleSubmit<ProjectEnvironmentFormValues>>;
   resetForm?: () => void;
 }
 
-interface UseCreateNewEnvironmentFormProps {
+interface UseProjectEnvironmentFormProps {
   onSubmitSuccessful?: () => void;
+  prefilledData?: FetchProjectEnvironmentQuery['projectEnvironment'];
 }
 
-const defaultValues: CreateNewEnvironmentFormValues = {
+const defaultValues: ProjectEnvironmentFormValues = {
   environment: null,
   frontendCredentials: {
     url: '',
@@ -56,26 +59,29 @@ const defaultValues: CreateNewEnvironmentFormValues = {
   },
 };
 
-export function useCreateNewEnvironmentForm({
+export function useProjectEnvironmentForm({
   onSubmitSuccessful,
-}: UseCreateNewEnvironmentFormProps): UseCreateNewEnvironmentFormReturn {
-  const form = useForm<CreateNewEnvironmentFormValues>({
+  prefilledData,
+}: UseProjectEnvironmentFormProps): UseProjectEnvironmentFormReturn {
+  const form = useForm<ProjectEnvironmentFormValues>({
     defaultValues,
+    values: prefilledData ? transformProjectEnvironmentPrefilledData(prefilledData) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
   const params = useParams();
   const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 
-  const [requestNewProjectEnvironment] = useRequestNewProjectEnvironmentMutation();
+  const [createOrUpdateNewProjectEnvironment] = useCreateOrUpdateNewProjectEnvironmentMutation();
 
   const handleSubmit = useCallback(
-    async (values: CreateNewEnvironmentFormValues) => {
+    async (values: ProjectEnvironmentFormValues) => {
       try {
-        await requestNewProjectEnvironment({
+        await createOrUpdateNewProjectEnvironment({
           variables: {
             input: {
               projectId,
+              id: prefilledData?.id,
               name: values.environment as ProjectEnvironmentChoice,
               frontendCredentials: {
                 url: values.frontendCredentials.url,
@@ -93,13 +99,19 @@ export function useCreateNewEnvironmentForm({
         });
         onSubmitSuccessful?.();
       } catch (e) {
-        processGqlErrorResponse<CreateNewEnvironmentFormValues>(e, {
+        processGqlErrorResponse<ProjectEnvironmentFormValues>(e, {
           fields: ['environment'],
           setFormError: form.setError,
         });
       }
     },
-    [form.setError, onSubmitSuccessful, projectId, requestNewProjectEnvironment],
+    [
+      createOrUpdateNewProjectEnvironment,
+      form.setError,
+      onSubmitSuccessful,
+      prefilledData?.id,
+      projectId,
+    ],
   );
 
   return useMemo(

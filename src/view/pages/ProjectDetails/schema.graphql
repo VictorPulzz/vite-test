@@ -50,7 +50,7 @@ query FetchProjectMembers($data: IDInput!) {
       endDate
       user {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName
@@ -58,6 +58,7 @@ query FetchProjectMembers($data: IDInput!) {
           name
         }
         email
+        slackUrl
       }
     }
     otherContrubutors {
@@ -65,7 +66,7 @@ query FetchProjectMembers($data: IDInput!) {
       endDate
       user {
         id
-        photo {
+        photoThumbnail {
           url
         }
         fullName
@@ -73,6 +74,7 @@ query FetchProjectMembers($data: IDInput!) {
           name
         }
         email
+        slackUrl
       }
     }
   }
@@ -102,11 +104,13 @@ query FetchProjectRepositoriesList($data: IDInput!) {
     projectRepositories {
       id
       name
+      inParticipant
       type
       technologies {
         id
         name
       }
+      gitUrl
       createdAt
     }
   }
@@ -156,6 +160,26 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
   }
 }
 
+query FetchProjectEnvironment($input: IDInput!) {
+  projectEnvironment(data: $input) {
+    id
+    projectId
+    name
+    frontendCredentials {
+      id
+      url
+      login
+      password
+    }
+    backendCredentials {
+      id
+      url
+      login
+      password
+    }
+  }
+}
+
 query FetchEnvsRequestsList(
   $filters: RequestFilter
   $pagination: PaginationInput
@@ -169,9 +193,15 @@ query FetchEnvsRequestsList(
   }
 }
 
-mutation RequestNewProjectEnvironment($input: ProjectEnvironmentInput!) {
+mutation CreateOrUpdateNewProjectEnvironment($input: ProjectEnvironmentInput!) {
   projectEnvironmentCreateUpdate(data: $input) {
     name
+  }
+}
+
+mutation RemoveProjectEnvironment($input: IDInput!) {
+  projectEnvironmentDelete(data: $input) {
+    message
   }
 }
 
@@ -208,7 +238,7 @@ query FetchIntegrationsRequestsList(
   }
 }
 
-mutation RequestNewProjectIntegration($input: ProjectIntegrationInput!) {
+mutation CreateNewProjectIntegration($input: ProjectIntegrationInput!) {
   projectIntegrationCreateUpdate(data: $input) {
     name
   }

@@ -4,13 +4,12 @@ import { generatePath, Outlet } from 'react-router';
 
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { NoAccessMessage } from '~/view/components/NoAccessMessage';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
 interface UseProjectTabsOptions {
   projectId: number;
-  inTeam?: boolean;
+  inTeam: boolean;
 }
 
 export function useProjectTabs({ projectId, inTeam }: UseProjectTabsOptions): Tab[] {
@@ -22,37 +21,36 @@ export function useProjectTabs({ projectId, inTeam }: UseProjectTabsOptions): Ta
   const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
   const canReadWriteProjectIntegrations = useHasAccess(Permission.READ_WRITE_PROJECT_INTEGRATIONS);
 
-  return [
-    {
+  const projectTabs: (Tab | false)[] = [
+    canReadProjectOverview && {
       title: 'Overview',
-      element: canReadProjectOverview ? <Outlet /> : <NoAccessMessage className="h-full" />,
+      element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS, { id: projectId }),
     },
-    {
+    canReadProjectInfo && {
       title: 'Info',
-      element: canReadProjectInfo ? <Outlet /> : <NoAccessMessage className="h-full" />,
+      element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_INFO, { id: projectId }),
     },
-    {
-      title: 'Team',
-      element: canReadProjectTeam && inTeam ? <Outlet /> : <NoAccessMessage className="h-full" />,
-      path: generatePath(ROUTES.PROJECT_DETAILS_TEAM, { id: projectId }),
-    },
-    {
+    canReadProjectTeam &&
+      inTeam && {
+        title: 'Team',
+        element: <Outlet />,
+        path: generatePath(ROUTES.PROJECT_DETAILS_TEAM, { id: projectId }),
+      },
+    canReadProjectDevelopment && {
       title: 'Development',
-      element: canReadProjectDevelopment ? <Outlet /> : <NoAccessMessage className="h-full" />,
+      element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_DEVELOPMENT, { id: projectId }),
     },
-    {
+    canReadWriteProjectDocs && {
       title: 'Docs',
-      element: canReadWriteProjectDocs ? (
+      element: (
         <div className="h-full">
           <SectionContainer containerClassName="h-full">
             <Outlet />
           </SectionContainer>
         </div>
-      ) : (
-        <NoAccessMessage className="h-full" />
       ),
       path: generatePath(ROUTES.PROJECT_DETAILS_DOCUMENTS, { id: projectId }),
     },
@@ -61,19 +59,17 @@ export function useProjectTabs({ projectId, inTeam }: UseProjectTabsOptions): Ta
       element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_REPORTS, { id: projectId }),
     },
-    {
+    canReadProjectHistory && {
       title: 'History',
-      element: canReadProjectHistory ? <Outlet /> : <NoAccessMessage className="h-full" />,
+      element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_HISTORY, { id: projectId }),
     },
-    {
+    canReadWriteProjectIntegrations && {
       title: 'Integrations',
-      element: canReadWriteProjectIntegrations ? (
-        <Outlet />
-      ) : (
-        <NoAccessMessage className="h-full" />
-      ),
+      element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_INTEGRATIONS, { id: projectId }),
     },
   ];
+
+  return projectTabs.filter((tab): tab is Tab => !!tab);
 }

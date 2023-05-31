@@ -5,12 +5,12 @@ mutation RefreshTokens($input: RefreshTokenInput!) {
   }
 }
 
-query FetchUserGlossaryList($pagination: PaginationInput) {
-  userGlossaryList(pagination: $pagination) {
+query FetchUserGlossaryList($pagination: PaginationInput, $filters: UserFilter) {
+  userGlossaryList(pagination: $pagination, filters: $filters) {
     results {
       id
       fullName
-      photo {
+      photoThumbnail {
         url
       }
     }

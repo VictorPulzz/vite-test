@@ -1,5 +1,5 @@
 import { Badge, BadgeColor, TextLink } from '@appello/web-ui';
-import { createColumnHelper } from '@tanstack/react-table';
+import { createColumnHelper } from '@tanstack/table-core';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
@@ -24,10 +24,10 @@ export function useUsersTableColumns() {
       id: 'fullName',
       header: 'Name',
       cell: ctx => {
-        const { photo, fullName, id } = ctx.row.original;
+        const { photoThumbnail, fullName, id } = ctx.row.original;
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={photo?.url || photoPlaceholder} size={26} />
+            <Avatar uri={photoThumbnail?.url || photoPlaceholder} size={26} />
             {canReadUserDetails ? (
               <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
                 {fullName}

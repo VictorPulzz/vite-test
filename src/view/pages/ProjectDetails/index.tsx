@@ -10,7 +10,7 @@ import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
-import { NoAccessMessage, NoAccessMessageVariant } from '~/view/components/NoAccessMessage';
+import { RequestAccessMessage } from '~/view/components/RequestAccessMessage';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { TabLayout } from '~/view/layouts/TabLayout';
@@ -33,7 +33,7 @@ export const ProjectDetailsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const projectTabs = useProjectTabs({ projectId, inTeam: data?.projectPreview.inTeam });
+  const projectTabs = useProjectTabs({ projectId, inTeam: !!data?.projectPreview.inTeam });
 
   const projectTabsElement = useMemo(
     () => (
@@ -82,11 +82,10 @@ export const ProjectDetailsPage: FC = () => {
       )}
       {!loading && data && !data.projectPreview.inTeam && (
         <DetailLayout contentClassName="flex-auto">
-          <NoAccessMessage
+          <RequestAccessMessage
             className="h-full"
             title={data.projectPreview.name}
             projectId={data.projectPreview.id}
-            variant={NoAccessMessageVariant.REQUEST}
             requestType={RequestTypeChoice.ACCESS_PROJECT}
           />
         </DetailLayout>

@@ -29,6 +29,7 @@ interface UseAddNewMemberFormReturn {
 interface UseAddNewMemberFormProps {
   onSubmitSuccessful?: () => void;
   projectId: number;
+  isCurrentTeam: boolean;
 }
 
 const defaultValues: AddNewMemberFormValues = {
@@ -38,6 +39,7 @@ const defaultValues: AddNewMemberFormValues = {
 export function useAddNewMemberForm({
   onSubmitSuccessful,
   projectId,
+  isCurrentTeam,
 }: UseAddNewMemberFormProps): UseAddNewMemberFormReturn {
   const form = useForm<AddNewMemberFormValues>({
     defaultValues,
@@ -52,8 +54,8 @@ export function useAddNewMemberForm({
         await addProjectMember({
           variables: {
             input: {
-              currentTeam: true,
               projectId,
+              currentTeam: isCurrentTeam,
               userId: Number(values.user),
             },
           },
@@ -67,7 +69,7 @@ export function useAddNewMemberForm({
         });
       }
     },
-    [addProjectMember, form.setError, onSubmitSuccessful, projectId],
+    [addProjectMember, form.setError, isCurrentTeam, onSubmitSuccessful, projectId],
   );
 
   return useMemo(

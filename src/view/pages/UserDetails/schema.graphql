@@ -5,7 +5,7 @@ query FetchUserDetails($input: IDInput!) {
     firstName
     lastName
     email
-    photo {
+    photoThumbnail {
       url
     }
     department {

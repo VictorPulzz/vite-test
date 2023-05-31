@@ -88,10 +88,12 @@ module.exports = {
       ],
     },
     boxShadow: {
+      none: 'none',
       1: 'var(--shadow-1)',
       2: 'var(--shadow-2)',
       3: 'var(--shadow-3)',
       4: 'var(--shadow-4)',
+      5: 'var(--shadow-5)',
     },
   },
   plugins: [],

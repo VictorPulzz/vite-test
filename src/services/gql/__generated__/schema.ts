@@ -12,11 +12,12 @@ export type RefreshTokensMutation = { tokens: { access: string; refresh: string 
 
 export type FetchUserGlossaryListQueryVariables = Types.Exact<{
   pagination?: Types.InputMaybe<Types.PaginationInput>;
+  filters?: Types.InputMaybe<Types.UserFilter>;
 }>;
 
 export type FetchUserGlossaryListQuery = {
   userGlossaryList: {
-    results: Array<{ id: number; fullName: string; photo?: { url: string } | null }>;
+    results: Array<{ id: number; fullName: string; photoThumbnail?: { url: string } | null }>;
   };
 };
 
@@ -84,12 +85,12 @@ export type RefreshTokensMutationOptions = Apollo.BaseMutationOptions<
   RefreshTokensMutationVariables
 >;
 export const FetchUserGlossaryListDocument = gql`
-  query FetchUserGlossaryList($pagination: PaginationInput) {
-    userGlossaryList(pagination: $pagination) {
+  query FetchUserGlossaryList($pagination: PaginationInput, $filters: UserFilter) {
+    userGlossaryList(pagination: $pagination, filters: $filters) {
       results {
         id
         fullName
-        photo {
+        photoThumbnail {
           url
         }
       }
@@ -110,6 +111,7 @@ export const FetchUserGlossaryListDocument = gql`
  * const { data, loading, error } = useFetchUserGlossaryListQuery({
  *   variables: {
  *      pagination: // value for 'pagination'
+ *      filters: // value for 'filters'
  *   },
  * });
  */

@@ -46,12 +46,12 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
     [rolesList, updatePermissions],
   );
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-3">
       {roles.map(({ id, name, color }) => (
         <div
           key={id}
           className={clsx(
-            `group relative px-3 py-1 rounded-lg cursor-pointer`,
+            `group relative px-3 py-1 rounded-lg cursor-pointer whitespace-nowrap`,
             !color && 'border-gray-7',
           )}
           style={{ backgroundColor: color ?? undefined }}

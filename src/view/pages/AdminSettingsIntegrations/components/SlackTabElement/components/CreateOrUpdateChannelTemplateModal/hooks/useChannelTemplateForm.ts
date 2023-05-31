@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
-import { formErrors } from '~/constants/form';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import {
   FetchSlackTemplatesListDocument,
@@ -15,8 +14,8 @@ import { transformChannelTemplatePrefilledData } from '~/view/pages/AdminSetting
 import { SlackChannelTemplateResultType } from '../../../types';
 
 const formSchema = z.object({
-  label: z.string().refine(value => value !== '', formErrors.REQUIRED),
-  prefix: z.string().refine(value => value !== '', formErrors.REQUIRED),
+  label: z.string().min(1),
+  prefix: z.string().min(1),
   initialUsers: z.array(z.number()),
   isPrivate: z.boolean(),
 });

@@ -20,6 +20,12 @@ interface Props {
   variant: CardVariant;
 }
 
+const iconsByCredentialField: Record<string, string> = {
+  url: 'url',
+  login: 'login',
+  password: 'password',
+};
+
 export const IntegrationsListItem: FC<Props> = ({ integration, integrationRequest, variant }) => {
   const mainIntegrationCredentialsData = useMemo(
     () =>
@@ -70,7 +76,12 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
                 <div className="mt-2 flex flex-col gap-3">
                   {Object.entries(mainIntegrationCredentialsData || {})?.map(([key, value]) => (
                     <div key={key} className="flex items-center gap-1">
-                      <Icon name={key} size={18} color="#6F6F75" className="flex-shrink-0" />
+                      <Icon
+                        name={iconsByCredentialField[key]}
+                        size={18}
+                        color="#6F6F75"
+                        className="flex-shrink-0"
+                      />
                       <button
                         type="button"
                         onClick={() => copyTextValue(value ?? '')}

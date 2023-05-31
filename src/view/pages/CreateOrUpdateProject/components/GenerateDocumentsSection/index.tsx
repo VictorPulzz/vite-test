@@ -4,11 +4,12 @@ import { Checkbox } from '@appello/web-ui';
 import React, { FC, Fragment } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { DocumentTemplateType } from '~/services/gql/__generated__/globalTypes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 
+import { FetchDocumentTemplateListQuery } from '../../__generated__/schema';
+
 interface Props {
-  templates: DocumentTemplateType[];
+  templates: FetchDocumentTemplateListQuery['documentTemplateList']['results'];
 }
 
 export const GenerateDocumentsSection: FC<Props> = ({ templates }) => {

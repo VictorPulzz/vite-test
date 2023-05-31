@@ -10,7 +10,7 @@ import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
 import { ROUTES } from '~/constants/routes';
-import { DocumentTemplateType, ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
+import { ProjectPhaseChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 import { numberValidation } from '~/utils/validations';
 import { useGenerateProjectDocumentMutation } from '~/view/components/Docs/__generated__/schema';
@@ -18,6 +18,7 @@ import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProjec
 
 import { FetchProjectPreviewDocument } from '../../ProjectDetails/__generated__/schema';
 import {
+  FetchDocumentTemplateListQuery,
   FetchProjectDocument,
   FetchProjectQuery,
   useCreateProjectMutation,
@@ -26,7 +27,7 @@ import {
 
 const formSchema = z
   .object({
-    name: z.string().refine(value => value !== '', formErrors.REQUIRED),
+    name: z.string().min(1),
     phase: z.nativeEnum(ProjectPhaseChoice),
     status: z.number().nullable(),
     hoursEstimated: z.string().and(numberValidation),
@@ -96,7 +97,7 @@ interface UseProjectFormReturn {
 interface UseProjectFormProps {
   prefilledData?: FetchProjectQuery['project'];
   id?: number;
-  templates: DocumentTemplateType[];
+  templates: FetchDocumentTemplateListQuery['documentTemplateList']['results'];
 }
 
 const defaultValues: ProjectFormValues = {
