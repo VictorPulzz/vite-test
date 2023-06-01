@@ -260,16 +260,10 @@ export const Router: FC = () => {
     {
       path: ROUTES.ADMIN_SETTINGS,
       element: canWriteAdminSettings ? <AdminSettingsIntegrationsPage /> : <NoAccessPage />,
-      children: [
-        {
-          index: true,
-          element: <AdminSettingsIntegrationsPage />,
-        },
-        {
-          path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
-          element: <AdminSettingsDocumentTemplatesPage />,
-        },
-      ],
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
+      element: canWriteAdminSettings ? <AdminSettingsDocumentTemplatesPage /> : <NoAccessPage />,
     },
   ];
 
