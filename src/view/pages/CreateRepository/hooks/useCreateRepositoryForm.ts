@@ -27,7 +27,8 @@ const formSchema = z.object({
   gitRepoId: z.string(),
   gitSlug: z.string(),
   withRelay: z.boolean(),
-  awsSecrets: z.boolean(),
+  // TODO fix it later
+  // awsSecrets: z.boolean(),
   withExistingRepo: z.boolean(),
 });
 
@@ -51,7 +52,8 @@ const defaultValues: CreateRepositoryFormValues = {
   gitRepoId: '',
   gitSlug: '',
   withRelay: false,
-  awsSecrets: false,
+  // TODO fix it later
+  // awsSecrets: false,
   withExistingRepo: false,
 };
 

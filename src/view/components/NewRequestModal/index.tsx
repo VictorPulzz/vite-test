@@ -6,7 +6,7 @@ import { TextField } from '@appello/web-ui';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import clsx from 'clsx';
-import { isPast } from 'date-fns';
+import { isBefore, startOfToday } from 'date-fns';
 import React, { FC, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
@@ -176,7 +176,7 @@ export const NewRequestModal: FC<Props> = ({
               control={form.control}
               label="Due date"
               className="z-100"
-              disabledDate={isPast}
+              disabledDate={date => isBefore(date, startOfToday())}
             />
           </InlineFields>
           <TextAreaField

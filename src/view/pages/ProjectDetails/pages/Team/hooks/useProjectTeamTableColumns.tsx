@@ -65,7 +65,7 @@ export function useProjectTeamTableColumns(
 
         return (
           <span>
-            {formattedStartDate}-{formattedEndDate}
+            {formattedStartDate} → {formattedEndDate}
           </span>
         );
       },

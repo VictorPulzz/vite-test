@@ -118,7 +118,7 @@ export const CreateRepositoryPage: FC = () => {
           <Checkbox
             {...form.register('withExistingRepo')}
             label="Add existing repository"
-            className="mt-4 mb-4"
+            className="mb-4"
           />
           <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
             {!withExistingRepo && (
@@ -145,19 +145,16 @@ export const CreateRepositoryPage: FC = () => {
             </div>
           )}
         </section>
-        <section className={styles['section']}>
+        {/* TODO fix it later */}
+        {/* <section className={styles['section']}>
           <h2 className={styles['section__heading']}>AWS</h2>
           <div className="flex flex-col gap-1">
-            <Checkbox
-              label="Do you need AWS secrets?"
-              {...form.register('awsSecrets')}
-              className="mt-4"
-            />
+            <Checkbox label="Do you need AWS secrets?" {...form.register('awsSecrets')} />
             <span className="text-p5 text-gray-2">
               Set yes for backend repository, consult frontend developer for frontend
             </span>
           </div>
-        </section>
+        </section> */}
       </DetailLayout>
     </SidebarLayout>
   );
