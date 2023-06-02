@@ -12,14 +12,16 @@ import { useRequestsFilterForm } from './hooks/useRequestsFilterForm';
 
 export interface RequestsFilterModalProps extends Pick<ModalProps, 'isOpen' | 'close'> {
   setFilter: (filter: Nullable<RequestFilter>) => void;
-  users: FetchUserGlossaryListQuery['userGlossaryList']['results'];
+  allUsers: FetchUserGlossaryListQuery['userGlossaryList']['results'];
+  usersByRole: FetchUserGlossaryListQuery['userGlossaryList']['results'];
 }
 
 export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
   isOpen,
   close,
   setFilter,
-  users,
+  allUsers,
+  usersByRole,
 }) => {
   const { form, handleSubmit, resetForm } = useRequestsFilterForm({
     setFilter,
@@ -30,7 +32,15 @@ export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
 
   const usersOptions = [
     ALL_SELECT_OPTION,
-    ...useSelectOptions(users, {
+    ...useSelectOptions(allUsers, {
+      value: 'id',
+      label: 'fullName',
+    }),
+  ];
+
+  const usersByRoleOptions = [
+    ALL_SELECT_OPTION,
+    ...useSelectOptions(usersByRole, {
       value: 'id',
       label: 'fullName',
     }),
@@ -61,7 +71,7 @@ export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
         />
         <SelectField
           name="assignedTo"
-          options={usersOptions}
+          options={usersByRoleOptions}
           control={form.control}
           label="Assigned To"
         />

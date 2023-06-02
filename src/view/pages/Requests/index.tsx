@@ -56,6 +56,13 @@ export const RequestsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
+  const { data: usersByRole } = useFetchUserGlossaryListQuery({
+    variables: {
+      filters: { roleId: [Number(roleId)] },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
   return (
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
@@ -103,7 +110,8 @@ export const RequestsPage: FC = () => {
         isOpen={isRequestsFilterModalOpen}
         close={closeRequestsFilterModal}
         setFilter={setFilter}
-        users={allUsers?.userGlossaryList.results ?? []}
+        allUsers={allUsers?.userGlossaryList.results ?? []}
+        usersByRole={usersByRole?.userGlossaryList.results ?? []}
       />
     </SidebarLayout>
   );

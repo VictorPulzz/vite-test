@@ -34,7 +34,7 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
         success: 'Successfully connected to Bitbucket',
         error: e => {
           const errors = getGqlError(e?.graphQLErrors);
-          return `Error while connecting to Bitbucket: ${JSON.stringify(errors)}`;
+          return `${errors?.explain?.non_field}`;
         },
       },
     );
