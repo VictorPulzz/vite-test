@@ -1,7 +1,4 @@
 @use 'sass:math';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 @import './fonts.scss';
 
@@ -73,22 +70,4 @@ body {
   font-weight: 400;
   font-size: 1rem;
   color: hsl(var(--black-1-color));
-}
-
-@layer utilities {
-  .flex-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .absolute-y-center {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .section-container {
-    @apply shadow-4 rounded-md bg-white p-7;
-  }
 }
