@@ -102,6 +102,11 @@ export function useSidebarItems(): SidebarItem[] {
           },
         ],
       },
+      {
+        title: 'Leads',
+        icon: 'ai',
+        link: ROUTES.LEADS,
+      },
     ],
     [],
   );

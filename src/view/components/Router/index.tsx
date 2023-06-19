@@ -15,6 +15,10 @@ import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
 import { HomePage } from '~/view/pages/Home';
+import { LeadDetailsPage } from '~/view/pages/LeadDetails';
+import { About } from '~/view/pages/LeadDetails/pages/About';
+import { Messages } from '~/view/pages/LeadDetails/pages/Messages';
+import { LeadsPage } from '~/view/pages/Leads';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { Integrations } from '~/view/pages/ProjectDetails/pages/ Integrations';
@@ -283,6 +287,39 @@ export const Router: FC = () => {
     {
       path: '*',
       element: <NotFoundPage />,
+    },
+    {
+      path: ROUTES.LEADS,
+      element: <LeadsPage />,
+    },
+    {
+      path: ROUTES.ADD_LEAD,
+      element: <Overview />,
+    },
+    {
+      path: ROUTES.LEAD_DETAILS,
+      element: <LeadDetailsPage />,
+      children: [
+        {
+          index: true,
+          element: <About />,
+        },
+        {
+          path: ROUTES.LEAD_MESSAGES,
+          index: true,
+          element: <Messages />,
+        },
+        {
+          path: ROUTES.EDIT_LEAD,
+          index: true,
+          element: <Overview />,
+        },
+        {
+          path: ROUTES.EDIT_LEAD_MESSAGE,
+          index: true,
+          element: <Overview />,
+        },
+      ],
     },
   ]);
 };
