@@ -11,14 +11,14 @@ export interface LeadDetailsResponse {
   createdAt: string;
 }
 
-export interface CreateOrUpdateLeadRequest {
-  id?: Nullable<string>;
+export interface CreateLeadRequest {
   name: string;
   about: string;
 }
 export interface MessagesResponse {
   id: string;
   leadId: string;
+  promptText: string;
   generatedText?: Nullable<string>;
   createdAt: string;
 }

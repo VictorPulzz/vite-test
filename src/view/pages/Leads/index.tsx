@@ -1,16 +1,25 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Button, ButtonVariant, EmptyState, TableLoader } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import React, { FC } from 'react';
 
-import { ROUTES } from '~/constants/routes';
 import { useGetLeadsQuery } from '~/services/rtk/lead';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
+import { CreateNewLeadModal } from './components/CreateNewLeadModal';
 import { useLeadsTableColumns } from './hooks/useLeadsTableColumns';
 
 export const LeadsPage: FC = () => {
+  const {
+    value: isCreateNewLeadModalOpen,
+    on: openCreateNewLeadModal,
+    off: closeCreateNewLeadModal,
+  } = useSwitchValue(false);
+
   const { data, isLoading } = useGetLeadsQuery();
+
   const leadListColumns = useLeadsTableColumns();
+
   return (
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
@@ -22,11 +31,13 @@ export const LeadsPage: FC = () => {
           withIcon="plus"
           variant={ButtonVariant.PRIMARY}
           className="w-40"
-          to={ROUTES.ADD_LEAD}
+          onClick={openCreateNewLeadModal}
         />
       </div>
-      <div className="mt-5 flex gap-3" />
+      {isLoading && <TableLoader className="mt-6" />}
+      {data && data.length === 0 && <EmptyState iconName="list" label="No leads here yet" />}
       {!isLoading && data && <Table className="mt-6" data={data} columns={leadListColumns} />}
+      <CreateNewLeadModal isOpen={isCreateNewLeadModalOpen} close={closeCreateNewLeadModal} />
     </SidebarLayout>
   );
 };

@@ -3,11 +3,9 @@ import { Loader } from '@appello/web-ui';
 import { Tabs } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
-import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { ROUTES } from '~/constants/routes';
 import { useGetLeadQuery } from '~/services/rtk/lead';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
@@ -17,7 +15,7 @@ import styles from './styles.module.scss';
 export const LeadDetailsPage: FC = () => {
   const navigate = useNavigate();
   const params = useParams();
-  const leadId = String(params.id);
+  const leadId = useMemo(() => (params.id ? String(params.id) : ''), [params.id]);
 
   const { data, isLoading } = useGetLeadQuery(leadId);
 
@@ -53,13 +51,6 @@ export const LeadDetailsPage: FC = () => {
                 </span>
               </div>
             </div>
-            <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Edit lead"
-              withIcon="edit"
-              onClick={() => navigate(generatePath(ROUTES.EDIT_LEAD, { id: leadId }))}
-              className="w-[140px]"
-            />
           </div>
         </div>
       )}

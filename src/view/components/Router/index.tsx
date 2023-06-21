@@ -293,10 +293,6 @@ export const Router: FC = () => {
       element: <LeadsPage />,
     },
     {
-      path: ROUTES.ADD_LEAD,
-      element: <Overview />,
-    },
-    {
       path: ROUTES.LEAD_DETAILS,
       element: <LeadDetailsPage />,
       children: [
@@ -308,16 +304,6 @@ export const Router: FC = () => {
           path: ROUTES.LEAD_MESSAGES,
           index: true,
           element: <Messages />,
-        },
-        {
-          path: ROUTES.EDIT_LEAD,
-          index: true,
-          element: <Overview />,
-        },
-        {
-          path: ROUTES.EDIT_LEAD_MESSAGE,
-          index: true,
-          element: <Overview />,
         },
       ],
     },

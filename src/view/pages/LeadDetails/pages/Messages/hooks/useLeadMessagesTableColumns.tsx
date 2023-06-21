@@ -10,17 +10,28 @@ const columnHelper = createColumnHelper<MessagesResponse>();
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useLeadMessagesTableColumns() {
   return [
+    columnHelper.accessor('promptText', {
+      id: 'promptText',
+      header: 'Prompt',
+    }),
     columnHelper.accessor('generatedText', {
       id: 'generatedText',
       header: 'Generated text',
       cell: ctx => {
-        return <p className="pre-wrapp">{ctx.getValue()?.replace('\\n', '<br>')}</p>;
+        return (
+          <div contentEditable suppressContentEditableWarning>
+            {ctx.getValue()?.replace('\\n', '<br>')}
+          </div>
+        );
       },
     }),
     columnHelper.accessor('createdAt', {
       id: 'createdAt',
       header: 'Date',
       cell: ctx => format(new Date(ctx.getValue() ?? ''), DateFormat.D_MMM_Y),
+      meta: {
+        className: 'whitespace-nowrap',
+      },
     }),
   ];
 }
