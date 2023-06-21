@@ -33,7 +33,7 @@ export function useCreateNewMessageForm(): UseCreateNewMessageFormReturn {
       prompt:
         `Let's play game. You're Robert, the commercial manager of Australian software development company called Appello. Appello does UI/UX design, web & mobile app development. Appello's not an outsourcing company, their employees are full time in-house, over 80 staff across Sydney, Brisbane, London, Seattle & Berlin\n` +
         `This is the data that we gathered about a company:\n` +
-        `"{ company_info }"\n` +
+        `"${data?.about}"\n` +
         `Give me the text for initial email as a response to submitted form on a website.\n` +
         `In the response:\n` +
         `* email subject should be "company name — Appello introduction", where you replace "company name" with name of the company, or if it's not known, name of the person\n` +
@@ -42,7 +42,7 @@ export function useCreateNewMessageForm(): UseCreateNewMessageFormReturn {
         `* Add a reasonable call to action, to plan a meeting the following day in the morning, or the time they written. Use Sydney time by default, otherwise if data contains other places, clarify which timezone to use\n` +
         `* Don't do over 1000 characters and 7 paragraphs\n` +
         `* Don't sound spammy and tell too much about Appello. Be more like a helpful friend. Base your offer on what they requested\n` +
-        `* Use Australian English grammar and phrases. Don't sound too cliche \n ${data?.about}`,
+        `* Use Australian English grammar and phrases.`,
     };
   }, [data?.about]);
 
