@@ -28,4 +28,5 @@ export enum Permission {
   READ_REPOS_LIST = 'readReposList',
   WRITE_ADMIN_SETTINGS = 'writeAdminSettings',
   READ_WRITE_PROJECT_INTEGRATIONS = 'readWriteProjectIntegrations',
+  READ_LEADS = 'readLeads',
 }

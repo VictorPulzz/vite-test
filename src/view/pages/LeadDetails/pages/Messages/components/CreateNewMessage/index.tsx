@@ -14,7 +14,7 @@ export const CreateNewMessageSection: FC = () => {
   return (
     <SectionContainer title="Create new message">
       <div className="flex w-full">
-        <TextAreaField name="prompt" control={control} label="Prompt" />
+        <TextAreaField name="promptText" control={control} label="Prompt" />
       </div>
       <Button
         variant={ButtonVariant.PRIMARY}

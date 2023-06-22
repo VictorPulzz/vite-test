@@ -10,7 +10,7 @@ import { CreateMessageRequest } from '~/services/rtk/lead/types';
 import { processApiError } from '~/utils/processApiError';
 
 const formSchema = z.object({
-  prompt: z.string(),
+  promptText: z.string(),
 });
 
 type CreateNewMessageFormValues = z.infer<typeof formSchema>;
@@ -30,7 +30,7 @@ export function useCreateNewMessageForm(): UseCreateNewMessageFormReturn {
   const defaultValues: CreateNewMessageFormValues = useMemo(() => {
     return {
       // TODO this is temporary hardcoded default value for prompts
-      prompt:
+      promptText:
         `Let's play game. You're Robert, the commercial manager of Australian software development company called Appello. Appello does UI/UX design, web & mobile app development. Appello's not an outsourcing company, their employees are full time in-house, over 80 staff across Sydney, Brisbane, London, Seattle & Berlin\n` +
         `This is the data that we gathered about a company:\n` +
         `"${data?.about}"\n` +
@@ -58,16 +58,14 @@ export function useCreateNewMessageForm(): UseCreateNewMessageFormReturn {
     async (values: CreateNewMessageFormValues) => {
       const payload = {
         id: String(leadId),
-        prompt: values.prompt,
+        promptText: values.promptText,
       };
       try {
         await createMessage(payload).unwrap();
       } catch (e) {
         processApiError<CreateMessageRequest>({
           errors: getErrorData(e),
-          fields: {
-            prompt: 'prompt',
-          },
+          fields: ['promptText'],
         });
       }
     },

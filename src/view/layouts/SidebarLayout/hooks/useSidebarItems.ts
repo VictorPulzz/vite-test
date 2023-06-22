@@ -14,6 +14,7 @@ export function useSidebarItems(): SidebarItem[] {
   const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
   const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
   const canReadDocuments = canReadWriteInternalDocuments || canReadWriteClientsDocuments;
+  const canReadLeads = useHasAccess(Permission.READ_LEADS);
 
   const hiddenRoutes = useMemo(
     () =>
@@ -24,9 +25,11 @@ export function useSidebarItems(): SidebarItem[] {
         !canReadReposList && ROUTES.REPOSITORIES,
         !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
         !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
+        !canReadLeads && ROUTES.LEADS,
       ].filter(Boolean),
     [
       canReadDocuments,
+      canReadLeads,
       canReadProjectsList,
       canReadReposList,
       canReadUsersList,

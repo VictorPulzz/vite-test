@@ -84,6 +84,8 @@ export const Router: FC = () => {
   const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
   const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
 
+  const canReadLeads = useHasAccess(Permission.READ_LEADS);
+
   const protectedRoutes: RouteObject[] = [
     {
       path: ROUTES.HOME,
@@ -269,6 +271,25 @@ export const Router: FC = () => {
       path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
       element: canWriteAdminSettings ? <AdminSettingsDocumentTemplatesPage /> : <NoAccessPage />,
     },
+    {
+      path: ROUTES.LEADS,
+      element: canReadLeads ? <LeadsPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.LEAD_DETAILS,
+      element: canReadLeads ? <LeadDetailsPage /> : <NoAccessPage />,
+      children: [
+        {
+          index: true,
+          element: <About />,
+        },
+        {
+          path: ROUTES.LEAD_MESSAGES,
+          index: true,
+          element: <Messages />,
+        },
+      ],
+    },
   ];
 
   return useRoutes([
@@ -287,25 +308,6 @@ export const Router: FC = () => {
     {
       path: '*',
       element: <NotFoundPage />,
-    },
-    {
-      path: ROUTES.LEADS,
-      element: <LeadsPage />,
-    },
-    {
-      path: ROUTES.LEAD_DETAILS,
-      element: <LeadDetailsPage />,
-      children: [
-        {
-          index: true,
-          element: <About />,
-        },
-        {
-          path: ROUTES.LEAD_MESSAGES,
-          index: true,
-          element: <Messages />,
-        },
-      ],
     },
   ]);
 };

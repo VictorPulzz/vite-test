@@ -43,6 +43,6 @@ export const ROUTES = {
   ADMIN_SETTINGS_DOCUMENT_TEMPLATES: '/admin-settings/document-templates',
 
   LEADS: '/leads',
-  LEAD_DETAILS: '/lead/:id',
-  LEAD_MESSAGES: '/lead/:id/messages',
+  LEAD_DETAILS: '/leads/:id',
+  LEAD_MESSAGES: '/leads/:id/messages',
 }; /* as const satisfies Record<string, string> */ // todo: uncomment and fix related errors asap

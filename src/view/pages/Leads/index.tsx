@@ -36,7 +36,9 @@ export const LeadsPage: FC = () => {
       </div>
       {isLoading && <TableLoader className="mt-6" />}
       {data && data.length === 0 && <EmptyState iconName="list" label="No leads here yet" />}
-      {!isLoading && data && <Table className="mt-6" data={data} columns={leadListColumns} />}
+      {!isLoading && data && data.length > 0 && (
+        <Table className="mt-6" data={data} columns={leadListColumns} />
+      )}
       <CreateNewLeadModal isOpen={isCreateNewLeadModalOpen} close={closeCreateNewLeadModal} />
     </SidebarLayout>
   );

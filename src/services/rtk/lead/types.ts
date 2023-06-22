@@ -25,5 +25,5 @@ export interface MessagesResponse {
 
 export interface CreateMessageRequest {
   id: string;
-  prompt: string;
+  promptText: string;
 }
