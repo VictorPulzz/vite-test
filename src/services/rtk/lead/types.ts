@@ -27,3 +27,17 @@ export interface CreateMessageRequest {
   id: string;
   promptText: string;
 }
+
+export interface PropmtsListResponse {
+  id: string;
+  name: string;
+  promptText: string;
+}
+
+export interface CreateOrUpdatePromptRequest {
+  id?: string;
+  name: string;
+  promptText: string;
+}
+
+export interface PropmtInfoResponse extends PropmtsListResponse {}

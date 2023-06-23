@@ -25,7 +25,7 @@ export function useSidebarItems(): SidebarItem[] {
         !canReadReposList && ROUTES.REPOSITORIES,
         !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
         !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
-        !canReadLeads && ROUTES.LEADS,
+        !canReadLeads && ROUTES.SALES_AI_LEADS,
       ].filter(Boolean),
     [
       canReadDocuments,
@@ -106,9 +106,19 @@ export function useSidebarItems(): SidebarItem[] {
         ],
       },
       {
-        title: 'Leads',
+        title: 'Sales AI',
         icon: 'ai',
-        link: ROUTES.LEADS,
+        link: ROUTES.SALES_AI_LEADS,
+        items: [
+          {
+            title: 'Leads',
+            link: ROUTES.SALES_AI_LEADS,
+          },
+          {
+            title: 'Prompts',
+            link: ROUTES.SALES_AI_PROMPTS,
+          },
+        ],
       },
     ],
     [],

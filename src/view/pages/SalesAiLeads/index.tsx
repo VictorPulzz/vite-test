@@ -9,7 +9,7 @@ import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 import { CreateNewLeadModal } from './components/CreateNewLeadModal';
 import { useLeadsTableColumns } from './hooks/useLeadsTableColumns';
 
-export const LeadsPage: FC = () => {
+export const SalesAiLeadsPage: FC = () => {
   const {
     value: isCreateNewLeadModalOpen,
     on: openCreateNewLeadModal,

@@ -13,12 +13,12 @@ export function useLeadTabs({ leadId }: UseLeadTabsOptions): Tab[] {
     {
       title: 'Details',
       element: <Outlet />,
-      path: generatePath(ROUTES.LEAD_DETAILS, { id: leadId }),
+      path: generatePath(ROUTES.SALES_AI_LEAD_DETAILS, { id: leadId }),
     },
     {
       title: 'Messages',
       element: <Outlet />,
-      path: generatePath(ROUTES.LEAD_MESSAGES, { id: leadId }),
+      path: generatePath(ROUTES.SALES_AI_LEAD_MESSAGES, { id: leadId }),
     },
   ];
 

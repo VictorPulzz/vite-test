@@ -12,7 +12,7 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 import { useLeadTabs } from './hooks/useLeadTabs';
 import styles from './styles.module.scss';
 
-export const LeadDetailsPage: FC = () => {
+export const SalesAiLeadDetailsPage: FC = () => {
   const navigate = useNavigate();
   const params = useParams();
   const leadId = useMemo(() => (params.id ? String(params.id) : ''), [params.id]);

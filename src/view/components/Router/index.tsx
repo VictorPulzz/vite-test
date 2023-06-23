@@ -15,10 +15,6 @@ import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
 import { HomePage } from '~/view/pages/Home';
-import { LeadDetailsPage } from '~/view/pages/LeadDetails';
-import { About } from '~/view/pages/LeadDetails/pages/About';
-import { Messages } from '~/view/pages/LeadDetails/pages/Messages';
-import { LeadsPage } from '~/view/pages/Leads';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { Integrations } from '~/view/pages/ProjectDetails/pages/ Integrations';
@@ -35,6 +31,11 @@ import { Participants } from '~/view/pages/RepositoryDetails/components/Reposito
 import { RequestsPage } from '~/view/pages/Requests';
 import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
+import { SalesAiLeadDetailsPage } from '~/view/pages/SalesAiLeadDetails';
+import { About } from '~/view/pages/SalesAiLeadDetails/pages/About';
+import { Messages } from '~/view/pages/SalesAiLeadDetails/pages/Messages';
+import { SalesAiLeadsPage } from '~/view/pages/SalesAiLeads';
+import { SalesAiPromptsPage } from '~/view/pages/SalesAiPrompts';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
@@ -272,19 +273,23 @@ export const Router: FC = () => {
       element: canWriteAdminSettings ? <AdminSettingsDocumentTemplatesPage /> : <NoAccessPage />,
     },
     {
-      path: ROUTES.LEADS,
-      element: canReadLeads ? <LeadsPage /> : <NoAccessPage />,
+      path: ROUTES.SALES_AI_LEADS,
+      element: canReadLeads ? <SalesAiLeadsPage /> : <NoAccessPage />,
     },
     {
-      path: ROUTES.LEAD_DETAILS,
-      element: canReadLeads ? <LeadDetailsPage /> : <NoAccessPage />,
+      path: ROUTES.SALES_AI_PROMPTS,
+      element: canReadLeads ? <SalesAiPromptsPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.SALES_AI_LEAD_DETAILS,
+      element: canReadLeads ? <SalesAiLeadDetailsPage /> : <NoAccessPage />,
       children: [
         {
           index: true,
           element: <About />,
         },
         {
-          path: ROUTES.LEAD_MESSAGES,
+          path: ROUTES.SALES_AI_LEAD_MESSAGES,
           index: true,
           element: <Messages />,
         },

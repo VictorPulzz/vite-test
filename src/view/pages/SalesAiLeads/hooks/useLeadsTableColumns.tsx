@@ -1,5 +1,5 @@
 import { TextLink } from '@appello/web-ui';
-import { createColumnHelper } from '@tanstack/table-core';
+import { ColumnDef, createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
@@ -10,8 +10,7 @@ import { LeadListResponse } from '~/services/rtk/lead/types';
 
 const columnHelper = createColumnHelper<LeadListResponse>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
-export function useLeadsTableColumns() {
+export function useLeadsTableColumns(): ColumnDef<LeadListResponse, string>[] {
   return [
     columnHelper.accessor('name', {
       id: 'name',
@@ -20,7 +19,7 @@ export function useLeadsTableColumns() {
         const { id } = ctx.row.original;
         return (
           <div className="flex gap-3 items-center">
-            <TextLink to={generatePath(ROUTES.LEAD_DETAILS, { id })} className="underline">
+            <TextLink to={generatePath(ROUTES.SALES_AI_LEAD_DETAILS, { id })} className="underline">
               {ctx.getValue()}
             </TextLink>
           </div>

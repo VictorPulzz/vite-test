@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { useGetMessagesQuery } from '~/services/rtk/lead';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useLeadMessagesTableColumns } from '~/view/pages/LeadDetails/pages/Messages/hooks/useLeadMessagesTableColumns';
+import { useLeadMessagesTableColumns } from '~/view/pages/SalesAiLeadDetails/pages/Messages/hooks/useLeadMessagesTableColumns';
 
 import { CreateNewMessageSection } from './components/CreateNewMessage';
 
