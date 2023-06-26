@@ -37,7 +37,7 @@ export const CreateNewMessageSection: FC = () => {
 
   useEffect(() => {
     if (promptById) {
-      form.setValue('promptText', `${promptById?.promptText}\n"${lead?.about}"`);
+      form.setValue('promptText', promptById?.promptText.replaceAll('{about}', `${lead?.about}`));
     }
   }, [form, lead?.about, promptById]);
 

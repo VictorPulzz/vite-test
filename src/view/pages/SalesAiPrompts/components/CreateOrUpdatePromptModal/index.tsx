@@ -1,4 +1,4 @@
-import { Button, ButtonVariant, TextAreaField, TextField } from '@appello/web-ui';
+import { Button, ButtonVariant, Icon, TextAreaField, TextField } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import React, { FC } from 'react';
 
@@ -28,6 +28,13 @@ export const CreateOrUpdatePromptModal: FC<Props> = ({ isOpen, close, promptId }
     >
       <TextField name="name" control={form.control} label="Name" required />
       <TextAreaField name="promptText" control={form.control} label="Text" required />
+      <div className="flex items-center gap-2">
+        <Icon name="info" size={25} className="text-blue mt-2" />
+        <p className="mt-3 text-gray-1 text-p5 leading-5">
+          {`Use "{about}" in your prompt text to dynamically add company details. Include quotation
+        marks for GPT to know you're quoting text.`}
+        </p>
+      </div>
       <div className="flex justify-end">
         <Button
           variant={ButtonVariant.PRIMARY}
