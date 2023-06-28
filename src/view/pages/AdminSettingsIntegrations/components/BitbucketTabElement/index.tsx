@@ -7,6 +7,7 @@ import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { GitInitialUserSort } from '~/services/gql/__generated__/globalTypes';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useSortingState } from '~/view/hooks/useSortingState';
 
@@ -59,7 +60,7 @@ export const BitbucketTabElement: FC = () => {
             columns={initialUsersTableColumns}
             setOffset={setOffset}
             offset={offset}
-            fetchMore={fetchMore}
+            onPageChange={gqlTableFetchMore(fetchMore)}
             totalCount={data.gitInitialUserList.count}
             sorting={tableSorting}
             setSorting={setTableSorting}

@@ -13,6 +13,7 @@ import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -99,7 +100,7 @@ export const ProjectsPage: FC = () => {
           columns={projectsListColumns}
           setOffset={setOffset}
           offset={offset}
-          fetchMore={fetchMore}
+          onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.projectsList.count}
         />
       )}

@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 
 import { useFetchUserHistoryListQuery } from '../../../../__generated__/schema';
 import { USERS_HISTORY_TABLE_COLUMNS } from './consts';
@@ -45,7 +46,7 @@ export const UserHistory: FC = () => {
           columns={USERS_HISTORY_TABLE_COLUMNS}
           setOffset={setOffset}
           offset={offset}
-          fetchMore={fetchMore}
+          onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.logList.count}
         />
       )}

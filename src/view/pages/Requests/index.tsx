@@ -10,6 +10,7 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { RequestFilter, RequestSort } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { useAppSelector } from '~/store/hooks';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { NewRequestModal } from '~/view/components/NewRequestModal';
 import { useSortingState } from '~/view/hooks/useSortingState';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
@@ -99,7 +100,7 @@ export const RequestsPage: FC = () => {
           columns={requestsTableColumns}
           setOffset={setOffset}
           offset={offset}
-          fetchMore={fetchMore}
+          onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.requestList.count}
           sorting={tableSorting}
           setSorting={setTableSorting}

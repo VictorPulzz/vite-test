@@ -18,6 +18,7 @@ import {
   useFetchUserGlossaryListQuery,
 } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
 import { useFetchAllDocumentCategoriesQuery } from '../../pages/ProjectDetails/__generated__/schema';
@@ -300,7 +301,11 @@ export const Docs: FC<Props> = ({ type }) => {
           </div>
         )}
         {!docsData?.loading && docsData?.data && docsData.data.results.length > 0 && (
-          <DocsList type={type} data={docsData.data} fetchMore={docsData.fetchMore} />
+          <DocsList
+            type={type}
+            data={docsData.data}
+            onPageChange={gqlTableFetchMore(docsData.fetchMore)}
+          />
         )}
       </div>
     </div>

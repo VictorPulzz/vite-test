@@ -11,6 +11,7 @@ import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { DocumentTemplateSort } from '~/services/gql/__generated__/globalTypes';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { useSortingState } from '~/view/hooks/useSortingState';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -69,7 +70,7 @@ export const AdminSettingsDocumentTemplatesPage: FC = () => {
           columns={DOCUMENT_TEMPLATES_TABLE_COLUMNS}
           setOffset={setOffset}
           offset={offset}
-          fetchMore={fetchMore}
+          onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.documentTemplateList.count}
           sorting={tableSorting}
           setSorting={setTableSorting}

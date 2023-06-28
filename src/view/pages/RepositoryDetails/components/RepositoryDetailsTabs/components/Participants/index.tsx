@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
@@ -116,7 +117,7 @@ export const Participants: FC = () => {
             offset={offset}
             pageSize={PAGE_SIZE}
             itemsCount={data.repositoryParticipantList.results.length}
-            fetchMore={fetchMore}
+            onPageChange={gqlTableFetchMore(fetchMore)}
           />
         )}
         {canWriteRepoParticipants && (

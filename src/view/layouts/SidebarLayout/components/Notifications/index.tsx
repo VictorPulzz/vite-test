@@ -76,7 +76,7 @@ export const Notifications: FC = () => {
         <NotificationsList
           notifications={data?.notificationList.results}
           addReadNotifications={addReadNotifications}
-          fetchMore={fetchMore}
+          onPageChange={fetchMore}
           nextOffset={nextOffset}
           setNextOffset={setNextOffset}
           isShowUnreadNotifications={isShowUnreadNotifications}

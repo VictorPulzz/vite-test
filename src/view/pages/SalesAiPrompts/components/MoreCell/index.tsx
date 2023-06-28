@@ -4,12 +4,11 @@ import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
 import React, { FC } from 'react';
 
-import { PropmtsListResponse } from '~/services/rtk/lead/types';
-
+import { PropmtResultType } from '../../types';
 import { CreateOrUpdatePromptModal } from '../CreateOrUpdatePromptModal';
 import { DeletePromptModal } from './components/DeletePromptModal';
 
-export const MoreCell: FC<CellContext<PropmtsListResponse, unknown>> = ({ row }) => {
+export const MoreCell: FC<CellContext<PropmtResultType, unknown>> = ({ row }) => {
   const { id, name } = row.original;
 
   const {

@@ -22,7 +22,7 @@ interface Props {
   currentNotifications: number[];
   setIsShowUnreadNotifications: React.Dispatch<React.SetStateAction<boolean>>;
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  fetchMore: (
+  onPageChange: (
     options: FetchMoreQueryOptions<any> & {
       updateQuery?: (
         previousQueryResult: any,
@@ -41,7 +41,7 @@ export const NotificationsList: FC<Props> = ({
   addReadNotifications,
   isShowUnreadNotifications,
   setIsShowUnreadNotifications,
-  fetchMore,
+  onPageChange,
   nextOffset,
   setNextOffset,
   debouncedCurrentNotifications,
@@ -66,7 +66,7 @@ export const NotificationsList: FC<Props> = ({
       if (isBottomReached) {
         try {
           setFetching(true);
-          await fetchMore({
+          await onPageChange({
             variables: {
               pagination: {
                 limit: NOTIFICATIONS_PAGE_SIZE,
@@ -96,7 +96,7 @@ export const NotificationsList: FC<Props> = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       notificationsListRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [fetchMore, isShowUnreadNotifications, nextOffset, notifications.length]);
+  }, [onPageChange, isShowUnreadNotifications, nextOffset, notifications.length]);
 
   const [readNotifications] = useUpdateNotificationsListMutation();
 

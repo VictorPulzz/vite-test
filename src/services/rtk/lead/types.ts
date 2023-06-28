@@ -1,7 +1,12 @@
-export interface LeadListResponse {
-  id: string;
-  name: Nullable<string>;
-  createdAt: Nullable<string>;
+import { PaginationInput } from '~/services/gql/__generated__/globalTypes';
+
+export interface LeadsListRequest extends PaginationInput {
+  search?: string;
+}
+
+export interface LeadsListResponse {
+  total: number;
+  items: { id: string; name: Nullable<string>; createdAt: Nullable<string> }[];
 }
 
 export interface LeadDetailsResponse {
@@ -15,6 +20,7 @@ export interface CreateLeadRequest {
   name: string;
   about: string;
 }
+
 export interface MessagesResponse {
   id: string;
   leadId: string;
@@ -28,10 +34,13 @@ export interface CreateMessageRequest {
   promptText: string;
 }
 
+export interface PropmtsListRequest extends LeadsListRequest {
+  showAll?: boolean;
+}
+
 export interface PropmtsListResponse {
-  id: string;
-  name: string;
-  promptText: string;
+  total: number;
+  items: { id: string; name: string; promptText: string }[];
 }
 
 export interface CreateOrUpdatePromptRequest {
@@ -40,4 +49,8 @@ export interface CreateOrUpdatePromptRequest {
   promptText: string;
 }
 
-export interface PropmtInfoResponse extends PropmtsListResponse {}
+export interface PropmtInfoResponse {
+  id: string;
+  name: string;
+  promptText: string;
+}

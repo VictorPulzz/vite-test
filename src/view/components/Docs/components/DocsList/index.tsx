@@ -1,4 +1,3 @@
-import { FetchMoreQueryOptions } from '@apollo/client';
 import { useListQueryParams } from '@appello/web-ui';
 import { Pagination } from '@appello/web-ui';
 import clsx from 'clsx';
@@ -16,10 +15,10 @@ import { DocumentMenu } from '../DocumentMenu';
 interface Props {
   type: DocsType;
   data: DocsListType;
-  fetchMore: (options: FetchMoreQueryOptions<DocsListType>) => Promise<unknown>;
+  onPageChange: (options: { limit: number; offset: number }) => Promise<unknown>;
 }
 
-export const DocsList: FC<Props> = ({ type, data, fetchMore }) => {
+export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
   const { offset, setOffset } = useListQueryParams<DocumentFilter>();
 
   const hasPagination = data && data.count > PAGE_SIZE;
@@ -73,7 +72,7 @@ export const DocsList: FC<Props> = ({ type, data, fetchMore }) => {
             totalCount={data.count}
             offset={offset}
             itemsCount={data.results.length}
-            fetchMore={fetchMore}
+            onPageChange={onPageChange}
             pageSize={PAGE_SIZE}
           />
         )}

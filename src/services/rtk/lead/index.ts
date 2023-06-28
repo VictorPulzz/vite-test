@@ -6,9 +6,11 @@ import {
   CreateMessageRequest,
   CreateOrUpdatePromptRequest,
   LeadDetailsResponse,
-  LeadListResponse,
+  LeadsListRequest,
+  LeadsListResponse,
   MessagesResponse,
   PropmtInfoResponse,
+  PropmtsListRequest,
   PropmtsListResponse,
 } from '~/services/rtk/lead/types';
 
@@ -19,8 +21,9 @@ export const salesAiApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: SALESAI_API_URL }),
   tagTypes: [cacheTags.SALES_AI_LEAD_MESSAGES],
   endpoints: builder => ({
-    getLeads: builder.query<LeadListResponse[], void>({
-      query: () => '/leads/',
+    getLeads: builder.query<LeadsListResponse, LeadsListRequest>({
+      query: ({ limit, offset, search }) =>
+        `/leads/?search=${search}&limit=${limit}&offset=${offset}`,
       providesTags: [cacheTags.SALES_AI_LEADS],
     }),
 
@@ -51,8 +54,9 @@ export const salesAiApi = createApi({
       invalidatesTags: [cacheTags.SALES_AI_LEAD_MESSAGES],
     }),
 
-    getPrompts: builder.query<PropmtsListResponse[], void>({
-      query: () => '/prompts',
+    getPrompts: builder.query<PropmtsListResponse, PropmtsListRequest>({
+      query: ({ limit, offset, search, showAll }) =>
+        showAll ? '/prompts' : `/prompts?search=${search}&limit=${limit}&offset=${offset}`,
       providesTags: [cacheTags.SALES_AI_PROMPTS],
     }),
 

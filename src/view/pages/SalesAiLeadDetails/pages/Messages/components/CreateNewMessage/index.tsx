@@ -20,18 +20,20 @@ export const CreateNewMessageSection: FC = () => {
 
   const { data: lead } = useGetLeadQuery(leadId);
 
-  const { data } = useGetPromptsQuery();
+  const { data } = useGetPromptsQuery({
+    showAll: true,
+  });
 
   const promptIdField = form.watch('promptId');
 
   const promptById = useMemo(
-    () => data?.find(prompt => prompt.id === promptIdField),
+    () => data?.items.find(prompt => prompt.id === promptIdField),
     [data, promptIdField],
   );
 
   useEffect(() => {
     if (data) {
-      form.setValue('promptId', data[0].id);
+      form.setValue('promptId', data.items[0].id);
     }
   }, [data, form]);
 
@@ -41,7 +43,7 @@ export const CreateNewMessageSection: FC = () => {
     }
   }, [form, lead?.about, promptById]);
 
-  const promptTemplateOptions = useSelectOptions(data, {
+  const promptTemplateOptions = useSelectOptions(data?.items, {
     value: 'id',
     label: 'name',
   });

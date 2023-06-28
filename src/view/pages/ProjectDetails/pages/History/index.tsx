@@ -9,6 +9,7 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import { LogFilter } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { useFetchHistoryLogsQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
@@ -72,7 +73,7 @@ export const History: FC = () => {
             columns={historyTableColumns}
             setOffset={setOffset}
             offset={offset}
-            fetchMore={fetchMore}
+            onPageChange={gqlTableFetchMore(fetchMore)}
             totalCount={tableData.logList.count}
           />
         )}

@@ -11,6 +11,7 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
+import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -91,7 +92,7 @@ export const RepositoriesPage: FC = () => {
           columns={repositoriesTableColumns}
           setOffset={setOffset}
           offset={offset}
-          fetchMore={fetchMore}
+          onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.repositoryList.count}
         />
       )}
