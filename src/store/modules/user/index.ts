@@ -2,6 +2,7 @@ import { UserAuth } from '@appello/common/lib/types';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { UserProfileModel } from '~/models/user';
+import { gqlClient } from '~/services/gql';
 import { resetStore } from '~/store/modules/app';
 
 import { UserState } from './types';
@@ -26,6 +27,7 @@ const userSlice = createSlice({
 
 export const signOut = createAsyncThunk(`${userSlice.name}/signOut`, async (_, { dispatch }) => {
   dispatch(resetStore());
+  await gqlClient.resetStore();
 });
 
 export const userReducer = userSlice.reducer;
