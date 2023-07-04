@@ -31,11 +31,6 @@ import { Participants } from '~/view/pages/RepositoryDetails/components/Reposito
 import { RequestsPage } from '~/view/pages/Requests';
 import { ResetPasswordPage } from '~/view/pages/ResetPassword';
 import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
-import { SalesAiLeadDetailsPage } from '~/view/pages/SalesAiLeadDetails';
-import { About } from '~/view/pages/SalesAiLeadDetails/pages/About';
-import { Messages } from '~/view/pages/SalesAiLeadDetails/pages/Messages';
-import { SalesAiLeadsPage } from '~/view/pages/SalesAiLeads';
-import { SalesAiPromptsPage } from '~/view/pages/SalesAiPrompts';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
@@ -84,8 +79,6 @@ export const Router: FC = () => {
 
   const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
   const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
-
-  const canReadLeads = useHasAccess(Permission.READ_LEADS);
 
   const protectedRoutes: RouteObject[] = [
     {
@@ -271,29 +264,6 @@ export const Router: FC = () => {
     {
       path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
       element: canWriteAdminSettings ? <AdminSettingsDocumentTemplatesPage /> : <NoAccessPage />,
-    },
-    {
-      path: ROUTES.SALES_AI_LEADS,
-      element: canReadLeads ? <SalesAiLeadsPage /> : <NoAccessPage />,
-    },
-    {
-      path: ROUTES.SALES_AI_PROMPTS,
-      element: canReadLeads ? <SalesAiPromptsPage /> : <NoAccessPage />,
-    },
-    {
-      path: ROUTES.SALES_AI_LEAD_DETAILS,
-      element: canReadLeads ? <SalesAiLeadDetailsPage /> : <NoAccessPage />,
-      children: [
-        {
-          index: true,
-          element: <About />,
-        },
-        {
-          path: ROUTES.SALES_AI_LEAD_MESSAGES,
-          index: true,
-          element: <Messages />,
-        },
-      ],
     },
   ];
 

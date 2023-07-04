@@ -1,11 +1,16 @@
 import { SidebarItem } from '@appello/web-ui';
 import { useMemo } from 'react';
 
+import { SALES_AI_URL } from '~/constants/env';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
+import { useAppSelector } from '~/store/hooks';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
 export function useSidebarItems(): SidebarItem[] {
+  const auth = useAppSelector(state => state.user.auth);
+  const SALES_AI_LINK = `${SALES_AI_URL}?access=${auth?.access}&refresh=${auth?.refresh}`;
+
   const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
   const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
   const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
@@ -25,9 +30,10 @@ export function useSidebarItems(): SidebarItem[] {
         !canReadReposList && ROUTES.REPOSITORIES,
         !canWritePermissions && ROUTES.ROLES_AND_PERMISSIONS,
         !canWriteAdminSettings && ROUTES.ADMIN_SETTINGS,
-        !canReadLeads && ROUTES.SALES_AI_LEADS,
+        !canReadLeads && SALES_AI_LINK,
       ].filter(Boolean),
     [
+      SALES_AI_LINK,
       canReadDocuments,
       canReadLeads,
       canReadProjectsList,
@@ -108,20 +114,10 @@ export function useSidebarItems(): SidebarItem[] {
       {
         title: 'Sales AI',
         icon: 'ai',
-        link: ROUTES.SALES_AI_LEADS,
-        items: [
-          {
-            title: 'Leads',
-            link: ROUTES.SALES_AI_LEADS,
-          },
-          {
-            title: 'Prompts',
-            link: ROUTES.SALES_AI_PROMPTS,
-          },
-        ],
+        link: SALES_AI_LINK,
       },
     ],
-    [],
+    [SALES_AI_LINK],
   );
 
   return useMemo(

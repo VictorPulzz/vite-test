@@ -41,9 +41,4 @@ export const ROUTES = {
 
   ADMIN_SETTINGS: '/admin-settings',
   ADMIN_SETTINGS_DOCUMENT_TEMPLATES: '/admin-settings/document-templates',
-
-  SALES_AI_LEADS: '/leads',
-  SALES_AI_PROMPTS: '/leads/prompts',
-  SALES_AI_LEAD_DETAILS: '/leads/:id',
-  SALES_AI_LEAD_MESSAGES: '/leads/:id/messages',
 }; /* as const satisfies Record<string, string> */ // todo: uncomment and fix related errors asap
