@@ -13,7 +13,7 @@ export type FetchUserDetailsQuery = {
     id: number;
     fullName: string;
     firstName: string;
-    lastName: string;
+    lastName?: string | null;
     email: string;
     isActive?: boolean | null;
     contractType?: Types.ContractChoice | null;

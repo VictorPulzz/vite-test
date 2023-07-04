@@ -109,6 +109,10 @@ export function useSidebarItems(): SidebarItem[] {
             title: 'Document templates',
             link: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
           },
+          {
+            title: 'Projects',
+            link: ROUTES.ADMIN_SETTINGS_PROJECTS,
+          },
         ],
       },
       {

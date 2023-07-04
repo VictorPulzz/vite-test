@@ -383,6 +383,10 @@ export type Mutation = {
   projectEnvironmentCreateUpdate: ProjectEnvironmentType;
   /** Project delete environment */
   projectEnvironmentDelete: MessageType;
+  /** Add or update project initial user */
+  projectInitialUserCreate: ProjectInitialUserType;
+  /** Delete project initial user */
+  projectInitialUserDelete: MessageType;
   /** Project create or update integration */
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Project delete integration */
@@ -409,6 +413,8 @@ export type Mutation = {
   requestCreate: RequestType;
   /** Update request */
   requestUpdate: RequestType;
+  /** Resend invitation */
+  resendInvitation: MessageType;
   /** Reset password */
   resetPassword: MessageType;
   /** Repository's secrets creation/updating */
@@ -547,6 +553,14 @@ export type MutationProjectEnvironmentDeleteArgs = {
   data: IdInput;
 };
 
+export type MutationProjectInitialUserCreateArgs = {
+  data: ProjectInitialUserId;
+};
+
+export type MutationProjectInitialUserDeleteArgs = {
+  data: ProjectInitialUserId;
+};
+
 export type MutationProjectIntegrationCreateUpdateArgs = {
   data: ProjectIntegrationInput;
 };
@@ -599,6 +613,10 @@ export type MutationRequestUpdateArgs = {
   data: RequestUpdateInput;
 };
 
+export type MutationResendInvitationArgs = {
+  data: ResendInviteInput;
+};
+
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput;
 };
@@ -608,7 +626,7 @@ export type MutationSecretsAddUpdateArgs = {
 };
 
 export type MutationSignupArgs = {
-  data: LoginInput;
+  data: UserCreateInput;
 };
 
 export type MutationSlackTemplateCreateArgs = {
@@ -719,11 +737,6 @@ export type PlatformTypePagination = {
   results: Array<PlatformType>;
 };
 
-export type PorjectIntegrationsPage = {
-  gitGroupId?: Maybe<Scalars['String']>;
-  slackChannels?: Maybe<Array<ProjectSlackType>>;
-};
-
 export type ProfileInput = {
   address?: InputMaybe<Scalars['String']>;
   birthDate?: InputMaybe<Scalars['Date']>;
@@ -741,7 +754,7 @@ export type ProfileType = {
   firstName: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
-  lastName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
   photoThumbnail?: Maybe<FileType>;
@@ -810,6 +823,32 @@ export type ProjectGlossaryTypePagination = {
   results: Array<ProjectGlossaryType>;
 };
 
+export type ProjectInitialUserId = {
+  userId: Scalars['Int'];
+};
+
+export enum ProjectInitialUserSort {
+  DEPARTMENT = 'department',
+  EMAIL = 'email',
+  FULLNAME = 'fullName',
+}
+
+export type ProjectInitialUserSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: ProjectInitialUserSort;
+};
+
+export type ProjectInitialUserType = {
+  user: ProfileType;
+};
+
+export type ProjectInitialUserTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<ProjectInitialUserType>;
+};
+
 export type ProjectIntegrationInput = {
   credential?: InputMaybe<IntegrationCredentialsInput>;
   environment?: InputMaybe<ProjectEnvironmentChoice>;
@@ -826,6 +865,15 @@ export type ProjectIntegrationType = {
   keys?: Maybe<Array<IntegrationKeyType>>;
   name: Scalars['String'];
   projectId: Scalars['Int'];
+};
+
+export type ProjectIntegrationsPage = {
+  gitGroupId?: Maybe<Scalars['String']>;
+  slackChannels?: Maybe<Array<ProjectSlackType>>;
+};
+
+export type ProjectIntegrationsPageFilter = {
+  slackCreatedOnly?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectMemberInput = {
@@ -996,10 +1044,12 @@ export type Query = {
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting glossary list of projects */
   projectGlossaryList: ProjectGlossaryTypePagination;
+  /** Getting project initial user list */
+  projectInitialUserList: ProjectInitialUserTypePagination;
   /** Getting integrations for project by id */
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting project integration page by id */
-  projectIntegrationPage: PorjectIntegrationsPage;
+  projectIntegrationPage: ProjectIntegrationsPage;
   /** Getting history for project by id */
   projectLogList: LogTypePagination;
   /** Getting members for project by id */
@@ -1125,13 +1175,18 @@ export type QueryProjectGlossaryListArgs = {
   pagination?: InputMaybe<PaginationInput>;
 };
 
+export type QueryProjectInitialUserListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<Array<ProjectInitialUserSortFieldInput>>;
+};
+
 export type QueryProjectIntegrationListArgs = {
   data: IdInput;
 };
 
 export type QueryProjectIntegrationPageArgs = {
   data: IdInput;
-  slackCreatedOnly?: Scalars['Boolean'];
+  filters?: InputMaybe<ProjectIntegrationsPageFilter>;
 };
 
 export type QueryProjectLogListArgs = {
@@ -1436,6 +1491,10 @@ export type RequestUpdateInput = {
   status?: InputMaybe<RequestStatusChoice>;
 };
 
+export type ResendInviteInput = {
+  userId: Scalars['Int'];
+};
+
 export type ResetPasswordInput = {
   password: Scalars['String'];
   token: Scalars['String'];
@@ -1475,6 +1534,12 @@ export type TechnologyTypePagination = {
   limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<TechnologyType>;
+};
+
+export type UserCreateInput = {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type UserFilter = {
@@ -1523,9 +1588,10 @@ export type UserType = {
   firstName: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
+  inviteAccepted: Scalars['Boolean'];
   isActive?: Maybe<Scalars['Boolean']>;
   isSuperuser?: Maybe<Scalars['Boolean']>;
-  lastName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
