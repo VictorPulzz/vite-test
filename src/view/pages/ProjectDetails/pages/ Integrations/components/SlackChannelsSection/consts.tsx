@@ -1,4 +1,5 @@
 import { createColumnHelper } from '@tanstack/table-core';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
 
@@ -9,13 +10,19 @@ import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateS
 
 const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
 
+const DELETED_CHANNEL_TEMPLATE_TITLE = 'Deleted channel type';
+
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
   columnHelper.accessor('template.label', {
     id: 'type.label',
     header: 'Type',
     cell: props => {
       const isCreatedSlackChannel = props.row.original.channelId;
-      return <span className={`${!isCreatedSlackChannel && 'text-red'}`}>{props.getValue()}</span>;
+      return (
+        <span className={clsx(!props.getValue() && 'italic', !isCreatedSlackChannel && 'text-red')}>
+          {props.getValue() ?? DELETED_CHANNEL_TEMPLATE_TITLE}
+        </span>
+      );
     },
   }),
   columnHelper.accessor('channelId', {
