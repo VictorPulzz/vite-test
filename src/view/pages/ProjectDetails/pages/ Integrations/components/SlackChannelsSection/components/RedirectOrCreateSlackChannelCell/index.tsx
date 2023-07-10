@@ -50,7 +50,6 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
       onClick={handleRedirectOrCreateSlackChannelBtn}
       variant={channelId ? ButtonVariant.SECONDARY : ButtonVariant.PRIMARY}
       label={channelId ? 'Slack' : 'Create'}
-      className="w-[100px]"
       isLoading={loading}
     />
   );

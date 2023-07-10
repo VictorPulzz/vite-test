@@ -56,6 +56,8 @@ export type FetchProjectMembersQuery = {
     currentTeam: Array<{
       startDate: string;
       endDate?: string | null;
+      currentTeam: boolean;
+      slackChannels: Array<number>;
       user: {
         id: number;
         fullName: string;
@@ -68,6 +70,8 @@ export type FetchProjectMembersQuery = {
     otherContrubutors: Array<{
       startDate: string;
       endDate?: string | null;
+      currentTeam: boolean;
+      slackChannels: Array<number>;
       user: {
         id: number;
         fullName: string;
@@ -87,6 +91,12 @@ export type AddProjectMemberMutationVariables = Types.Exact<{
 export type AddProjectMemberMutation = {
   projectAddMember: { currentTeam: boolean; project: { name: string }; user: { fullName: string } };
 };
+
+export type InviteUserToSlackMutationVariables = Types.Exact<{
+  input: Types.ProjectMemberUpdateInput;
+}>;
+
+export type InviteUserToSlackMutation = { projectUpdateMember: { currentTeam: boolean } };
 
 export type RemoveProjectMemberMutationVariables = Types.Exact<{
   input: Types.ProjectMemberInput;
@@ -275,18 +285,30 @@ export type FetchAllDocumentCategoriesQuery = {
 
 export type FetchProjectIntegrationsQueryVariables = Types.Exact<{
   data: Types.IdInput;
+  filters?: Types.InputMaybe<Types.ProjectIntegrationsPageFilter>;
 }>;
 
 export type FetchProjectIntegrationsQuery = {
   projectIntegrationPage: {
     gitGroupId?: string | null;
     slackChannels?: Array<{
+      id: number;
       channelId?: string | null;
       createdAt: string;
       channelUrl?: string | null;
+      templateName?: string | null;
       template?: { label?: string | null; prefix: string } | null;
     }> | null;
   };
+};
+
+export type FetchCreatedProjectSlackChannelsQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+  filters?: Types.InputMaybe<Types.ProjectIntegrationsPageFilter>;
+}>;
+
+export type FetchCreatedProjectSlackChannelsQuery = {
+  projectIntegrationPage: { slackChannels?: Array<{ id: number }> | null };
 };
 
 export type ConnectProjectToGitMutationVariables = Types.Exact<{
@@ -455,6 +477,8 @@ export const FetchProjectMembersDocument = gql`
           email
           slackUrl
         }
+        currentTeam
+        slackChannels
       }
       otherContrubutors {
         startDate
@@ -471,6 +495,8 @@ export const FetchProjectMembersDocument = gql`
           email
           slackUrl
         }
+        currentTeam
+        slackChannels
       }
     }
   }
@@ -573,6 +599,53 @@ export type AddProjectMemberMutationResult = Apollo.MutationResult<AddProjectMem
 export type AddProjectMemberMutationOptions = Apollo.BaseMutationOptions<
   AddProjectMemberMutation,
   AddProjectMemberMutationVariables
+>;
+export const InviteUserToSlackDocument = gql`
+  mutation InviteUserToSlack($input: ProjectMemberUpdateInput!) {
+    projectUpdateMember(data: $input) {
+      currentTeam
+    }
+  }
+`;
+export type InviteUserToSlackMutationFn = Apollo.MutationFunction<
+  InviteUserToSlackMutation,
+  InviteUserToSlackMutationVariables
+>;
+
+/**
+ * __useInviteUserToSlackMutation__
+ *
+ * To run a mutation, you first call `useInviteUserToSlackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteUserToSlackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteUserToSlackMutation, { data, loading, error }] = useInviteUserToSlackMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInviteUserToSlackMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InviteUserToSlackMutation,
+    InviteUserToSlackMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<InviteUserToSlackMutation, InviteUserToSlackMutationVariables>(
+    InviteUserToSlackDocument,
+    options,
+  );
+}
+export type InviteUserToSlackMutationHookResult = ReturnType<typeof useInviteUserToSlackMutation>;
+export type InviteUserToSlackMutationResult = Apollo.MutationResult<InviteUserToSlackMutation>;
+export type InviteUserToSlackMutationOptions = Apollo.BaseMutationOptions<
+  InviteUserToSlackMutation,
+  InviteUserToSlackMutationVariables
 >;
 export const RemoveProjectMemberDocument = gql`
   mutation RemoveProjectMember($input: ProjectMemberInput!) {
@@ -1430,10 +1503,11 @@ export type FetchAllDocumentCategoriesQueryResult = Apollo.QueryResult<
   FetchAllDocumentCategoriesQueryVariables
 >;
 export const FetchProjectIntegrationsDocument = gql`
-  query FetchProjectIntegrations($data: IDInput!) {
-    projectIntegrationPage(data: $data) {
+  query FetchProjectIntegrations($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+    projectIntegrationPage(data: $data, filters: $filters) {
       gitGroupId
       slackChannels {
+        id
         template {
           label
           prefix
@@ -1441,6 +1515,7 @@ export const FetchProjectIntegrationsDocument = gql`
         channelId
         createdAt
         channelUrl
+        templateName
       }
     }
   }
@@ -1459,6 +1534,7 @@ export const FetchProjectIntegrationsDocument = gql`
  * const { data, loading, error } = useFetchProjectIntegrationsQuery({
  *   variables: {
  *      data: // value for 'data'
+ *      filters: // value for 'filters'
  *   },
  * });
  */
@@ -1495,6 +1571,67 @@ export type FetchProjectIntegrationsLazyQueryHookResult = ReturnType<
 export type FetchProjectIntegrationsQueryResult = Apollo.QueryResult<
   FetchProjectIntegrationsQuery,
   FetchProjectIntegrationsQueryVariables
+>;
+export const FetchCreatedProjectSlackChannelsDocument = gql`
+  query FetchCreatedProjectSlackChannels($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+    projectIntegrationPage(data: $data, filters: $filters) {
+      slackChannels {
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchCreatedProjectSlackChannelsQuery__
+ *
+ * To run a query within a React component, call `useFetchCreatedProjectSlackChannelsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchCreatedProjectSlackChannelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchCreatedProjectSlackChannelsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useFetchCreatedProjectSlackChannelsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchCreatedProjectSlackChannelsQuery,
+    FetchCreatedProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchCreatedProjectSlackChannelsQuery,
+    FetchCreatedProjectSlackChannelsQueryVariables
+  >(FetchCreatedProjectSlackChannelsDocument, options);
+}
+export function useFetchCreatedProjectSlackChannelsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchCreatedProjectSlackChannelsQuery,
+    FetchCreatedProjectSlackChannelsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchCreatedProjectSlackChannelsQuery,
+    FetchCreatedProjectSlackChannelsQueryVariables
+  >(FetchCreatedProjectSlackChannelsDocument, options);
+}
+export type FetchCreatedProjectSlackChannelsQueryHookResult = ReturnType<
+  typeof useFetchCreatedProjectSlackChannelsQuery
+>;
+export type FetchCreatedProjectSlackChannelsLazyQueryHookResult = ReturnType<
+  typeof useFetchCreatedProjectSlackChannelsLazyQuery
+>;
+export type FetchCreatedProjectSlackChannelsQueryResult = Apollo.QueryResult<
+  FetchCreatedProjectSlackChannelsQuery,
+  FetchCreatedProjectSlackChannelsQueryVariables
 >;
 export const ConnectProjectToGitDocument = gql`
   mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {

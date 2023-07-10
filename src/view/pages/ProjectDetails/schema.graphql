@@ -60,6 +60,8 @@ query FetchProjectMembers($data: IDInput!) {
         email
         slackUrl
       }
+      currentTeam
+      slackChannels
     }
     otherContrubutors {
       startDate
@@ -76,6 +78,8 @@ query FetchProjectMembers($data: IDInput!) {
         email
         slackUrl
       }
+      currentTeam
+      slackChannels
     }
   }
 }
@@ -89,6 +93,12 @@ mutation AddProjectMember($input: ProjectMemberInput!) {
     user {
       fullName
     }
+  }
+}
+
+mutation InviteUserToSlack($input: ProjectMemberUpdateInput!) {
+  projectUpdateMember(data: $input) {
+    currentTeam
   }
 }
 
@@ -266,10 +276,11 @@ query FetchAllDocumentCategories {
   }
 }
 
-query FetchProjectIntegrations($data: IDInput!) {
-  projectIntegrationPage(data: $data) {
+query FetchProjectIntegrations($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+  projectIntegrationPage(data: $data, filters: $filters) {
     gitGroupId
     slackChannels {
+      id
       template {
         label
         prefix
@@ -277,6 +288,15 @@ query FetchProjectIntegrations($data: IDInput!) {
       channelId
       createdAt
       channelUrl
+      templateName
+    }
+  }
+}
+
+query FetchCreatedProjectSlackChannels($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+  projectIntegrationPage(data: $data, filters: $filters) {
+    slackChannels {
+      id
     }
   }
 }

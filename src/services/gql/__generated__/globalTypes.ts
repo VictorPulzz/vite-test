@@ -582,7 +582,7 @@ export type MutationProjectUpdateArgs = {
 };
 
 export type MutationProjectUpdateMemberArgs = {
-  data: ProjectMemberInput;
+  data: ProjectMemberUpdateInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -904,6 +904,13 @@ export type ProjectMemberTypePagination = {
   results: Array<ProjectMemberType>;
 };
 
+export type ProjectMemberUpdateInput = {
+  currentTeam?: InputMaybe<Scalars['Boolean']>;
+  projectId: Scalars['Int'];
+  slackChannels?: InputMaybe<Array<Scalars['Int']>>;
+  userId: Scalars['Int'];
+};
+
 export enum ProjectPhaseChoice {
   DESIGN = 'DESIGN',
   DEVELOPMENT = 'DEVELOPMENT',
@@ -939,6 +946,7 @@ export type ProjectSlackType = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   template?: Maybe<SlackChannelTemplateType>;
+  templateName?: Maybe<Scalars['String']>;
 };
 
 export type ProjectStatusType = {
@@ -1265,6 +1273,7 @@ export type QueryUserDetailsArgs = {
 export type QueryUserGlossaryListArgs = {
   filters?: InputMaybe<UserFilter>;
   pagination?: InputMaybe<PaginationInput>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUserProjectsArgs = {
@@ -1549,6 +1558,7 @@ export type UserFilter = {
 };
 
 export type UserGlossaryType = {
+  email: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
   photo?: Maybe<FileType>;

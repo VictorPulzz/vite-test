@@ -469,7 +469,7 @@ type Mutation {
   """
   Project update member
   """
-  projectUpdateMember(data: ProjectMemberInput!): ProjectMemberType!
+  projectUpdateMember(data: ProjectMemberUpdateInput!): ProjectMemberType!
   """
   Repository creation
   """
@@ -795,6 +795,13 @@ type ProjectMemberTypePagination {
   results: [ProjectMemberType!]!
 }
 
+input ProjectMemberUpdateInput {
+  currentTeam: Boolean
+  projectId: Int!
+  slackChannels: [Int!]
+  userId: Int!
+}
+
 enum ProjectPhaseChoice {
   DESIGN
   DEVELOPMENT
@@ -830,6 +837,7 @@ type ProjectSlackType {
   createdAt: DateTime!
   id: Int!
   template: SlackChannelTemplateType
+  templateName: String
 }
 
 type ProjectStatusType {
@@ -1121,6 +1129,7 @@ type Query {
   userGlossaryList(
     filters: UserFilter = null
     pagination: PaginationInput = null
+    search: String = null
   ): UserGlossaryTypePagination!
   """
   Getting project by user
@@ -1412,6 +1421,7 @@ input UserFilter {
 }
 
 type UserGlossaryType {
+  email: String!
   fullName: String!
   id: Int!
   photo: FileType

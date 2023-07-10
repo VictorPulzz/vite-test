@@ -6,11 +6,10 @@ import React from 'react';
 import { DateFormat } from '~/constants/dates';
 
 import { ProjectSlackChannelResultType } from '../../../../types';
+import { MoreCell } from './components/MoreCell';
 import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateSlackChannelCell';
 
 const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
-
-const DELETED_CHANNEL_TEMPLATE_TITLE = 'Deleted channel type';
 
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
   columnHelper.accessor('template.label', {
@@ -18,9 +17,10 @@ export const SLACK_CHANNELS_TABLE_COLUMNS = [
     header: 'Type',
     cell: props => {
       const isCreatedSlackChannel = props.row.original.channelId;
+      const templateName = props.row.original.templateName;
       return (
-        <span className={clsx(!props.getValue() && 'italic', !isCreatedSlackChannel && 'text-red')}>
-          {props.getValue() ?? DELETED_CHANNEL_TEMPLATE_TITLE}
+        <span className={clsx(!isCreatedSlackChannel && 'text-red')}>
+          {props.getValue() ?? templateName}
         </span>
       );
     },
@@ -43,11 +43,18 @@ export const SLACK_CHANNELS_TABLE_COLUMNS = [
     },
   }),
   columnHelper.group({
-    id: 'more',
+    id: 'actions',
     header: 'Actions',
     cell: ctx => <RedirectOrCreateSlackChannelCell ctx={ctx} />,
     meta: {
       className: 'w-[160px]',
+    },
+  }),
+  columnHelper.group({
+    id: 'more',
+    cell: MoreCell,
+    meta: {
+      className: 'w-0',
     },
   }),
 ];

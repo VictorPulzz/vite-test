@@ -1,8 +1,8 @@
 import { Button, ButtonVariant, TextLink } from '@appello/web-ui';
 import { ColumnDef, createColumnHelper } from '@tanstack/table-core';
 import { format } from 'date-fns';
-import React from 'react';
-import { generatePath } from 'react-router-dom';
+import React, { useMemo } from 'react';
+import { generatePath, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { Permission } from '~/constants/permissions';
@@ -11,6 +11,7 @@ import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 
+import { useFetchCreatedProjectSlackChannelsQuery } from '../../../__generated__/schema';
 import { ProjectMemberResultType } from '../../../types';
 import { MoreCell } from '../components/MoreCell';
 
@@ -24,8 +25,18 @@ export enum TeamTableType {
 export function useProjectTeamTableColumns(
   type: TeamTableType,
 ): ColumnDef<ProjectMemberResultType, string>[] {
+  const params = useParams();
+  const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
+
   const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
   const canWriteProjectTeam = useHasAccess(Permission.WRITE_PROJECT_TEAM);
+
+  const { data } = useFetchCreatedProjectSlackChannelsQuery({
+    variables: {
+      data: { id: projectId },
+      filters: { slackCreatedOnly: true },
+    },
+  });
 
   return [
     columnHelper.accessor('user.fullName', {
@@ -94,7 +105,13 @@ export function useProjectTeamTableColumns(
     columnHelper.group({
       id: 'more',
       enableHiding: !canWriteProjectTeam,
-      cell: ctx => <MoreCell isCurrentTeam={type === TeamTableType.CURRENT_TEAM} ctx={ctx} />,
+      cell: ctx => (
+        <MoreCell
+          isCurrentTeam={type === TeamTableType.CURRENT_TEAM}
+          ctx={ctx}
+          createdProjectSlackChannelsCount={data?.projectIntegrationPage.slackChannels?.length ?? 0}
+        />
+      ),
       meta: {
         className: 'w-0',
       },
