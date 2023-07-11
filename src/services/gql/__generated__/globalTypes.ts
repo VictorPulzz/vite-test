@@ -1411,6 +1411,7 @@ export type RepositoryUpdateInput = {
   gitSlug?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+  technologies?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export type RequestCreateInput = {

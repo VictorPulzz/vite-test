@@ -1272,19 +1272,20 @@ input RepositoryUpdateInput {
   gitSlug: String = null
   id: Int = null
   name: String = null
+  technologies: [Int!]
 }
 
 input RequestCreateInput {
-  accessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice
   assignedRoleId: Int!
-  assignedToId: Int = null
-  description: String = null
-  dueDate: Date = null
-  environment: ProjectEnvironmentChoice = null
-  integrationName: String = null
+  assignedToId: Int
+  description: String
+  dueDate: Date
+  environment: ProjectEnvironmentChoice
+  integrationName: String
   projectId: Int!
-  repositoryId: Int = null
-  repositoryType: RepositoryTypeChoice = null
+  repositoryId: Int
+  repositoryType: RepositoryTypeChoice
   technologies: [Int!]
   type: RequestTypeChoice!
 }
@@ -1354,11 +1355,11 @@ type RequestTypePagination {
 }
 
 input RequestUpdateInput {
-  assignedRoleId: Int = null
-  assignedToId: Int = null
-  dueDate: Date = null
+  assignedRoleId: Int
+  assignedToId: Int
+  dueDate: Date
   id: Int!
-  status: RequestStatusChoice = null
+  status: RequestStatusChoice
 }
 
 input ResendInviteInput {

@@ -19,6 +19,7 @@ export type FetchUserDetailsQuery = {
     contractType?: Types.ContractChoice | null;
     birthDate?: string | null;
     address?: string | null;
+    inviteAccepted: boolean;
     photoThumbnail?: { url: string } | null;
     department?: { id: number; name: string } | null;
     role?: { id: number; name: string } | null;
@@ -57,6 +58,12 @@ export type ConnectUserToBitbucketMutation = {
   userConnectBitbucket: { bitbucketId?: string | null };
 };
 
+export type ResendInviteMutationVariables = Types.Exact<{
+  input: Types.ResendInviteInput;
+}>;
+
+export type ResendInviteMutation = { resendInvitation: { message: string } };
+
 export const FetchUserDetailsDocument = gql`
   query FetchUserDetails($input: IDInput!) {
     userDetails(data: $input) {
@@ -80,6 +87,7 @@ export const FetchUserDetailsDocument = gql`
       contractType
       birthDate
       address
+      inviteAccepted
     }
   }
 `;
@@ -303,4 +311,48 @@ export type ConnectUserToBitbucketMutationResult =
 export type ConnectUserToBitbucketMutationOptions = Apollo.BaseMutationOptions<
   ConnectUserToBitbucketMutation,
   ConnectUserToBitbucketMutationVariables
+>;
+export const ResendInviteDocument = gql`
+  mutation ResendInvite($input: ResendInviteInput!) {
+    resendInvitation(data: $input) {
+      message
+    }
+  }
+`;
+export type ResendInviteMutationFn = Apollo.MutationFunction<
+  ResendInviteMutation,
+  ResendInviteMutationVariables
+>;
+
+/**
+ * __useResendInviteMutation__
+ *
+ * To run a mutation, you first call `useResendInviteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useResendInviteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [resendInviteMutation, { data, loading, error }] = useResendInviteMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useResendInviteMutation(
+  baseOptions?: Apollo.MutationHookOptions<ResendInviteMutation, ResendInviteMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<ResendInviteMutation, ResendInviteMutationVariables>(
+    ResendInviteDocument,
+    options,
+  );
+}
+export type ResendInviteMutationHookResult = ReturnType<typeof useResendInviteMutation>;
+export type ResendInviteMutationResult = Apollo.MutationResult<ResendInviteMutation>;
+export type ResendInviteMutationOptions = Apollo.BaseMutationOptions<
+  ResendInviteMutation,
+  ResendInviteMutationVariables
 >;
