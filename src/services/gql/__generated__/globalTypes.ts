@@ -427,6 +427,8 @@ export type Mutation = {
   slackTemplateDelete: MessageType;
   /** Update Slack channel template */
   slackTemplateUpdate: SlackChannelTemplateType;
+  /** Invite user to Slack channel */
+  slackUserInvite: MessageType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
   /** Change user status */
@@ -639,6 +641,10 @@ export type MutationSlackTemplateDeleteArgs = {
 
 export type MutationSlackTemplateUpdateArgs = {
   data: SlackChannelTemplateInput;
+};
+
+export type MutationSlackUserInviteArgs = {
+  data: SlackUserInviteInput;
 };
 
 export type MutationTokenRefreshArgs = {
@@ -1532,6 +1538,11 @@ export type SlackChannelTemplateType = {
   isPrivate?: Maybe<Scalars['Boolean']>;
   label?: Maybe<Scalars['String']>;
   prefix: Scalars['String'];
+};
+
+export type SlackUserInviteInput = {
+  slackChannel: Scalars['Int'];
+  userId: Scalars['Int'];
 };
 
 export type TechnologyType = {

@@ -323,6 +323,12 @@ export type CreateProjectSlackChannelMutation = {
   projectAddSlackChannel: { channelUrl?: string | null };
 };
 
+export type InviteUserToSlackChannelMutationVariables = Types.Exact<{
+  input: Types.SlackUserInviteInput;
+}>;
+
+export type InviteUserToSlackChannelMutation = { slackUserInvite: { message: string } };
+
 export const FetchProjectPreviewDocument = gql`
   query FetchProjectPreview($data: IDInput!) {
     projectPreview(data: $data) {
@@ -1727,4 +1733,54 @@ export type CreateProjectSlackChannelMutationResult =
 export type CreateProjectSlackChannelMutationOptions = Apollo.BaseMutationOptions<
   CreateProjectSlackChannelMutation,
   CreateProjectSlackChannelMutationVariables
+>;
+export const InviteUserToSlackChannelDocument = gql`
+  mutation InviteUserToSlackChannel($input: SlackUserInviteInput!) {
+    slackUserInvite(data: $input) {
+      message
+    }
+  }
+`;
+export type InviteUserToSlackChannelMutationFn = Apollo.MutationFunction<
+  InviteUserToSlackChannelMutation,
+  InviteUserToSlackChannelMutationVariables
+>;
+
+/**
+ * __useInviteUserToSlackChannelMutation__
+ *
+ * To run a mutation, you first call `useInviteUserToSlackChannelMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteUserToSlackChannelMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteUserToSlackChannelMutation, { data, loading, error }] = useInviteUserToSlackChannelMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useInviteUserToSlackChannelMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    InviteUserToSlackChannelMutation,
+    InviteUserToSlackChannelMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    InviteUserToSlackChannelMutation,
+    InviteUserToSlackChannelMutationVariables
+  >(InviteUserToSlackChannelDocument, options);
+}
+export type InviteUserToSlackChannelMutationHookResult = ReturnType<
+  typeof useInviteUserToSlackChannelMutation
+>;
+export type InviteUserToSlackChannelMutationResult =
+  Apollo.MutationResult<InviteUserToSlackChannelMutation>;
+export type InviteUserToSlackChannelMutationOptions = Apollo.BaseMutationOptions<
+  InviteUserToSlackChannelMutation,
+  InviteUserToSlackChannelMutationVariables
 >;

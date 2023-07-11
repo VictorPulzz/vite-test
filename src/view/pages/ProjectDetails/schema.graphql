@@ -310,3 +310,9 @@ mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
     channelUrl
   }
 }
+
+mutation InviteUserToSlackChannel($input: SlackUserInviteInput!) {
+  slackUserInvite(data: $input) {
+    message
+  }
+}

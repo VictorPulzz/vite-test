@@ -1,10 +1,9 @@
 import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
-import React, { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
-import { useParams } from 'react-router';
+import React, { Dispatch, FC, SetStateAction, useCallback } from 'react';
 
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useInviteUserToSlackMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
+import { useInviteUserToSlackChannelMutation } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { UserToSlackResultType } from './types';
 
@@ -21,10 +20,8 @@ export const UsersListItem: FC<Props> = ({
   invitedUsersIds,
   setInvitedUsersIds,
 }) => {
-  const params = useParams();
-  const projectId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
-
-  const [inviteToSlack, { loading: isLoadingInviteToSlack }] = useInviteUserToSlackMutation();
+  const [inviteToSlack, { loading: isLoadingInviteToSlack }] =
+    useInviteUserToSlackChannelMutation();
 
   const inviteUserToSlack = useCallback(
     async (userId: number) => {
@@ -32,14 +29,13 @@ export const UsersListItem: FC<Props> = ({
         variables: {
           input: {
             userId,
-            projectId,
-            slackChannels: [slackChannelId],
+            slackChannel: slackChannelId,
           },
         },
       });
       setInvitedUsersIds(state => [...state, userId]);
     },
-    [inviteToSlack, projectId, setInvitedUsersIds, slackChannelId],
+    [inviteToSlack, setInvitedUsersIds, slackChannelId],
   );
 
   return (
