@@ -61,7 +61,6 @@ query FetchProjectMembers($data: IDInput!) {
         slackUrl
       }
       currentTeam
-      slackChannels
     }
     otherContrubutors {
       startDate
@@ -79,7 +78,6 @@ query FetchProjectMembers($data: IDInput!) {
         slackUrl
       }
       currentTeam
-      slackChannels
     }
   }
 }

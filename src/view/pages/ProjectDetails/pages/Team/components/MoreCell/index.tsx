@@ -32,7 +32,7 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  const { user, slackChannels, currentTeam } = ctx.row.original;
+  const { user, currentTeam } = ctx.row.original;
 
   const [removeProjectMember] = useRemoveProjectMemberMutation();
   const [addProjectMember] = useAddProjectMemberMutation();
@@ -144,7 +144,6 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
           close={closeInviteUserToSlackModalModal}
           user={user}
           isCurrentTeam={currentTeam}
-          userSlackChannelsIds={slackChannels}
           projectId={projectId}
         />
       )}

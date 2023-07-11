@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -26,7 +26,6 @@ interface UseInviteUserToSlackFormProps {
   userId: number;
   isCurrentTeam: boolean;
   projectId: number;
-  userSlackChannelsIds: number[];
 }
 
 const defaultValues: InviteUserToSlackFormValues = {
@@ -38,17 +37,12 @@ export function useInviteUserToSlackForm({
   userId,
   isCurrentTeam,
   projectId,
-  userSlackChannelsIds,
 }: UseInviteUserToSlackFormProps): UseInviteUserToSlackReturn {
   const form = useForm<InviteUserToSlackFormValues>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
-
-  useEffect(() => {
-    form.setValue('slackChannels', userSlackChannelsIds);
-  }, [form, userSlackChannelsIds]);
 
   const [inviteUserToSlack] = useInviteUserToSlackMutation();
 

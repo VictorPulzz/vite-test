@@ -10,7 +10,6 @@ import { useInviteUserToSlackForm } from './hooks/useInviteUserToSlackForm';
 interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   user: ProjectMemberResultType['user'];
   isCurrentTeam: boolean;
-  userSlackChannelsIds: number[];
   projectId: number;
 }
 
@@ -19,7 +18,6 @@ export const InviteUserToSlackModal: FC<Props> = ({
   close,
   user,
   isCurrentTeam,
-  userSlackChannelsIds,
   projectId,
 }) => {
   const { form, handleSubmit, resetForm } = useInviteUserToSlackForm({
@@ -27,7 +25,6 @@ export const InviteUserToSlackModal: FC<Props> = ({
     userId: user.id,
     isCurrentTeam,
     projectId,
-    userSlackChannelsIds,
   });
 
   const { data, loading } = useFetchProjectIntegrationsQuery({
@@ -79,7 +76,6 @@ export const InviteUserToSlackModal: FC<Props> = ({
                 onChange={handleChangeSlackChannel}
                 value={channel.id}
                 checked={slackChannels.includes(channel.id)}
-                disabled={userSlackChannelsIds.includes(channel.id)}
               />
             </div>
           ))}

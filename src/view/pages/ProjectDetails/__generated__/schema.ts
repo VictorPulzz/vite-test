@@ -57,7 +57,6 @@ export type FetchProjectMembersQuery = {
       startDate: string;
       endDate?: string | null;
       currentTeam: boolean;
-      slackChannels: Array<number>;
       user: {
         id: number;
         fullName: string;
@@ -71,7 +70,6 @@ export type FetchProjectMembersQuery = {
       startDate: string;
       endDate?: string | null;
       currentTeam: boolean;
-      slackChannels: Array<number>;
       user: {
         id: number;
         fullName: string;
@@ -478,7 +476,6 @@ export const FetchProjectMembersDocument = gql`
           slackUrl
         }
         currentTeam
-        slackChannels
       }
       otherContrubutors {
         startDate
@@ -496,7 +493,6 @@ export const FetchProjectMembersDocument = gql`
           slackUrl
         }
         currentTeam
-        slackChannels
       }
     }
   }
