@@ -20,6 +20,9 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
   type: DocsType;
 }
 
+const UPLOAD_DOCUMENT_ACCEPT =
+  'application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, text/plain, application/pdf, image/*, .csv';
+
 export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userId, type }) => {
   const { data: documentCategories } = useFetchAllDocumentCategoriesQuery();
 
@@ -77,11 +80,7 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
             )}
             {!fileName && (
               <>
-                <FileUpload
-                  onUpload={onChange}
-                  accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint,
-text/plain, application/pdf, image/*"
-                >
+                <FileUpload onUpload={onChange} accept={UPLOAD_DOCUMENT_ACCEPT}>
                   {({ onClick }) => (
                     <Button
                       onClick={onClick}

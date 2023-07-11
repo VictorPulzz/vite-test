@@ -28,7 +28,6 @@ export const AddOrEditModal: FC<Props> = ({ isOpen, close, isEditMode, clientTea
       contentClassName="w-5/9"
       title={`${isEditMode ? 'Edit' : 'Add'} client team member`}
       onAfterClose={resetForm}
-      shouldCloseOnOverlayClick={false}
     >
       <InlineFields>
         <TextField name="fullName" control={form.control} label="Name" required />
