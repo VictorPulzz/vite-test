@@ -7,12 +7,12 @@ import toast from 'react-hot-toast';
 
 import { RepositoryAccessLevelChoice, UserType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 import {
   FetchRepositoryParticipantsDocument,
   useAddOrUpdateRepositoryParticipantMutation,
+  useRemoveRepositoryParticipantMutation,
 } from '~/view/pages/RepositoryDetails/__generated__/schema';
-
-import { DeleteParticipantModal } from './components/DeleteParticipantModal';
 
 interface Props {
   participant: Pick<UserType, 'id' | 'fullName'>;
@@ -24,12 +24,13 @@ export const ParticipantMenu: FC<Props> = ({ participant, repositoryId, accessLe
   const { id } = participant;
 
   const {
-    value: isDeleteParticipantModalOpen,
-    on: openDeleteParticipantModal,
-    off: closeDeleteParticipantModal,
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
 
   const [changeParticipantAccessLevel] = useAddOrUpdateRepositoryParticipantMutation();
+  const [removeRepositoryParticipant] = useRemoveRepositoryParticipantMutation();
 
   const setRepositoryParticipantAccessLevel = useCallback(
     (accessLevel: RepositoryAccessLevelChoice) => {
@@ -53,11 +54,30 @@ export const ParticipantMenu: FC<Props> = ({ participant, repositoryId, accessLe
     [changeParticipantAccessLevel, id, repositoryId],
   );
 
+  const removeCurrentRepositoryParticipant = useCallback(() => {
+    return toast.promise(
+      removeRepositoryParticipant({
+        variables: {
+          input: { userId: id, repositoryId },
+        },
+        refetchQueries: [FetchRepositoryParticipantsDocument],
+      }),
+      {
+        loading: 'Deleting participant...',
+        success: 'Participant deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while deleting participant: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [id, removeRepositoryParticipant, repositoryId]);
+
   const options: DropdownItem[] = [
     {
       label: 'Delete participant',
       iconBefore: <Icon name="trash" size={12} />,
-      onSelect: openDeleteParticipantModal,
+      onSelect: openConfirmActionModal,
     },
     {
       label: 'Change access level',
@@ -84,12 +104,15 @@ export const ParticipantMenu: FC<Props> = ({ participant, repositoryId, accessLe
           </button>
         )}
       </Dropdown>
-      <DeleteParticipantModal
-        isOpen={isDeleteParticipantModalOpen}
-        close={closeDeleteParticipantModal}
-        participant={participant}
-        repositoryId={repositoryId}
-      />
+      {isConfirmActionModal && (
+        <ConfirmActionModal
+          name={participant.fullName}
+          action="delete"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={removeCurrentRepositoryParticipant}
+        />
+      )}
     </>
   );
 };

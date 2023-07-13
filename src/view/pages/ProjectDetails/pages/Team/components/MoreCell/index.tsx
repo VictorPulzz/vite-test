@@ -7,6 +7,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 import {
   FetchProjectMembersDocument,
   useAddProjectMemberMutation,
@@ -27,6 +28,12 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
     value: isInviteUserToSlackModalOpen,
     on: openInviteUserToSlackModalModal,
     off: closeInviteUserToSlackModalModal,
+  } = useSwitchValue(false);
+
+  const {
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
 
   const params = useParams();
@@ -114,6 +121,7 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
     {
       label: 'Invite to slack channels',
       onSelect: openInviteUserToSlackModalModal,
+      disabled: createdProjectSlackChannelsCount === 0,
     },
     {
       label: 'Set as current',
@@ -121,7 +129,7 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
     },
     {
       label: 'Remove from project',
-      onSelect: () => removeFromOtherContributors(user.id),
+      onSelect: openConfirmActionModal,
       className: 'text-red',
     },
   ];
@@ -145,6 +153,16 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
           user={user}
           isCurrentTeam={currentTeam}
           projectId={projectId}
+        />
+      )}
+      {isConfirmActionModal && (
+        <ConfirmActionModal
+          name={user.fullName}
+          action="remove"
+          description="Do this if person was added by mistake only. Otherwise the data about his contributions to the project will be lost"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={() => removeFromOtherContributors(user.id)}
         />
       )}
     </>
