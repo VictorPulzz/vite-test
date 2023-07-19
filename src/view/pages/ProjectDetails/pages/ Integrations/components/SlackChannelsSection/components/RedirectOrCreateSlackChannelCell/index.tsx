@@ -44,7 +44,7 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
         success: 'Slack channel succesfully created',
         error: e => {
           const errors = getGqlError(e?.graphQLErrors);
-          return `Error while creating slack channel: ${JSON.stringify(errors)}`;
+          return `${errors?.explain?.non_field}`;
         },
       },
     );
