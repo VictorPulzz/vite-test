@@ -383,6 +383,10 @@ export type Mutation = {
   projectEnvironmentCreateUpdate: ProjectEnvironmentType;
   /** Project delete environment */
   projectEnvironmentDelete: MessageType;
+  /** Add or update project initial user */
+  projectInitialUserCreate: ProjectInitialUserType;
+  /** Delete project initial user */
+  projectInitialUserDelete: MessageType;
   /** Project create or update integration */
   projectIntegrationCreateUpdate: ProjectIntegrationType;
   /** Project delete integration */
@@ -409,6 +413,8 @@ export type Mutation = {
   requestCreate: RequestType;
   /** Update request */
   requestUpdate: RequestType;
+  /** Resend invitation */
+  resendInvitation: MessageType;
   /** Reset password */
   resetPassword: MessageType;
   /** Repository's secrets creation/updating */
@@ -421,6 +427,8 @@ export type Mutation = {
   slackTemplateDelete: MessageType;
   /** Update Slack channel template */
   slackTemplateUpdate: SlackChannelTemplateType;
+  /** Invite user to Slack channel */
+  slackUserInvite: MessageType;
   /** Refreshing of tokens */
   tokenRefresh: LoginSuccessType;
   /** Change user status */
@@ -547,6 +555,14 @@ export type MutationProjectEnvironmentDeleteArgs = {
   data: IdInput;
 };
 
+export type MutationProjectInitialUserCreateArgs = {
+  data: ProjectInitialUserId;
+};
+
+export type MutationProjectInitialUserDeleteArgs = {
+  data: ProjectInitialUserId;
+};
+
 export type MutationProjectIntegrationCreateUpdateArgs = {
   data: ProjectIntegrationInput;
 };
@@ -568,7 +584,7 @@ export type MutationProjectUpdateArgs = {
 };
 
 export type MutationProjectUpdateMemberArgs = {
-  data: ProjectMemberInput;
+  data: ProjectMemberUpdateInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -599,6 +615,10 @@ export type MutationRequestUpdateArgs = {
   data: RequestUpdateInput;
 };
 
+export type MutationResendInvitationArgs = {
+  data: ResendInviteInput;
+};
+
 export type MutationResetPasswordArgs = {
   data: ResetPasswordInput;
 };
@@ -608,7 +628,7 @@ export type MutationSecretsAddUpdateArgs = {
 };
 
 export type MutationSignupArgs = {
-  data: LoginInput;
+  data: UserCreateInput;
 };
 
 export type MutationSlackTemplateCreateArgs = {
@@ -621,6 +641,10 @@ export type MutationSlackTemplateDeleteArgs = {
 
 export type MutationSlackTemplateUpdateArgs = {
   data: SlackChannelTemplateInput;
+};
+
+export type MutationSlackUserInviteArgs = {
+  data: SlackUserInviteInput;
 };
 
 export type MutationTokenRefreshArgs = {
@@ -719,11 +743,6 @@ export type PlatformTypePagination = {
   results: Array<PlatformType>;
 };
 
-export type PorjectIntegrationsPage = {
-  gitGroupId?: Maybe<Scalars['String']>;
-  slackChannels?: Maybe<Array<ProjectSlackType>>;
-};
-
 export type ProfileInput = {
   address?: InputMaybe<Scalars['String']>;
   birthDate?: InputMaybe<Scalars['Date']>;
@@ -741,7 +760,7 @@ export type ProfileType = {
   firstName: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
-  lastName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;
   photoThumbnail?: Maybe<FileType>;
@@ -755,6 +774,7 @@ export type ProjectCreateInput = {
   endDate?: InputMaybe<Scalars['Date']>;
   gitPlatform?: InputMaybe<GitPlatformEnum>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
+  kanbanBoard?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;
@@ -776,6 +796,7 @@ export type ProjectEnvironmentInput = {
   id?: InputMaybe<Scalars['Int']>;
   name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type ProjectEnvironmentType = {
@@ -784,6 +805,7 @@ export type ProjectEnvironmentType = {
   id: Scalars['Int'];
   name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
 };
 
 export type ProjectFilter = {
@@ -810,6 +832,32 @@ export type ProjectGlossaryTypePagination = {
   results: Array<ProjectGlossaryType>;
 };
 
+export type ProjectInitialUserId = {
+  userId: Scalars['Int'];
+};
+
+export enum ProjectInitialUserSort {
+  DEPARTMENT = 'department',
+  EMAIL = 'email',
+  FULLNAME = 'fullName',
+}
+
+export type ProjectInitialUserSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: ProjectInitialUserSort;
+};
+
+export type ProjectInitialUserType = {
+  user: ProfileType;
+};
+
+export type ProjectInitialUserTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<ProjectInitialUserType>;
+};
+
 export type ProjectIntegrationInput = {
   credential?: InputMaybe<IntegrationCredentialsInput>;
   environment?: InputMaybe<ProjectEnvironmentChoice>;
@@ -826,6 +874,15 @@ export type ProjectIntegrationType = {
   keys?: Maybe<Array<IntegrationKeyType>>;
   name: Scalars['String'];
   projectId: Scalars['Int'];
+};
+
+export type ProjectIntegrationsPage = {
+  gitGroupId?: Maybe<Scalars['String']>;
+  slackChannels?: Maybe<Array<ProjectSlackType>>;
+};
+
+export type ProjectIntegrationsPageFilter = {
+  slackCreatedOnly?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ProjectMemberInput = {
@@ -854,6 +911,13 @@ export type ProjectMemberTypePagination = {
   limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ProjectMemberType>;
+};
+
+export type ProjectMemberUpdateInput = {
+  currentTeam?: InputMaybe<Scalars['Boolean']>;
+  projectId: Scalars['Int'];
+  slackChannels?: InputMaybe<Array<Scalars['Int']>>;
+  userId: Scalars['Int'];
 };
 
 export enum ProjectPhaseChoice {
@@ -891,6 +955,7 @@ export type ProjectSlackType = {
   createdAt: Scalars['DateTime'];
   id: Scalars['Int'];
   template?: Maybe<SlackChannelTemplateType>;
+  templateName?: Maybe<Scalars['String']>;
 };
 
 export type ProjectStatusType = {
@@ -923,6 +988,7 @@ export type ProjectType = {
   hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
   inCurrentTeam?: Maybe<Scalars['Boolean']>;
+  kanbanBoard?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
@@ -946,6 +1012,7 @@ export type ProjectUpdateInput = {
   gitPlatform?: InputMaybe<GitPlatformEnum>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
   id: Scalars['Int'];
+  kanbanBoard?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;
@@ -996,10 +1063,12 @@ export type Query = {
   projectEnvironmentList: Array<ProjectEnvironmentType>;
   /** Getting glossary list of projects */
   projectGlossaryList: ProjectGlossaryTypePagination;
+  /** Getting project initial user list */
+  projectInitialUserList: ProjectInitialUserTypePagination;
   /** Getting integrations for project by id */
   projectIntegrationList: Array<ProjectIntegrationType>;
   /** Getting project integration page by id */
-  projectIntegrationPage: PorjectIntegrationsPage;
+  projectIntegrationPage: ProjectIntegrationsPage;
   /** Getting history for project by id */
   projectLogList: LogTypePagination;
   /** Getting members for project by id */
@@ -1125,13 +1194,18 @@ export type QueryProjectGlossaryListArgs = {
   pagination?: InputMaybe<PaginationInput>;
 };
 
+export type QueryProjectInitialUserListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<Array<ProjectInitialUserSortFieldInput>>;
+};
+
 export type QueryProjectIntegrationListArgs = {
   data: IdInput;
 };
 
 export type QueryProjectIntegrationPageArgs = {
   data: IdInput;
-  slackCreatedOnly?: Scalars['Boolean'];
+  filters?: InputMaybe<ProjectIntegrationsPageFilter>;
 };
 
 export type QueryProjectLogListArgs = {
@@ -1210,6 +1284,7 @@ export type QueryUserDetailsArgs = {
 export type QueryUserGlossaryListArgs = {
   filters?: InputMaybe<UserFilter>;
   pagination?: InputMaybe<PaginationInput>;
+  search?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryUserProjectsArgs = {
@@ -1347,6 +1422,7 @@ export type RepositoryUpdateInput = {
   gitSlug?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+  technologies?: InputMaybe<Array<Scalars['Int']>>;
 };
 
 export type RequestCreateInput = {
@@ -1436,6 +1512,10 @@ export type RequestUpdateInput = {
   status?: InputMaybe<RequestStatusChoice>;
 };
 
+export type ResendInviteInput = {
+  userId: Scalars['Int'];
+};
+
 export type ResetPasswordInput = {
   password: Scalars['String'];
   token: Scalars['String'];
@@ -1465,6 +1545,11 @@ export type SlackChannelTemplateType = {
   prefix: Scalars['String'];
 };
 
+export type SlackUserInviteInput = {
+  slackChannel: Scalars['Int'];
+  userId: Scalars['Int'];
+};
+
 export type TechnologyType = {
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -1477,6 +1562,12 @@ export type TechnologyTypePagination = {
   results: Array<TechnologyType>;
 };
 
+export type UserCreateInput = {
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type UserFilter = {
   departmentId?: InputMaybe<Array<Scalars['Int']>>;
   isActive?: InputMaybe<Scalars['Boolean']>;
@@ -1484,6 +1575,7 @@ export type UserFilter = {
 };
 
 export type UserGlossaryType = {
+  email: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
   photo?: Maybe<FileType>;
@@ -1523,9 +1615,10 @@ export type UserType = {
   firstName: Scalars['String'];
   fullName: Scalars['String'];
   id: Scalars['Int'];
+  inviteAccepted: Scalars['Boolean'];
   isActive?: Maybe<Scalars['Boolean']>;
   isSuperuser?: Maybe<Scalars['Boolean']>;
-  lastName: Scalars['String'];
+  lastName?: Maybe<Scalars['String']>;
   notes?: Maybe<Array<NoteType>>;
   phone?: Maybe<Scalars['String']>;
   photo?: Maybe<FileType>;

@@ -32,11 +32,11 @@ input ChangePasswordInput {
 input ClientInput {
   email: String!
   fullName: String!
-  id: Int = null
-  notes: String = null
-  phone: String = null
-  pointContact: Boolean = null
-  position: String = null
+  id: Int
+  notes: String
+  phone: String
+  pointContact: Boolean
+  position: String
 }
 
 input ClientPointContactInput {
@@ -439,6 +439,14 @@ type Mutation {
   """
   projectEnvironmentDelete(data: IDInput!): MessageType!
   """
+  Add or update project initial user
+  """
+  projectInitialUserCreate(data: ProjectInitialUserId!): ProjectInitialUserType!
+  """
+  Delete project initial user
+  """
+  projectInitialUserDelete(data: ProjectInitialUserId!): MessageType!
+  """
   Project create or update integration
   """
   projectIntegrationCreateUpdate(data: ProjectIntegrationInput!): ProjectIntegrationType!
@@ -461,7 +469,7 @@ type Mutation {
   """
   Project update member
   """
-  projectUpdateMember(data: ProjectMemberInput!): ProjectMemberType!
+  projectUpdateMember(data: ProjectMemberUpdateInput!): ProjectMemberType!
   """
   Repository creation
   """
@@ -491,6 +499,10 @@ type Mutation {
   """
   requestUpdate(data: RequestUpdateInput!): RequestType!
   """
+  Resend invitation
+  """
+  resendInvitation(data: ResendInviteInput!): MessageType!
+  """
   Reset password
   """
   resetPassword(data: ResetPasswordInput!): MessageType!
@@ -501,7 +513,7 @@ type Mutation {
   """
   User creation
   """
-  signup(data: LoginInput!): MessageType!
+  signup(data: UserCreateInput!): MessageType!
   """
   Create Slack channel template
   """
@@ -514,6 +526,10 @@ type Mutation {
   Update Slack channel template
   """
   slackTemplateUpdate(data: SlackChannelTemplateInput!): SlackChannelTemplateType!
+  """
+  Invite user to Slack channel
+  """
+  slackUserInvite(data: SlackUserInviteInput!): MessageType!
   """
   Refreshing of tokens
   """
@@ -616,11 +632,6 @@ type PlatformTypePagination {
   results: [PlatformType!]!
 }
 
-type PorjectIntegrationsPage {
-  gitGroupId: String
-  slackChannels: [ProjectSlackType!]
-}
-
 input ProfileInput {
   address: String
   birthDate: Date
@@ -638,7 +649,7 @@ type ProfileType {
   firstName: String!
   fullName: String!
   id: Int!
-  lastName: String!
+  lastName: String
   phone: String
   photo: FileType
   photoThumbnail: FileType
@@ -647,18 +658,19 @@ type ProfileType {
 }
 
 input ProjectCreateInput {
-  clientTeam: [ClientInput!] = null
+  clientTeam: [ClientInput!]
   design: String
-  endDate: Date = null
-  gitPlatform: GitPlatformEnum = null
-  hoursEstimated: Int = null
+  endDate: Date
+  gitPlatform: GitPlatformEnum
+  hoursEstimated: Int
+  kanbanBoard: String
   name: String!
-  notes: String = null
-  phase: ProjectPhaseChoice = null
+  notes: String
+  phase: ProjectPhaseChoice
   platforms: [Int!]
   roadmap: String
-  startDate: Date = null
-  statusId: Int = null
+  startDate: Date
+  statusId: Int
 }
 
 enum ProjectEnvironmentChoice {
@@ -673,6 +685,7 @@ input ProjectEnvironmentInput {
   id: Int = null
   name: ProjectEnvironmentChoice!
   projectId: Int!
+  title: String = null
 }
 
 type ProjectEnvironmentType {
@@ -681,6 +694,7 @@ type ProjectEnvironmentType {
   id: Int!
   name: ProjectEnvironmentChoice!
   projectId: Int!
+  title: String
 }
 
 input ProjectFilter {
@@ -707,6 +721,32 @@ type ProjectGlossaryTypePagination {
   results: [ProjectGlossaryType!]!
 }
 
+input ProjectInitialUserId {
+  userId: Int!
+}
+
+enum ProjectInitialUserSort {
+  department
+  email
+  fullName
+}
+
+input ProjectInitialUserSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: ProjectInitialUserSort!
+}
+
+type ProjectInitialUserType {
+  user: ProfileType!
+}
+
+type ProjectInitialUserTypePagination {
+  count: Int!
+  limit: Int
+  offset: Int!
+  results: [ProjectInitialUserType!]!
+}
+
 input ProjectIntegrationInput {
   credential: IntegrationCredentialsInput
   environment: ProjectEnvironmentChoice = null
@@ -723,6 +763,15 @@ type ProjectIntegrationType {
   keys: [IntegrationKeyType!]
   name: String!
   projectId: Int!
+}
+
+type ProjectIntegrationsPage {
+  gitGroupId: String
+  slackChannels: [ProjectSlackType!]
+}
+
+input ProjectIntegrationsPageFilter {
+  slackCreatedOnly: Boolean = false
 }
 
 input ProjectMemberInput {
@@ -751,6 +800,13 @@ type ProjectMemberTypePagination {
   limit: Int
   offset: Int!
   results: [ProjectMemberType!]!
+}
+
+input ProjectMemberUpdateInput {
+  currentTeam: Boolean
+  projectId: Int!
+  slackChannels: [Int!]
+  userId: Int!
 }
 
 enum ProjectPhaseChoice {
@@ -788,6 +844,7 @@ type ProjectSlackType {
   createdAt: DateTime!
   id: Int!
   template: SlackChannelTemplateType
+  templateName: String
 }
 
 type ProjectStatusType {
@@ -820,6 +877,7 @@ type ProjectType {
   hoursEstimated: Int
   id: Int!
   inCurrentTeam: Boolean
+  kanbanBoard: String
   name: String!
   notes: String
   phase: ProjectPhaseChoice
@@ -837,19 +895,20 @@ type ProjectTypePagination {
 }
 
 input ProjectUpdateInput {
-  clientTeam: [ClientInput!] = null
+  clientTeam: [ClientInput!]
   design: String
-  endDate: Date = null
-  gitPlatform: GitPlatformEnum = null
-  hoursEstimated: Int = null
+  endDate: Date
+  gitPlatform: GitPlatformEnum
+  hoursEstimated: Int
   id: Int!
-  name: String = null
-  notes: String = null
-  phase: ProjectPhaseChoice = null
+  kanbanBoard: String
+  name: String
+  notes: String
+  phase: ProjectPhaseChoice
   platforms: [Int!]
   roadmap: String
-  startDate: Date = null
-  statusId: Int = null
+  startDate: Date
+  statusId: Int
 }
 
 type Query {
@@ -966,6 +1025,13 @@ type Query {
     pagination: PaginationInput = null
   ): ProjectGlossaryTypePagination!
   """
+  Getting project initial user list
+  """
+  projectInitialUserList(
+    pagination: PaginationInput = null
+    sort: [ProjectInitialUserSortFieldInput!] = null
+  ): ProjectInitialUserTypePagination!
+  """
   Getting integrations for project by id
   """
   projectIntegrationList(data: IDInput!): [ProjectIntegrationType!]!
@@ -974,8 +1040,8 @@ type Query {
   """
   projectIntegrationPage(
     data: IDInput!
-    slackCreatedOnly: Boolean! = false
-  ): PorjectIntegrationsPage!
+    filters: ProjectIntegrationsPageFilter = null
+  ): ProjectIntegrationsPage!
   """
   Getting history for project by id
   """
@@ -1072,6 +1138,7 @@ type Query {
   userGlossaryList(
     filters: UserFilter = null
     pagination: PaginationInput = null
+    search: String = null
   ): UserGlossaryTypePagination!
   """
   Getting project by user
@@ -1214,19 +1281,20 @@ input RepositoryUpdateInput {
   gitSlug: String = null
   id: Int = null
   name: String = null
+  technologies: [Int!]
 }
 
 input RequestCreateInput {
-  accessLevel: RepositoryAccessLevelChoice = null
+  accessLevel: RepositoryAccessLevelChoice
   assignedRoleId: Int!
-  assignedToId: Int = null
-  description: String = null
-  dueDate: Date = null
-  environment: ProjectEnvironmentChoice = null
-  integrationName: String = null
+  assignedToId: Int
+  description: String
+  dueDate: Date
+  environment: ProjectEnvironmentChoice
+  integrationName: String
   projectId: Int!
-  repositoryId: Int = null
-  repositoryType: RepositoryTypeChoice = null
+  repositoryId: Int
+  repositoryType: RepositoryTypeChoice
   technologies: [Int!]
   type: RequestTypeChoice!
 }
@@ -1296,11 +1364,15 @@ type RequestTypePagination {
 }
 
 input RequestUpdateInput {
-  assignedRoleId: Int = null
-  assignedToId: Int = null
-  dueDate: Date = null
+  assignedRoleId: Int
+  assignedToId: Int
+  dueDate: Date
   id: Int!
-  status: RequestStatusChoice = null
+  status: RequestStatusChoice
+}
+
+input ResendInviteInput {
+  userId: Int!
 }
 
 input ResetPasswordInput {
@@ -1317,11 +1389,11 @@ type RoleType {
 }
 
 input SlackChannelTemplateInput {
-  id: Int = null
+  id: Int
   initialUsers: [Int!]
-  isPrivate: Boolean = null
-  label: String = null
-  prefix: String = null
+  isPrivate: Boolean
+  label: String
+  prefix: String
 }
 
 type SlackChannelTemplateType {
@@ -1330,6 +1402,11 @@ type SlackChannelTemplateType {
   isPrivate: Boolean
   label: String
   prefix: String!
+}
+
+input SlackUserInviteInput {
+  slackChannel: Int!
+  userId: Int!
 }
 
 type TechnologyType {
@@ -1346,6 +1423,12 @@ type TechnologyTypePagination {
 
 scalar Upload
 
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  password: String!
+}
+
 input UserFilter {
   departmentId: [Int!] = null
   isActive: Boolean = null
@@ -1353,6 +1436,7 @@ input UserFilter {
 }
 
 type UserGlossaryType {
+  email: String!
   fullName: String!
   id: Int!
   photo: FileType
@@ -1392,9 +1476,10 @@ type UserType {
   firstName: String!
   fullName: String!
   id: Int!
+  inviteAccepted: Boolean!
   isActive: Boolean
   isSuperuser: Boolean
-  lastName: String!
+  lastName: String
   notes: [NoteType!]
   phone: String
   photo: FileType

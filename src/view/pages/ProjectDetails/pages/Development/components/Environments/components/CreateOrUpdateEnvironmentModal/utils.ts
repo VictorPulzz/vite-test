@@ -7,6 +7,7 @@ export function transformProjectEnvironmentPrefilledData(
 ): ProjectEnvironmentFormValues {
   return {
     environment: data.name,
+    title: data.title ?? '',
     frontendCredentials: {
       url: data.frontendCredentials?.url ?? '',
       login: data.frontendCredentials?.login ?? '',

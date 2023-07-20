@@ -1,0 +1,36 @@
+query FetchProjectInitialUsersList(
+  $pagination: PaginationInput
+  $sort: [ProjectInitialUserSortFieldInput!]
+) {
+  projectInitialUserList(pagination: $pagination, sort: $sort) {
+    results {
+      user {
+        id
+        fullName
+        photoThumbnail {
+          url
+        }
+        department {
+          id
+          name
+        }
+        email
+      }
+    }
+    count
+  }
+}
+
+mutation CreateProjectInitialUser($input: ProjectInitialUserId!) {
+  projectInitialUserCreate(data: $input) {
+    user {
+      id
+    }
+  }
+}
+
+mutation RemoveProjectInitialUser($input: ProjectInitialUserId!) {
+  projectInitialUserDelete(data: $input) {
+    message
+  }
+}

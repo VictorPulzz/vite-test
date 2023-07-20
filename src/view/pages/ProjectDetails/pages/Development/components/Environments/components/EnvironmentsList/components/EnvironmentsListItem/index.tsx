@@ -2,8 +2,10 @@ import { pick } from '@appello/common/lib/utils/object/pick';
 import { IconContainer } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
+import { Permission } from '~/constants/permissions';
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 import { RequestCard } from '~/view/pages/ProjectDetails/pages/Development/components/RequestCard';
 
@@ -23,6 +25,8 @@ export enum EnvironmentCredentialsType {
 }
 
 export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, variant }) => {
+  const canWriteProjectEnvs = useHasAccess(Permission.WRITE_PROJECT_ENVS);
+
   const frontendCredentialsData = useMemo(
     () =>
       environment?.frontendCredentials
@@ -48,12 +52,14 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
                 <h2 className="text-p4 font-medium">
-                  {convertUppercaseToReadable(environment?.name ?? '')}
+                  {convertUppercaseToReadable(environment?.name ?? '')} {environment.title}
                 </h2>
                 <span className="text-p5 text-gray-1">Credentials</span>
               </div>
             </div>
-            <EnvironmentsListItemMenu id={environment.id} name={environment.name} />
+            {canWriteProjectEnvs && (
+              <EnvironmentsListItemMenu id={environment.id} name={environment.name} />
+            )}
           </div>
           <div className="mt-3 grid grid-cols-2 justify-between gap-10">
             <EnvironmentСredentials label="Frontend" data={frontendCredentialsData} />

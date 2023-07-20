@@ -1,6 +1,7 @@
 import './view/styles/tailwind.scss';
 import '@appello/web-ui/dist/index.css';
 import './view/styles/global.scss';
+import './view/styles/uikit-override.scss';
 
 import { ApolloProvider } from '@apollo/client';
 import {

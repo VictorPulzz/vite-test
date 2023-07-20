@@ -1,10 +1,12 @@
 import { createColumnHelper } from '@tanstack/table-core';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import React from 'react';
 
 import { DateFormat } from '~/constants/dates';
 
 import { ProjectSlackChannelResultType } from '../../../../types';
+import { MoreCell } from './components/MoreCell';
 import { RedirectOrCreateSlackChannelCell } from './components/RedirectOrCreateSlackChannelCell';
 
 const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
@@ -12,10 +14,15 @@ const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
   columnHelper.accessor('template.label', {
     id: 'type.label',
-    header: 'Type',
+    header: 'Template',
     cell: props => {
       const isCreatedSlackChannel = props.row.original.channelId;
-      return <span className={`${!isCreatedSlackChannel && 'text-red'}`}>{props.getValue()}</span>;
+      const templateName = props.row.original.templateName;
+      return (
+        <span className={clsx(!isCreatedSlackChannel && 'text-red')}>
+          {props.getValue() ?? templateName}
+        </span>
+      );
     },
   }),
   columnHelper.accessor('channelId', {
@@ -36,11 +43,18 @@ export const SLACK_CHANNELS_TABLE_COLUMNS = [
     },
   }),
   columnHelper.group({
-    id: 'more',
+    id: 'actions',
     header: 'Actions',
     cell: ctx => <RedirectOrCreateSlackChannelCell ctx={ctx} />,
     meta: {
       className: 'w-[160px]',
+    },
+  }),
+  columnHelper.group({
+    id: 'more',
+    cell: MoreCell,
+    meta: {
+      className: 'w-0',
     },
   }),
 ];

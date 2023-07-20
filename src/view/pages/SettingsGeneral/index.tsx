@@ -6,13 +6,16 @@ import { TextField } from '@appello/web-ui';
 import { InputSize } from '@appello/web-ui';
 import React from 'react';
 
+import { useAppDispatch } from '~/store/hooks';
+import { signOut } from '~/store/modules/user';
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
-import { LogoutModal } from '~/view/pages/SettingsGeneral/components/LogoutModal';
 import { useSettingsGeneralForm } from '~/view/pages/SettingsGeneral/hooks/useSettingsGeneralForm';
 
 import { useMeQuery } from './__generated__/schema';
 
 export const SettingsGeneralPage: React.FC = () => {
+  const dispatch = useAppDispatch();
   const { data } = useMeQuery();
 
   const { form, handleSubmit } = useSettingsGeneralForm({
@@ -20,9 +23,9 @@ export const SettingsGeneralPage: React.FC = () => {
   });
 
   const {
-    value: isLogoutModalOpen,
-    on: openLogoutModal,
-    off: closeLogoutModal,
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
 
   return (
@@ -75,14 +78,20 @@ export const SettingsGeneralPage: React.FC = () => {
       </InlineFields>
       <div className="mt-7">
         <Button
-          onClick={openLogoutModal}
+          onClick={openConfirmActionModal}
           withIcon="logout"
           className="w-40"
           variant={ButtonVariant.SECONDARY}
           label="Log out"
         />
       </div>
-      <LogoutModal isOpen={isLogoutModalOpen} close={closeLogoutModal} />
+      <ConfirmActionModal
+        icon="logout"
+        action="log out"
+        isOpen={isConfirmActionModal}
+        close={closeConfirmActionModal}
+        onAccept={() => dispatch(signOut())}
+      />
     </SidebarLayout>
   );
 };

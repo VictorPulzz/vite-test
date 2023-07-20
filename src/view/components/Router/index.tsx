@@ -9,6 +9,7 @@ import { DocsType } from '~/view/components/Docs/types';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { AdminSettingsDocumentTemplatesPage } from '~/view/pages/AdminSettingsDocumentTemplates';
 import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
+import { AdminSettingsProjectsPage } from '~/view/pages/AdminSettingsProjects';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
@@ -264,6 +265,10 @@ export const Router: FC = () => {
     {
       path: ROUTES.ADMIN_SETTINGS_DOCUMENT_TEMPLATES,
       element: canWriteAdminSettings ? <AdminSettingsDocumentTemplatesPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_PROJECTS,
+      element: canWriteAdminSettings ? <AdminSettingsProjectsPage /> : <NoAccessPage />,
     },
   ];
 

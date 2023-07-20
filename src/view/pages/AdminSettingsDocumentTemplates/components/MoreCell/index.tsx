@@ -1,12 +1,19 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
 
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
+
+import {
+  FetchDocumentTemplatesListDocument,
+  useRemoveDocumentTemplateMutation,
+} from '../../__generated__/schema';
 import { DocumentTemplatesResultType } from '../../types';
 import { CreateOrUpdateDocumentTemplateModal } from '../CreateOrUpdateDocumentTemplateModal';
-import { DeleteDocumentTemplateModal } from './components/DeleteDocumentTemplateModal';
 
 export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = ({ row }) => {
   const { id, name } = row.original;
@@ -18,10 +25,31 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
   } = useSwitchValue(false);
 
   const {
-    value: isDeleteDocumentTemplateModalOpen,
-    on: openDeleteDocumentTemplateModal,
-    off: closeDeleteDocumentTemplateModal,
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
+
+  const [removeDocumentTemplate] = useRemoveDocumentTemplateMutation();
+
+  const removeCurrentDocumentTamplate = useCallback(() => {
+    return toast.promise(
+      removeDocumentTemplate({
+        variables: {
+          input: { id },
+        },
+        refetchQueries: [FetchDocumentTemplatesListDocument],
+      }),
+      {
+        loading: 'Deleting document template...',
+        success: 'Document template deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while deleting document template: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [id, removeDocumentTemplate]);
 
   const options: DropdownItem[] = [
     {
@@ -32,7 +60,7 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
     {
       label: 'Delete',
       iconBefore: <Icon name="trash" size={14} />,
-      onSelect: openDeleteDocumentTemplateModal,
+      onSelect: openConfirmActionModal,
       className: 'text-red',
     },
   ];
@@ -53,12 +81,13 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
           documentTemplateId={id}
         />
       )}
-      {isDeleteDocumentTemplateModalOpen && (
-        <DeleteDocumentTemplateModal
-          isOpen={isDeleteDocumentTemplateModalOpen}
-          close={closeDeleteDocumentTemplateModal}
-          id={id}
+      {isConfirmActionModal && (
+        <ConfirmActionModal
           name={name}
+          action="delete"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={removeCurrentDocumentTamplate}
         />
       )}
     </>

@@ -11,14 +11,17 @@ import {
   useUpdateRepositoryMutation,
 } from '~/view/pages/RepositoryDetails/__generated__/schema';
 
+import { transformRepositoryPrefilledData } from '../utils';
+
 const formSchema = z.object({
   name: z
     .string()
     .trim()
     .refine(value => value !== '', formErrors.REQUIRED),
+  technologies: z.array(z.number()).refine(value => value.length !== 0, formErrors.REQUIRED),
 });
 
-type UpdateRepositoryFormValues = z.infer<typeof formSchema>;
+export type UpdateRepositoryFormValues = z.infer<typeof formSchema>;
 
 interface UseUpdateRepositoryFormReturn {
   form: UseFormReturn<UpdateRepositoryFormValues>;
@@ -31,16 +34,18 @@ interface UseUpdateRepositoryFormProps {
   repository: FetchRepositoryDetailsQuery['repository'];
 }
 
+const defaultValues: UpdateRepositoryFormValues = {
+  name: '',
+  technologies: [],
+};
+
 export function useUpdateRepositoryForm({
   onSubmitSuccessful,
   repository,
 }: UseUpdateRepositoryFormProps): UseUpdateRepositoryFormReturn {
-  const defaultValues = useMemo(() => {
-    return { name: repository.name ?? '' };
-  }, [repository.name]);
-
   const form = useForm<UpdateRepositoryFormValues>({
     defaultValues,
+    values: repository ? transformRepositoryPrefilledData(repository) : undefined,
     mode: 'onChange',
     resolver: zodResolver(formSchema),
   });
@@ -61,7 +66,7 @@ export function useUpdateRepositoryForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<UpdateRepositoryFormValues>(e, {
-          fields: ['name'],
+          fields: ['name', 'technologies'],
           setFormError: form.setError,
         });
       }
@@ -75,6 +80,6 @@ export function useUpdateRepositoryForm({
       handleSubmit: form.handleSubmit(handleSubmit),
       resetForm: () => form.reset(defaultValues),
     }),
-    [defaultValues, form, handleSubmit],
+    [form, handleSubmit],
   );
 }

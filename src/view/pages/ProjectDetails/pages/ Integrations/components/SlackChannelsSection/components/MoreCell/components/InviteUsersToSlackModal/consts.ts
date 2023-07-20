@@ -1,0 +1,1 @@
+export const INVITE_USERS_TO_SLACK_PAGE_SIZE = 8;

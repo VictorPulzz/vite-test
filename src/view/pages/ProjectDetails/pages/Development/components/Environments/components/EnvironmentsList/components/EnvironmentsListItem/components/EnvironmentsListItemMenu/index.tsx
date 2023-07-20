@@ -1,10 +1,17 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
+
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
+import {
+  FetchProjectEnvironmentsListDocument,
+  useRemoveProjectEnvironmentMutation,
+} from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { CreateOrUpdateEnvironmentModal } from '../../../../../CreateOrUpdateEnvironmentModal';
-import { DeleteEnvironmentModal } from './components/DeleteEnvironmentModal';
 
 interface Props {
   id: number;
@@ -19,10 +26,31 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name }) => {
   } = useSwitchValue(false);
 
   const {
-    value: isDeleteEnvironmentModalOpen,
-    on: openDeleteEnvironmentModal,
-    off: closeDeleteEnvironmentModal,
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
+
+  const [removeEnvironment] = useRemoveProjectEnvironmentMutation();
+
+  const removeCurrentEnvironment = useCallback(() => {
+    return toast.promise(
+      removeEnvironment({
+        variables: {
+          input: { id },
+        },
+        refetchQueries: [FetchProjectEnvironmentsListDocument],
+      }),
+      {
+        loading: 'Deleting environment...',
+        success: 'Environment deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while deleting environment: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [id, removeEnvironment]);
 
   const options: DropdownItem[] = [
     {
@@ -31,7 +59,7 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name }) => {
     },
     {
       label: 'Delete',
-      onSelect: openDeleteEnvironmentModal,
+      onSelect: openConfirmActionModal,
       className: 'text-red',
     },
   ];
@@ -52,12 +80,13 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name }) => {
           environmentId={id}
         />
       )}
-      {isDeleteEnvironmentModalOpen && (
-        <DeleteEnvironmentModal
-          isOpen={isDeleteEnvironmentModalOpen}
-          close={closeDeleteEnvironmentModal}
-          id={id}
+      {isConfirmActionModal && (
+        <ConfirmActionModal
           name={name}
+          action="delete"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={removeCurrentEnvironment}
         />
       )}
     </>
