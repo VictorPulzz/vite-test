@@ -154,6 +154,7 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     id
     projectId
     name
+    title
     frontendCredentials {
       id
       url
@@ -174,6 +175,7 @@ query FetchProjectEnvironment($input: IDInput!) {
     id
     projectId
     name
+    title
     frontendCredentials {
       id
       url

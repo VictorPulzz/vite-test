@@ -156,6 +156,7 @@ export type FetchProjectEnvironmentsListQuery = {
     id: number;
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
+    title?: string | null;
     frontendCredentials?: {
       id: number;
       url?: string | null;
@@ -180,6 +181,7 @@ export type FetchProjectEnvironmentQuery = {
     id: number;
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
+    title?: string | null;
     frontendCredentials?: {
       id: number;
       url?: string | null;
@@ -898,6 +900,7 @@ export const FetchProjectEnvironmentsListDocument = gql`
       id
       projectId
       name
+      title
       frontendCredentials {
         id
         url
@@ -970,6 +973,7 @@ export const FetchProjectEnvironmentDocument = gql`
       id
       projectId
       name
+      title
       frontendCredentials {
         id
         url

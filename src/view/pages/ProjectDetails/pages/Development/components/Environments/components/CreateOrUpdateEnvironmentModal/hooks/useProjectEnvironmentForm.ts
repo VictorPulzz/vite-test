@@ -20,6 +20,7 @@ const formSchema = z.object({
     .nativeEnum(ProjectEnvironmentChoice)
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
+  title: z.string(),
   frontendCredentials: z.object({
     url: z.string(),
     login: z.string(),
@@ -47,6 +48,7 @@ interface UseProjectEnvironmentFormProps {
 
 const defaultValues: ProjectEnvironmentFormValues = {
   environment: null,
+  title: '',
   frontendCredentials: {
     url: '',
     login: '',
@@ -83,6 +85,7 @@ export function useProjectEnvironmentForm({
               projectId,
               id: prefilledData?.id,
               name: values.environment as ProjectEnvironmentChoice,
+              title: values.title,
               frontendCredentials: {
                 url: values.frontendCredentials.url,
                 login: values.frontendCredentials.login,
@@ -100,7 +103,7 @@ export function useProjectEnvironmentForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ProjectEnvironmentFormValues>(e, {
-          fields: ['environment', 'frontendCredentials.url', 'backendCredentials.url'],
+          fields: ['environment', 'title', 'frontendCredentials.url', 'backendCredentials.url'],
           setFormError: form.setError,
         });
       }

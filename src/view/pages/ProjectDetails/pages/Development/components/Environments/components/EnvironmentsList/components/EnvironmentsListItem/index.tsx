@@ -52,7 +52,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
               <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
                 <h2 className="text-p4 font-medium">
-                  {convertUppercaseToReadable(environment?.name ?? '')}
+                  {convertUppercaseToReadable(environment?.name ?? '')} {environment.title}
                 </h2>
                 <span className="text-p5 text-gray-1">Credentials</span>
               </div>

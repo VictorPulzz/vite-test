@@ -60,6 +60,7 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
               label="Environment"
               required
             />
+            <TextField name="title" control={form.control} label="Name" />
             <div className="grid grid-cols-2 gap-x-5 mt-4">
               <div>
                 <h2 className="text-p1 font-bold pb-2">Frontend credentials</h2>
