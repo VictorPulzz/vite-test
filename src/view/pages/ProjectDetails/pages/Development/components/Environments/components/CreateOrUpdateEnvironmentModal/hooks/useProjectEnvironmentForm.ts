@@ -100,7 +100,7 @@ export function useProjectEnvironmentForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<ProjectEnvironmentFormValues>(e, {
-          fields: ['environment'],
+          fields: ['environment', 'frontendCredentials.url', 'backendCredentials.url'],
           setFormError: form.setError,
         });
       }
