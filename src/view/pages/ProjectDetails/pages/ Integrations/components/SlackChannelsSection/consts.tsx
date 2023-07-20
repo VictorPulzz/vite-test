@@ -14,7 +14,7 @@ const columnHelper = createColumnHelper<ProjectSlackChannelResultType>();
 export const SLACK_CHANNELS_TABLE_COLUMNS = [
   columnHelper.accessor('template.label', {
     id: 'type.label',
-    header: 'Type',
+    header: 'Template',
     cell: props => {
       const isCreatedSlackChannel = props.row.original.channelId;
       const templateName = props.row.original.templateName;

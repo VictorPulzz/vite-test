@@ -774,6 +774,7 @@ export type ProjectCreateInput = {
   endDate?: InputMaybe<Scalars['Date']>;
   gitPlatform?: InputMaybe<GitPlatformEnum>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
+  kanbanBoard?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;
@@ -795,6 +796,7 @@ export type ProjectEnvironmentInput = {
   id?: InputMaybe<Scalars['Int']>;
   name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type ProjectEnvironmentType = {
@@ -803,6 +805,7 @@ export type ProjectEnvironmentType = {
   id: Scalars['Int'];
   name: ProjectEnvironmentChoice;
   projectId: Scalars['Int'];
+  title?: Maybe<Scalars['String']>;
 };
 
 export type ProjectFilter = {
@@ -985,6 +988,7 @@ export type ProjectType = {
   hoursEstimated?: Maybe<Scalars['Int']>;
   id: Scalars['Int'];
   inCurrentTeam?: Maybe<Scalars['Boolean']>;
+  kanbanBoard?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
@@ -1008,6 +1012,7 @@ export type ProjectUpdateInput = {
   gitPlatform?: InputMaybe<GitPlatformEnum>;
   hoursEstimated?: InputMaybe<Scalars['Int']>;
   id: Scalars['Int'];
+  kanbanBoard?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;

@@ -27,6 +27,7 @@ query FetchProjectInfo($data: IDInput!) {
     phase
     design
     roadmap
+    kanbanBoard
     notes
     clientTeam {
       fullName

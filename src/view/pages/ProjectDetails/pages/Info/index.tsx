@@ -26,8 +26,18 @@ export const Info: FC = () => {
     },
   });
 
-  const { status, startDate, endDate, phase, design, roadmap, notes, clientTeam, platforms } =
-    data?.project ?? {};
+  const {
+    status,
+    startDate,
+    endDate,
+    phase,
+    design,
+    roadmap,
+    kanbanBoard,
+    notes,
+    clientTeam,
+    platforms,
+  } = data?.project ?? {};
 
   const isPastEndDate = useMemo(() => isPast(endDate ? new Date(endDate) : new Date()), [endDate]);
 
@@ -119,6 +129,20 @@ export const Info: FC = () => {
                     }`}
                   >
                     Roadmap link
+                  </TextLink>
+                </div>
+              )}
+              {kanbanBoard && (
+                <div className="flex flex-col gap-[2px] break-words">
+                  <span className="text-p5 text-gray-2">Kanban board</span>
+                  <TextLink
+                    external
+                    to={kanbanBoard}
+                    className={`text-p3 text-blue leading-none hover:underline ${
+                      !isValidHttpUrl(kanbanBoard) && 'pointer-events-none'
+                    }`}
+                  >
+                    Kanban board link
                   </TextLink>
                 </div>
               )}

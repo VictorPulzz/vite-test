@@ -36,6 +36,7 @@ const formSchema = z
     endDate: z.date().nullable(),
     design: z.string(),
     roadmap: z.string(),
+    kanbanBoard: z.string(),
     notes: z.string(),
     documentTemplate: z
       .object({
@@ -110,6 +111,7 @@ const defaultValues: ProjectFormValues = {
   endDate: null,
   design: '',
   roadmap: '',
+  kanbanBoard: '',
   notes: '',
   documentTemplate: [],
   clientTeam: [],
@@ -167,6 +169,7 @@ export function useProjectForm({
                   : null,
                 design: values.design,
                 roadmap: values.roadmap,
+                kanbanBoard: values.kanbanBoard,
                 notes: values.notes,
                 phase: values.phase,
                 clientTeam: values.clientTeam ?? [],
@@ -233,7 +236,7 @@ export function useProjectForm({
         }
       } catch (e) {
         processGqlErrorResponse<ProjectFormValues>(e, {
-          fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'notes'],
+          fields: ['name', 'startDate', 'endDate', 'design', 'roadmap', 'kanbanBoard', 'notes'],
           setFormError: form.setError,
         });
       }

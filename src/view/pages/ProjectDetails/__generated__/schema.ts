@@ -32,6 +32,7 @@ export type FetchProjectInfoQuery = {
     phase?: Types.ProjectPhaseChoice | null;
     design?: string | null;
     roadmap?: string | null;
+    kanbanBoard?: string | null;
     notes?: string | null;
     createdBy?: { fullName: string } | null;
     status?: { id: number; name: string } | null;
@@ -406,6 +407,7 @@ export const FetchProjectInfoDocument = gql`
       phase
       design
       roadmap
+      kanbanBoard
       notes
       clientTeam {
         fullName

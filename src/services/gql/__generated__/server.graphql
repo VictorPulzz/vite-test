@@ -663,6 +663,7 @@ input ProjectCreateInput {
   endDate: Date
   gitPlatform: GitPlatformEnum
   hoursEstimated: Int
+  kanbanBoard: String
   name: String!
   notes: String
   phase: ProjectPhaseChoice
@@ -684,6 +685,7 @@ input ProjectEnvironmentInput {
   id: Int = null
   name: ProjectEnvironmentChoice!
   projectId: Int!
+  title: String = null
 }
 
 type ProjectEnvironmentType {
@@ -692,6 +694,7 @@ type ProjectEnvironmentType {
   id: Int!
   name: ProjectEnvironmentChoice!
   projectId: Int!
+  title: String
 }
 
 input ProjectFilter {
@@ -874,6 +877,7 @@ type ProjectType {
   hoursEstimated: Int
   id: Int!
   inCurrentTeam: Boolean
+  kanbanBoard: String
   name: String!
   notes: String
   phase: ProjectPhaseChoice
@@ -897,6 +901,7 @@ input ProjectUpdateInput {
   gitPlatform: GitPlatformEnum
   hoursEstimated: Int
   id: Int!
+  kanbanBoard: String
   name: String
   notes: String
   phase: ProjectPhaseChoice
