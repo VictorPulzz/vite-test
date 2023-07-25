@@ -1,22 +1,34 @@
 import { Button, ButtonVariant, Loader, useSelectOptions } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 
 import { useProjectInitialUserForm } from './hooks/useProjectInitialUserForm';
 
-interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
+interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
+  projectInitialUsersIds: number[];
+}
 
-export const CreateProjectInitialUserModal: FC<Props> = ({ isOpen, close }) => {
+export const CreateProjectInitialUserModal: FC<Props> = ({
+  isOpen,
+  close,
+  projectInitialUsersIds,
+}) => {
   const { form, handleSubmit, resetForm, isLoading } = useProjectInitialUserForm({
     onSubmitSuccessful: close,
   });
 
   const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery();
 
-  const usersOptions = useSelectOptions(allUsers?.userGlossaryList.results, {
+  const excludedAlreadyAddedUsers = useMemo(
+    () =>
+      allUsers?.userGlossaryList.results.filter(user => !projectInitialUsersIds.includes(user.id)),
+    [allUsers?.userGlossaryList.results, projectInitialUsersIds],
+  );
+
+  const usersOptions = useSelectOptions(excludedAlreadyAddedUsers, {
     value: 'id',
     label: 'fullName',
   });
