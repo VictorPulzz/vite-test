@@ -3,7 +3,7 @@ import { Button, ButtonVariant, useListQueryParams } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
 import { ProjectInitialUserSort } from '~/services/gql/__generated__/globalTypes';
@@ -38,6 +38,11 @@ export const InitialUsersTab: FC = () => {
     },
     fetchPolicy: 'cache-and-network',
   });
+
+  const projectInitialUsersIds = useMemo(
+    () => data?.projectInitialUserList.results.map(user => user.user.id) ?? [],
+    [data?.projectInitialUserList.results],
+  );
 
   return (
     <SectionContainer
@@ -76,7 +81,11 @@ export const InitialUsersTab: FC = () => {
           />
         )}
       </div>
-      <CreateProjectInitialUserModal isOpen={isCreateModalOpen} close={closeCreateModal} />
+      <CreateProjectInitialUserModal
+        isOpen={isCreateModalOpen}
+        close={closeCreateModal}
+        projectInitialUsersIds={projectInitialUsersIds}
+      />
     </SectionContainer>
   );
 };
