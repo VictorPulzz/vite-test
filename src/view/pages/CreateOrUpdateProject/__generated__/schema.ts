@@ -17,6 +17,7 @@ export type FetchProjectQuery = {
     endDate?: string | null;
     design?: string | null;
     roadmap?: string | null;
+    kanbanBoard?: string | null;
     notes?: string | null;
     phase?: Types.ProjectPhaseChoice | null;
     status?: { id: number; name: string } | null;
@@ -84,6 +85,7 @@ export const FetchProjectDocument = gql`
       endDate
       design
       roadmap
+      kanbanBoard
       notes
       phase
       status {

@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks';
 import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
@@ -6,6 +7,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 import {
   FetchProjectMembersDocument,
   useAddProjectMemberMutation,
@@ -13,15 +15,31 @@ import {
 } from '~/view/pages/ProjectDetails/__generated__/schema';
 import { ProjectMemberResultType } from '~/view/pages/ProjectDetails/types';
 
+import { InviteUserToSlackModal } from './components/InviteUserToSlackModal';
+
 interface Props {
   ctx: CellContext<ProjectMemberResultType, unknown>;
   isCurrentTeam: boolean;
+  createdProjectSlackChannelsCount: number;
 }
-export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
+
+export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackChannelsCount }) => {
+  const {
+    value: isInviteUserToSlackModalOpen,
+    on: openInviteUserToSlackModalModal,
+    off: closeInviteUserToSlackModalModal,
+  } = useSwitchValue(false);
+
+  const {
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
+  } = useSwitchValue(false);
+
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  const { id } = ctx.row.original.user;
+  const { user, currentTeam } = ctx.row.original;
 
   const [removeProjectMember] = useRemoveProjectMemberMutation();
   const [addProjectMember] = useAddProjectMemberMutation();
@@ -89,33 +107,64 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam }) => {
 
   const currentTeamOptions: DropdownItem[] = [
     {
+      label: 'Invite to slack channels',
+      onSelect: openInviteUserToSlackModalModal,
+      disabled: createdProjectSlackChannelsCount === 0,
+    },
+    {
       label: 'Remove from current',
-      onSelect: () => moveProjectMember(id),
+      onSelect: () => moveProjectMember(user.id),
     },
   ];
 
   const otherContributorsOptions: DropdownItem[] = [
     {
+      label: 'Invite to slack channels',
+      onSelect: openInviteUserToSlackModalModal,
+      disabled: createdProjectSlackChannelsCount === 0,
+    },
+    {
       label: 'Set as current',
-      onSelect: () => moveProjectMember(id),
+      onSelect: () => moveProjectMember(user.id),
     },
     {
       label: 'Remove from project',
-      onSelect: () => removeFromOtherContributors(id),
+      onSelect: openConfirmActionModal,
       className: 'text-red',
     },
   ];
 
   return (
-    <Dropdown
-      items={isCurrentTeam ? currentTeamOptions : otherContributorsOptions}
-      containerWidth="14.93rem"
-    >
-      {({ onClick }) => (
-        <button type="button" onClick={onClick}>
-          <Icon name="menu" size={16} />
-        </button>
+    <>
+      <Dropdown
+        items={isCurrentTeam ? currentTeamOptions : otherContributorsOptions}
+        containerWidth="14.93rem"
+      >
+        {({ onClick }) => (
+          <button type="button" onClick={onClick}>
+            <Icon name="menu" size={16} />
+          </button>
+        )}
+      </Dropdown>
+      {isInviteUserToSlackModalOpen && (
+        <InviteUserToSlackModal
+          isOpen={isInviteUserToSlackModalOpen}
+          close={closeInviteUserToSlackModalModal}
+          user={user}
+          isCurrentTeam={currentTeam}
+          projectId={projectId}
+        />
       )}
-    </Dropdown>
+      {isConfirmActionModal && (
+        <ConfirmActionModal
+          name={user.fullName}
+          action="remove"
+          description="Do this if person was added by mistake only. Otherwise the data about his contributions to the project will be lost"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={() => removeFromOtherContributors(user.id)}
+        />
+      )}
+    </>
   );
 };

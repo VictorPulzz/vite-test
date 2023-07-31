@@ -1,5 +1,5 @@
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
-import { Button, ButtonVariant } from '@appello/web-ui';
+import { Badge, BadgeColor, Button, ButtonVariant } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
@@ -13,6 +13,7 @@ import { SectionContainer } from '~/view/components/SectionContainer';
 import {
   FetchUserDetailsQuery,
   useConnectUserToBitbucketMutation,
+  useResendInviteMutation,
 } from '../../__generated__/schema';
 
 interface Props {
@@ -20,7 +21,28 @@ interface Props {
 }
 
 export const UserMainInfo: FC<Props> = ({ user }) => {
-  const [connectUserToBitbucket, { loading }] = useConnectUserToBitbucketMutation();
+  const [connectUserToBitbucket, { loading: isLoadingConnectUserToBitbucket }] =
+    useConnectUserToBitbucketMutation();
+
+  const [resendInvite, { loading: isLoadingResendInvite }] = useResendInviteMutation();
+
+  const handleResendInvite = useCallback(() => {
+    toast.promise(
+      resendInvite({
+        variables: {
+          input: { userId: user.id },
+        },
+      }),
+      {
+        loading: 'Resending invite...',
+        success: 'Successfully resent invite',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `${errors?.explain?.non_field}`;
+        },
+      },
+    );
+  }, [resendInvite, user.id]);
 
   const handleConnectUserToBitbucket = useCallback(() => {
     toast.promise(
@@ -41,22 +63,41 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
   }, [connectUserToBitbucket, user.id]);
 
   return (
-    <SectionContainer containerClassName="w-[382px] min-w-[382px] h-fit">
-      <div className="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
+    <div className="flex flex-col gap-3 w-[382px] min-w-[382px]">
+      <SectionContainer containerClassName="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
         <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={50} />
         <div className="flex flex-col gap-2">
-          <h2 className="text-p1 text-primary font-bold leading-none">{user.fullName}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-p1 text-primary font-bold leading-none">{user.fullName}</h2>
+            {!user.inviteAccepted && (
+              <Badge color={BadgeColor.GRAY} filled>
+                Not in SB2
+              </Badge>
+            )}
+          </div>
           <span className="text-p4 text-gray-2">{user.email}</span>
         </div>
-      </div>
-      <div className="flex flex-col gap-4 pt-7">
-        <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Connect to Bitbucket"
-          withIcon="connection"
-          onClick={handleConnectUserToBitbucket}
-          isLoading={loading}
-        />
+      </SectionContainer>
+      <SectionContainer>
+        <h2 className="text-p3 font-medium">Actions</h2>
+        <div className="flex items-center gap-3 mt-3">
+          {!user.inviteAccepted && (
+            <Button
+              variant={ButtonVariant.SECONDARY}
+              label="Resend invite"
+              onClick={handleResendInvite}
+              isLoading={isLoadingResendInvite}
+            />
+          )}
+          <Button
+            variant={ButtonVariant.SECONDARY}
+            label="Connect to Bitbucket"
+            onClick={handleConnectUserToBitbucket}
+            isLoading={isLoadingConnectUserToBitbucket}
+          />
+        </div>
+      </SectionContainer>
+      <SectionContainer containerClassName="flex flex-col gap-4 pt-7">
         {user.department && (
           <div className="flex flex-col gap-[2px]">
             <span className="text-p5 text-gray-2">Department</span>
@@ -97,7 +138,7 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
             <span className="text-p3 text-primary  break-words leading-4">{user.address}</span>
           </div>
         )}
-      </div>
-    </SectionContainer>
+      </SectionContainer>
+    </div>
   );
 };

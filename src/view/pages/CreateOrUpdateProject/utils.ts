@@ -22,6 +22,7 @@ export function transformProjectPrefilledData(
     endDate: data.endDate ? new Date(data.endDate) : null,
     design: data.design ?? '',
     roadmap: data.roadmap ?? '',
+    kanbanBoard: data.kanbanBoard ?? '',
     notes: data.notes ?? '',
     phase: data.phase ?? ProjectPhaseChoice.PRE_SIGNED,
     status: Number(data.status?.id),

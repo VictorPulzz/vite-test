@@ -16,6 +16,7 @@ const formSchema = z.object({
     .number()
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
+  slackChannels: z.array(z.number()),
 });
 
 type AddNewMemberFormValues = z.infer<typeof formSchema>;
@@ -34,6 +35,7 @@ interface UseAddNewMemberFormProps {
 
 const defaultValues: AddNewMemberFormValues = {
   user: null,
+  slackChannels: [],
 };
 
 export function useAddNewMemberForm({
@@ -57,6 +59,7 @@ export function useAddNewMemberForm({
               projectId,
               currentTeam: isCurrentTeam,
               userId: Number(values.user),
+              slackChannels: values.slackChannels,
             },
           },
           refetchQueries: [FetchProjectMembersDocument],
@@ -64,7 +67,7 @@ export function useAddNewMemberForm({
         onSubmitSuccessful?.();
       } catch (e) {
         processGqlErrorResponse<AddNewMemberFormValues>(e, {
-          fields: ['user'],
+          fields: ['user', 'slackChannels'],
           setFormError: form.setError,
         });
       }

@@ -27,6 +27,7 @@ query FetchProjectInfo($data: IDInput!) {
     phase
     design
     roadmap
+    kanbanBoard
     notes
     clientTeam {
       fullName
@@ -60,6 +61,7 @@ query FetchProjectMembers($data: IDInput!) {
         email
         slackUrl
       }
+      currentTeam
     }
     otherContrubutors {
       startDate
@@ -76,6 +78,7 @@ query FetchProjectMembers($data: IDInput!) {
         email
         slackUrl
       }
+      currentTeam
     }
   }
 }
@@ -89,6 +92,12 @@ mutation AddProjectMember($input: ProjectMemberInput!) {
     user {
       fullName
     }
+  }
+}
+
+mutation InviteUserToSlack($input: ProjectMemberUpdateInput!) {
+  projectUpdateMember(data: $input) {
+    currentTeam
   }
 }
 
@@ -145,6 +154,7 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     id
     projectId
     name
+    title
     frontendCredentials {
       id
       url
@@ -165,6 +175,7 @@ query FetchProjectEnvironment($input: IDInput!) {
     id
     projectId
     name
+    title
     frontendCredentials {
       id
       url
@@ -266,10 +277,11 @@ query FetchAllDocumentCategories {
   }
 }
 
-query FetchProjectIntegrations($data: IDInput!) {
-  projectIntegrationPage(data: $data) {
+query FetchProjectIntegrations($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+  projectIntegrationPage(data: $data, filters: $filters) {
     gitGroupId
     slackChannels {
+      id
       template {
         label
         prefix
@@ -277,6 +289,15 @@ query FetchProjectIntegrations($data: IDInput!) {
       channelId
       createdAt
       channelUrl
+      templateName
+    }
+  }
+}
+
+query FetchCreatedProjectSlackChannels($data: IDInput!, $filters: ProjectIntegrationsPageFilter) {
+  projectIntegrationPage(data: $data, filters: $filters) {
+    slackChannels {
+      id
     }
   }
 }
@@ -290,5 +311,11 @@ mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
 mutation CreateProjectSlackChannel($input: ProjectSlackInput!) {
   projectAddSlackChannel(data: $input) {
     channelUrl
+  }
+}
+
+mutation InviteUserToSlackChannel($input: SlackUserInviteInput!) {
+  slackUserInvite(data: $input) {
+    message
   }
 }

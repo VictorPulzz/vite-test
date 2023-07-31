@@ -6,7 +6,7 @@ export type AuthorizedUserFragment = {
   id: number;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName?: string | null;
   fullName: string;
   photoThumbnail?: { url: string } | null;
   role?: { id: number; name: string; permissionsList: Array<string> } | null;

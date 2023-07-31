@@ -1,20 +1,27 @@
 import { useSwitchValue } from '@appello/common/lib/hooks';
+import { getGqlError } from '@appello/common/lib/services/gql/utils';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import toast from 'react-hot-toast';
+
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
+import {
+  FetchGitInitialUsersListDocument,
+  useRemoveGitInitialUserMutation,
+} from '~/view/pages/AdminSettingsIntegrations/__generated__/schema';
 
 import { GitInitialUsersResultType } from '../../types';
 import { CreateOrUpdateGitInitialUserModal } from '../CreateOrUpdateGitInitialUserModal';
-import { DeleteGitInitialUserModal } from './components/DeleteGitInitialUserModal';
 
 export const MoreCell: FC<CellContext<GitInitialUsersResultType, unknown>> = ({ row }) => {
   const { user } = row.original;
 
   const {
-    value: isDeleteGitInitialUserModalOpen,
-    on: openDeleteGitInitialUserModal,
-    off: closeDeleteGitInitialUserModal,
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
   } = useSwitchValue(false);
 
   const {
@@ -22,6 +29,27 @@ export const MoreCell: FC<CellContext<GitInitialUsersResultType, unknown>> = ({ 
     on: openCreateOrUpdateGitInitialUserModal,
     off: closeCreateOrUpdateGitInitialUserModal,
   } = useSwitchValue(false);
+
+  const [removeUser] = useRemoveGitInitialUserMutation();
+
+  const removeGitInitialUser = useCallback(() => {
+    return toast.promise(
+      removeUser({
+        variables: {
+          input: { userId: user.id },
+        },
+        refetchQueries: [FetchGitInitialUsersListDocument],
+      }),
+      {
+        loading: 'Deleting user...',
+        success: 'User deleted',
+        error: e => {
+          const errors = getGqlError(e?.graphQLErrors);
+          return `Error while deleting user: ${JSON.stringify(errors)}`;
+        },
+      },
+    );
+  }, [removeUser, user.id]);
 
   const options: DropdownItem[] = [
     {
@@ -33,7 +61,7 @@ export const MoreCell: FC<CellContext<GitInitialUsersResultType, unknown>> = ({ 
       label: 'Delete',
       iconBefore: <Icon name="trash" size={16} />,
       className: 'text-red',
-      onSelect: openDeleteGitInitialUserModal,
+      onSelect: openConfirmActionModal,
     },
   ];
 
@@ -46,15 +74,15 @@ export const MoreCell: FC<CellContext<GitInitialUsersResultType, unknown>> = ({ 
           </button>
         )}
       </Dropdown>
-      {isDeleteGitInitialUserModalOpen && (
-        <DeleteGitInitialUserModal
-          isOpen={isDeleteGitInitialUserModalOpen}
-          close={closeDeleteGitInitialUserModal}
-          id={user.id}
+      {isConfirmActionModal && (
+        <ConfirmActionModal
           name={user.fullName}
+          action="delete"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={removeGitInitialUser}
         />
       )}
-
       {isCreateOrUpdateGitInitialUserModalOpen && (
         <CreateOrUpdateGitInitialUserModal
           isOpen={isCreateOrUpdateGitInitialUserModalOpen}

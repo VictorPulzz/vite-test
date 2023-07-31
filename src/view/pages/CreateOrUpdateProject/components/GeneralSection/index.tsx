@@ -71,13 +71,13 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
         </InlineFields>
       </InlineFields>
       {!!projectId && (
-        <InlineFields>
+        <>
           <InlineFields>
-            <DateField name="startDate" control={control} label="Start date" />
-            <DateField name="endDate" control={control} label="Estimated end date" />
-          </InlineFields>
-          <InlineFields>
-            <div className="relative">
+            <InlineFields>
+              <DateField name="startDate" control={control} label="Start date" />
+              <DateField name="endDate" control={control} label="Estimated end date" />
+            </InlineFields>
+            <InlineFields>
               <TextField
                 name="design"
                 control={control}
@@ -85,8 +85,6 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
                 iconAfterElement={<Icon name="copy" className="text-accent" />}
                 onIconAfterClick={copyTextValue}
               />
-            </div>
-            <div className="relative">
               <TextField
                 name="roadmap"
                 control={control}
@@ -94,11 +92,23 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
                 iconAfterElement={<Icon name="copy" className="text-accent" />}
                 onIconAfterClick={copyTextValue}
               />
-            </div>
+            </InlineFields>
           </InlineFields>
-        </InlineFields>
+          <InlineFields>
+            <TextField
+              name="kanbanBoard"
+              control={control}
+              label="Kanban board link"
+              iconAfterElement={<Icon name="copy" className="text-accent" />}
+              onIconAfterClick={copyTextValue}
+            />
+            <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
+          </InlineFields>
+        </>
       )}
-      <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
+      {!projectId && (
+        <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
+      )}
       <TextAreaField name="notes" control={control} label="Notes" />
     </SectionContainer>
   );

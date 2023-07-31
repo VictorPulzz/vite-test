@@ -12,7 +12,7 @@ export type CreateOrUpdateUserMutation = {
   userCreateUpdate: {
     id: number;
     firstName: string;
-    lastName: string;
+    lastName?: string | null;
     email: string;
     address?: string | null;
     contractType?: Types.ContractChoice | null;

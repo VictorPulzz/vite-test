@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks';
 import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
@@ -5,6 +6,7 @@ import React, { FC, useCallback, useMemo } from 'react';
 import toast from 'react-hot-toast';
 
 import { downloadFile } from '~/utils/downloadFile';
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 
 import {
   FetchClientDocumentsDocument,
@@ -23,6 +25,12 @@ interface Props {
 }
 
 export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, type }) => {
+  const {
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
+  } = useSwitchValue(false);
+
   const downloadDocument = useCallback(
     () => downloadFile(fileUrl, documentName),
     [fileUrl, documentName],
@@ -46,7 +54,7 @@ export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, typ
   const [removeDocument] = useRemoveDocumentMutation();
 
   const removeCurrentDocument = useCallback(() => {
-    toast.promise(
+    return toast.promise(
       removeDocument({
         variables: {
           input: { id: documentId },
@@ -71,18 +79,29 @@ export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, typ
     },
     {
       label: 'Delete',
-      onSelect: removeCurrentDocument,
+      onSelect: openConfirmActionModal,
       className: 'text-red',
     },
   ];
 
   return (
-    <Dropdown items={options} containerWidth="14.93rem">
-      {({ onClick }) => (
-        <button type="button" onClick={onClick}>
-          <Icon name="menu" size={16} />
-        </button>
+    <>
+      <Dropdown items={options} containerWidth="14.93rem">
+        {({ onClick }) => (
+          <button type="button" onClick={onClick}>
+            <Icon name="menu" size={16} />
+          </button>
+        )}
+      </Dropdown>
+      {isConfirmActionModal && (
+        <ConfirmActionModal
+          name={documentName}
+          action="delete"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={removeCurrentDocument}
+        />
       )}
-    </Dropdown>
+    </>
   );
 };

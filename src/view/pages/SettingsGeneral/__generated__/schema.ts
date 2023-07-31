@@ -11,7 +11,7 @@ export type MeQuery = {
   me: {
     id: number;
     firstName: string;
-    lastName: string;
+    lastName?: string | null;
     email: string;
     phone?: string | null;
     address?: string | null;
@@ -28,7 +28,7 @@ export type ProfileUpdateMutation = {
     id: number;
     email: string;
     firstName: string;
-    lastName: string;
+    lastName?: string | null;
     fullName: string;
     photoThumbnail?: { url: string } | null;
     role?: { id: number; name: string; permissionsList: Array<string> } | null;
