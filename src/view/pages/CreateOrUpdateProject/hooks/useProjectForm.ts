@@ -16,7 +16,10 @@ import { numberValidation } from '~/utils/validations';
 import { useGenerateProjectDocumentMutation } from '~/view/components/Docs/__generated__/schema';
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
-import { FetchProjectPreviewDocument } from '../../ProjectDetails/__generated__/schema';
+import {
+  FetchProjectPreviewDocument,
+  FetchProjectStatsDocument,
+} from '../../ProjectDetails/__generated__/schema';
 import {
   FetchDocumentTemplateListQuery,
   FetchProjectDocument,
@@ -175,7 +178,11 @@ export function useProjectForm({
                 clientTeam: values.clientTeam ?? [],
               },
             },
-            refetchQueries: [FetchProjectPreviewDocument, FetchProjectDocument],
+            refetchQueries: [
+              FetchProjectPreviewDocument,
+              FetchProjectDocument,
+              FetchProjectStatsDocument,
+            ],
           });
 
           navigate(
@@ -196,7 +203,7 @@ export function useProjectForm({
                 clientTeam: values.clientTeam ?? [],
               },
             },
-            refetchQueries: [FetchProjectDocument],
+            refetchQueries: [FetchProjectDocument, FetchProjectStatsDocument],
           });
 
           const newProjectId = data?.projectCreate.id as number;

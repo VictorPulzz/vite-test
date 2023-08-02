@@ -302,6 +302,23 @@ query FetchCreatedProjectSlackChannels($data: IDInput!, $filters: ProjectIntegra
   }
 }
 
+query FetchProjectStats($data: IDInput!) {
+  projectStats(data: $data) {
+    estimatedHours
+    peopleWorkedTotal
+    hoursTrackedTotal
+    daysWorkedTotal
+    remainingHours
+    estimatedDays
+  }
+}
+
+query FetchProjectEstimatedHours($data: IDInput!) {
+  project(data: $data) {
+    hoursEstimated
+  }
+}
+
 mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
   projectConnectToGit(data: $input) {
     id
