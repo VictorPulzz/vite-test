@@ -958,6 +958,15 @@ export type ProjectSlackType = {
   templateName?: Maybe<Scalars['String']>;
 };
 
+export type ProjectStatsType = {
+  daysWorkedTotal?: Maybe<Scalars['Int']>;
+  estimatedDays?: Maybe<Scalars['Int']>;
+  estimatedHours?: Maybe<Scalars['Int']>;
+  hoursTrackedTotal?: Maybe<Scalars['Int']>;
+  peopleWorkedTotal?: Maybe<Scalars['Int']>;
+  remainingHours?: Maybe<Scalars['Int']>;
+};
+
 export type ProjectStatusType = {
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -1077,6 +1086,8 @@ export type Query = {
   projectPreview: ProjectPreviewType;
   /** Getting repositories for project by id */
   projectRepositoryList: ProjectRepositoryType;
+  /** Getting project statistics from Hubstaff */
+  projectStats: ProjectStatsType;
   /** Getting project's statuses list */
   projectStatusesList: ProjectStatusTypePagination;
   /** Getting list of projects */
@@ -1222,6 +1233,10 @@ export type QueryProjectPreviewArgs = {
 };
 
 export type QueryProjectRepositoryListArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectStatsArgs = {
   data: IdInput;
 };
 

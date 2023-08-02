@@ -847,6 +847,15 @@ type ProjectSlackType {
   templateName: String
 }
 
+type ProjectStatsType {
+  daysWorkedTotal: Int
+  estimatedDays: Int
+  estimatedHours: Int
+  hoursTrackedTotal: Int
+  peopleWorkedTotal: Int
+  remainingHours: Int
+}
+
 type ProjectStatusType {
   id: Int!
   name: String!
@@ -1058,6 +1067,10 @@ type Query {
   Getting repositories for project by id
   """
   projectRepositoryList(data: IDInput!): ProjectRepositoryType!
+  """
+  Getting project statistics from Hubstaff
+  """
+  projectStats(data: IDInput!): ProjectStatsType!
   """
   Getting project's statuses list
   """

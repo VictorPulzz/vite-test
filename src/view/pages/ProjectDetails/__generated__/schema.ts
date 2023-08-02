@@ -312,6 +312,27 @@ export type FetchCreatedProjectSlackChannelsQuery = {
   projectIntegrationPage: { slackChannels?: Array<{ id: number }> | null };
 };
 
+export type FetchProjectStatsQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectStatsQuery = {
+  projectStats: {
+    estimatedHours?: number | null;
+    peopleWorkedTotal?: number | null;
+    hoursTrackedTotal?: number | null;
+    daysWorkedTotal?: number | null;
+    remainingHours?: number | null;
+    estimatedDays?: number | null;
+  };
+};
+
+export type FetchProjectEstimatedHoursQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectEstimatedHoursQuery = { project: { hoursEstimated?: number | null } };
+
 export type ConnectProjectToGitMutationVariables = Types.Exact<{
   input: Types.ProjectGitIntegrationInput;
 }>;
@@ -1640,6 +1661,120 @@ export type FetchCreatedProjectSlackChannelsLazyQueryHookResult = ReturnType<
 export type FetchCreatedProjectSlackChannelsQueryResult = Apollo.QueryResult<
   FetchCreatedProjectSlackChannelsQuery,
   FetchCreatedProjectSlackChannelsQueryVariables
+>;
+export const FetchProjectStatsDocument = gql`
+  query FetchProjectStats($data: IDInput!) {
+    projectStats(data: $data) {
+      estimatedHours
+      peopleWorkedTotal
+      hoursTrackedTotal
+      daysWorkedTotal
+      remainingHours
+      estimatedDays
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectStatsQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectStatsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectStatsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectStatsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectStatsQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchProjectStatsQuery, FetchProjectStatsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectStatsQuery, FetchProjectStatsQueryVariables>(
+    FetchProjectStatsDocument,
+    options,
+  );
+}
+export function useFetchProjectStatsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectStatsQuery,
+    FetchProjectStatsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectStatsQuery, FetchProjectStatsQueryVariables>(
+    FetchProjectStatsDocument,
+    options,
+  );
+}
+export type FetchProjectStatsQueryHookResult = ReturnType<typeof useFetchProjectStatsQuery>;
+export type FetchProjectStatsLazyQueryHookResult = ReturnType<typeof useFetchProjectStatsLazyQuery>;
+export type FetchProjectStatsQueryResult = Apollo.QueryResult<
+  FetchProjectStatsQuery,
+  FetchProjectStatsQueryVariables
+>;
+export const FetchProjectEstimatedHoursDocument = gql`
+  query FetchProjectEstimatedHours($data: IDInput!) {
+    project(data: $data) {
+      hoursEstimated
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectEstimatedHoursQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectEstimatedHoursQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectEstimatedHoursQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectEstimatedHoursQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectEstimatedHoursQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectEstimatedHoursQuery,
+    FetchProjectEstimatedHoursQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectEstimatedHoursQuery, FetchProjectEstimatedHoursQueryVariables>(
+    FetchProjectEstimatedHoursDocument,
+    options,
+  );
+}
+export function useFetchProjectEstimatedHoursLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectEstimatedHoursQuery,
+    FetchProjectEstimatedHoursQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectEstimatedHoursQuery,
+    FetchProjectEstimatedHoursQueryVariables
+  >(FetchProjectEstimatedHoursDocument, options);
+}
+export type FetchProjectEstimatedHoursQueryHookResult = ReturnType<
+  typeof useFetchProjectEstimatedHoursQuery
+>;
+export type FetchProjectEstimatedHoursLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectEstimatedHoursLazyQuery
+>;
+export type FetchProjectEstimatedHoursQueryResult = Apollo.QueryResult<
+  FetchProjectEstimatedHoursQuery,
+  FetchProjectEstimatedHoursQueryVariables
 >;
 export const ConnectProjectToGitDocument = gql`
   mutation ConnectProjectToGit($input: ProjectGitIntegrationInput!) {
