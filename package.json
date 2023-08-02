@@ -22,8 +22,8 @@
     "gql:codegen:init": "npm run gql:codegen:download && npm run gql:codegen"
   },
   "dependencies": {
-    "@apollo/client": "^3.7.12",
-    "@appello/common": "^1.0.27",
+    "@apollo/client": "^3.7.17",
+    "@appello/common": "^1.0.33",
     "@appello/web": "0.1.8",
     "@appello/web-ui": "^0.0.21",
     "@hookform/resolvers": "3.1.0",
