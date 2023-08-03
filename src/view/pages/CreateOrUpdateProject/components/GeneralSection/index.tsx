@@ -73,10 +73,18 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
       {!!projectId && (
         <>
           <InlineFields>
-            <InlineFields>
-              <DateField name="startDate" control={control} label="Start date" />
-              <DateField name="endDate" control={control} label="Estimated end date" />
-            </InlineFields>
+            <div>
+              <InlineFields>
+                <DateField name="startDate" control={control} label="Start date" />
+                <DateField name="endDate" control={control} label="Estimated end date" />
+              </InlineFields>
+              <div className="flex items-center gap-1 mt-2">
+                <Icon name="information" className="w-4 h-4 text-blue" />
+                <span className="text-gray-1 text-p5">
+                  Start date and Estimated end date will be used for calculating the Estimated days
+                </span>
+              </div>
+            </div>
             <InlineFields>
               <TextField
                 name="design"

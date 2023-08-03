@@ -29,6 +29,7 @@ query FetchProjectInfo($data: IDInput!) {
     roadmap
     kanbanBoard
     notes
+    daysEstimated
     clientTeam {
       fullName
       email

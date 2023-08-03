@@ -24,6 +24,7 @@ export const Info: FC = () => {
     variables: {
       data: { id: projectId },
     },
+    fetchPolicy: 'cache-and-network',
   });
 
   const {
@@ -37,6 +38,7 @@ export const Info: FC = () => {
     notes,
     clientTeam,
     platforms,
+    daysEstimated,
   } = data?.project ?? {};
 
   const isPastEndDate = useMemo(() => isPast(endDate ? new Date(endDate) : new Date()), [endDate]);
@@ -102,6 +104,12 @@ export const Info: FC = () => {
                       {!isPastEndDate && `(in ${durationToEndDate})`}
                     </span>
                   </span>
+                </div>
+              )}
+              {!!daysEstimated && (
+                <div className="flex flex-col gap-[2px]">
+                  <span className="text-p5 text-gray-2 leading-none">Estimated days</span>
+                  <span className="text-p3 w-3/4 leading-5 break-words">{daysEstimated}</span>
                 </div>
               )}
               {design && (

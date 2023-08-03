@@ -878,6 +878,7 @@ type ProjectType {
   clientTeam: [ClientType!]
   createdAt: DateTime!
   createdBy: ProfileType
+  daysEstimated: Int
   design: String
   endDate: Date
   gitGroupId: String

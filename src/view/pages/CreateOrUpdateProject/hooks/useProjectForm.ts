@@ -17,6 +17,7 @@ import { useGenerateProjectDocumentMutation } from '~/view/components/Docs/__gen
 import { transformProjectPrefilledData } from '~/view/pages/CreateOrUpdateProject/utils';
 
 import {
+  FetchProjectInfoDocument,
   FetchProjectPreviewDocument,
   FetchProjectStatsDocument,
 } from '../../ProjectDetails/__generated__/schema';
@@ -182,6 +183,7 @@ export function useProjectForm({
               FetchProjectPreviewDocument,
               FetchProjectDocument,
               FetchProjectStatsDocument,
+              FetchProjectInfoDocument,
             ],
           });
 
