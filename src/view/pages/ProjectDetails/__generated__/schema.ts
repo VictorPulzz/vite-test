@@ -34,6 +34,7 @@ export type FetchProjectInfoQuery = {
     roadmap?: string | null;
     kanbanBoard?: string | null;
     notes?: string | null;
+    daysEstimated?: number | null;
     createdBy?: { fullName: string } | null;
     status?: { id: number; name: string } | null;
     clientTeam?: Array<{
@@ -432,6 +433,7 @@ export const FetchProjectInfoDocument = gql`
       roadmap
       kanbanBoard
       notes
+      daysEstimated
       clientTeam {
         fullName
         email

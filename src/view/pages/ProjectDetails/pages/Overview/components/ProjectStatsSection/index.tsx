@@ -49,11 +49,9 @@ export const ProjectStatsSection: FC<Props> = ({
   const isSmallPercentageOfRemainingHours = useMemo(
     () =>
       projectStats
-        ? ((projectStatsData?.remainingHours || 0) / (projectStatsData?.estimatedHours || 0)) *
-            100 <=
-          30
+        ? ((projectStatsData?.remainingHours || 0) / projectEstimatedHours) * 100 <= 30
         : null,
-    [projectStats, projectStatsData?.estimatedHours, projectStatsData?.remainingHours],
+    [projectEstimatedHours, projectStats, projectStatsData?.remainingHours],
   );
 
   return (
