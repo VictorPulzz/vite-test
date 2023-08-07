@@ -989,6 +989,7 @@ export type ProjectType = {
   clientTeam?: Maybe<Array<ClientType>>;
   createdAt: Scalars['DateTime'];
   createdBy?: Maybe<ProfileType>;
+  daysEstimated?: Maybe<Scalars['Int']>;
   design?: Maybe<Scalars['String']>;
   endDate?: Maybe<Scalars['Date']>;
   gitGroupId?: Maybe<Scalars['String']>;
