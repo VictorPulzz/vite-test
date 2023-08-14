@@ -2,6 +2,9 @@ import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { Permission } from '~/constants/permissions';
+import { useHasAccess } from '~/view/hooks/useHasAccess';
+
 import {
   useFetchProjectEstimatedHoursQuery,
   useFetchProjectStatsQuery,
@@ -9,6 +12,8 @@ import {
 import { ProjectStatsSection } from './components/ProjectStatsSection';
 
 export const Overview: FC = () => {
+  const canReadProjectStatistics = useHasAccess(Permission.READ_PROJECT_STATISTICS);
+
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
@@ -20,6 +25,7 @@ export const Overview: FC = () => {
     variables: {
       data: { id: projectId },
     },
+    skip: !canReadProjectStatistics,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -28,6 +34,7 @@ export const Overview: FC = () => {
       variables: {
         data: { id: projectId },
       },
+      skip: !canReadProjectStatistics,
     });
 
   const isLoading = isLoadingProjectStats || isLoadingProjectEstimatedHours;
@@ -41,12 +48,14 @@ export const Overview: FC = () => {
       )}
       {(projectStatsData || error) && (
         <div className="flex flex-col gap-5">
-          <ProjectStatsSection
-            projectStats={projectStatsData?.projectStats || {}}
-            projectId={projectId}
-            projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
-            error={error}
-          />
+          {canReadProjectStatistics && (
+            <ProjectStatsSection
+              projectStats={projectStatsData?.projectStats || {}}
+              projectId={projectId}
+              projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
+              error={error}
+            />
+          )}
         </div>
       )}
     </>

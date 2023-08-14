@@ -29,4 +29,5 @@ export enum Permission {
   WRITE_ADMIN_SETTINGS = 'writeAdminSettings',
   READ_WRITE_PROJECT_INTEGRATIONS = 'readWriteProjectIntegrations',
   READ_LEADS = 'readLeads',
+  READ_PROJECT_STATISTICS = 'readProjectStats',
 }
