@@ -1,0 +1,6 @@
+.input :global(.form__input) {
+  @apply border-none p-0;
+}
+.input :global(.form__input--size-medium) {
+  @apply h-8;
+}

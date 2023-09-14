@@ -77,7 +77,7 @@ export const Development: FC = () => {
       fetchPolicy: 'cache-and-network',
     });
 
-  const prepeareReposRequests = useMemo(
+  const prepareReposRequests = useMemo(
     () =>
       reposRequests
         ? reposRequests?.requestList.results.map(request => ({
@@ -92,9 +92,9 @@ export const Development: FC = () => {
   const projectRepositories = useMemo(
     () => [
       ...(repositoriesList?.projectRepositoryList.projectRepositories ?? []),
-      ...prepeareReposRequests,
+      ...prepareReposRequests,
     ],
-    [prepeareReposRequests, repositoriesList?.projectRepositoryList],
+    [prepareReposRequests, repositoriesList?.projectRepositoryList],
   );
 
   const isLoading =

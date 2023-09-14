@@ -10,8 +10,6 @@ import { SectionContainer } from '~/view/components/SectionContainer';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
-import styles from './styles.module.scss';
-
 enum DocsTab {
   INTERNAL = 0,
   CLIENT = 1,
@@ -54,8 +52,6 @@ export const DocumentsPage: FC = () => {
   const tabsElement = useMemo(
     () => (
       <Tabs
-        className={styles['tabs']}
-        contentClassName={styles['tabs__body']}
         selected={selectedTab}
         onSelect={setSelectedTab}
         items={docsTabs.filter((tab): tab is Tab => !!tab)}

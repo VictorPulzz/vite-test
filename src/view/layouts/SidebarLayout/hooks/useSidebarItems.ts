@@ -113,6 +113,10 @@ export function useSidebarItems(): SidebarItem[] {
             title: 'Projects',
             link: ROUTES.ADMIN_SETTINGS_PROJECTS,
           },
+          {
+            title: 'Report templates',
+            link: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES,
+          },
         ],
       },
       {

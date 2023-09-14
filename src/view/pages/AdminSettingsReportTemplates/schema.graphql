@@ -1,0 +1,63 @@
+query FetchReportTemplatesList(
+  $pagination: PaginationInput
+  $sort: [ReportTemplateSortFieldInput!]
+) {
+  reportTemplateList(pagination: $pagination, sort: $sort) {
+    results {
+      id
+      name
+      description
+      filledBy {
+        name
+      }
+    }
+    count
+  }
+}
+
+query FetchReportTemplateInfo($input: IDInput!) {
+  reportTemplate(data: $input) {
+    id
+    name
+    description
+    filledBy {
+      id
+    }
+    reportDay
+    time
+    repeat
+    emailNotification
+    sendTo {
+      id
+    }
+    applyToAllProjects
+    questions {
+      id
+      type
+      questionText
+      options {
+        id
+        text
+      }
+      showOnOverview
+    }
+  }
+}
+
+mutation CreateReportTemplate($input: ReportTemplateInput!) {
+  reportTemplateCreate(data: $input) {
+    id
+  }
+}
+
+mutation UpdateReportTemplate($input: ReportTemplateUpdateInput!) {
+  reportTemplateUpdate(data: $input) {
+    id
+  }
+}
+
+mutation RemoveReportTemplate($input: IDInput!) {
+  reportTemplateDelete(data: $input) {
+    message
+  }
+}

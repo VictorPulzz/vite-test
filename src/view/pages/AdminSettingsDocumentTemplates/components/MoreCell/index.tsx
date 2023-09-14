@@ -32,7 +32,7 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
 
   const [removeDocumentTemplate] = useRemoveDocumentTemplateMutation();
 
-  const removeCurrentDocumentTamplate = useCallback(() => {
+  const removeCurrentDocumentTemplate = useCallback(() => {
     return toast.promise(
       removeDocumentTemplate({
         variables: {
@@ -87,7 +87,7 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
           action="delete"
           isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
-          onAccept={removeCurrentDocumentTamplate}
+          onAccept={removeCurrentDocumentTemplate}
         />
       )}
     </>
