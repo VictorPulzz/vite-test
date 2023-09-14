@@ -64,7 +64,7 @@ export const Participants: FC = () => {
     [allRepositoryParticipants?.repositoryParticipantList.results],
   );
 
-  const hasPagination = data && data.repositoryParticipantList.count > PAGE_SIZE;
+  const hasPagination = Number(data?.repositoryParticipantList.count) > PAGE_SIZE;
 
   return (
     <div className="flex flex-col h-full p-7">
@@ -110,7 +110,7 @@ export const Participants: FC = () => {
         </div>
       )}
       <div>
-        {hasPagination && (
+        {hasPagination && data && (
           <Pagination
             setOffset={setOffset}
             totalCount={data.repositoryParticipantList.count}

@@ -217,7 +217,12 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
             )}
         </div>
         {!isLoading && (
-          <div className="mt-8 flex justify-end">
+          <div
+            className={clsx(
+              'mt-8 flex justify-end',
+              reportTemplates?.reportTemplateList.results.length === 0 && 'hidden',
+            )}
+          >
             <Button
               variant={ButtonVariant.PRIMARY}
               onClick={handleSubmit}

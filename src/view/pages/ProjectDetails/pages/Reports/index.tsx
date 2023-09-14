@@ -10,6 +10,7 @@ import { ALL_SELECT_OPTION } from '~/constants/select';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { SectionContainer } from '~/view/components/SectionContainer';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 
 import { useFetchProjectReportsQuery } from '../../__generated__/schema';
 import { EditReportingListModal } from './components/EditReportingListModal';
@@ -22,6 +23,8 @@ export type ReportFilter = {
 };
 
 export const Reports: FC = () => {
+  const { profile, isAdminOrPM } = useUserProfile();
+
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
@@ -40,6 +43,7 @@ export const Reports: FC = () => {
   });
 
   const { data: allUsers, loading: isLoadingAllUsers } = useFetchUserGlossaryListQuery({
+    skip: !isAdminOrPM,
     fetchPolicy: 'cache-and-network',
   });
 
@@ -60,7 +64,7 @@ export const Reports: FC = () => {
       },
       filters: {
         projectId,
-        submittedBy: reportFilter.submittedBy,
+        submittedBy: isAdminOrPM ? reportFilter.submittedBy : profile.id,
         dateRange: isSelectedBothDates
           ? {
               start: reportFilter.dateRange?.from
@@ -84,8 +88,9 @@ export const Reports: FC = () => {
     }),
   ];
 
+  const reportListLenght = reports?.reportList.results.length || 0;
   const isLoading = isLoadingAllUsers || isLoadingReports;
-  const hasPagination = reports && reports.reportList.count > PROJECT_REPORTS_PAGE_SIZE;
+  const hasPagination = Number(reports?.reportList.count) > PROJECT_REPORTS_PAGE_SIZE;
 
   return (
     <>
@@ -98,22 +103,26 @@ export const Reports: FC = () => {
         <SectionContainer containerClassName="flex flex-1 flex-col h-full">
           <div className="flex justify-between items-center">
             <h2 className="text-p1 font-bold">Reports</h2>
-            <button
-              type="button"
-              onClick={openEditReportingListModal}
-              className="text-blue text-p2 hover:underline"
-            >
-              Edit reporting list
-            </button>
+            {isAdminOrPM && (
+              <button
+                type="button"
+                onClick={openEditReportingListModal}
+                className="text-blue text-p2 hover:underline"
+              >
+                Edit reporting list
+              </button>
+            )}
           </div>
           <div className="flex items-center gap-3 mt-2">
-            <Select
-              options={usersOptions}
-              value={reportFilter.submittedBy}
-              onChange={value => setReportFilter({ ...reportFilter, submittedBy: value })}
-              className="w-[260px]"
-              placeholder="Submitted by"
-            />
+            {isAdminOrPM && (
+              <Select
+                options={usersOptions}
+                value={reportFilter.submittedBy}
+                onChange={value => setReportFilter({ ...reportFilter, submittedBy: value })}
+                className="w-[260px]"
+                placeholder="Submitted by"
+              />
+            )}
             <DateInput
               className="w-[260px]"
               placeholder="Date range"
@@ -128,13 +137,13 @@ export const Reports: FC = () => {
                 <Loader full colorful />
               </div>
             )}
-            {reports.reportList.results.length === 0 && (
+            {reportListLenght === 0 && (
               <div className="flex h-full items-center justify-center">
                 <EmptyState iconName="list" label="No reports here yet" />
               </div>
             )}
-            {!isLoading && reports.reportList.results.length > 0 && (
-              <ReportsList reports={reports.reportList.results} />
+            {!isLoading && reportListLenght > 0 && (
+              <ReportsList reports={reports.reportList.results} isAdminOrPM={isAdminOrPM} />
             )}
           </div>
           <div>
@@ -143,7 +152,7 @@ export const Reports: FC = () => {
                 setOffset={setOffset}
                 totalCount={reports.reportList.count}
                 offset={offset}
-                itemsCount={reports.reportList.results.length}
+                itemsCount={reportListLenght}
                 onPageChange={gqlTableFetchMore(fetchMore)}
                 pageSize={PROJECT_REPORTS_PAGE_SIZE}
               />

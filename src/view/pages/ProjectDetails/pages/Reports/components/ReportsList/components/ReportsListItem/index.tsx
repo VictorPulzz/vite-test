@@ -9,9 +9,10 @@ import { ProjectReportsResultType } from '~/view/pages/ProjectDetails/types';
 
 interface Props {
   report: ProjectReportsResultType;
+  isAdminOrPM: boolean;
 }
 
-export const ReportsListItem: FC<Props> = ({ report }) => {
+export const ReportsListItem: FC<Props> = ({ report, isAdminOrPM }) => {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -21,11 +22,12 @@ export const ReportsListItem: FC<Props> = ({ report }) => {
     <div className="flex justify-between items-center p-5 border-solid border border-gray-5 rounded-md">
       <div>
         <p className="font-medium">{report.name}</p>
-        <p className="text-p5 text-gray-1">
+        <p className="text-p5 text-gray-1 flex gap-1 items-center">
           {report.submittedAt && (
-            <span>{format(new Date(report.submittedAt), DateFormat.D_MMM_Y)} • </span>
+            <span>{format(new Date(report.submittedAt), DateFormat.D_MMM_Y)}</span>
           )}
-          <span>{report.submittedBy?.fullName}</span>
+          {isAdminOrPM && !!report.submittedAt && <span>•</span>}
+          {isAdminOrPM && <span> {report.submittedBy?.fullName}</span>}
         </p>
       </div>
       <Button

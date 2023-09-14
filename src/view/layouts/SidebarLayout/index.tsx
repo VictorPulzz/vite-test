@@ -2,10 +2,10 @@ import { Sidebar } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, ReactNode, useMemo } from 'react';
 
-import { useUserProfile } from '~/store/hooks';
 import logo from '~/view/assets/images/logo.svg';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import smallLogo from '~/view/assets/images/small-logo.svg';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 
 import { Notifications } from './components/Notifications';
 import { useSidebarItems } from './hooks/useSidebarItems';
@@ -16,7 +16,7 @@ interface Props {
 }
 
 export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
-  const profile = useUserProfile();
+  const { profile } = useUserProfile();
   const navItems = useSidebarItems();
 
   const user = useMemo(
