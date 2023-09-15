@@ -14,7 +14,7 @@ export type FetchProjectPreviewQuery = {
     name: string;
     createdAt: string;
     inTeam: boolean;
-    createdBy: { fullName: string };
+    createdBy?: { fullName: string } | null;
   };
 };
 
@@ -366,7 +366,7 @@ export type FetchProjectReportsQuery = {
       id: number;
       name?: string | null;
       submittedAt?: string | null;
-      submittedBy?: { fullName: string } | null;
+      submittedBy?: { id: number; fullName: string } | null;
     }>;
   };
 };
@@ -2030,6 +2030,7 @@ export const FetchProjectReportsDocument = gql`
         name
         submittedAt
         submittedBy {
+          id
           fullName
         }
       }

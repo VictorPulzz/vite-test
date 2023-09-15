@@ -842,7 +842,7 @@ enum ProjectPhaseChoice {
 
 type ProjectPreviewType {
   createdAt: DateTime!
-  createdBy: ProfileType!
+  createdBy: ProfileType
   id: Int!
   inTeam: Boolean!
   name: String!
@@ -1251,7 +1251,9 @@ enum ReportEmailNotificationChoice {
 input ReportFilter {
   dateRange: DateRangeFilter = null
   projectId: Int = null
+  submitted: Boolean = null
   submittedBy: Int = null
+  templateId: Int = null
 }
 
 input ReportInput {

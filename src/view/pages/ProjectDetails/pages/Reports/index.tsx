@@ -102,7 +102,12 @@ export const Reports: FC = () => {
       {!isLoading && reports && (
         <SectionContainer containerClassName="flex flex-1 flex-col h-full">
           <div className="flex justify-between items-center">
-            <h2 className="text-p1 font-bold">Reports</h2>
+            <div className="flex flex-col">
+              <h2 className="text-p1 font-bold">Reports</h2>
+              <span className="text-p6 text-gray-1">
+                You can fill out and submit reports assigned only to you
+              </span>
+            </div>
             {isAdminOrPM && (
               <button
                 type="button"
@@ -113,7 +118,7 @@ export const Reports: FC = () => {
               </button>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-2">
+          <div className="flex items-center gap-3 mt-3">
             {isAdminOrPM && (
               <Select
                 options={usersOptions}
@@ -143,7 +148,7 @@ export const Reports: FC = () => {
               </div>
             )}
             {!isLoading && reportListLenght > 0 && (
-              <ReportsList reports={reports.reportList.results} isAdminOrPM={isAdminOrPM} />
+              <ReportsList reports={reports.reportList.results} />
             )}
           </div>
           <div>

@@ -962,7 +962,7 @@ export enum ProjectPhaseChoice {
 
 export type ProjectPreviewType = {
   createdAt: Scalars['DateTime'];
-  createdBy: ProfileType;
+  createdBy?: Maybe<ProfileType>;
   id: Scalars['Int'];
   inTeam: Scalars['Boolean'];
   name: Scalars['String'];
@@ -1407,7 +1407,9 @@ export enum ReportEmailNotificationChoice {
 export type ReportFilter = {
   dateRange?: InputMaybe<DateRangeFilter>;
   projectId?: InputMaybe<Scalars['Int']>;
+  submitted?: InputMaybe<Scalars['Boolean']>;
   submittedBy?: InputMaybe<Scalars['Int']>;
+  templateId?: InputMaybe<Scalars['Int']>;
 };
 
 export type ReportInput = {

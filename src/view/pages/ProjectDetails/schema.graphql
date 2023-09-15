@@ -345,6 +345,7 @@ query FetchProjectReports($filters: ReportFilter, $pagination: PaginationInput) 
       name
       submittedAt
       submittedBy {
+        id
         fullName
       }
     }

@@ -1,22 +1,52 @@
 import { Button, ButtonVariant } from '@appello/web-ui';
+import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 import { ProjectReportsResultType } from '~/view/pages/ProjectDetails/types';
 
 interface Props {
   report: ProjectReportsResultType;
-  isAdminOrPM: boolean;
 }
 
-export const ReportsListItem: FC<Props> = ({ report, isAdminOrPM }) => {
+export const ReportsListItem: FC<Props> = ({ report }) => {
+  const { profile, isAdminOrPM } = useUserProfile();
   const navigate = useNavigate();
   const params = useParams();
 
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
+
+  const reportButton = useMemo(() => {
+    const isAssignedToUser = profile.id === report.submittedBy?.id;
+    const defaultLabel = isAssignedToUser ? 'Start' : 'Not submitted';
+    const defaultVariant = isAssignedToUser ? ButtonVariant.PRIMARY : ButtonVariant.SECONDARY;
+
+    return (
+      <Button
+        variant={report.submittedAt ? ButtonVariant.SECONDARY : defaultVariant}
+        label={report.submittedAt ? 'View' : defaultLabel}
+        onClick={() =>
+          navigate(
+            generatePath(
+              report.submittedAt
+                ? ROUTES.PROJECT_DETAILS_REPORTS_VIEW
+                : ROUTES.PROJECT_DETAILS_REPORTS_SUBMIT,
+              {
+                id: projectId,
+                reportId: report.id,
+              },
+            ),
+          )
+        }
+        disabled={!isAssignedToUser}
+        className={clsx(isAssignedToUser ? 'w-[100px]' : 'w-[120px]')}
+      />
+    );
+  }, [navigate, profile.id, projectId, report.id, report.submittedAt, report.submittedBy?.id]);
 
   return (
     <div className="flex justify-between items-center p-5 border-solid border border-gray-5 rounded-md">
@@ -30,21 +60,7 @@ export const ReportsListItem: FC<Props> = ({ report, isAdminOrPM }) => {
           {isAdminOrPM && <span> {report.submittedBy?.fullName}</span>}
         </p>
       </div>
-      <Button
-        variant={report.submittedAt ? ButtonVariant.SECONDARY : ButtonVariant.PRIMARY}
-        label={report.submittedAt ? 'View' : 'Start'}
-        onClick={() =>
-          navigate(
-            generatePath(
-              report.submittedAt
-                ? ROUTES.PROJECT_DETAILS_REPORTS_VIEW
-                : ROUTES.PROJECT_DETAILS_REPORTS_SUBMIT,
-              { id: projectId, reportId: report.id },
-            ),
-          )
-        }
-        className="w-[100px]"
-      />
+      {reportButton}
     </div>
   );
 };
