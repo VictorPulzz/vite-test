@@ -868,6 +868,16 @@ type ProjectSlackType {
   templateName: String
 }
 
+enum ProjectSort {
+  created_at
+  name
+}
+
+input ProjectSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: ProjectSort!
+}
+
 type ProjectStatsType {
   daysWorkedTotal: Int
   estimatedDays: Int
@@ -1106,6 +1116,7 @@ type Query {
     filters: ProjectFilter = null
     pagination: PaginationInput = null
     search: String = null
+    sort: [ProjectSortFieldInput!] = null
   ): ProjectTypePagination!
   """
   Getting report

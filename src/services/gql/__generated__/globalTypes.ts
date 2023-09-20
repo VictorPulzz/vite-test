@@ -988,6 +988,16 @@ export type ProjectSlackType = {
   templateName?: Maybe<Scalars['String']>;
 };
 
+export enum ProjectSort {
+  CREATED_AT = 'created_at',
+  NAME = 'name',
+}
+
+export type ProjectSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: ProjectSort;
+};
+
 export type ProjectStatsType = {
   daysWorkedTotal?: Maybe<Scalars['Int']>;
   estimatedDays?: Maybe<Scalars['Int']>;
@@ -1289,6 +1299,7 @@ export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<ProjectSortFieldInput>>;
 };
 
 export type QueryReportArgs = {

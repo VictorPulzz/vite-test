@@ -12,9 +12,10 @@ import { PAGE_SIZE } from '~/constants/pagination';
 import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
-import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
+import { ProjectFilter, ProjectSort } from '~/services/gql/__generated__/globalTypes';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useSortingState } from '~/view/hooks/useSortingState';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchProjectStatusesListQuery } from '../CreateOrUpdateProject/__generated__/schema';
@@ -27,6 +28,8 @@ export const ProjectsPage: FC = () => {
 
   const projectsListColumns = useProjectsTableColumns();
 
+  const { sorting, tableSorting, setTableSorting } = useSortingState<ProjectSort>();
+
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
     useListQueryParams<ProjectFilter>();
 
@@ -38,6 +41,7 @@ export const ProjectsPage: FC = () => {
       },
       search: searchValue,
       filters: filter,
+      sort: sorting,
     },
     skip: !canReadProjectsList,
     fetchPolicy: 'cache-and-network',
@@ -102,6 +106,8 @@ export const ProjectsPage: FC = () => {
           offset={offset}
           onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.projectsList.count}
+          sorting={tableSorting}
+          setSorting={setTableSorting}
         />
       )}
     </SidebarLayout>
