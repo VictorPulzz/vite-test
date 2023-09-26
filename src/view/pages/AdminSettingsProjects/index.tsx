@@ -4,14 +4,11 @@ import React, { FC, useMemo } from 'react';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { InitialUsersTab } from './components/InitialUsersTab';
-import styles from './styles.module.scss';
 
 export const AdminSettingsProjectsPage: FC = () => {
   const tabs = useMemo(
     () => (
       <Tabs
-        className={styles['tabs']}
-        contentClassName={styles['tabs__body']}
         items={[
           {
             title: 'Initial users',

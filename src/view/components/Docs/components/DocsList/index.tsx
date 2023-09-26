@@ -21,7 +21,7 @@ interface Props {
 export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
   const { offset, setOffset } = useListQueryParams<DocumentFilter>();
 
-  const hasPagination = data && data.count > PAGE_SIZE;
+  const hasPagination = data.count > PAGE_SIZE;
 
   return (
     <div className="h-full flex flex-col">

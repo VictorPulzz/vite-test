@@ -2,3 +2,27 @@
   width: 6rem;
   height: auto;
 }
+
+.radio-input__input:checked ~ .radio-input__check-mark {
+  @apply bg-green;
+}
+
+.radio-input__label-text {
+  @apply text-p4 text-black-2;
+}
+
+.radio-group {
+  @apply flex flex-col gap-4;
+}
+
+.tabs {
+  @apply flex flex-col h-full;
+}
+
+.tabs__head-list {
+  @apply pt-1 px-5 bg-white;
+}
+
+.tabs__body {
+  @apply flex-auto;
+}

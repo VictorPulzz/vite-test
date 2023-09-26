@@ -7,6 +7,11 @@ export enum DateFormat {
   D_MMM_Y = 'd MMM yyyy',
 }
 
+export enum TimeFormat {
+  ISO_TIME_FORMAT = 'HH:mm:ss',
+  TIME_FORMAT = 'h:mm aa',
+}
+
 export enum DayPickerMode {
   RANGE = 'range',
   SINGLE = 'single',

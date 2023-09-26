@@ -17,7 +17,6 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { useFetchProjectPreviewQuery } from './__generated__/schema';
 import { useProjectTabs } from './hooks/useProjectTabs';
-import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
   const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
@@ -36,13 +35,7 @@ export const ProjectDetailsPage: FC = () => {
   const projectTabs = useProjectTabs({ projectId, inTeam: !!data?.projectPreview.inTeam });
 
   const projectTabsElement = useMemo(
-    () => (
-      <Tabs
-        className={styles['tabs']}
-        contentClassName="bg-gray-7 p-7 flex-auto"
-        items={projectTabs}
-      />
-    ),
+    () => <Tabs contentClassName="bg-gray-7 p-7 flex-auto" items={projectTabs} />,
     [projectTabs],
   );
 

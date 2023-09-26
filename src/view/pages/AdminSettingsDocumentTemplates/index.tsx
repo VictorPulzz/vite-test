@@ -45,7 +45,7 @@ export const AdminSettingsDocumentTemplatesPage: FC = () => {
     <SidebarLayout contentClassName="p-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-h4">Templates</h1>
+          <h1 className="text-h4">Document templates</h1>
           <p className="text-p5 text-gray-2">
             {(data && data.documentTemplateList.count) ?? 0} templates in total
           </p>

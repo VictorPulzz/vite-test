@@ -10,7 +10,9 @@ import { useHasAccess } from '~/view/hooks/useHasAccess';
 import { AdminSettingsDocumentTemplatesPage } from '~/view/pages/AdminSettingsDocumentTemplates';
 import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
 import { AdminSettingsProjectsPage } from '~/view/pages/AdminSettingsProjects';
+import { AdminSettingsReportTemplatesPage } from '~/view/pages/AdminSettingsReportTemplates';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
+import { CreateOrUpdateReportTemplatePage } from '~/view/pages/CreateOrUpdateReportTemplate';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { DocumentsPage } from '~/view/pages/Documents';
@@ -35,6 +37,7 @@ import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
+import { SubmitOrViewReportPage } from '~/view/pages/SubmitOrViewReport';
 import { UserDetailsPage } from '~/view/pages/UserDetails';
 import { Projects } from '~/view/pages/UserDetails/components/UserDetailsTabs/components/Projects';
 import { UserHistory } from '~/view/pages/UserDetails/components/UserDetailsTabs/components/UserHistory';
@@ -157,6 +160,11 @@ export const Router: FC = () => {
           ),
         },
         {
+          path: ROUTES.PROJECT_DETAILS_REPORTS,
+          element: <Reports />,
+        },
+
+        {
           path: ROUTES.PROJECT_DETAILS_HISTORY,
           element: canReadProjectHistory ? (
             <History />
@@ -180,11 +188,15 @@ export const Router: FC = () => {
             <NoAccessMessage className="h-full flex-auto" />
           ),
         },
-        {
-          path: ROUTES.PROJECT_DETAILS_REPORTS,
-          element: <Reports />,
-        },
       ],
+    },
+    {
+      path: ROUTES.PROJECT_DETAILS_REPORTS_SUBMIT,
+      element: <SubmitOrViewReportPage />,
+    },
+    {
+      path: ROUTES.PROJECT_DETAILS_REPORTS_VIEW,
+      element: <SubmitOrViewReportPage />,
     },
     {
       path: ROUTES.USERS,
@@ -269,6 +281,18 @@ export const Router: FC = () => {
     {
       path: ROUTES.ADMIN_SETTINGS_PROJECTS,
       element: canWriteAdminSettings ? <AdminSettingsProjectsPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES,
+      element: canWriteAdminSettings ? <AdminSettingsReportTemplatesPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_ADD,
+      element: <CreateOrUpdateReportTemplatePage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_EDIT,
+      element: <CreateOrUpdateReportTemplatePage />,
     },
   ];
 

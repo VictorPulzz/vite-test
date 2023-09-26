@@ -8,6 +8,7 @@ export type FetchProjectsQueryVariables = Types.Exact<{
   filters?: Types.InputMaybe<Types.ProjectFilter>;
   pagination?: Types.InputMaybe<Types.PaginationInput>;
   search?: Types.InputMaybe<Types.Scalars['String']>;
+  sort?: Types.InputMaybe<Array<Types.ProjectSortFieldInput> | Types.ProjectSortFieldInput>;
 }>;
 
 export type FetchProjectsQuery = {
@@ -18,6 +19,7 @@ export type FetchProjectsQuery = {
       name: string;
       inCurrentTeam?: boolean | null;
       phase?: Types.ProjectPhaseChoice | null;
+      createdAt: string;
       PM?: Array<{ id: number; fullName: string; photoThumbnail?: { url: string } | null }> | null;
       status?: { id: number; name: string } | null;
       platforms?: Array<{ id: number; name: string }> | null;
@@ -32,8 +34,13 @@ export type ChangeProjectStatusMutationVariables = Types.Exact<{
 export type ChangeProjectStatusMutation = { projectUpdate: { id: number } };
 
 export const FetchProjectsDocument = gql`
-  query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $search: String) {
-    projectsList(filters: $filters, pagination: $pagination, search: $search) {
+  query FetchProjects(
+    $filters: ProjectFilter
+    $pagination: PaginationInput
+    $search: String
+    $sort: [ProjectSortFieldInput!]
+  ) {
+    projectsList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
       results {
         id
         name
@@ -54,6 +61,7 @@ export const FetchProjectsDocument = gql`
         }
         inCurrentTeam
         phase
+        createdAt
       }
       count
     }
@@ -75,6 +83,7 @@ export const FetchProjectsDocument = gql`
  *      filters: // value for 'filters'
  *      pagination: // value for 'pagination'
  *      search: // value for 'search'
+ *      sort: // value for 'sort'
  *   },
  * });
  */

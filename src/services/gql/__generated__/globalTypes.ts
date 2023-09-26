@@ -13,6 +13,7 @@ export type Scalars = {
   Float: number;
   Date: string;
   DateTime: string;
+  Time: string;
   Upload: File;
 };
 
@@ -71,6 +72,11 @@ export enum ContractChoice {
   FULL_TIME = 'FULL_TIME',
   PART_TIME = 'PART_TIME',
 }
+
+export type DateRangeFilter = {
+  end?: InputMaybe<Scalars['Date']>;
+  start?: InputMaybe<Scalars['Date']>;
+};
 
 export type DepartmentType = {
   id: Scalars['Int'];
@@ -399,6 +405,14 @@ export type Mutation = {
   projectUpdate: ProjectType;
   /** Project update member */
   projectUpdateMember: ProjectMemberType;
+  /** Submit Report */
+  reportSubmit: MessageType;
+  /** Create Report template */
+  reportTemplateCreate: ReportTemplateType;
+  /** Delete Report template */
+  reportTemplateDelete: MessageType;
+  /** Change Report template */
+  reportTemplateUpdate: ReportTemplateType;
   /** Repository creation */
   repositoryCreate: RepositoryType;
   /** Repository deletion */
@@ -585,6 +599,22 @@ export type MutationProjectUpdateArgs = {
 
 export type MutationProjectUpdateMemberArgs = {
   data: ProjectMemberUpdateInput;
+};
+
+export type MutationReportSubmitArgs = {
+  data: ReportInput;
+};
+
+export type MutationReportTemplateCreateArgs = {
+  data: ReportTemplateInput;
+};
+
+export type MutationReportTemplateDeleteArgs = {
+  data: IdInput;
+};
+
+export type MutationReportTemplateUpdateArgs = {
+  data: ReportTemplateUpdateInput;
 };
 
 export type MutationRepositoryCreateArgs = {
@@ -958,6 +988,16 @@ export type ProjectSlackType = {
   templateName?: Maybe<Scalars['String']>;
 };
 
+export enum ProjectSort {
+  CREATED_AT = 'created_at',
+  NAME = 'name',
+}
+
+export type ProjectSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: ProjectSort;
+};
+
 export type ProjectStatsType = {
   daysWorkedTotal?: Maybe<Scalars['Int']>;
   estimatedDays?: Maybe<Scalars['Int']>;
@@ -1003,6 +1043,7 @@ export type ProjectType = {
   notes?: Maybe<Scalars['String']>;
   phase?: Maybe<ProjectPhaseChoice>;
   platforms?: Maybe<Array<PlatformType>>;
+  reportTemplates?: Maybe<Array<ReportTemplatePreviewType>>;
   roadmap?: Maybe<Scalars['String']>;
   startDate?: Maybe<Scalars['Date']>;
   status?: Maybe<ProjectStatusType>;
@@ -1027,6 +1068,7 @@ export type ProjectUpdateInput = {
   notes?: InputMaybe<Scalars['String']>;
   phase?: InputMaybe<ProjectPhaseChoice>;
   platforms?: InputMaybe<Array<Scalars['Int']>>;
+  reportTemplates?: InputMaybe<Array<Scalars['Int']>>;
   roadmap?: InputMaybe<Scalars['String']>;
   startDate?: InputMaybe<Scalars['Date']>;
   statusId?: InputMaybe<Scalars['Int']>;
@@ -1093,6 +1135,14 @@ export type Query = {
   projectStatusesList: ProjectStatusTypePagination;
   /** Getting list of projects */
   projectsList: ProjectTypePagination;
+  /** Getting report */
+  report: ReportType;
+  /** Getting report */
+  reportList: ReportTypePagination;
+  /** Getting report template */
+  reportTemplate: ReportTemplateType;
+  /** Getting report templates */
+  reportTemplateList: ReportTemplateTypePagination;
   /** Getting repository */
   repository: RepositoryType;
   /** Getting glossary list of repository */
@@ -1249,6 +1299,25 @@ export type QueryProjectsListArgs = {
   filters?: InputMaybe<ProjectFilter>;
   pagination?: InputMaybe<PaginationInput>;
   search?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<ProjectSortFieldInput>>;
+};
+
+export type QueryReportArgs = {
+  data: IdInput;
+};
+
+export type QueryReportListArgs = {
+  filters?: InputMaybe<ReportFilter>;
+  pagination?: InputMaybe<PaginationInput>;
+};
+
+export type QueryReportTemplateArgs = {
+  data: IdInput;
+};
+
+export type QueryReportTemplateListArgs = {
+  pagination?: InputMaybe<PaginationInput>;
+  sort?: InputMaybe<Array<ReportTemplateSortFieldInput>>;
 };
 
 export type QueryRepositoryArgs = {
@@ -1318,6 +1387,170 @@ export type QueryUsersListArgs = {
 
 export type RefreshTokenInput = {
   refreshToken: Scalars['String'];
+};
+
+export type ReportAnswerInput = {
+  checkboxes?: InputMaybe<Array<Scalars['Int']>>;
+  date?: InputMaybe<Scalars['Date']>;
+  questionId: Scalars['Int'];
+  singleChoiceId?: InputMaybe<Scalars['Int']>;
+  text?: InputMaybe<Scalars['String']>;
+  yesNo?: InputMaybe<YesOrNoChoice>;
+};
+
+export type ReportAnswerType = {
+  checkboxes?: Maybe<Array<ReportQuestionOptionType>>;
+  checkboxesStr?: Maybe<Array<Scalars['String']>>;
+  date?: Maybe<Scalars['Date']>;
+  question: ReportQuestionType;
+  singleChoice?: Maybe<ReportQuestionOptionType>;
+  singleChoiceStr?: Maybe<Scalars['String']>;
+  text?: Maybe<Scalars['String']>;
+  yesNo?: Maybe<YesOrNoChoice>;
+};
+
+export enum ReportEmailNotificationChoice {
+  AFTER_2_HOURS = 'AFTER_2_HOURS',
+  AFTER_4_HOURS = 'AFTER_4_HOURS',
+  AFTER_10_HOURS = 'AFTER_10_HOURS',
+}
+
+export type ReportFilter = {
+  dateRange?: InputMaybe<DateRangeFilter>;
+  projectId?: InputMaybe<Scalars['Int']>;
+  submitted?: InputMaybe<Scalars['Boolean']>;
+  submittedBy?: InputMaybe<Scalars['Int']>;
+  templateId?: InputMaybe<Scalars['Int']>;
+};
+
+export type ReportInput = {
+  answers: Array<ReportAnswerInput>;
+  id: Scalars['Int'];
+  submittedAt?: InputMaybe<Scalars['Date']>;
+};
+
+export type ReportQuestionInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  options?: InputMaybe<Array<ReportQuestionOptionInput>>;
+  questionText: Scalars['String'];
+  showOnOverview?: InputMaybe<Scalars['Boolean']>;
+  type: ReportQuestionTypeChoice;
+};
+
+export type ReportQuestionOptionInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  text: Scalars['String'];
+};
+
+export type ReportQuestionOptionType = {
+  id: Scalars['Int'];
+  text: Scalars['String'];
+};
+
+export type ReportQuestionType = {
+  id: Scalars['Int'];
+  options: Array<ReportQuestionOptionType>;
+  questionText: Scalars['String'];
+  showOnOverview: Scalars['Boolean'];
+  type: ReportQuestionTypeChoice;
+};
+
+export enum ReportQuestionTypeChoice {
+  CHECKBOXES = 'CHECKBOXES',
+  DATE = 'DATE',
+  FREE_TEXT = 'FREE_TEXT',
+  SINGLE_CHOICE = 'SINGLE_CHOICE',
+  YES_OR_NO = 'YES_OR_NO',
+}
+
+export enum ReportRepeatChoice {
+  EVERY_2_WEEKS = 'EVERY_2_WEEKS',
+  EVERY_3_WEEKS = 'EVERY_3_WEEKS',
+  EVERY_WEEK = 'EVERY_WEEK',
+}
+
+export type ReportTemplateInput = {
+  applyToAllProjects?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  emailNotification?: InputMaybe<ReportEmailNotificationChoice>;
+  filledById?: InputMaybe<Scalars['Int']>;
+  name: Scalars['String'];
+  projects?: InputMaybe<Array<Scalars['Int']>>;
+  questions: Array<ReportQuestionInput>;
+  repeat?: InputMaybe<ReportRepeatChoice>;
+  reportDay?: InputMaybe<WeekDayChoice>;
+  sendTo?: InputMaybe<Array<Scalars['Int']>>;
+  time?: InputMaybe<Scalars['Time']>;
+};
+
+export type ReportTemplatePreviewType = {
+  description: Scalars['String'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
+};
+
+export enum ReportTemplateSort {
+  FILLED_BY = 'filled_by',
+  NAME = 'name',
+}
+
+export type ReportTemplateSortFieldInput = {
+  direction: OrderDirectionChoice;
+  field: ReportTemplateSort;
+};
+
+export type ReportTemplateType = {
+  applyToAllProjects?: Maybe<Scalars['Boolean']>;
+  description: Scalars['String'];
+  emailNotification: ReportEmailNotificationChoice;
+  filledBy: RoleType;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  projects?: Maybe<Array<ProjectType>>;
+  questions: Array<ReportQuestionType>;
+  repeat: ReportRepeatChoice;
+  reportDay: WeekDayChoice;
+  sendTo?: Maybe<Array<ProfileType>>;
+  time: Scalars['Time'];
+};
+
+export type ReportTemplateTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<ReportTemplateType>;
+};
+
+export type ReportTemplateUpdateInput = {
+  applyToAllProjects?: InputMaybe<Scalars['Boolean']>;
+  description?: InputMaybe<Scalars['String']>;
+  emailNotification?: InputMaybe<ReportEmailNotificationChoice>;
+  filledById?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  projects?: InputMaybe<Array<Scalars['Int']>>;
+  questions?: InputMaybe<Array<ReportQuestionInput>>;
+  repeat?: InputMaybe<ReportRepeatChoice>;
+  reportDay?: InputMaybe<WeekDayChoice>;
+  sendTo?: InputMaybe<Array<Scalars['Int']>>;
+  time?: InputMaybe<Scalars['Time']>;
+};
+
+export type ReportType = {
+  answers?: Maybe<Array<ReportAnswerType>>;
+  id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
+  project?: Maybe<ProjectType>;
+  questions?: Maybe<Array<ReportQuestionType>>;
+  submittedAt?: Maybe<Scalars['Date']>;
+  submittedBy?: Maybe<ProfileType>;
+};
+
+export type ReportTypePagination = {
+  count: Scalars['Int'];
+  limit?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
+  results: Array<ReportType>;
 };
 
 export enum RepositoryAccessLevelChoice {
@@ -1649,6 +1882,21 @@ export type UserTypePagination = {
   offset: Scalars['Int'];
   results: Array<UserType>;
 };
+
+export enum WeekDayChoice {
+  FRIDAY = 'FRIDAY',
+  MONDAY = 'MONDAY',
+  SATURDAY = 'SATURDAY',
+  SUNDAY = 'SUNDAY',
+  THURSDAY = 'THURSDAY',
+  TUESDAY = 'TUESDAY',
+  WEDNESDAY = 'WEDNESDAY',
+}
+
+export enum YesOrNoChoice {
+  NO = 'NO',
+  YES = 'YES',
+}
 
 export interface PossibleTypesResultData {
   possibleTypes: {

@@ -18,6 +18,8 @@ export const ROUTES = {
   PROJECT_DETAILS_DEVELOPMENT: '/projects/:id/development',
   PROJECT_DETAILS_DOCUMENTS: '/projects/:id/documents',
   PROJECT_DETAILS_REPORTS: '/projects/:id/reports',
+  PROJECT_DETAILS_REPORTS_SUBMIT: '/projects/:id/reports/:reportId/submit',
+  PROJECT_DETAILS_REPORTS_VIEW: '/projects/:id/reports/:reportId/view',
   PROJECT_DETAILS_HISTORY: '/projects/:id/history',
   PROJECT_DETAILS_INTEGRATIONS: '/projects/:id/integrations',
 
@@ -42,4 +44,7 @@ export const ROUTES = {
   ADMIN_SETTINGS: '/admin-settings',
   ADMIN_SETTINGS_DOCUMENT_TEMPLATES: '/admin-settings/document-templates',
   ADMIN_SETTINGS_PROJECTS: '/admin-settings/projects',
+  ADMIN_SETTINGS_REPORT_TEMPLATES: '/admin-settings/report-templates',
+  ADMIN_SETTINGS_REPORT_TEMPLATES_ADD: '/admin-settings/report-templates/add',
+  ADMIN_SETTINGS_REPORT_TEMPLATES_EDIT: '/admin-settings/report-templates/:id/edit',
 }; /* as const satisfies Record<string, string> */ // todo: uncomment and fix related errors asap
