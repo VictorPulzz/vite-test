@@ -92,7 +92,9 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
       );
 
       const isBottomReached =
-        element.scrollHeight - Math.ceil(element.scrollTop) === element.clientHeight;
+        !isFetching &&
+        element.scrollHeight - element.clientHeight - Math.ceil(element.scrollTop) <=
+          window.outerWidth / window.outerWidth;
 
       if (isBottomReached) {
         try {
@@ -126,7 +128,7 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reportTemplatesListRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [fetchMore, nextOffset]);
+  }, [fetchMore, isFetching, nextOffset]);
 
   const { form, handleSubmit, resetForm } = useEditReportingListForm({
     activeReportsIds: projectReportTemplatesIds,
