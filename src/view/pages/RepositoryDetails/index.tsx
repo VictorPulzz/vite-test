@@ -2,10 +2,9 @@ import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { RequestAccessMessage } from '~/view/components/RequestAccessMessage';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -17,7 +16,8 @@ import { RepositoryDetailsTabs } from './components/RepositoryDetailsTabs';
 import { RepositoryMainInfo } from './components/RepositoryMainInfo';
 
 export const RepositoryDetailsPage: FC = () => {
-  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+  const { canReadRepoDetails } = useUserPermissions();
+
   const params = useParams();
   const repositoryId = useMemo(() => (params.id ? Number(params.id) : 0), [params.id]);
 

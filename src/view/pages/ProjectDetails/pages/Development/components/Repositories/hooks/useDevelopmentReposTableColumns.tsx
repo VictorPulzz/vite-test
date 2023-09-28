@@ -11,7 +11,7 @@ import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { ProjectRepositoriesListResultType } from '../types';
 
 const columnHelper = createColumnHelper<ProjectRepositoriesListResultType>();
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
+
 export function useDevelopmentReposTableColumns() {
   return [
     columnHelper.accessor('name', {

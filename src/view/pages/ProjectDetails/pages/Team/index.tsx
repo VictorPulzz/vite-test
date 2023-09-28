@@ -6,16 +6,15 @@ import { Table } from '@appello/web-ui';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { useFetchProjectMembersQuery } from '../../__generated__/schema';
 import { AddNewMemberModal } from './components/AddNewMemberModal';
 import { TeamTableType, useProjectTeamTableColumns } from './hooks/useProjectTeamTableColumns';
 
 export const Team: FC = () => {
-  const canWriteProjectTeam = useHasAccess(Permission.WRITE_PROJECT_TEAM);
+  const { canWriteProjectTeam } = useUserPermissions();
 
   const currentTeamTableColumns = useProjectTeamTableColumns(TeamTableType.CURRENT_TEAM);
 

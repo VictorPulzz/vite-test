@@ -1203,7 +1203,7 @@ type Query {
   """
   userDetails(data: IDInput!): UserType!
   """
-  Getting glossary list of users
+  Getting glossary list of users. Only active
   """
   userGlossaryList(
     filters: UserFilter = null

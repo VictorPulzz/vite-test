@@ -5,23 +5,20 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ProjectSort } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { MoreCell } from '../components/MoreCell';
 import { ProjectResultType } from '../types';
 
 const columnHelper = createColumnHelper<ProjectResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useProjectsTableColumns() {
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
+  const { canReadUserDetails, canWriteProject } = useUserPermissions();
 
   return [
     columnHelper.accessor('name', {
@@ -65,6 +62,9 @@ export function useProjectsTableColumns() {
             ))}
           </div>
         );
+      },
+      meta: {
+        className: 'min-w-[150px] whitespace-pre-wrap',
       },
     }),
     columnHelper.accessor('phase', {

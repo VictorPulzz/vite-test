@@ -77,7 +77,9 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
 
     const handleScroll = async (e: Event): Promise<void> => {
       const element = e.target as HTMLElement;
-      const isBottomReached = element.scrollTop + element.clientHeight >= element.scrollHeight;
+      const isBottomReached =
+        element.scrollHeight - Math.ceil(element.scrollTop) === element.clientHeight;
+
       if (isBottomReached) {
         try {
           setFetching(true);

@@ -2,17 +2,15 @@ import { Tab, Tabs } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { generatePath, Outlet } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 interface Props {
   userId: number;
 }
 
 export const UserDetailsTabs: FC<Props> = ({ userId }) => {
-  const canReadUserDocs = useHasAccess(Permission.READ_USER_DOCS);
-  const canReadUserHistory = useHasAccess(Permission.READ_USER_HISTORY);
+  const { canReadUserDocs, canReadUserHistory } = useUserPermissions();
 
   const tabsItems: (Tab | false)[] = [
     {

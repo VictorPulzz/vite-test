@@ -1,5 +1,4 @@
 import { Button, ButtonVariant } from '@appello/web-ui';
-import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { FC, useMemo } from 'react';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
@@ -42,8 +41,8 @@ export const ReportsListItem: FC<Props> = ({ report }) => {
             ),
           )
         }
-        disabled={!isAssignedToUser}
-        className={clsx(isAssignedToUser ? 'w-[100px]' : 'w-[120px]')}
+        disabled={!isAssignedToUser && !report.submittedAt}
+        className="w-[120px]"
       />
     );
   }, [navigate, profile.id, projectId, report.id, report.submittedAt, report.submittedBy?.id]);
@@ -57,7 +56,11 @@ export const ReportsListItem: FC<Props> = ({ report }) => {
             <span>{format(new Date(report.submittedAt), DateFormat.D_MMM_Y)}</span>
           )}
           {isAdminOrPM && !!report.submittedAt && <span>•</span>}
-          {isAdminOrPM && <span> {report.submittedBy?.fullName}</span>}
+          {isAdminOrPM && (
+            <span>
+              {profile.id === report.submittedBy?.id ? 'Your report' : report.submittedBy?.fullName}
+            </span>
+          )}
         </p>
       </div>
       {reportButton}

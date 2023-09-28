@@ -5,20 +5,18 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { MoreCell } from '../components/MoreCell';
 import { RepositoryResultType } from '../types';
 
 const columnHelper = createColumnHelper<RepositoryResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useRepositoriesTableColumns() {
-  const canWriteRepository = useHasAccess(Permission.WRITE_REPOSITORY);
+  const { canWriteRepository } = useUserPermissions();
 
   return [
     columnHelper.accessor('name', {

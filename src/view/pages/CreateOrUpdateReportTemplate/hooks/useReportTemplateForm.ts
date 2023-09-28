@@ -51,12 +51,12 @@ const formSchema = z
           .nativeEnum(ReportQuestionTypeChoice)
           .nullable()
           .refine(value => value !== null, formErrors.REQUIRED),
-        questionText: z.string().min(1),
+        questionText: z.string().min(1).max(300, formErrors.fieldMaxLength(300)),
         showOnOverview: z.boolean(),
         options: z
           .object({
             id: z.number(),
-            text: z.string().min(1),
+            text: z.string().min(1).max(90, formErrors.fieldMaxLength(90)),
           })
           .array(),
       })

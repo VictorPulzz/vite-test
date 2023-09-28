@@ -67,12 +67,16 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
       <SectionContainer containerClassName="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
         <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={50} />
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <h2 className="text-p1 text-primary font-bold leading-none">{user.fullName}</h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-p1 text-primary font-bold leading-none break-all">
+              {user.fullName}
+            </h2>
             {!user.inviteAccepted && (
-              <Badge color={BadgeColor.GRAY} filled>
-                Not in SB2
-              </Badge>
+              <div className="whitespace-nowrap">
+                <Badge color={BadgeColor.GRAY} filled>
+                  Not in SB2
+                </Badge>
+              </div>
             )}
           </div>
           <span className="text-p4 text-gray-2">{user.email}</span>

@@ -4,12 +4,11 @@ import { IconContainer } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';
 
-import { Permission } from '~/constants/permissions';
 import { ProjectIntegrationType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { copyTextValue } from '~/utils/copyTextValue';
 import { CopyTextButton } from '~/view/components/CopyTextButton';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 import { RequestCard } from '~/view/pages/ProjectDetails/pages/Development/components/RequestCard';
 
@@ -29,7 +28,7 @@ const iconsByCredentialField: Record<string, string> = {
 };
 
 export const IntegrationsListItem: FC<Props> = ({ integration, integrationRequest, variant }) => {
-  const canWriteProjectIntegrations = useHasAccess(Permission.WRITE_PROJECT_INTEGRATIONS);
+  const { canWriteProjectIntegrations } = useUserPermissions();
 
   const mainIntegrationCredentialsData = useMemo(
     () =>

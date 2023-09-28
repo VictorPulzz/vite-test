@@ -1167,7 +1167,7 @@ export type Query = {
   technologyList: TechnologyTypePagination;
   /** Getting user by id */
   userDetails: UserType;
-  /** Getting glossary list of users */
+  /** Getting glossary list of users. Only active */
   userGlossaryList: UserGlossaryTypePagination;
   /** Getting project by user */
   userProjects: ProjectMemberTypePagination;

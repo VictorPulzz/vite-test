@@ -5,14 +5,13 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestSort } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { useAppSelector } from '~/store/hooks';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { TypeCell } from '~/view/pages/Requests/components/TypeCell';
 
 import { AssignedTo, AssignedToVariant } from '../components/AssignedTo';
@@ -22,11 +21,10 @@ import { RequestResultType } from '../types';
 
 const columnHelper = createColumnHelper<RequestResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useRequestsTableColumns() {
   const roleId = useAppSelector(state => state.user.profile?.role?.id);
 
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+  const { canReadUserDetails } = useUserPermissions();
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
     variables: {

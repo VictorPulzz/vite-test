@@ -5,11 +5,10 @@ import React, { useMemo } from 'react';
 import { generatePath, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { useFetchCreatedProjectSlackChannelsQuery } from '../../../__generated__/schema';
 import { ProjectMemberResultType } from '../../../types';
@@ -28,8 +27,7 @@ export function useProjectTeamTableColumns(
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
 
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canWriteProjectTeam = useHasAccess(Permission.WRITE_PROJECT_TEAM);
+  const { canReadUserDetails, canWriteProjectTeam } = useUserPermissions();
 
   const { data } = useFetchCreatedProjectSlackChannelsQuery({
     variables: {
