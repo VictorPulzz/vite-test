@@ -164,7 +164,6 @@ export const Router: FC = () => {
             <NoAccessMessage className="h-full flex-auto" />
           ),
         },
-
         {
           path: ROUTES.PROJECT_DETAILS_HISTORY,
           element: canReadProjectHistory ? (
