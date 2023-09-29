@@ -2,10 +2,9 @@ import { pick } from '@appello/common/lib/utils/object/pick';
 import { IconContainer } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
-import { Permission } from '~/constants/permissions';
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { CardVariant } from '~/view/pages/ProjectDetails/consts';
 import { RequestCard } from '~/view/pages/ProjectDetails/pages/Development/components/RequestCard';
 
@@ -25,7 +24,7 @@ export enum EnvironmentCredentialsType {
 }
 
 export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, variant }) => {
-  const canWriteProjectEnvs = useHasAccess(Permission.WRITE_PROJECT_ENVS);
+  const { canWriteProjectEnvs } = useUserPermissions();
 
   const frontendCredentialsData = useMemo(
     () =>

@@ -16,6 +16,15 @@ export const gqlClient = createGqlClient({
   serverUrl: API_URL,
   cache: {
     possibleTypes: fragmentTypes.possibleTypes,
+    typePolicies: {
+      Query: {
+        fields: {
+          notificationList: { merge: true },
+          reportTemplateList: { merge: true },
+          userGlossaryList: { merge: true },
+        },
+      },
+    },
   },
   getRefreshToken: () => store.getState().user.auth?.refresh,
   getAccessToken: () => store.getState().user.auth?.access,

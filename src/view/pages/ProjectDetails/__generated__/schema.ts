@@ -449,6 +449,12 @@ export type UpdateProjectReportTemplatesActivityMutationVariables = Types.Exact<
 
 export type UpdateProjectReportTemplatesActivityMutation = { projectUpdate: { id: number } };
 
+export type FetchNotSubmittedReportsCountQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.ReportFilter>;
+}>;
+
+export type FetchNotSubmittedReportsCountQuery = { reportList: { count: number } };
+
 export const FetchProjectPreviewDocument = gql`
   query FetchProjectPreview($data: IDInput!) {
     projectPreview(data: $data) {
@@ -2454,4 +2460,62 @@ export type UpdateProjectReportTemplatesActivityMutationResult =
 export type UpdateProjectReportTemplatesActivityMutationOptions = Apollo.BaseMutationOptions<
   UpdateProjectReportTemplatesActivityMutation,
   UpdateProjectReportTemplatesActivityMutationVariables
+>;
+export const FetchNotSubmittedReportsCountDocument = gql`
+  query FetchNotSubmittedReportsCount($filters: ReportFilter) {
+    reportList(filters: $filters) {
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchNotSubmittedReportsCountQuery__
+ *
+ * To run a query within a React component, call `useFetchNotSubmittedReportsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchNotSubmittedReportsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchNotSubmittedReportsCountQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useFetchNotSubmittedReportsCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >(FetchNotSubmittedReportsCountDocument, options);
+}
+export function useFetchNotSubmittedReportsCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >(FetchNotSubmittedReportsCountDocument, options);
+}
+export type FetchNotSubmittedReportsCountQueryHookResult = ReturnType<
+  typeof useFetchNotSubmittedReportsCountQuery
+>;
+export type FetchNotSubmittedReportsCountLazyQueryHookResult = ReturnType<
+  typeof useFetchNotSubmittedReportsCountLazyQuery
+>;
+export type FetchNotSubmittedReportsCountQueryResult = Apollo.QueryResult<
+  FetchNotSubmittedReportsCountQuery,
+  FetchNotSubmittedReportsCountQueryVariables
 >;

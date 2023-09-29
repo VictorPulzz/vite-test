@@ -2,24 +2,32 @@ import { Tab } from '@appello/web-ui';
 import React from 'react';
 import { generatePath, Outlet } from 'react-router';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { TabCounter } from '~/view/components/TabCounter';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 interface UseProjectTabsOptions {
   projectId: number;
   inTeam: boolean;
+  notSubmittedReportsCount: number;
 }
 
-export function useProjectTabs({ projectId, inTeam }: UseProjectTabsOptions): Tab[] {
-  const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
-  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
-  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
-  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
-  const canReadWriteProjectDocs = useHasAccess(Permission.READ_WRITE_PROJECT_DOCS);
-  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
-  const canReadWriteProjectIntegrations = useHasAccess(Permission.READ_WRITE_PROJECT_INTEGRATIONS);
+export function useProjectTabs({
+  projectId,
+  inTeam,
+  notSubmittedReportsCount = 0,
+}: UseProjectTabsOptions): Tab[] {
+  const {
+    canReadProjectOverview,
+    canReadProjectInfo,
+    canReadProjectTeam,
+    canReadProjectDevelopment,
+    canReadWriteProjectDocs,
+    canReadProjectReports,
+    canReadProjectHistory,
+    canReadWriteProjectIntegrations,
+  } = useUserPermissions();
 
   const projectTabs: (Tab | false)[] = [
     canReadProjectOverview && {
@@ -54,10 +62,11 @@ export function useProjectTabs({ projectId, inTeam }: UseProjectTabsOptions): Ta
       ),
       path: generatePath(ROUTES.PROJECT_DETAILS_DOCUMENTS, { id: projectId }),
     },
-    {
+    canReadProjectReports && {
       title: 'Reports',
       element: <Outlet />,
       path: generatePath(ROUTES.PROJECT_DETAILS_REPORTS, { id: projectId }),
+      rightComponent: <TabCounter value={notSubmittedReportsCount} />,
     },
     canReadProjectHistory && {
       title: 'History',

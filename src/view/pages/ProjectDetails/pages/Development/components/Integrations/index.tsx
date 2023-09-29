@@ -3,11 +3,10 @@ import { Button, ButtonVariant } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import React, { FC } from 'react';
 
-import { Permission } from '~/constants/permissions';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { NewRequestModal } from '~/view/components/NewRequestModal';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import {
   FetchIntegrationsRequestsListQuery,
   FetchProjectIntegrationsListQuery,
@@ -27,7 +26,7 @@ export const DevelopmentIntegrations: FC<Props> = ({
   integrationsRequests,
   projectId,
 }) => {
-  const canWriteProjectIntegrations = useHasAccess(Permission.WRITE_PROJECT_INTEGRATIONS);
+  const { canWriteProjectIntegrations } = useUserPermissions();
 
   const {
     value: isCreateNewIntegrationModalOpen,

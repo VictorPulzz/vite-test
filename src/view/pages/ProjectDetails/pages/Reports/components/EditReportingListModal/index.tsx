@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {
   Button,
   ButtonVariant,
@@ -77,7 +78,24 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
 
     const handleScroll = async (e: Event): Promise<void> => {
       const element = e.target as HTMLElement;
-      const isBottomReached = element.scrollTop + element.clientHeight >= element.scrollHeight;
+      console.log('element.scrollHeight', element.scrollHeight);
+      console.log('element.scrollTop', element.scrollTop);
+      console.log('element.clientHeight', element.clientHeight);
+      console.log('element.offsetHeight', element.offsetHeight);
+      console.log(
+        'condition',
+        element.scrollHeight - Math.ceil(element.scrollTop) === element.clientHeight,
+      );
+      console.log(
+        'cond2',
+        Math.ceil(element.scrollTop + element.offsetHeight) === element.scrollHeight,
+      );
+
+      const isBottomReached =
+        !isFetching &&
+        element.scrollHeight - element.clientHeight - Math.ceil(element.scrollTop) <=
+          window.outerWidth / window.outerWidth;
+
       if (isBottomReached) {
         try {
           setFetching(true);
@@ -110,7 +128,7 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
       // eslint-disable-next-line react-hooks/exhaustive-deps
       reportTemplatesListRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [fetchMore, nextOffset]);
+  }, [fetchMore, isFetching, nextOffset]);
 
   const { form, handleSubmit, resetForm } = useEditReportingListForm({
     activeReportsIds: projectReportTemplatesIds,

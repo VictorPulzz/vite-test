@@ -62,7 +62,11 @@ export const NotificationsList: FC<Props> = ({
 
     const handleScroll = async (e: Event): Promise<void> => {
       const element = e.target as HTMLElement;
-      const isBottomReached = element.scrollTop + element.clientHeight >= element.scrollHeight;
+      const isBottomReached =
+        !isFetching &&
+        element.scrollHeight - element.clientHeight - Math.ceil(element.scrollTop) <=
+          window.outerWidth / window.outerWidth;
+
       if (isBottomReached) {
         try {
           setFetching(true);
@@ -96,7 +100,7 @@ export const NotificationsList: FC<Props> = ({
       // eslint-disable-next-line react-hooks/exhaustive-deps
       notificationsListRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [onPageChange, isShowUnreadNotifications, nextOffset, notifications.length]);
+  }, [onPageChange, isShowUnreadNotifications, nextOffset, notifications.length, isFetching]);
 
   const [readNotifications] = useUpdateNotificationsListMutation();
 

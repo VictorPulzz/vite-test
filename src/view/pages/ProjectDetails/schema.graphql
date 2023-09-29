@@ -435,3 +435,9 @@ mutation UpdateProjectReportTemplatesActivity($input: ProjectUpdateInput!) {
     id
   }
 }
+
+query FetchNotSubmittedReportsCount($filters: ReportFilter) {
+  reportList(filters: $filters) {
+    count
+  }
+}

@@ -3,21 +3,18 @@ import { createColumnHelper } from '@tanstack/table-core';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { MoreCell } from '../components/MoreCell';
 import { UserResultType } from '../types';
 
 const columnHelper = createColumnHelper<UserResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useUsersTableColumns() {
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canWriteUser = useHasAccess(Permission.WRITE_USER);
+  const { canReadUserDetails, canWriteUser } = useUserPermissions();
 
   return [
     columnHelper.accessor('fullName', {

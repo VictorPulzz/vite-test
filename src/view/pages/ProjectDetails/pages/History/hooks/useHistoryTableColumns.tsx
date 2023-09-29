@@ -5,17 +5,15 @@ import React from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { LogsResultType } from '../../../types';
 
 const columnHelper = createColumnHelper<LogsResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useHistoryTableColumns() {
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+  const { canReadUserDetails } = useUserPermissions();
 
   return [
     columnHelper.accessor('message', {

@@ -3,11 +3,10 @@ import React, { FC, useCallback, useMemo } from 'react';
 import { Dropdown, DropdownItem } from 'react-nested-dropdown';
 import { generatePath, useNavigate } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { SlackChannelTemplateResultType } from '../../types';
 import { UserNameTooltip } from './components/UserNameTooltip';
@@ -20,7 +19,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
 }) => {
   const navigate = useNavigate();
 
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
+  const { canReadUserDetails } = useUserPermissions();
 
   const { initialUsers } = row.original;
 

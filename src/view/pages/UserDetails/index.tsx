@@ -3,9 +3,8 @@ import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { generatePath, useNavigate, useParams } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
@@ -14,7 +13,7 @@ import { UserDetailsTabs } from './components/UserDetailsTabs';
 import { UserMainInfo } from './components/UserMainInfo';
 
 export const UserDetailsPage: FC = () => {
-  const canWriteUser = useHasAccess(Permission.WRITE_USER);
+  const { canWriteUser } = useUserPermissions();
 
   const navigate = useNavigate();
   const params = useParams();
