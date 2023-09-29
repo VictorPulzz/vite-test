@@ -8,11 +8,10 @@ import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RepositoryFilter } from '~/services/gql/__generated__/globalTypes';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchRepositoriesQuery } from './__generated__/schema';
@@ -20,8 +19,7 @@ import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
 import { useRepositoriesTableColumns } from './hooks/useRepositoriesTableColumns';
 
 export const RepositoriesPage: FC = () => {
-  const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
-  const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
+  const { canReadReposList, canCreateRepository } = useUserPermissions();
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter, filtersCount } =
     useListQueryParams<RepositoryFilter>();

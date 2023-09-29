@@ -6,7 +6,6 @@ import toast from 'react-hot-toast';
 import { matchPath, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { ROUTES } from '~/constants/routes';
-import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { useFetchReportTemplateInfoQuery } from '../AdminSettingsReportTemplates/__generated__/schema';
@@ -41,12 +40,19 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
     });
 
   const { data: rolesList, loading: isLoadingRolesList } = useFetchRolesListQuery();
-  const { data: usersList, loading: isLoadingUsersList } = useFetchUserGlossaryListQuery();
 
   const isCreateReportPage = useMemo(
     () => !!matchPath(ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_ADD, location.pathname),
     [location.pathname],
   );
+
+  const { form, handleSubmit } = useReportTemplateForm({
+    prefilledData: reportTemplateInfo?.reportTemplate,
+    onSubmitSuccessful: () => navigate(-1),
+  });
+
+  const questionsField = form.watch('questions');
+  const errors = form.formState.errors;
 
   const reportTemplateTabsElement = useMemo(
     () => (
@@ -60,7 +66,7 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
             element: (
               <SettingsTabElement
                 roles={rolesList?.rolesList || []}
-                users={usersList?.userGlossaryList.results || []}
+                templateFilledById={Number(reportTemplateInfo?.reportTemplate.filledBy.id)}
               />
             ),
           },
@@ -75,18 +81,10 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
         ]}
       />
     ),
-    [usersList?.userGlossaryList.results, rolesList?.rolesList, selectedTab],
+    [reportTemplateInfo?.reportTemplate.filledBy, rolesList?.rolesList, selectedTab],
   );
 
-  const { form, handleSubmit } = useReportTemplateForm({
-    prefilledData: reportTemplateInfo?.reportTemplate,
-    onSubmitSuccessful: () => navigate(-1),
-  });
-
-  const questionsField = form.watch('questions');
-  const errors = form.formState.errors;
-
-  const isLoading = isLoadingReportTemplateInfo || isLoadingRolesList || isLoadingUsersList;
+  const isLoading = isLoadingReportTemplateInfo || isLoadingRolesList;
 
   useEffect(() => {
     if (Object.keys(omit(errors, ['questions'])).length) {

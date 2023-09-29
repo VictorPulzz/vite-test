@@ -16,7 +16,7 @@ export function setQuestionsDefaultValues(data: ReportQuestionsResultType): Subm
       .map(item => ({ questionId: item.id, yesNo: null })),
     checkboxes: data
       .filter(question => question.type === ReportQuestionTypeChoice.CHECKBOXES)
-      .map(item => ({ questionId: item.id, checkboxes: null })),
+      .map(item => ({ questionId: item.id, checkboxes: [] })),
     singleChoice: data
       .filter(question => question.type === ReportQuestionTypeChoice.SINGLE_CHOICE)
       .map(item => ({ questionId: item.id, singleChoiceId: null })),

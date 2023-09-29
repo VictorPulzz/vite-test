@@ -5,10 +5,9 @@ import { format } from 'date-fns';
 import React, { FC } from 'react';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { FetchRepositoryDetailsQuery } from '../../__generated__/schema';
 import { UpdateRepositoryModal } from './components/UpdateRepositoryModal';
@@ -20,7 +19,7 @@ interface Props {
 export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
   const { name, project, technologies, createdAt, gitUrl, gitTerraformUrl, type } = repository;
 
-  const canWriteRepository = useHasAccess(Permission.WRITE_REPOSITORY);
+  const { canWriteRepository } = useUserPermissions();
 
   const {
     value: isUpdateRepositoryModalOpen,

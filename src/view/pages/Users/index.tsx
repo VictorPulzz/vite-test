@@ -8,11 +8,10 @@ import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { UserFilter } from '~/services/gql/__generated__/globalTypes';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchUsersQuery } from './__generated__/schema';
@@ -20,8 +19,7 @@ import { UsersFilterModal } from './components/UsersFilterModal';
 import { useUsersTableColumns } from './hooks/useUsersTableColumns';
 
 export const UsersPage: FC = () => {
-  const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
-  const canCreateUser = useHasAccess(Permission.CREATE_USER);
+  const { canReadUsersList, canCreateUser } = useUserPermissions();
 
   const usersTableColumns = useUsersTableColumns();
 

@@ -7,7 +7,7 @@ import {
   TimeField,
   useSelectOptions,
 } from '@appello/web-ui';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { TimeFormat } from '~/constants/dates';
@@ -16,7 +16,7 @@ import {
   ReportRepeatChoice,
   WeekDayChoice,
 } from '~/services/gql/__generated__/globalTypes';
-import { FetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
+import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { SectionContainer } from '~/view/components/SectionContainer';
 import { FetchRolesListQuery } from '~/view/pages/Users/__generated__/schema';
@@ -25,18 +25,34 @@ import { ReportTemplateFormValues } from '../../hooks/useReportTemplateForm';
 
 interface Props {
   roles: FetchRolesListQuery['rolesList'];
-  users: FetchUserGlossaryListQuery['userGlossaryList']['results'];
+  templateFilledById: number;
 }
 
-export const SettingsTabElement: FC<Props> = ({ roles, users }) => {
-  const { control, register } = useFormContext<ReportTemplateFormValues>();
+export const SettingsTabElement: FC<Props> = ({ roles, templateFilledById }) => {
+  const { control, register, watch, setValue } = useFormContext<ReportTemplateFormValues>();
+
+  const selectedRoleId = watch('filledById');
+
+  const { data: usersList, loading: isLoadingUsersList } = useFetchUserGlossaryListQuery({
+    variables: {
+      filters: { roleId: [Number(selectedRoleId)] },
+    },
+    skip: !selectedRoleId,
+    fetchPolicy: 'cache-and-network',
+  });
+
+  useEffect(() => {
+    if (templateFilledById !== selectedRoleId) {
+      setValue('sendTo', []);
+    }
+  }, [selectedRoleId, templateFilledById, setValue]);
 
   const rolesOptions = useSelectOptions(roles, {
     value: 'value',
     label: 'label',
   });
 
-  const usersOptions = useSelectOptions(users, {
+  const usersOptions = useSelectOptions(usersList?.userGlossaryList.results, {
     value: 'id',
     label: 'fullName',
   });
@@ -49,7 +65,12 @@ export const SettingsTabElement: FC<Props> = ({ roles, users }) => {
     <div className="mt-7 mb-20 w-[700px] m-auto flex flex-col gap-4">
       <SectionContainer title="About">
         <TextField name="name" control={control} label="Report name" required />
-        <TextAreaField name="description" control={control} label="Report description" />
+        <TextAreaField
+          name="description"
+          control={control}
+          label="Report description"
+          maxLength={500}
+        />
       </SectionContainer>
       <SectionContainer title="Reporting rules">
         <SelectField
@@ -98,6 +119,7 @@ export const SettingsTabElement: FC<Props> = ({ roles, users }) => {
           control={control}
           label="Send submitted report to email"
           isMulti
+          disabled={!selectedRoleId || isLoadingUsersList}
         />
         <div className="flex flex-col">
           <Checkbox

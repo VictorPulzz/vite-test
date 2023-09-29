@@ -7,7 +7,6 @@ import React, { FC, useCallback } from 'react';
 import { generatePath } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestStatusChoice } from '~/services/gql/__generated__/globalTypes';
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';
@@ -15,7 +14,7 @@ import { useAppSelector } from '~/store/hooks';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import {
   FetchRequestsListDocument,
@@ -32,7 +31,7 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {
 export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => {
   const roleId = useAppSelector(state => state.user.profile?.role?.id);
 
-  const canReadRepoDetails = useHasAccess(Permission.READ_REPO_DETAILS);
+  const { canReadRepoDetails } = useUserPermissions();
 
   const { data: request, loading: isLoadingRequestDetails } = useFetchRequestDetailsQuery({
     variables: {

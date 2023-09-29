@@ -1,15 +1,13 @@
 import React, { FC, useMemo } from 'react';
 import { Navigate } from 'react-router';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { NoAccessMessage } from '../../../NoAccessMessage';
 
 export const AvailableDocumentsRouteRedirect: FC = () => {
-  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
-  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
+  const { canReadWriteInternalDocuments, canReadWriteClientsDocuments } = useUserPermissions();
 
   const availableDocumentsRoutes = useMemo(
     () =>

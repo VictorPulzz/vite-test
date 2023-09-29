@@ -8,19 +8,18 @@ import React, { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { useFetchRepositoryParticipantsQuery } from '~/view/pages/RepositoryDetails/__generated__/schema';
 
 import { AddParticipantModal } from './components/AddParticipantModal';
 import { ParticipantMenu } from './components/ParticipantMenu';
 
 export const Participants: FC = () => {
-  const canWriteRepoParticipants = useHasAccess(Permission.WRITE_REPO_PARTICIPANTS);
+  const { canWriteRepoParticipants } = useUserPermissions();
 
   const { offset, setOffset } = useListQueryParams();
 

@@ -21,6 +21,7 @@ export const UsersList: FC<Props> = ({ slackChannelId, searchValue, offset }) =>
 
   const {
     data: allUsers,
+
     loading: isLoadingAllUsers,
     fetchMore,
   } = useFetchUserGlossaryListQuery({
@@ -47,7 +48,10 @@ export const UsersList: FC<Props> = ({ slackChannelId, searchValue, offset }) =>
 
     const handleScroll = async (e: Event): Promise<void> => {
       const element = e.target as HTMLElement;
-      const isBottomReached = element.scrollTop + element.clientHeight >= element.scrollHeight;
+      const isBottomReached =
+        !isFetching &&
+        element.scrollHeight - element.clientHeight - Math.ceil(element.scrollTop) <=
+          window.outerWidth / window.outerWidth;
       if (isBottomReached) {
         try {
           setFetching(true);
@@ -81,7 +85,7 @@ export const UsersList: FC<Props> = ({ slackChannelId, searchValue, offset }) =>
       // eslint-disable-next-line react-hooks/exhaustive-deps
       usersListRef.current?.removeEventListener('scroll', handleScroll);
     };
-  }, [fetchMore, nextOffset, searchValue]);
+  }, [fetchMore, isFetching, nextOffset, searchValue]);
 
   return (
     <div className="mt-3 h-[360px] overflow-auto" ref={usersListRef}>

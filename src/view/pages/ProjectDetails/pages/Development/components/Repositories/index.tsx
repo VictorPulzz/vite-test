@@ -5,12 +5,11 @@ import { EmptyState } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import React, { FC } from 'react';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { NewRequestModal } from '~/view/components/NewRequestModal';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { FetchProjectRepositoriesListQuery } from '~/view/pages/ProjectDetails/__generated__/schema';
 
 import { useDevelopmentReposTableColumns } from './hooks/useDevelopmentReposTableColumns';
@@ -21,7 +20,7 @@ interface Props {
 }
 
 export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) => {
-  const canCreateRepository = useHasAccess(Permission.CREATE_REPOSITORY);
+  const { canCreateRepository } = useUserPermissions();
 
   const reposTableColumns = useDevelopmentReposTableColumns();
 

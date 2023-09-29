@@ -30,4 +30,5 @@ export enum Permission {
   READ_WRITE_PROJECT_INTEGRATIONS = 'readWriteProjectIntegrations',
   READ_LEADS = 'readLeads',
   READ_PROJECT_STATISTICS = 'readProjectStats',
+  READ_PROJECT_REPORTS = 'readProjectReports',
 }

@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
+import { formErrors } from '~/constants/form';
 import { YesOrNoChoice } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
@@ -11,38 +12,62 @@ import { useSubmitReportMutation } from '../../ProjectDetails/__generated__/sche
 import { ReportQuestionsResultType } from '../../ProjectDetails/types';
 import { setQuestionsDefaultValues } from '../utils';
 
-const formSchema = z.object({
-  text: z
-    .object({
-      questionId: z.number(),
-      text: z.string(),
-    })
-    .array(),
-  date: z
-    .object({
-      questionId: z.number(),
-      date: z.date().nullable(),
-    })
-    .array(),
-  yesNo: z
-    .object({
-      questionId: z.number(),
-      yesNo: z.nativeEnum(YesOrNoChoice).nullable(),
-    })
-    .array(),
-  checkboxes: z
-    .object({
-      questionId: z.number(),
-      checkboxes: z.array(z.number()).nullable(),
-    })
-    .array(),
-  singleChoice: z
-    .object({
-      questionId: z.number(),
-      singleChoiceId: z.number().nullable(),
-    })
-    .array(),
-});
+const formSchema = z
+  .object({
+    text: z
+      .object({
+        questionId: z.number(),
+        text: z.string().refine(value => value !== '', formErrors.REQUIRED_QUESTION),
+      })
+      .array(),
+    date: z
+      .object({
+        questionId: z.number(),
+        date: z
+          .date()
+          .nullable()
+          .refine(value => value !== null, formErrors.REQUIRED_QUESTION),
+      })
+      .array(),
+    yesNo: z
+      .object({
+        questionId: z.number(),
+        yesNo: z
+          .nativeEnum(YesOrNoChoice)
+          .nullable()
+          .refine(value => value !== null, formErrors.REQUIRED_QUESTION),
+      })
+      .array(),
+    checkboxes: z
+      .object({
+        questionId: z.number(),
+        checkboxes: z.array(z.number()),
+      })
+      .array(),
+    singleChoice: z
+      .object({
+        questionId: z.number(),
+        singleChoiceId: z
+          .number()
+          .nullable()
+          .refine(value => value !== null, formErrors.REQUIRED_QUESTION),
+      })
+      .array(),
+  })
+  .superRefine((value, ctx) => {
+    if (value.checkboxes) {
+      value.checkboxes.forEach((field, index) => {
+        if (field.checkboxes.length < 1) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: formErrors.REQUIRED_QUESTION,
+            path: ['checkboxes', index, 'checkboxes', 0],
+          });
+        }
+      });
+    }
+    return z.never();
+  });
 
 export type SubmitReportFormValues = z.infer<typeof formSchema>;
 
@@ -73,7 +98,7 @@ export function useSubmitReportForm({
   const form = useForm<SubmitReportFormValues>({
     defaultValues,
     values: questions ? setQuestionsDefaultValues(questions) : undefined,
-    mode: 'onChange',
+    mode: 'onTouched',
     resolver: zodResolver(formSchema),
   });
 
