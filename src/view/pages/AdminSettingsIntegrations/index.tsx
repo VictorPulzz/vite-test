@@ -5,14 +5,11 @@ import { TabLayout } from '~/view/layouts/TabLayout';
 
 import { BitbucketTabElement } from './components/BitbucketTabElement';
 import { SlackTabElement } from './components/SlackTabElement';
-import styles from './styles.module.scss';
 
 export const AdminSettingsIntegrationsPage: FC = () => {
   const adminSettingsIntegrationsTabs = useMemo(
     () => (
       <Tabs
-        className={styles['tabs']}
-        contentClassName={styles['tabs__body']}
         items={[
           {
             title: 'Slack',

@@ -2,24 +2,23 @@ import { SidebarItem } from '@appello/web-ui';
 import { useMemo } from 'react';
 
 import { SALES_AI_URL } from '~/constants/env';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 export function useSidebarItems(): SidebarItem[] {
   const auth = useAppSelector(state => state.user.auth);
   const SALES_AI_LINK = `${SALES_AI_URL}?access=${auth?.access}&refresh=${auth?.refresh}`;
 
-  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
-  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
-  const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
-  const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
-  const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
-  const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
-  const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
-  const canReadDocuments = canReadWriteInternalDocuments || canReadWriteClientsDocuments;
-  const canReadLeads = useHasAccess(Permission.READ_LEADS);
+  const {
+    canReadUsersList,
+    canReadProjectsList,
+    canReadReposList,
+    canWritePermissions,
+    canWriteAdminSettings,
+    canReadDocuments,
+    canReadLeads,
+  } = useUserPermissions();
 
   const hiddenRoutes = useMemo(
     () =>
@@ -112,6 +111,10 @@ export function useSidebarItems(): SidebarItem[] {
           {
             title: 'Projects',
             link: ROUTES.ADMIN_SETTINGS_PROJECTS,
+          },
+          {
+            title: 'Report templates',
+            link: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES,
           },
         ],
       },

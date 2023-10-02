@@ -1,5 +1,10 @@
-query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $search: String) {
-  projectsList(filters: $filters, pagination: $pagination, search: $search) {
+query FetchProjects(
+  $filters: ProjectFilter
+  $pagination: PaginationInput
+  $search: String
+  $sort: [ProjectSortFieldInput!]
+) {
+  projectsList(filters: $filters, pagination: $pagination, search: $search, sort: $sort) {
     results {
       id
       name
@@ -20,6 +25,7 @@ query FetchProjects($filters: ProjectFilter, $pagination: PaginationInput, $sear
       }
       inCurrentTeam
       phase
+      createdAt
     }
     count
   }

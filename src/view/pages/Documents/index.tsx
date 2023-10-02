@@ -2,15 +2,12 @@ import { Tab, Tabs } from '@appello/web-ui';
 import React, { FC, useMemo, useState } from 'react';
 import { Outlet } from 'react-router';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { NewDocumentButton } from '~/view/components/Docs/components/NewDocumentButton';
 import { DocsType } from '~/view/components/Docs/types';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { TabLayout } from '~/view/layouts/TabLayout';
-
-import styles from './styles.module.scss';
 
 enum DocsTab {
   INTERNAL = 0,
@@ -18,8 +15,7 @@ enum DocsTab {
 }
 
 export const DocumentsPage: FC = () => {
-  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
-  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
+  const { canReadWriteInternalDocuments, canReadWriteClientsDocuments } = useUserPermissions();
 
   const [selectedTab, setSelectedTab] = useState(DocsTab.INTERNAL);
 
@@ -54,8 +50,6 @@ export const DocumentsPage: FC = () => {
   const tabsElement = useMemo(
     () => (
       <Tabs
-        className={styles['tabs']}
-        contentClassName={styles['tabs__body']}
         selected={selectedTab}
         onSelect={setSelectedTab}
         items={docsTabs.filter((tab): tab is Tab => !!tab)}

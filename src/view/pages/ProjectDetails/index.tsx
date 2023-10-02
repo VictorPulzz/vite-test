@@ -7,20 +7,24 @@ import { generatePath } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { DateFormat } from '~/constants/dates';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { RequestAccessMessage } from '~/view/components/RequestAccessMessage';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 import { DetailLayout } from '~/view/layouts/DetailLayout';
 import { TabLayout } from '~/view/layouts/TabLayout';
 
-import { useFetchProjectPreviewQuery } from './__generated__/schema';
+import {
+  useFetchNotSubmittedReportsCountQuery,
+  useFetchProjectPreviewQuery,
+} from './__generated__/schema';
 import { useProjectTabs } from './hooks/useProjectTabs';
-import styles from './styles.module.scss';
 
 export const ProjectDetailsPage: FC = () => {
-  const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
+  const { profile, isAdminOrPM } = useUserProfile();
+
+  const { canWriteProject } = useUserPermissions();
 
   const navigate = useNavigate();
   const params = useParams();
@@ -33,16 +37,25 @@ export const ProjectDetailsPage: FC = () => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const projectTabs = useProjectTabs({ projectId, inTeam: !!data?.projectPreview.inTeam });
+  const { data: notSubmittedReports } = useFetchNotSubmittedReportsCountQuery({
+    variables: {
+      filters: {
+        projectId,
+        submittedBy: isAdminOrPM ? null : profile.id,
+        submitted: false,
+      },
+    },
+    fetchPolicy: 'cache-and-network',
+  });
+
+  const projectTabs = useProjectTabs({
+    projectId,
+    inTeam: !!data?.projectPreview.inTeam,
+    notSubmittedReportsCount: notSubmittedReports?.reportList.count || 0,
+  });
 
   const projectTabsElement = useMemo(
-    () => (
-      <Tabs
-        className={styles['tabs']}
-        contentClassName="bg-gray-7 p-7 flex-auto"
-        items={projectTabs}
-      />
-    ),
+    () => <Tabs contentClassName="bg-gray-7 p-7 flex-auto" items={projectTabs} />,
     [projectTabs],
   );
 

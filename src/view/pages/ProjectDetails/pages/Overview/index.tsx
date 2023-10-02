@@ -2,8 +2,7 @@ import { Loader } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import {
   useFetchProjectEstimatedHoursQuery,
@@ -12,7 +11,7 @@ import {
 import { ProjectStatsSection } from './components/ProjectStatsSection';
 
 export const Overview: FC = () => {
-  const canReadProjectStatistics = useHasAccess(Permission.READ_PROJECT_STATISTICS);
+  const { canReadProjectStatistics } = useUserPermissions();
 
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);

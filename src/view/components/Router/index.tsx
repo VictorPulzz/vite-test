@@ -1,16 +1,17 @@
 import React, { FC } from 'react';
 import { Navigate, RouteObject, useRoutes } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { useAppSelector } from '~/store/hooks';
 import { Docs } from '~/view/components/Docs';
 import { DocsType } from '~/view/components/Docs/types';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { AdminSettingsDocumentTemplatesPage } from '~/view/pages/AdminSettingsDocumentTemplates';
 import { AdminSettingsIntegrationsPage } from '~/view/pages/AdminSettingsIntegrations';
 import { AdminSettingsProjectsPage } from '~/view/pages/AdminSettingsProjects';
+import { AdminSettingsReportTemplatesPage } from '~/view/pages/AdminSettingsReportTemplates';
 import { CreateOrUpdateProject } from '~/view/pages/CreateOrUpdateProject';
+import { CreateOrUpdateReportTemplatePage } from '~/view/pages/CreateOrUpdateReportTemplate';
 import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { DocumentsPage } from '~/view/pages/Documents';
@@ -35,6 +36,7 @@ import { RolesAndPermissionsPage } from '~/view/pages/RolesAndPermissions';
 import { SettingsGeneralPage } from '~/view/pages/SettingsGeneral';
 import { SettingsSecurityPage } from '~/view/pages/SettingsSecurity';
 import { SignInPage } from '~/view/pages/SignIn';
+import { SubmitOrViewReportPage } from '~/view/pages/SubmitOrViewReport';
 import { UserDetailsPage } from '~/view/pages/UserDetails';
 import { Projects } from '~/view/pages/UserDetails/components/UserDetailsTabs/components/Projects';
 import { UserHistory } from '~/view/pages/UserDetails/components/UserDetailsTabs/components/UserHistory';
@@ -58,28 +60,26 @@ const authRoutes: RouteObject[] = [
 
 export const Router: FC = () => {
   const isAuthorized = useAppSelector(state => !!state.user.auth);
-
-  const canReadWriteInternalDocuments = useHasAccess(Permission.READ_WRITE_INTERNAL_DOCS);
-  const canReadWriteClientsDocuments = useHasAccess(Permission.READ_WRITE_CLIENTS_DOCS);
-  const canReadDocuments = canReadWriteInternalDocuments || canReadWriteClientsDocuments;
-
-  const canReadUserDocs = useHasAccess(Permission.READ_USER_DOCS);
-  const canReadUserHistory = useHasAccess(Permission.READ_USER_HISTORY);
-
-  const canReadProjectOverview = useHasAccess(Permission.READ_PROJECT_OVERVIEW);
-  const canReadProjectInfo = useHasAccess(Permission.READ_PROJECT_INFO);
-  const canReadProjectTeam = useHasAccess(Permission.READ_PROJECT_TEAM);
-  const canReadProjectDevelopment = useHasAccess(Permission.READ_PROJECT_DEVELOPMENT);
-  const canReadWriteProjectDocs = useHasAccess(Permission.READ_WRITE_PROJECT_DOCS);
-  const canReadProjectHistory = useHasAccess(Permission.READ_PROJECT_HISTORY);
-  const canReadWriteProjectIntegrations = useHasAccess(Permission.READ_WRITE_PROJECT_INTEGRATIONS);
-
-  const canReadUsersList = useHasAccess(Permission.READ_USERS_LIST);
-  const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
-  const canReadReposList = useHasAccess(Permission.READ_REPOS_LIST);
-
-  const canWritePermissions = useHasAccess(Permission.WRITE_PERMISSIONS);
-  const canWriteAdminSettings = useHasAccess(Permission.WRITE_ADMIN_SETTINGS);
+  const {
+    canReadWriteInternalDocuments,
+    canReadWriteClientsDocuments,
+    canReadDocuments,
+    canReadUserDocs,
+    canReadUserHistory,
+    canReadProjectOverview,
+    canReadProjectInfo,
+    canReadProjectTeam,
+    canReadProjectDevelopment,
+    canReadWriteProjectDocs,
+    canReadProjectReports,
+    canReadProjectHistory,
+    canReadWriteProjectIntegrations,
+    canReadUsersList,
+    canReadProjectsList,
+    canReadReposList,
+    canWritePermissions,
+    canWriteAdminSettings,
+  } = useUserPermissions();
 
   const protectedRoutes: RouteObject[] = [
     {
@@ -157,6 +157,14 @@ export const Router: FC = () => {
           ),
         },
         {
+          path: ROUTES.PROJECT_DETAILS_REPORTS,
+          element: canReadProjectReports ? (
+            <Reports />
+          ) : (
+            <NoAccessMessage className="h-full flex-auto" />
+          ),
+        },
+        {
           path: ROUTES.PROJECT_DETAILS_HISTORY,
           element: canReadProjectHistory ? (
             <History />
@@ -180,11 +188,15 @@ export const Router: FC = () => {
             <NoAccessMessage className="h-full flex-auto" />
           ),
         },
-        {
-          path: ROUTES.PROJECT_DETAILS_REPORTS,
-          element: <Reports />,
-        },
       ],
+    },
+    {
+      path: ROUTES.PROJECT_DETAILS_REPORTS_SUBMIT,
+      element: <SubmitOrViewReportPage />,
+    },
+    {
+      path: ROUTES.PROJECT_DETAILS_REPORTS_VIEW,
+      element: <SubmitOrViewReportPage />,
     },
     {
       path: ROUTES.USERS,
@@ -269,6 +281,18 @@ export const Router: FC = () => {
     {
       path: ROUTES.ADMIN_SETTINGS_PROJECTS,
       element: canWriteAdminSettings ? <AdminSettingsProjectsPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES,
+      element: canWriteAdminSettings ? <AdminSettingsReportTemplatesPage /> : <NoAccessPage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_ADD,
+      element: <CreateOrUpdateReportTemplatePage />,
+    },
+    {
+      path: ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_EDIT,
+      element: <CreateOrUpdateReportTemplatePage />,
     },
   ];
 

@@ -2,19 +2,15 @@ import { Tab, Tabs } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { generatePath, Outlet } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
-
-import styles from './styles.module.scss';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 interface Props {
   userId: number;
 }
 
 export const UserDetailsTabs: FC<Props> = ({ userId }) => {
-  const canReadUserDocs = useHasAccess(Permission.READ_USER_DOCS);
-  const canReadUserHistory = useHasAccess(Permission.READ_USER_HISTORY);
+  const { canReadUserDocs, canReadUserHistory } = useUserPermissions();
 
   const tabsItems: (Tab | false)[] = [
     {
@@ -37,8 +33,8 @@ export const UserDetailsTabs: FC<Props> = ({ userId }) => {
   return (
     <div className="shadow-4 bg-white rounded-md flex-auto">
       <Tabs
-        className={styles['tabs']}
-        contentClassName={styles['tabs__body']}
+        className="pt-3"
+        contentClassName="p-7"
         items={tabsItems.filter((tab): tab is Tab => !!tab)}
       />
     </div>

@@ -64,6 +64,11 @@ Date (isoformat)
 """
 scalar Date
 
+input DateRangeFilter {
+  end: Date = null
+  start: Date = null
+}
+
 """
 Date with time (isoformat)
 """
@@ -471,6 +476,22 @@ type Mutation {
   """
   projectUpdateMember(data: ProjectMemberUpdateInput!): ProjectMemberType!
   """
+  Submit Report
+  """
+  reportSubmit(data: ReportInput!): MessageType!
+  """
+  Create Report template
+  """
+  reportTemplateCreate(data: ReportTemplateInput!): ReportTemplateType!
+  """
+  Delete Report template
+  """
+  reportTemplateDelete(data: IDInput!): MessageType!
+  """
+  Change Report template
+  """
+  reportTemplateUpdate(data: ReportTemplateUpdateInput!): ReportTemplateType!
+  """
   Repository creation
   """
   repositoryCreate(data: RepositoryCreateInput!): RepositoryType!
@@ -847,6 +868,16 @@ type ProjectSlackType {
   templateName: String
 }
 
+enum ProjectSort {
+  created_at
+  name
+}
+
+input ProjectSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: ProjectSort!
+}
+
 type ProjectStatsType {
   daysWorkedTotal: Int
   estimatedDays: Int
@@ -892,6 +923,7 @@ type ProjectType {
   notes: String
   phase: ProjectPhaseChoice
   platforms: [PlatformType!]
+  reportTemplates: [ReportTemplatePreviewType!]
   roadmap: String
   startDate: Date
   status: ProjectStatusType
@@ -916,6 +948,7 @@ input ProjectUpdateInput {
   notes: String
   phase: ProjectPhaseChoice
   platforms: [Int!]
+  reportTemplates: [Int!]
   roadmap: String
   startDate: Date
   statusId: Int
@@ -1083,7 +1116,30 @@ type Query {
     filters: ProjectFilter = null
     pagination: PaginationInput = null
     search: String = null
+    sort: [ProjectSortFieldInput!] = null
   ): ProjectTypePagination!
+  """
+  Getting report
+  """
+  report(data: IDInput!): ReportType!
+  """
+  Getting report
+  """
+  reportList(
+    filters: ReportFilter = null
+    pagination: PaginationInput = null
+  ): ReportTypePagination!
+  """
+  Getting report template
+  """
+  reportTemplate(data: IDInput!): ReportTemplateType!
+  """
+  Getting report templates
+  """
+  reportTemplateList(
+    pagination: PaginationInput = null
+    sort: [ReportTemplateSortFieldInput!] = null
+  ): ReportTemplateTypePagination!
   """
   Getting repository
   """
@@ -1147,7 +1203,7 @@ type Query {
   """
   userDetails(data: IDInput!): UserType!
   """
-  Getting glossary list of users
+  Getting glossary list of users. Only active
   """
   userGlossaryList(
     filters: UserFilter = null
@@ -1175,6 +1231,170 @@ type Query {
 
 input RefreshTokenInput {
   refreshToken: String!
+}
+
+input ReportAnswerInput {
+  checkboxes: [Int!]
+  date: Date
+  questionId: Int!
+  singleChoiceId: Int
+  text: String
+  yesNo: YesOrNoChoice
+}
+
+type ReportAnswerType {
+  checkboxes: [ReportQuestionOptionType!]
+  checkboxesStr: [String!]
+  date: Date
+  question: ReportQuestionType!
+  singleChoice: ReportQuestionOptionType
+  singleChoiceStr: String
+  text: String
+  yesNo: YesOrNoChoice
+}
+
+enum ReportEmailNotificationChoice {
+  AFTER_2_HOURS
+  AFTER_4_HOURS
+  AFTER_10_HOURS
+}
+
+input ReportFilter {
+  dateRange: DateRangeFilter = null
+  projectId: Int = null
+  submitted: Boolean = null
+  submittedBy: Int = null
+  templateId: Int = null
+}
+
+input ReportInput {
+  answers: [ReportAnswerInput!]!
+  id: Int!
+  submittedAt: Date
+}
+
+input ReportQuestionInput {
+  id: Int = null
+  options: [ReportQuestionOptionInput!]
+  questionText: String!
+  showOnOverview: Boolean = null
+  type: ReportQuestionTypeChoice!
+}
+
+input ReportQuestionOptionInput {
+  id: Int = null
+  text: String!
+}
+
+type ReportQuestionOptionType {
+  id: Int!
+  text: String!
+}
+
+type ReportQuestionType {
+  id: Int!
+  options: [ReportQuestionOptionType!]!
+  questionText: String!
+  showOnOverview: Boolean!
+  type: ReportQuestionTypeChoice!
+}
+
+enum ReportQuestionTypeChoice {
+  CHECKBOXES
+  DATE
+  FREE_TEXT
+  SINGLE_CHOICE
+  YES_OR_NO
+}
+
+enum ReportRepeatChoice {
+  EVERY_2_WEEKS
+  EVERY_3_WEEKS
+  EVERY_WEEK
+}
+
+input ReportTemplateInput {
+  applyToAllProjects: Boolean
+  description: String
+  emailNotification: ReportEmailNotificationChoice
+  filledById: Int
+  name: String!
+  projects: [Int!]
+  questions: [ReportQuestionInput!]!
+  repeat: ReportRepeatChoice
+  reportDay: WeekDayChoice
+  sendTo: [Int!]
+  time: Time
+}
+
+type ReportTemplatePreviewType {
+  description: String!
+  id: Int!
+  name: String!
+}
+
+enum ReportTemplateSort {
+  filled_by
+  name
+}
+
+input ReportTemplateSortFieldInput {
+  direction: OrderDirectionChoice!
+  field: ReportTemplateSort!
+}
+
+type ReportTemplateType {
+  applyToAllProjects: Boolean
+  description: String!
+  emailNotification: ReportEmailNotificationChoice!
+  filledBy: RoleType!
+  id: Int!
+  name: String!
+  projects: [ProjectType!]
+  questions: [ReportQuestionType!]!
+  repeat: ReportRepeatChoice!
+  reportDay: WeekDayChoice!
+  sendTo: [ProfileType!]
+  time: Time!
+}
+
+type ReportTemplateTypePagination {
+  count: Int!
+  limit: Int
+  offset: Int!
+  results: [ReportTemplateType!]!
+}
+
+input ReportTemplateUpdateInput {
+  applyToAllProjects: Boolean
+  description: String
+  emailNotification: ReportEmailNotificationChoice
+  filledById: Int
+  id: Int!
+  name: String!
+  projects: [Int!]
+  questions: [ReportQuestionInput!]
+  repeat: ReportRepeatChoice
+  reportDay: WeekDayChoice
+  sendTo: [Int!]
+  time: Time
+}
+
+type ReportType {
+  answers: [ReportAnswerType!]
+  id: Int!
+  name: String
+  project: ProjectType
+  questions: [ReportQuestionType!]
+  submittedAt: Date
+  submittedBy: ProfileType
+}
+
+type ReportTypePagination {
+  count: Int!
+  limit: Int
+  offset: Int!
+  results: [ReportType!]!
 }
 
 enum RepositoryAccessLevelChoice {
@@ -1435,6 +1655,11 @@ type TechnologyTypePagination {
   results: [TechnologyType!]!
 }
 
+"""
+Time (isoformat)
+"""
+scalar Time
+
 scalar Upload
 
 input UserCreateInput {
@@ -1507,4 +1732,19 @@ type UserTypePagination {
   limit: Int
   offset: Int!
   results: [UserType!]!
+}
+
+enum WeekDayChoice {
+  FRIDAY
+  MONDAY
+  SATURDAY
+  SUNDAY
+  THURSDAY
+  TUESDAY
+  WEDNESDAY
+}
+
+enum YesOrNoChoice {
+  NO
+  YES
 }

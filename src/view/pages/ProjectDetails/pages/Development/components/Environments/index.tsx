@@ -3,11 +3,10 @@ import { Button, ButtonVariant } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import React, { FC } from 'react';
 
-import { Permission } from '~/constants/permissions';
 import { RequestTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { NewRequestModal } from '~/view/components/NewRequestModal';
 import { SectionContainer } from '~/view/components/SectionContainer';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import {
   FetchEnvsRequestsListQuery,
   FetchProjectEnvironmentsListQuery,
@@ -23,7 +22,7 @@ interface Props {
 }
 
 export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests, projectId }) => {
-  const canWriteProjectEnvs = useHasAccess(Permission.WRITE_PROJECT_ENVS);
+  const { canWriteProjectEnvs } = useUserPermissions();
 
   const {
     value: isCreateOrUpdateEnvironmentModalOpen,

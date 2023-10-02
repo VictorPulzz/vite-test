@@ -337,3 +337,107 @@ mutation InviteUserToSlackChannel($input: SlackUserInviteInput!) {
     message
   }
 }
+
+query FetchProjectReports($filters: ReportFilter, $pagination: PaginationInput) {
+  reportList(filters: $filters, pagination: $pagination) {
+    results {
+      id
+      name
+      submittedAt
+      submittedBy {
+        id
+        fullName
+      }
+    }
+    count
+  }
+}
+
+query FetchReportQuestions($data: IDInput!) {
+  report(data: $data) {
+    id
+    name
+    project {
+      name
+    }
+    questions {
+      id
+      type
+      questionText
+      options {
+        id
+        text
+      }
+    }
+  }
+}
+
+query FetchReportAnswers($data: IDInput!) {
+  report(data: $data) {
+    id
+    name
+    project {
+      name
+    }
+    answers {
+      question {
+        id
+        type
+        questionText
+      }
+      text
+      yesNo
+      date
+      singleChoice {
+        id
+        text
+      }
+      checkboxes {
+        id
+        text
+      }
+    }
+  }
+}
+
+mutation SubmitReport($input: ReportInput!) {
+  reportSubmit(data: $input) {
+    message
+  }
+}
+
+query FetchReportTemplatesForEditing(
+  $pagination: PaginationInput
+  $sort: [ReportTemplateSortFieldInput!]
+) {
+  reportTemplateList(pagination: $pagination, sort: $sort) {
+    results {
+      id
+      name
+      reportDay
+      time
+      repeat
+    }
+    count
+  }
+}
+
+query FetchProjectReportTemplates($data: IDInput!) {
+  project(data: $data) {
+    reportTemplates {
+      id
+    }
+  }
+}
+
+mutation UpdateProjectReportTemplatesActivity($input: ProjectUpdateInput!) {
+  projectUpdate(data: $input) {
+    id
+  }
+}
+
+query FetchNotSubmittedReportsCount($filters: ReportFilter) {
+  reportList(filters: $filters) {
+    count
+  }
+}

@@ -354,6 +354,107 @@ export type InviteUserToSlackChannelMutationVariables = Types.Exact<{
 
 export type InviteUserToSlackChannelMutation = { slackUserInvite: { message: string } };
 
+export type FetchProjectReportsQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.ReportFilter>;
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+}>;
+
+export type FetchProjectReportsQuery = {
+  reportList: {
+    count: number;
+    results: Array<{
+      id: number;
+      name?: string | null;
+      submittedAt?: string | null;
+      submittedBy?: { id: number; fullName: string } | null;
+    }>;
+  };
+};
+
+export type FetchReportQuestionsQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchReportQuestionsQuery = {
+  report: {
+    id: number;
+    name?: string | null;
+    project?: { name: string } | null;
+    questions?: Array<{
+      id: number;
+      type: Types.ReportQuestionTypeChoice;
+      questionText: string;
+      options: Array<{ id: number; text: string }>;
+    }> | null;
+  };
+};
+
+export type FetchReportAnswersQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchReportAnswersQuery = {
+  report: {
+    id: number;
+    name?: string | null;
+    project?: { name: string } | null;
+    answers?: Array<{
+      text?: string | null;
+      yesNo?: Types.YesOrNoChoice | null;
+      date?: string | null;
+      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      singleChoice?: { id: number; text: string } | null;
+      checkboxes?: Array<{ id: number; text: string }> | null;
+    }> | null;
+  };
+};
+
+export type SubmitReportMutationVariables = Types.Exact<{
+  input: Types.ReportInput;
+}>;
+
+export type SubmitReportMutation = { reportSubmit: { message: string } };
+
+export type FetchReportTemplatesForEditingQueryVariables = Types.Exact<{
+  pagination?: Types.InputMaybe<Types.PaginationInput>;
+  sort?: Types.InputMaybe<
+    Array<Types.ReportTemplateSortFieldInput> | Types.ReportTemplateSortFieldInput
+  >;
+}>;
+
+export type FetchReportTemplatesForEditingQuery = {
+  reportTemplateList: {
+    count: number;
+    results: Array<{
+      id: number;
+      name: string;
+      reportDay: Types.WeekDayChoice;
+      time: string;
+      repeat: Types.ReportRepeatChoice;
+    }>;
+  };
+};
+
+export type FetchProjectReportTemplatesQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectReportTemplatesQuery = {
+  project: { reportTemplates?: Array<{ id: number }> | null };
+};
+
+export type UpdateProjectReportTemplatesActivityMutationVariables = Types.Exact<{
+  input: Types.ProjectUpdateInput;
+}>;
+
+export type UpdateProjectReportTemplatesActivityMutation = { projectUpdate: { id: number } };
+
+export type FetchNotSubmittedReportsCountQueryVariables = Types.Exact<{
+  filters?: Types.InputMaybe<Types.ReportFilter>;
+}>;
+
+export type FetchNotSubmittedReportsCountQuery = { reportList: { count: number } };
+
 export const FetchProjectPreviewDocument = gql`
   query FetchProjectPreview($data: IDInput!) {
     projectPreview(data: $data) {
@@ -1926,4 +2027,495 @@ export type InviteUserToSlackChannelMutationResult =
 export type InviteUserToSlackChannelMutationOptions = Apollo.BaseMutationOptions<
   InviteUserToSlackChannelMutation,
   InviteUserToSlackChannelMutationVariables
+>;
+export const FetchProjectReportsDocument = gql`
+  query FetchProjectReports($filters: ReportFilter, $pagination: PaginationInput) {
+    reportList(filters: $filters, pagination: $pagination) {
+      results {
+        id
+        name
+        submittedAt
+        submittedBy {
+          id
+          fullName
+        }
+      }
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectReportsQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectReportsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectReportsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectReportsQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *      pagination: // value for 'pagination'
+ *   },
+ * });
+ */
+export function useFetchProjectReportsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchProjectReportsQuery,
+    FetchProjectReportsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchProjectReportsQuery, FetchProjectReportsQueryVariables>(
+    FetchProjectReportsDocument,
+    options,
+  );
+}
+export function useFetchProjectReportsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectReportsQuery,
+    FetchProjectReportsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchProjectReportsQuery, FetchProjectReportsQueryVariables>(
+    FetchProjectReportsDocument,
+    options,
+  );
+}
+export type FetchProjectReportsQueryHookResult = ReturnType<typeof useFetchProjectReportsQuery>;
+export type FetchProjectReportsLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectReportsLazyQuery
+>;
+export type FetchProjectReportsQueryResult = Apollo.QueryResult<
+  FetchProjectReportsQuery,
+  FetchProjectReportsQueryVariables
+>;
+export const FetchReportQuestionsDocument = gql`
+  query FetchReportQuestions($data: IDInput!) {
+    report(data: $data) {
+      id
+      name
+      project {
+        name
+      }
+      questions {
+        id
+        type
+        questionText
+        options {
+          id
+          text
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchReportQuestionsQuery__
+ *
+ * To run a query within a React component, call `useFetchReportQuestionsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchReportQuestionsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchReportQuestionsQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchReportQuestionsQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchReportQuestionsQuery,
+    FetchReportQuestionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchReportQuestionsQuery, FetchReportQuestionsQueryVariables>(
+    FetchReportQuestionsDocument,
+    options,
+  );
+}
+export function useFetchReportQuestionsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchReportQuestionsQuery,
+    FetchReportQuestionsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchReportQuestionsQuery, FetchReportQuestionsQueryVariables>(
+    FetchReportQuestionsDocument,
+    options,
+  );
+}
+export type FetchReportQuestionsQueryHookResult = ReturnType<typeof useFetchReportQuestionsQuery>;
+export type FetchReportQuestionsLazyQueryHookResult = ReturnType<
+  typeof useFetchReportQuestionsLazyQuery
+>;
+export type FetchReportQuestionsQueryResult = Apollo.QueryResult<
+  FetchReportQuestionsQuery,
+  FetchReportQuestionsQueryVariables
+>;
+export const FetchReportAnswersDocument = gql`
+  query FetchReportAnswers($data: IDInput!) {
+    report(data: $data) {
+      id
+      name
+      project {
+        name
+      }
+      answers {
+        question {
+          id
+          type
+          questionText
+        }
+        text
+        yesNo
+        date
+        singleChoice {
+          id
+          text
+        }
+        checkboxes {
+          id
+          text
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchReportAnswersQuery__
+ *
+ * To run a query within a React component, call `useFetchReportAnswersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchReportAnswersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchReportAnswersQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchReportAnswersQuery(
+  baseOptions: Apollo.QueryHookOptions<FetchReportAnswersQuery, FetchReportAnswersQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<FetchReportAnswersQuery, FetchReportAnswersQueryVariables>(
+    FetchReportAnswersDocument,
+    options,
+  );
+}
+export function useFetchReportAnswersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchReportAnswersQuery,
+    FetchReportAnswersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<FetchReportAnswersQuery, FetchReportAnswersQueryVariables>(
+    FetchReportAnswersDocument,
+    options,
+  );
+}
+export type FetchReportAnswersQueryHookResult = ReturnType<typeof useFetchReportAnswersQuery>;
+export type FetchReportAnswersLazyQueryHookResult = ReturnType<
+  typeof useFetchReportAnswersLazyQuery
+>;
+export type FetchReportAnswersQueryResult = Apollo.QueryResult<
+  FetchReportAnswersQuery,
+  FetchReportAnswersQueryVariables
+>;
+export const SubmitReportDocument = gql`
+  mutation SubmitReport($input: ReportInput!) {
+    reportSubmit(data: $input) {
+      message
+    }
+  }
+`;
+export type SubmitReportMutationFn = Apollo.MutationFunction<
+  SubmitReportMutation,
+  SubmitReportMutationVariables
+>;
+
+/**
+ * __useSubmitReportMutation__
+ *
+ * To run a mutation, you first call `useSubmitReportMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitReportMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitReportMutation, { data, loading, error }] = useSubmitReportMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSubmitReportMutation(
+  baseOptions?: Apollo.MutationHookOptions<SubmitReportMutation, SubmitReportMutationVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<SubmitReportMutation, SubmitReportMutationVariables>(
+    SubmitReportDocument,
+    options,
+  );
+}
+export type SubmitReportMutationHookResult = ReturnType<typeof useSubmitReportMutation>;
+export type SubmitReportMutationResult = Apollo.MutationResult<SubmitReportMutation>;
+export type SubmitReportMutationOptions = Apollo.BaseMutationOptions<
+  SubmitReportMutation,
+  SubmitReportMutationVariables
+>;
+export const FetchReportTemplatesForEditingDocument = gql`
+  query FetchReportTemplatesForEditing(
+    $pagination: PaginationInput
+    $sort: [ReportTemplateSortFieldInput!]
+  ) {
+    reportTemplateList(pagination: $pagination, sort: $sort) {
+      results {
+        id
+        name
+        reportDay
+        time
+        repeat
+      }
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchReportTemplatesForEditingQuery__
+ *
+ * To run a query within a React component, call `useFetchReportTemplatesForEditingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchReportTemplatesForEditingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchReportTemplatesForEditingQuery({
+ *   variables: {
+ *      pagination: // value for 'pagination'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useFetchReportTemplatesForEditingQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchReportTemplatesForEditingQuery,
+    FetchReportTemplatesForEditingQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchReportTemplatesForEditingQuery,
+    FetchReportTemplatesForEditingQueryVariables
+  >(FetchReportTemplatesForEditingDocument, options);
+}
+export function useFetchReportTemplatesForEditingLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchReportTemplatesForEditingQuery,
+    FetchReportTemplatesForEditingQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchReportTemplatesForEditingQuery,
+    FetchReportTemplatesForEditingQueryVariables
+  >(FetchReportTemplatesForEditingDocument, options);
+}
+export type FetchReportTemplatesForEditingQueryHookResult = ReturnType<
+  typeof useFetchReportTemplatesForEditingQuery
+>;
+export type FetchReportTemplatesForEditingLazyQueryHookResult = ReturnType<
+  typeof useFetchReportTemplatesForEditingLazyQuery
+>;
+export type FetchReportTemplatesForEditingQueryResult = Apollo.QueryResult<
+  FetchReportTemplatesForEditingQuery,
+  FetchReportTemplatesForEditingQueryVariables
+>;
+export const FetchProjectReportTemplatesDocument = gql`
+  query FetchProjectReportTemplates($data: IDInput!) {
+    project(data: $data) {
+      reportTemplates {
+        id
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectReportTemplatesQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectReportTemplatesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectReportTemplatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectReportTemplatesQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectReportTemplatesQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectReportTemplatesQuery,
+    FetchProjectReportTemplatesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchProjectReportTemplatesQuery,
+    FetchProjectReportTemplatesQueryVariables
+  >(FetchProjectReportTemplatesDocument, options);
+}
+export function useFetchProjectReportTemplatesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectReportTemplatesQuery,
+    FetchProjectReportTemplatesQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectReportTemplatesQuery,
+    FetchProjectReportTemplatesQueryVariables
+  >(FetchProjectReportTemplatesDocument, options);
+}
+export type FetchProjectReportTemplatesQueryHookResult = ReturnType<
+  typeof useFetchProjectReportTemplatesQuery
+>;
+export type FetchProjectReportTemplatesLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectReportTemplatesLazyQuery
+>;
+export type FetchProjectReportTemplatesQueryResult = Apollo.QueryResult<
+  FetchProjectReportTemplatesQuery,
+  FetchProjectReportTemplatesQueryVariables
+>;
+export const UpdateProjectReportTemplatesActivityDocument = gql`
+  mutation UpdateProjectReportTemplatesActivity($input: ProjectUpdateInput!) {
+    projectUpdate(data: $input) {
+      id
+    }
+  }
+`;
+export type UpdateProjectReportTemplatesActivityMutationFn = Apollo.MutationFunction<
+  UpdateProjectReportTemplatesActivityMutation,
+  UpdateProjectReportTemplatesActivityMutationVariables
+>;
+
+/**
+ * __useUpdateProjectReportTemplatesActivityMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectReportTemplatesActivityMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectReportTemplatesActivityMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectReportTemplatesActivityMutation, { data, loading, error }] = useUpdateProjectReportTemplatesActivityMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProjectReportTemplatesActivityMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateProjectReportTemplatesActivityMutation,
+    UpdateProjectReportTemplatesActivityMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateProjectReportTemplatesActivityMutation,
+    UpdateProjectReportTemplatesActivityMutationVariables
+  >(UpdateProjectReportTemplatesActivityDocument, options);
+}
+export type UpdateProjectReportTemplatesActivityMutationHookResult = ReturnType<
+  typeof useUpdateProjectReportTemplatesActivityMutation
+>;
+export type UpdateProjectReportTemplatesActivityMutationResult =
+  Apollo.MutationResult<UpdateProjectReportTemplatesActivityMutation>;
+export type UpdateProjectReportTemplatesActivityMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProjectReportTemplatesActivityMutation,
+  UpdateProjectReportTemplatesActivityMutationVariables
+>;
+export const FetchNotSubmittedReportsCountDocument = gql`
+  query FetchNotSubmittedReportsCount($filters: ReportFilter) {
+    reportList(filters: $filters) {
+      count
+    }
+  }
+`;
+
+/**
+ * __useFetchNotSubmittedReportsCountQuery__
+ *
+ * To run a query within a React component, call `useFetchNotSubmittedReportsCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchNotSubmittedReportsCountQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchNotSubmittedReportsCountQuery({
+ *   variables: {
+ *      filters: // value for 'filters'
+ *   },
+ * });
+ */
+export function useFetchNotSubmittedReportsCountQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >(FetchNotSubmittedReportsCountDocument, options);
+}
+export function useFetchNotSubmittedReportsCountLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchNotSubmittedReportsCountQuery,
+    FetchNotSubmittedReportsCountQueryVariables
+  >(FetchNotSubmittedReportsCountDocument, options);
+}
+export type FetchNotSubmittedReportsCountQueryHookResult = ReturnType<
+  typeof useFetchNotSubmittedReportsCountQuery
+>;
+export type FetchNotSubmittedReportsCountLazyQueryHookResult = ReturnType<
+  typeof useFetchNotSubmittedReportsCountLazyQuery
+>;
+export type FetchNotSubmittedReportsCountQueryResult = Apollo.QueryResult<
+  FetchNotSubmittedReportsCountQuery,
+  FetchNotSubmittedReportsCountQueryVariables
 >;

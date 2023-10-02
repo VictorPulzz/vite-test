@@ -1,28 +1,28 @@
 import { Badge, BadgeColor, TextLink } from '@appello/web-ui';
 import { createColumnHelper } from '@tanstack/table-core';
+import { format } from 'date-fns';
 import React from 'react';
 import { generatePath } from 'react-router-dom';
 
-import { Permission } from '~/constants/permissions';
+import { DateFormat } from '~/constants/dates';
 import { ROUTES } from '~/constants/routes';
+import { ProjectSort } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import photoPlaceholder from '~/view/assets/images/photo-placeholder.svg';
 import { Avatar } from '~/view/components/Avatar';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { MoreCell } from '../components/MoreCell';
 import { ProjectResultType } from '../types';
 
 const columnHelper = createColumnHelper<ProjectResultType>();
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types,@typescript-eslint/explicit-function-return-type
 export function useProjectsTableColumns() {
-  const canReadUserDetails = useHasAccess(Permission.READ_USER_DETAILS);
-  const canWriteProject = useHasAccess(Permission.WRITE_PROJECT);
+  const { canReadUserDetails, canWriteProject } = useUserPermissions();
 
   return [
     columnHelper.accessor('name', {
-      id: 'name',
+      id: ProjectSort.NAME,
       header: 'Project name',
       cell: ctx => {
         const { id } = ctx.row.original;
@@ -41,6 +41,7 @@ export function useProjectsTableColumns() {
     columnHelper.accessor('PM', {
       id: 'PM',
       header: 'PM',
+      enableSorting: false,
       cell: ctx => {
         return (
           <div>
@@ -62,10 +63,14 @@ export function useProjectsTableColumns() {
           </div>
         );
       },
+      meta: {
+        className: 'min-w-[150px] whitespace-pre-wrap',
+      },
     }),
     columnHelper.accessor('phase', {
       id: 'phase',
       header: 'Phase',
+      enableSorting: false,
       cell: ctx => (
         <Badge color={BadgeColor.GREEN}>{convertUppercaseToReadable(ctx.getValue() ?? '')}</Badge>
       ),
@@ -73,6 +78,7 @@ export function useProjectsTableColumns() {
     columnHelper.accessor('status', {
       id: 'status',
       header: 'Status',
+      enableSorting: false,
       cell: ctx => {
         return ctx.getValue() && <Badge color={BadgeColor.BLUE}>{ctx.getValue()?.name}</Badge>;
       },
@@ -80,6 +86,7 @@ export function useProjectsTableColumns() {
     columnHelper.accessor('platforms', {
       id: 'platforms',
       header: 'Platform',
+      enableSorting: false,
       cell: ctx => {
         const platforms = ctx.getValue();
         return (
@@ -91,6 +98,14 @@ export function useProjectsTableColumns() {
             ))}
           </div>
         );
+      },
+    }),
+    columnHelper.accessor('createdAt', {
+      id: ProjectSort.CREATED_AT,
+      header: 'Created at',
+      cell: ctx => format(new Date(ctx.getValue()), DateFormat.D_MMM_Y),
+      meta: {
+        className: 'w-[110px]',
       },
     }),
     columnHelper.group({

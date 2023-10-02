@@ -6,7 +6,6 @@ import React, { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { ALL_SELECT_OPTION } from '~/constants/select';
 import {
   DocumentFilter,
@@ -19,7 +18,7 @@ import {
 } from '~/services/gql/__generated__/schema';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 
 import { useFetchAllDocumentCategoriesQuery } from '../../pages/ProjectDetails/__generated__/schema';
 import {
@@ -42,7 +41,7 @@ export const Docs: FC<Props> = ({ type }) => {
   const projectId = params.id && type === DocsType.PROJECT ? Number(params.id) : undefined;
   const userId = params.id && type === DocsType.USER ? Number(params.id) : undefined;
 
-  const canWriteUserDocs = useHasAccess(Permission.WRITE_USER_DOCS);
+  const { canWriteUserDocs } = useUserPermissions();
 
   const { searchValue, setSearchValue, offset } = useListQueryParams<DocumentFilter>();
 

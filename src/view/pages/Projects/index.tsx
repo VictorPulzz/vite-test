@@ -9,12 +9,12 @@ import { useListQueryParams } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
-import { Permission } from '~/constants/permissions';
 import { ROUTES } from '~/constants/routes';
 import { ALL_SELECT_OPTION } from '~/constants/select';
-import { ProjectFilter } from '~/services/gql/__generated__/globalTypes';
+import { ProjectFilter, ProjectSort } from '~/services/gql/__generated__/globalTypes';
 import { gqlTableFetchMore } from '~/utils/gqlTableFetchMore';
-import { useHasAccess } from '~/view/hooks/useHasAccess';
+import { useSortingState } from '~/view/hooks/useSortingState';
+import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import { SidebarLayout } from '~/view/layouts/SidebarLayout';
 
 import { useFetchProjectStatusesListQuery } from '../CreateOrUpdateProject/__generated__/schema';
@@ -22,10 +22,11 @@ import { useFetchProjectsQuery } from './__generated__/schema';
 import { useProjectsTableColumns } from './hooks/useProjectsTableColumns';
 
 export const ProjectsPage: FC = () => {
-  const canReadProjectsList = useHasAccess(Permission.READ_PROJECTS_LIST);
-  const canCreateProject = useHasAccess(Permission.CREATE_PROJECT);
+  const { canReadProjectsList, canCreateProject } = useUserPermissions();
 
   const projectsListColumns = useProjectsTableColumns();
+
+  const { sorting, tableSorting, setTableSorting } = useSortingState<ProjectSort>();
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
     useListQueryParams<ProjectFilter>();
@@ -38,6 +39,7 @@ export const ProjectsPage: FC = () => {
       },
       search: searchValue,
       filters: filter,
+      sort: sorting,
     },
     skip: !canReadProjectsList,
     fetchPolicy: 'cache-and-network',
@@ -102,6 +104,8 @@ export const ProjectsPage: FC = () => {
           offset={offset}
           onPageChange={gqlTableFetchMore(fetchMore)}
           totalCount={data.projectsList.count}
+          sorting={tableSorting}
+          setSorting={setTableSorting}
         />
       )}
     </SidebarLayout>

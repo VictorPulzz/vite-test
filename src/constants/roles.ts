@@ -2,7 +2,6 @@
 
 export enum UserRole {
   ADMIN = 'Admin',
-  BACKEND = 'Backend',
   BACKEND_LEAD = 'Backend Lead',
   DESIGNER = 'Designer',
   DESIGNER_LEAD = 'Design Lead',
