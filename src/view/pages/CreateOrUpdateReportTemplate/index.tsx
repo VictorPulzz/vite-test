@@ -63,12 +63,7 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
         items={[
           {
             title: 'Settings',
-            element: (
-              <SettingsTabElement
-                roles={rolesList?.rolesList || []}
-                templateFilledById={Number(reportTemplateInfo?.reportTemplate.filledBy.id)}
-              />
-            ),
+            element: <SettingsTabElement roles={rolesList?.rolesList || []} />,
           },
           {
             title: 'Questions',
@@ -81,7 +76,7 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
         ]}
       />
     ),
-    [reportTemplateInfo?.reportTemplate.filledBy, rolesList?.rolesList, selectedTab],
+    [rolesList?.rolesList, selectedTab],
   );
 
   const isLoading = isLoadingReportTemplateInfo || isLoadingRolesList;

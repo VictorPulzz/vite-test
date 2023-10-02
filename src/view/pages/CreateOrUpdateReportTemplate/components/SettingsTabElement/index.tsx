@@ -7,10 +7,11 @@ import {
   TimeField,
   useSelectOptions,
 } from '@appello/web-ui';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import { TimeFormat } from '~/constants/dates';
+import { UserRole } from '~/constants/roles';
 import {
   ReportEmailNotificationChoice,
   ReportRepeatChoice,
@@ -25,27 +26,26 @@ import { ReportTemplateFormValues } from '../../hooks/useReportTemplateForm';
 
 interface Props {
   roles: FetchRolesListQuery['rolesList'];
-  templateFilledById: number;
 }
 
-export const SettingsTabElement: FC<Props> = ({ roles, templateFilledById }) => {
-  const { control, register, watch, setValue } = useFormContext<ReportTemplateFormValues>();
+export const SettingsTabElement: FC<Props> = ({ roles }) => {
+  const { control, register } = useFormContext<ReportTemplateFormValues>();
 
-  const selectedRoleId = watch('filledById');
+  const adminAndPmIds = useMemo(
+    () =>
+      roles
+        .filter(role => [UserRole.ADMIN, UserRole.PM].includes(role.label as UserRole))
+        .map(userRole => userRole.value),
+    [roles],
+  );
 
   const { data: usersList, loading: isLoadingUsersList } = useFetchUserGlossaryListQuery({
     variables: {
-      filters: { roleId: [Number(selectedRoleId)] },
+      filters: { roleId: adminAndPmIds },
     },
-    skip: !selectedRoleId,
+
     fetchPolicy: 'cache-and-network',
   });
-
-  useEffect(() => {
-    if (templateFilledById !== selectedRoleId) {
-      setValue('sendTo', []);
-    }
-  }, [selectedRoleId, templateFilledById, setValue]);
 
   const rolesOptions = useSelectOptions(roles, {
     value: 'value',
@@ -119,7 +119,7 @@ export const SettingsTabElement: FC<Props> = ({ roles, templateFilledById }) => 
           control={control}
           label="Send submitted report to email"
           isMulti
-          disabled={!selectedRoleId || isLoadingUsersList}
+          disabled={isLoadingUsersList}
         />
         <div className="flex flex-col">
           <Checkbox
