@@ -2,6 +2,7 @@ import {
   Button,
   ButtonVariant,
   EmptyState,
+  SearchInput,
   Table,
   TableLoader,
   useListQueryParams,
@@ -20,8 +21,7 @@ import { REPORT_TEMPLATES_TABLE_COLUMNS } from './consts';
 
 export const AdminSettingsReportTemplatesPage: FC = () => {
   const { sorting, tableSorting, setTableSorting } = useSortingState<ReportTemplateSort>();
-
-  const { offset, setOffset } = useListQueryParams();
+  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams();
 
   const { data, loading, fetchMore } = useFetchReportTemplatesListQuery({
     variables: {
@@ -30,6 +30,7 @@ export const AdminSettingsReportTemplatesPage: FC = () => {
         offset,
       },
       sort: sorting,
+      search: searchValue,
     },
     fetchPolicy: 'cache-and-network',
   });
@@ -43,6 +44,7 @@ export const AdminSettingsReportTemplatesPage: FC = () => {
             {(data && data.reportTemplateList.count) ?? 0} templates in total
           </p>
         </div>
+
         <Button
           label="New template"
           withIcon="plus"
@@ -51,7 +53,12 @@ export const AdminSettingsReportTemplatesPage: FC = () => {
           to={ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_ADD}
         />
       </div>
-
+      <SearchInput
+        onChange={setSearchValue}
+        defaultValue={searchValue}
+        placeholder="Search report templates"
+        className="mt-4"
+      />
       {loading && <TableLoader className="mt-6" />}
       {data && data.reportTemplateList.results.length === 0 && (
         <EmptyState iconName="documentLayout" label="No report templates here yet" />

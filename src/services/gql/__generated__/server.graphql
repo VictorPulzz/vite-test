@@ -236,7 +236,7 @@ input GitInitialUserSortFieldInput {
 }
 
 type GitInitialUserType {
-  accessLevel: RepositoryAccessLevelChoice!
+  accessLevel: RepositoryAccessLevelChoice
   user: ProfileType!
 }
 
@@ -1138,6 +1138,7 @@ type Query {
   """
   reportTemplateList(
     pagination: PaginationInput = null
+    search: String = null
     sort: [ReportTemplateSortFieldInput!] = null
   ): ReportTemplateTypePagination!
   """

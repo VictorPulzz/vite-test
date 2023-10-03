@@ -240,7 +240,7 @@ export type GitInitialUserSortFieldInput = {
 };
 
 export type GitInitialUserType = {
-  accessLevel: RepositoryAccessLevelChoice;
+  accessLevel?: Maybe<RepositoryAccessLevelChoice>;
   user: ProfileType;
 };
 
@@ -1317,6 +1317,7 @@ export type QueryReportTemplateArgs = {
 
 export type QueryReportTemplateListArgs = {
   pagination?: InputMaybe<PaginationInput>;
+  search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<ReportTemplateSortFieldInput>>;
 };
 
