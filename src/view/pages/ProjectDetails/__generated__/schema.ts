@@ -455,6 +455,44 @@ export type FetchNotSubmittedReportsCountQueryVariables = Types.Exact<{
 
 export type FetchNotSubmittedReportsCountQuery = { reportList: { count: number } };
 
+export type FetchProjectStatusReportAnswersQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectStatusReportAnswersQuery = {
+  projectReportAnswers: Array<{
+    id: number;
+    answer?: {
+      text?: string | null;
+      yesNo?: Types.YesOrNoChoice | null;
+      date?: string | null;
+      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      singleChoice?: { id: number; text: string } | null;
+      checkboxes?: Array<{ id: number; text: string }> | null;
+    } | null;
+    reportedBy?: { id: number; fullName: string } | null;
+  }>;
+};
+
+export type FetchProjectStatusReportAnswerQueryVariables = Types.Exact<{
+  data: Types.IdInput;
+}>;
+
+export type FetchProjectStatusReportAnswerQuery = {
+  projectReportAnswerById: {
+    id: number;
+    answer?: {
+      text?: string | null;
+      yesNo?: Types.YesOrNoChoice | null;
+      date?: string | null;
+      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      singleChoice?: { id: number; text: string } | null;
+      checkboxes?: Array<{ id: number; text: string }> | null;
+    } | null;
+    reportedBy?: { id: number; fullName: string } | null;
+  };
+};
+
 export const FetchProjectPreviewDocument = gql`
   query FetchProjectPreview($data: IDInput!) {
     projectPreview(data: $data) {
@@ -2518,4 +2556,164 @@ export type FetchNotSubmittedReportsCountLazyQueryHookResult = ReturnType<
 export type FetchNotSubmittedReportsCountQueryResult = Apollo.QueryResult<
   FetchNotSubmittedReportsCountQuery,
   FetchNotSubmittedReportsCountQueryVariables
+>;
+export const FetchProjectStatusReportAnswersDocument = gql`
+  query FetchProjectStatusReportAnswers($data: IDInput!) {
+    projectReportAnswers(data: $data) {
+      id
+      answer {
+        question {
+          id
+          type
+          questionText
+        }
+        text
+        yesNo
+        date
+        singleChoice {
+          id
+          text
+        }
+        checkboxes {
+          id
+          text
+        }
+      }
+      reportedBy {
+        id
+        fullName
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectStatusReportAnswersQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectStatusReportAnswersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectStatusReportAnswersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectStatusReportAnswersQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectStatusReportAnswersQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectStatusReportAnswersQuery,
+    FetchProjectStatusReportAnswersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchProjectStatusReportAnswersQuery,
+    FetchProjectStatusReportAnswersQueryVariables
+  >(FetchProjectStatusReportAnswersDocument, options);
+}
+export function useFetchProjectStatusReportAnswersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectStatusReportAnswersQuery,
+    FetchProjectStatusReportAnswersQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectStatusReportAnswersQuery,
+    FetchProjectStatusReportAnswersQueryVariables
+  >(FetchProjectStatusReportAnswersDocument, options);
+}
+export type FetchProjectStatusReportAnswersQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusReportAnswersQuery
+>;
+export type FetchProjectStatusReportAnswersLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusReportAnswersLazyQuery
+>;
+export type FetchProjectStatusReportAnswersQueryResult = Apollo.QueryResult<
+  FetchProjectStatusReportAnswersQuery,
+  FetchProjectStatusReportAnswersQueryVariables
+>;
+export const FetchProjectStatusReportAnswerDocument = gql`
+  query FetchProjectStatusReportAnswer($data: IDInput!) {
+    projectReportAnswerById(data: $data) {
+      id
+      answer {
+        question {
+          id
+          type
+          questionText
+        }
+        text
+        yesNo
+        date
+        singleChoice {
+          id
+          text
+        }
+        checkboxes {
+          id
+          text
+        }
+      }
+      reportedBy {
+        id
+        fullName
+      }
+    }
+  }
+`;
+
+/**
+ * __useFetchProjectStatusReportAnswerQuery__
+ *
+ * To run a query within a React component, call `useFetchProjectStatusReportAnswerQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFetchProjectStatusReportAnswerQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFetchProjectStatusReportAnswerQuery({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useFetchProjectStatusReportAnswerQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    FetchProjectStatusReportAnswerQuery,
+    FetchProjectStatusReportAnswerQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    FetchProjectStatusReportAnswerQuery,
+    FetchProjectStatusReportAnswerQueryVariables
+  >(FetchProjectStatusReportAnswerDocument, options);
+}
+export function useFetchProjectStatusReportAnswerLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    FetchProjectStatusReportAnswerQuery,
+    FetchProjectStatusReportAnswerQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    FetchProjectStatusReportAnswerQuery,
+    FetchProjectStatusReportAnswerQueryVariables
+  >(FetchProjectStatusReportAnswerDocument, options);
+}
+export type FetchProjectStatusReportAnswerQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusReportAnswerQuery
+>;
+export type FetchProjectStatusReportAnswerLazyQueryHookResult = ReturnType<
+  typeof useFetchProjectStatusReportAnswerLazyQuery
+>;
+export type FetchProjectStatusReportAnswerQueryResult = Apollo.QueryResult<
+  FetchProjectStatusReportAnswerQuery,
+  FetchProjectStatusReportAnswerQueryVariables
 >;

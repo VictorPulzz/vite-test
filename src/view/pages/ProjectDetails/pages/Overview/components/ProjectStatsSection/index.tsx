@@ -77,22 +77,20 @@ export const ProjectStatsSection: FC<Props> = ({
           <span className="text-red text-p4">{errorText}</span>
         </div>
       )}
-      <div className="flex">
-        <div className="mt-4 grid gap-x-14 gap-y-3 grid-cols-2 w-3/4">
-          {statsData.map((item, index) => (
-            <div key={index} className="p-4 border-solid border border-gray-5 rounded-md">
-              <h3
-                className={clsx(
-                  'text-h4 text-blue font-bold leading-none',
-                  item.canChangeColor && isSmallPercentageOfRemainingHours && 'text-orange',
-                )}
-              >
-                {item.stat}
-              </h3>
-              <span className="text-p5 text-black-2 ">{item.title}</span>
-            </div>
-          ))}
-        </div>
+      <div className="mt-4 grid gap-3 grid-cols-3">
+        {statsData.map((item, index) => (
+          <div key={index} className="p-4 border-solid border border-gray-5 rounded-md">
+            <h3
+              className={clsx(
+                'text-h4 text-blue font-bold leading-none',
+                item.canChangeColor && isSmallPercentageOfRemainingHours && 'text-orange',
+              )}
+            >
+              {item.stat}
+            </h3>
+            <span className="text-p5 text-black-2 ">{item.title}</span>
+          </div>
+        ))}
       </div>
     </SectionContainer>
   );

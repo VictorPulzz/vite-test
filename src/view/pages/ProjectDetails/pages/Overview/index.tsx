@@ -7,8 +7,10 @@ import { useUserPermissions } from '~/view/hooks/useUserPermissions';
 import {
   useFetchProjectEstimatedHoursQuery,
   useFetchProjectStatsQuery,
+  useFetchProjectStatusReportAnswersQuery,
 } from '../../__generated__/schema';
 import { ProjectStatsSection } from './components/ProjectStatsSection';
+import { ProjectStatusSection } from './components/ProjectStatusSection';
 
 export const Overview: FC = () => {
   const { canReadProjectStatistics } = useUserPermissions();
@@ -36,7 +38,16 @@ export const Overview: FC = () => {
       skip: !canReadProjectStatistics,
     });
 
-  const isLoading = isLoadingProjectStats || isLoadingProjectEstimatedHours;
+  const { data: projectStatus, loading: isLoadingProjectStatus } =
+    useFetchProjectStatusReportAnswersQuery({
+      variables: {
+        data: { id: projectId },
+      },
+      fetchPolicy: 'cache-and-network',
+    });
+
+  const isLoading =
+    isLoadingProjectStats || isLoadingProjectEstimatedHours || isLoadingProjectStatus;
 
   return (
     <>
@@ -54,6 +65,9 @@ export const Overview: FC = () => {
               projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
               error={error}
             />
+          )}
+          {projectStatus && projectStatus.projectReportAnswers.length > 0 && (
+            <ProjectStatusSection projectStatus={projectStatus.projectReportAnswers} />
           )}
         </div>
       )}

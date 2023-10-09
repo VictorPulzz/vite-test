@@ -968,6 +968,12 @@ export type ProjectPreviewType = {
   name: Scalars['String'];
 };
 
+export type ProjectReportAnswerType = {
+  answer?: Maybe<ReportAnswerType>;
+  id: Scalars['Int'];
+  reportedBy?: Maybe<ReportedByType>;
+};
+
 export type ProjectRepositoryType = {
   projectInGit: Scalars['Boolean'];
   projectRepositories?: Maybe<Array<RepositoryType>>;
@@ -1127,6 +1133,10 @@ export type Query = {
   projectMemberList: ProjectMemberListType;
   /** Getting project preview by id */
   projectPreview: ProjectPreviewType;
+  /** Getting report answer by id */
+  projectReportAnswerById: ProjectReportAnswerType;
+  /** Getting project overview report */
+  projectReportAnswers: Array<ProjectReportAnswerType>;
   /** Getting repositories for project by id */
   projectRepositoryList: ProjectRepositoryType;
   /** Getting project statistics from Hubstaff */
@@ -1280,6 +1290,14 @@ export type QueryProjectMemberListArgs = {
 };
 
 export type QueryProjectPreviewArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectReportAnswerByIdArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectReportAnswersArgs = {
   data: IdInput;
 };
 
@@ -1552,6 +1570,11 @@ export type ReportTypePagination = {
   limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ReportType>;
+};
+
+export type ReportedByType = {
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 export enum RepositoryAccessLevelChoice {

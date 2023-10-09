@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import {
   Button,
   ButtonVariant,
@@ -78,19 +77,6 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
 
     const handleScroll = async (e: Event): Promise<void> => {
       const element = e.target as HTMLElement;
-      console.log('element.scrollHeight', element.scrollHeight);
-      console.log('element.scrollTop', element.scrollTop);
-      console.log('element.clientHeight', element.clientHeight);
-      console.log('element.offsetHeight', element.offsetHeight);
-      console.log(
-        'condition',
-        element.scrollHeight - Math.ceil(element.scrollTop) === element.clientHeight,
-      );
-      console.log(
-        'cond2',
-        Math.ceil(element.scrollTop + element.offsetHeight) === element.scrollHeight,
-      );
-
       const isBottomReached =
         !isFetching &&
         element.scrollHeight - element.clientHeight - Math.ceil(element.scrollTop) <=

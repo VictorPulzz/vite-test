@@ -441,3 +441,59 @@ query FetchNotSubmittedReportsCount($filters: ReportFilter) {
     count
   }
 }
+
+query FetchProjectStatusReportAnswers($data: IDInput!) {
+  projectReportAnswers(data: $data) {
+    id
+    answer {
+      question {
+        id
+        type
+        questionText
+      }
+      text
+      yesNo
+      date
+      singleChoice {
+        id
+        text
+      }
+      checkboxes {
+        id
+        text
+      }
+    }
+    reportedBy {
+      id
+      fullName
+    }
+  }
+}
+
+query FetchProjectStatusReportAnswer($data: IDInput!) {
+  projectReportAnswerById(data: $data) {
+    id
+    answer {
+      question {
+        id
+        type
+        questionText
+      }
+      text
+      yesNo
+      date
+      singleChoice {
+        id
+        text
+      }
+      checkboxes {
+        id
+        text
+      }
+    }
+    reportedBy {
+      id
+      fullName
+    }
+  }
+}

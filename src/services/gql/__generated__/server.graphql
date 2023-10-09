@@ -848,6 +848,12 @@ type ProjectPreviewType {
   name: String!
 }
 
+type ProjectReportAnswerType {
+  answer: ReportAnswerType
+  id: Int!
+  reportedBy: ReportedByType
+}
+
 type ProjectRepositoryType {
   projectInGit: Boolean!
   projectRepositories: [RepositoryType!]
@@ -1097,6 +1103,14 @@ type Query {
   Getting project preview by id
   """
   projectPreview(data: IDInput!): ProjectPreviewType!
+  """
+  Getting report answer by id
+  """
+  projectReportAnswerById(data: IDInput!): ProjectReportAnswerType!
+  """
+  Getting project overview report
+  """
+  projectReportAnswers(data: IDInput!): [ProjectReportAnswerType!]!
   """
   Getting repositories for project by id
   """
@@ -1396,6 +1410,11 @@ type ReportTypePagination {
   limit: Int
   offset: Int!
   results: [ReportType!]!
+}
+
+type ReportedByType {
+  fullName: String!
+  id: Int!
 }
 
 enum RepositoryAccessLevelChoice {
