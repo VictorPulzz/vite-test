@@ -3,6 +3,7 @@ import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useUserPermissions } from '~/view/hooks/useUserPermissions';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 
 import {
   useFetchProjectEstimatedHoursQuery,
@@ -14,6 +15,7 @@ import { ProjectStatusSection } from './components/ProjectStatusSection';
 
 export const Overview: FC = () => {
   const { canReadProjectStatistics } = useUserPermissions();
+  const { isAdminOrPM } = useUserProfile();
 
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
@@ -43,6 +45,7 @@ export const Overview: FC = () => {
       variables: {
         data: { id: projectId },
       },
+      skip: !isAdminOrPM,
       fetchPolicy: 'cache-and-network',
     });
 
@@ -66,7 +69,7 @@ export const Overview: FC = () => {
               error={error}
             />
           )}
-          {projectStatus && projectStatus.projectReportAnswers.length > 0 && (
+          {isAdminOrPM && projectStatus && projectStatus.projectReportAnswers.length > 0 && (
             <ProjectStatusSection projectStatus={projectStatus.projectReportAnswers} />
           )}
         </div>
