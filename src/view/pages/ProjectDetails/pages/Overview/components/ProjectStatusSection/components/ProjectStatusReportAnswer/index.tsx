@@ -40,7 +40,7 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
   }, []);
 
   const reportAnswerBody = useReportAnswerBody({
-    questionType: answer?.question.type,
+    questionType: answer?.question?.type,
     answer: reportAnswer.answer,
   });
 
@@ -69,7 +69,7 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
         <div>
           <div className="flex leading-4">
             <p className="text-p5 truncate" ref={questionTextRef}>
-              {answer?.question.questionText}
+              {answer?.question?.questionText}
             </p>
             {isTruncatedQuestionText && (
               <button

@@ -6,17 +6,19 @@ export function transformProjectEnvironmentPrefilledData(
   data: FetchProjectEnvironmentQuery['projectEnvironment'],
 ): ProjectEnvironmentFormValues {
   return {
+    title: data.title || '',
     environment: data.name,
-    title: data.title ?? '',
-    frontendCredentials: {
-      url: data.frontendCredentials?.url ?? '',
-      login: data.frontendCredentials?.login ?? '',
-      password: data.frontendCredentials?.password ?? '',
-    },
-    backendCredentials: {
-      url: data.backendCredentials?.url ?? '',
-      login: data.backendCredentials?.login ?? '',
-      password: data.backendCredentials?.password ?? '',
-    },
+    notes: data.notes || '',
+    credentials:
+      data.credentials?.map(value => ({
+        id: value.id,
+        type: value.type,
+        shortDescription: value.shortDescription || '',
+        url: value.url || '',
+        login: value.login || '',
+        password: value.password || '',
+        isNew: false,
+      })) || [],
+    showCredsToEveryContributors: !!data.showCredsToEveryContributors,
   };
 }

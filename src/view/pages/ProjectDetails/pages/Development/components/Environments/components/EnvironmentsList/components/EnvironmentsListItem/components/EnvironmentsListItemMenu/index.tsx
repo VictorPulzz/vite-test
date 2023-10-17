@@ -5,6 +5,7 @@ import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';
 import toast from 'react-hot-toast';
 
+import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
 import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 import {
   FetchProjectEnvironmentsListDocument,
@@ -16,9 +17,10 @@ import { CreateOrUpdateEnvironmentModal } from '../../../../../CreateOrUpdateEnv
 interface Props {
   id: number;
   name: string;
+  title: string;
 }
 
-export const EnvironmentsListItemMenu: FC<Props> = ({ id, name }) => {
+export const EnvironmentsListItemMenu: FC<Props> = ({ id, name, title }) => {
   const {
     value: isCreateOrUpdateEnvironmentModalOpen,
     on: openCreateOrUpdateEnvironmentModal,
@@ -82,11 +84,12 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name }) => {
       )}
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={name}
+          name={`${convertUppercaseToReadable(name)} • ${title}`}
           action="delete"
           isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
           onAccept={removeCurrentEnvironment}
+          description="You will not be able to recover it"
         />
       )}
     </>

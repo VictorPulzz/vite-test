@@ -58,6 +58,13 @@ module.exports = {
           fontWeight: 700,
         },
       ],
+      h6: [
+        'var(--h6-font-size)',
+        {
+          lineHeight: 'var(--h6-line-height)',
+          fontWeight: 700,
+        },
+      ],
       p1: [
         'var(--p1-font-size)',
         {

@@ -158,18 +158,15 @@ export type FetchProjectEnvironmentsListQuery = {
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
     title?: string | null;
-    frontendCredentials?: {
+    notes?: string | null;
+    credentials?: Array<{
       id: number;
+      type: Types.RepositoryTypeChoice;
+      shortDescription?: string | null;
       url?: string | null;
       login?: string | null;
       password?: string | null;
-    } | null;
-    backendCredentials?: {
-      id: number;
-      url?: string | null;
-      login?: string | null;
-      password?: string | null;
-    } | null;
+    }> | null;
   }>;
 };
 
@@ -183,18 +180,16 @@ export type FetchProjectEnvironmentQuery = {
     projectId: number;
     name: Types.ProjectEnvironmentChoice;
     title?: string | null;
-    frontendCredentials?: {
+    notes?: string | null;
+    showCredsToEveryContributors?: boolean | null;
+    credentials?: Array<{
       id: number;
+      type: Types.RepositoryTypeChoice;
+      shortDescription?: string | null;
       url?: string | null;
       login?: string | null;
       password?: string | null;
-    } | null;
-    backendCredentials?: {
-      id: number;
-      url?: string | null;
-      login?: string | null;
-      password?: string | null;
-    } | null;
+    }> | null;
   };
 };
 
@@ -402,7 +397,7 @@ export type FetchReportAnswersQuery = {
       text?: string | null;
       yesNo?: Types.YesOrNoChoice | null;
       date?: string | null;
-      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      question?: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string } | null;
       singleChoice?: { id: number; text: string } | null;
       checkboxes?: Array<{ id: number; text: string }> | null;
     }> | null;
@@ -466,7 +461,7 @@ export type FetchProjectStatusReportAnswersQuery = {
       text?: string | null;
       yesNo?: Types.YesOrNoChoice | null;
       date?: string | null;
-      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      question?: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string } | null;
       singleChoice?: { id: number; text: string } | null;
       checkboxes?: Array<{ id: number; text: string }> | null;
     } | null;
@@ -485,7 +480,7 @@ export type FetchProjectStatusReportAnswerQuery = {
       text?: string | null;
       yesNo?: Types.YesOrNoChoice | null;
       date?: string | null;
-      question: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string };
+      question?: { id: number; type: Types.ReportQuestionTypeChoice; questionText: string } | null;
       singleChoice?: { id: number; text: string } | null;
       checkboxes?: Array<{ id: number; text: string }> | null;
     } | null;
@@ -1063,14 +1058,11 @@ export const FetchProjectEnvironmentsListDocument = gql`
       projectId
       name
       title
-      frontendCredentials {
+      notes
+      credentials {
         id
-        url
-        login
-        password
-      }
-      backendCredentials {
-        id
+        type
+        shortDescription
         url
         login
         password
@@ -1136,18 +1128,16 @@ export const FetchProjectEnvironmentDocument = gql`
       projectId
       name
       title
-      frontendCredentials {
+      notes
+      credentials {
         id
+        type
+        shortDescription
         url
         login
         password
       }
-      backendCredentials {
-        id
-        url
-        login
-        password
-      }
+      showCredsToEveryContributors
     }
   }
 `;

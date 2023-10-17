@@ -192,8 +192,11 @@ export type DocumentTypePagination = {
 };
 
 export type EnvironmentCredentialsInput = {
+  id?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+  shortDescription?: InputMaybe<Scalars['String']>;
+  type: RepositoryTypeChoice;
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -201,6 +204,8 @@ export type EnvironmentCredentialsType = {
   id: Scalars['Int'];
   login?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+  shortDescription?: Maybe<Scalars['String']>;
+  type: RepositoryTypeChoice;
   url?: Maybe<Scalars['String']>;
 };
 
@@ -821,20 +826,22 @@ export enum ProjectEnvironmentChoice {
 }
 
 export type ProjectEnvironmentInput = {
-  backendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
-  frontendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
+  credentials?: InputMaybe<Array<EnvironmentCredentialsInput>>;
   id?: InputMaybe<Scalars['Int']>;
   name: ProjectEnvironmentChoice;
+  notes?: InputMaybe<Scalars['String']>;
   projectId: Scalars['Int'];
+  showCredsToEveryContributors?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
 export type ProjectEnvironmentType = {
-  backendCredentials?: Maybe<EnvironmentCredentialsType>;
-  frontendCredentials?: Maybe<EnvironmentCredentialsType>;
+  credentials?: Maybe<Array<EnvironmentCredentialsType>>;
   id: Scalars['Int'];
   name: ProjectEnvironmentChoice;
+  notes?: Maybe<Scalars['String']>;
   projectId: Scalars['Int'];
+  showCredsToEveryContributors?: Maybe<Scalars['Boolean']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -1421,7 +1428,7 @@ export type ReportAnswerType = {
   checkboxes?: Maybe<Array<ReportQuestionOptionType>>;
   checkboxesStr?: Maybe<Array<Scalars['String']>>;
   date?: Maybe<Scalars['Date']>;
-  question: ReportQuestionType;
+  question?: Maybe<ReportQuestionType>;
   singleChoice?: Maybe<ReportQuestionOptionType>;
   singleChoiceStr?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;

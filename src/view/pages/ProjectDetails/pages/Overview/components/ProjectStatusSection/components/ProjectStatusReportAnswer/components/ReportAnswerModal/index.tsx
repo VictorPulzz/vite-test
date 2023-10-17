@@ -21,7 +21,7 @@ export const ReportAnswerModal: FC<Props> = ({ isOpen, close, reportAnswerId }) 
   const { answer, reportedBy } = data?.projectReportAnswerById || {};
 
   const reportAnswerBody = useReportAnswerBody({
-    questionType: answer?.question.type,
+    questionType: answer?.question?.type,
     answer,
   });
 
@@ -34,7 +34,7 @@ export const ReportAnswerModal: FC<Props> = ({ isOpen, close, reportAnswerId }) 
       )}
       {!loading && (
         <>
-          <h2 className="text-h5">{answer?.question.questionText}</h2>
+          <h2 className="text-h5">{answer?.question?.questionText}</h2>
           <div className="mt-1 text-p6 text-gray-2 flex items-center gap-1">
             <span>Reported by</span>
             <TextLink

@@ -156,14 +156,11 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     projectId
     name
     title
-    frontendCredentials {
+    notes
+    credentials {
       id
-      url
-      login
-      password
-    }
-    backendCredentials {
-      id
+      type
+      shortDescription
       url
       login
       password
@@ -177,18 +174,16 @@ query FetchProjectEnvironment($input: IDInput!) {
     projectId
     name
     title
-    frontendCredentials {
+    notes
+    credentials {
       id
+      type
+      shortDescription
       url
       login
       password
     }
-    backendCredentials {
-      id
-      url
-      login
-      password
-    }
+    showCredsToEveryContributors
   }
 }
 

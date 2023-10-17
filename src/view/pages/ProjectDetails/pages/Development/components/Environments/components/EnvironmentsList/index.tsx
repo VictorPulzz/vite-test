@@ -15,7 +15,7 @@ interface Props {
 
 export const EnvironmentsList: FC<Props> = ({ environments, envsRequests }) => {
   return (
-    <div className="grid grid-cols-2 gap-5 mt-2">
+    <div className="flex flex-col gap-5 mt-2 max-h-[1250px] overflow-auto">
       {environments.map(environment => (
         <EnvironmentsListItem
           key={environment.id}

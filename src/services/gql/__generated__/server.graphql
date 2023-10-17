@@ -188,8 +188,11 @@ type DocumentTypePagination {
 }
 
 input EnvironmentCredentialsInput {
+  id: Int = null
   login: String
   password: String
+  shortDescription: String
+  type: RepositoryTypeChoice!
   url: String
 }
 
@@ -197,6 +200,8 @@ type EnvironmentCredentialsType {
   id: Int!
   login: String
   password: String
+  shortDescription: String
+  type: RepositoryTypeChoice!
   url: String
 }
 
@@ -701,20 +706,22 @@ enum ProjectEnvironmentChoice {
 }
 
 input ProjectEnvironmentInput {
-  backendCredentials: EnvironmentCredentialsInput
-  frontendCredentials: EnvironmentCredentialsInput
+  credentials: [EnvironmentCredentialsInput!]
   id: Int = null
   name: ProjectEnvironmentChoice!
+  notes: String = null
   projectId: Int!
+  showCredsToEveryContributors: Boolean = null
   title: String = null
 }
 
 type ProjectEnvironmentType {
-  backendCredentials: EnvironmentCredentialsType
-  frontendCredentials: EnvironmentCredentialsType
+  credentials: [EnvironmentCredentialsType!]
   id: Int!
   name: ProjectEnvironmentChoice!
+  notes: String
   projectId: Int!
+  showCredsToEveryContributors: Boolean
   title: String
 }
 
@@ -1261,7 +1268,7 @@ type ReportAnswerType {
   checkboxes: [ReportQuestionOptionType!]
   checkboxesStr: [String!]
   date: Date
-  question: ReportQuestionType!
+  question: ReportQuestionType
   singleChoice: ReportQuestionOptionType
   singleChoiceStr: String
   text: String
