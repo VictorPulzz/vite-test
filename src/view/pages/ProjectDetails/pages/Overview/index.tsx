@@ -23,7 +23,7 @@ export const Overview: FC = () => {
   const {
     data: projectStatsData,
     loading: isLoadingProjectStats,
-    error,
+    error: projectStatsError,
   } = useFetchProjectStatsQuery({
     variables: {
       data: { id: projectId },
@@ -59,21 +59,19 @@ export const Overview: FC = () => {
           <Loader full colorful />
         </div>
       )}
-      {(projectStatsData || error) && (
-        <div className="flex flex-col gap-5">
-          {canReadProjectStatistics && (
-            <ProjectStatsSection
-              projectStats={projectStatsData?.projectStats || {}}
-              projectId={projectId}
-              projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
-              error={error}
-            />
-          )}
-          {isAdminOrPM && projectStatus && projectStatus.projectReportAnswers.length > 0 && (
-            <ProjectStatusSection projectStatus={projectStatus.projectReportAnswers} />
-          )}
-        </div>
-      )}
+      <div className="flex flex-col gap-5">
+        {(projectStatsData || projectStatsError) && canReadProjectStatistics && (
+          <ProjectStatsSection
+            projectStats={projectStatsData?.projectStats || {}}
+            projectId={projectId}
+            projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
+            error={projectStatsError}
+          />
+        )}
+        {isAdminOrPM && projectStatus && projectStatus.projectReportAnswers.length > 0 && (
+          <ProjectStatusSection projectStatus={projectStatus.projectReportAnswers} />
+        )}
+      </div>
     </>
   );
 };
