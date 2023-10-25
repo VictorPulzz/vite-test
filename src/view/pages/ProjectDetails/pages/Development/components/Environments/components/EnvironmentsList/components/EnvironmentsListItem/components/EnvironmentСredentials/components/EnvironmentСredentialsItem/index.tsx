@@ -15,7 +15,7 @@ export const EnvironmentСredentialsItem: FC<Props> = ({ credentials }) => {
     <div className="grid grid-cols-4 gap-x-10 border-solid border-b last:border-b-0 border-gray-5 py-3">
       <div className="flex items-center gap-1">
         <Icon name="circleCode" size={18} color="#91919E" className="flex-shrink-0" />
-        <h2 className="text-p5 font-medium truncate">
+        <h2 className="text-p5 font-medium">
           {convertUppercaseToReadable(credentials.type)}
           {credentials.shortDescription && <span> • {credentials.shortDescription}</span>}
         </h2>

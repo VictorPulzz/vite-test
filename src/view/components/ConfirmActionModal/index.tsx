@@ -39,7 +39,7 @@ export const ConfirmActionModal: FC<Props> = ({
           <Icon name={icon} size={31} className="text-primary m-auto" />
         </div>
         <h1 className="text-h4 mb-4 text-center">
-          Are you sure you want to {action} {name}?
+          Are you sure you want to {action} <span className="break-all">{name}</span>?
         </h1>
         {description && (
           <p className="mb-6 text-center text-p5 text-gray-2 font-medium">{description}</p>

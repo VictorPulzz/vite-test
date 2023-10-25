@@ -16,20 +16,22 @@ interface Props {
 export const EnvironmentsList: FC<Props> = ({ environments, envsRequests }) => {
   return (
     <div className="flex flex-col gap-5 mt-2 max-h-[1250px] overflow-auto">
-      {environments.map(environment => (
-        <EnvironmentsListItem
-          key={environment.id}
-          variant={CardVariant.DEFAULT}
-          environment={environment}
-        />
-      ))}
-      {envsRequests.map(environment => (
-        <EnvironmentsListItem
-          key={environment.id}
-          variant={CardVariant.REQUEST}
-          envRequest={environment}
-        />
-      ))}
+      <div className="flex flex-col gap-5 mt-2">
+        {environments.map(environment => (
+          <EnvironmentsListItem
+            key={environment.id}
+            variant={CardVariant.DEFAULT}
+            environment={environment}
+          />
+        ))}
+        {envsRequests.map(environment => (
+          <EnvironmentsListItem
+            key={environment.id}
+            variant={CardVariant.REQUEST}
+            envRequest={environment}
+          />
+        ))}
+      </div>
     </div>
   );
 };

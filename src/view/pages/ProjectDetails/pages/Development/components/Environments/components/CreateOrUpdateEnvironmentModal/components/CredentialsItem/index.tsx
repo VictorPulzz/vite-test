@@ -1,3 +1,4 @@
+import { useSwitchValue } from '@appello/common/lib/hooks';
 import { Icon, PasswordField } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
@@ -7,6 +8,7 @@ import { UseFieldArrayRemove, useFormContext } from 'react-hook-form';
 
 import { RepositoryTypeChoice } from '~/services/gql/__generated__/globalTypes';
 import { enumToSelectOptions } from '~/utils/enumToSelectOptions';
+import { ConfirmActionModal } from '~/view/components/ConfirmActionModal';
 
 import { ProjectEnvironmentFormValues } from '../../hooks/useProjectEnvironmentForm';
 
@@ -16,6 +18,12 @@ interface Props {
 }
 
 export const CredentialsItem: FC<Props> = ({ index, removeCredentials }) => {
+  const {
+    value: isConfirmActionModal,
+    on: openConfirmActionModal,
+    off: closeConfirmActionModal,
+  } = useSwitchValue(false);
+
   const { control, formState } = useFormContext<ProjectEnvironmentFormValues>();
 
   const { isOneLineErrorText, isMultipleLineErrorText } = useMemo(() => {
@@ -68,10 +76,19 @@ export const CredentialsItem: FC<Props> = ({ index, removeCredentials }) => {
           isOneLineErrorText && 'pb-[2.0625rem]',
           isMultipleLineErrorText && 'pb-[3.188rem]',
         )}
-        onClick={() => removeCredentials(index)}
+        onClick={openConfirmActionModal}
       >
         <Icon name="trash" size={18} className="flex-shrink-0 text-gray-1" />
       </button>
+      {isConfirmActionModal && (
+        <ConfirmActionModal
+          name="these creds"
+          action="remove"
+          isOpen={isConfirmActionModal}
+          close={closeConfirmActionModal}
+          onAccept={() => removeCredentials(index)}
+        />
+      )}
     </div>
   );
 };

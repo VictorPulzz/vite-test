@@ -51,7 +51,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
             )}
           </div>
           {environment.notes && (
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="text-p6 text-gray-2">Notes</span>
               <p className="text-p5">{environment.notes}</p>
             </div>
