@@ -1,9 +1,9 @@
 import { Icon, TextField } from '@appello/web-ui';
+import { nanoid } from '@reduxjs/toolkit';
 import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
-import { getRandomNumber } from '~/utils/getRandomNumber';
 import { ReportTemplateFormValues } from '~/view/pages/CreateOrUpdateReportTemplate/hooks/useReportTemplateForm';
 
 import styles from './styles.module.scss';
@@ -23,8 +23,9 @@ export const QuestionOptions: FC<Props> = ({ questionIndex }) => {
   const optionsFields = watch(`questions.${questionIndex}.options`);
 
   const option = {
-    id: getRandomNumber(),
+    id: nanoid(6),
     text: '',
+    isNew: true,
   };
 
   const errorMessage = useMemo(

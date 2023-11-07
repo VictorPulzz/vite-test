@@ -1,7 +1,6 @@
+import { nanoid } from '@reduxjs/toolkit';
 import React, { FC } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-
-import { getRandomNumber } from '~/utils/getRandomNumber';
 
 import { ReportTemplateFormValues } from '../../hooks/useReportTemplateForm';
 import { QuestionItem } from './components/QuestionItem';
@@ -18,10 +17,11 @@ export const QuestionsTabElement: FC = () => {
   const questionsFields = watch('questions');
 
   const question = {
-    id: getRandomNumber(),
+    id: nanoid(6),
     type: null,
     questionText: '',
     showOnOverview: false,
+    isNew: true,
     options: [],
   };
 

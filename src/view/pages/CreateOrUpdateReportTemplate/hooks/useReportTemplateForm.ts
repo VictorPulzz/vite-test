@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { nanoid } from '@reduxjs/toolkit';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
@@ -11,7 +12,6 @@ import {
   WeekDayChoice,
 } from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
-import { getRandomNumber } from '~/utils/getRandomNumber';
 
 import {
   FetchReportTemplateInfoQuery,
@@ -46,17 +46,19 @@ const formSchema = z
     applyToAllProjects: z.boolean(),
     questions: z
       .object({
-        id: z.number(),
+        id: z.union([z.string(), z.number()]),
         type: z
           .nativeEnum(ReportQuestionTypeChoice)
           .nullable()
           .refine(value => value !== null, formErrors.REQUIRED),
         questionText: z.string().min(1).max(300, formErrors.fieldMaxLength(300)),
         showOnOverview: z.boolean(),
+        isNew: z.boolean(),
         options: z
           .object({
-            id: z.number(),
+            id: z.union([z.string(), z.number()]),
             text: z.string().min(1).max(90, formErrors.fieldMaxLength(90)),
+            isNew: z.boolean(),
           })
           .array(),
       })
@@ -104,10 +106,11 @@ const defaultValues: ReportTemplateFormValues = {
   applyToAllProjects: false,
   questions: [
     {
-      id: getRandomNumber(),
+      id: nanoid(6),
       type: null,
       questionText: '',
       showOnOverview: false,
+      isNew: true,
       options: [],
     },
   ],
@@ -130,9 +133,13 @@ export function useReportTemplateForm({
     async (values: ReportTemplateFormValues) => {
       try {
         const questions = values.questions.map(question => ({
+          id: question.isNew ? null : Number(question.id),
           type: question.type as ReportQuestionTypeChoice,
           questionText: question.questionText,
-          options: question.options.map(option => ({ text: option.text })),
+          options: question.options.map(option => ({
+            id: option.isNew ? null : Number(option.id),
+            text: option.text,
+          })),
           showOnOverview: question.showOnOverview,
         }));
 
