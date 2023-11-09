@@ -891,13 +891,18 @@ input ProjectSortFieldInput {
   field: ProjectSort!
 }
 
-type ProjectStatsType {
+type ProjectStatsHubstaffType {
   daysWorkedTotal: Int
   estimatedDays: Int
   estimatedHours: Int
   hoursTrackedTotal: Int
   peopleWorkedTotal: Int
   remainingHours: Int
+}
+
+type ProjectStatsType {
+  startDate: String
+  stats: ProjectStatsHubstaffType
 }
 
 type ProjectStatusType {
@@ -1144,7 +1149,7 @@ type Query {
   """
   report(data: IDInput!): ReportType!
   """
-  Getting report
+  Getting report list
   """
   reportList(
     filters: ReportFilter = null
