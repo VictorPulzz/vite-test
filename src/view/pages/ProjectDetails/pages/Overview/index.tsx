@@ -62,7 +62,8 @@ export const Overview: FC = () => {
       <div className="flex flex-col gap-5">
         {(projectStatsData || projectStatsError) && canReadProjectStatistics && (
           <ProjectStatsSection
-            projectStats={projectStatsData?.projectStats || {}}
+            projectStats={projectStatsData?.projectStats.stats || {}}
+            projectStartData={projectStatsData?.projectStats.startDate || ''}
             projectId={projectId}
             projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
             error={projectStatsError}
