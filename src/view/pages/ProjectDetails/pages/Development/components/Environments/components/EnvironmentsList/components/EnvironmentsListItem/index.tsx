@@ -1,6 +1,6 @@
-import { pick } from '@appello/common/lib/utils/object/pick';
 import { IconContainer } from '@appello/web-ui';
-import React, { FC, useMemo } from 'react';
+import clsx from 'clsx';
+import React, { FC } from 'react';
 
 import { ProjectEnvironmentType } from '~/services/gql/__generated__/globalTypes';
 import { convertUppercaseToReadable } from '~/utils/convertUppercaseToReadable';
@@ -18,52 +18,45 @@ interface Props {
   variant: CardVariant;
 }
 
-export enum EnvironmentCredentialsType {
-  FRONT_END = 1,
-  BACK_END = 2,
-}
-
 export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, variant }) => {
   const { canWriteProjectEnvs } = useUserPermissions();
-
-  const frontendCredentialsData = useMemo(
-    () =>
-      environment?.frontendCredentials
-        ? pick(environment.frontendCredentials, ['url', 'login', 'password'])
-        : null,
-    [environment?.frontendCredentials],
-  );
-
-  const backendCredentialsData = useMemo(
-    () =>
-      environment?.backendCredentials
-        ? pick(environment.backendCredentials, ['url', 'login', 'password'])
-        : null,
-    [environment?.backendCredentials],
-  );
 
   return (
     <>
       {variant === CardVariant.DEFAULT && environment && (
         <div className="p-5 border-solid border border-gray-5 rounded-xl">
-          <div className="flex items-center justify-between border-solid border-b border-gray-5 pb-3">
+          <div
+            className={clsx(
+              'flex items-center justify-between',
+              (environment.notes || !!environment.credentials?.length) &&
+                'border-solid border-b border-gray-5 pb-3',
+            )}
+          >
             <div className="flex items-center gap-2">
-              <IconContainer name="code" className="w-10 h-10 bg-blue/10" iconClassName="w-5 h-5" />
+              <IconContainer name="code" className="w-9 h-9 bg-blue/10" iconClassName="w-5 h-5" />
               <div>
-                <h2 className="text-p4 font-medium">
-                  {convertUppercaseToReadable(environment?.name ?? '')} {environment.title}
+                <h2 className="text-p4 font-medium leading-none">
+                  {convertUppercaseToReadable(environment.name)}
+                  {environment.title && ` • ${environment.title}`}
                 </h2>
-                <span className="text-p5 text-gray-1">Credentials</span>
+                <span className="text-p5 text-gray-1 ">Credentials</span>
               </div>
             </div>
             {canWriteProjectEnvs && (
-              <EnvironmentsListItemMenu id={environment.id} name={environment.name} />
+              <EnvironmentsListItemMenu
+                id={environment.id}
+                name={environment.name}
+                title={environment.title || ''}
+              />
             )}
           </div>
-          <div className="mt-3 grid grid-cols-2 justify-between gap-10">
-            <EnvironmentСredentials label="Frontend" data={frontendCredentialsData} />
-            <EnvironmentСredentials label="Backend" data={backendCredentialsData} />
-          </div>
+          {environment.notes && (
+            <div className="mt-4">
+              <span className="text-p6 text-gray-2">Notes</span>
+              <p className="text-p5">{environment.notes}</p>
+            </div>
+          )}
+          <EnvironmentСredentials data={environment.credentials || []} />
         </div>
       )}
       {variant === CardVariant.REQUEST && (

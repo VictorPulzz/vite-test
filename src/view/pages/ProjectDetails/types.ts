@@ -5,6 +5,7 @@ import {
   FetchProjectIntegrationsQuery,
   FetchProjectMembersQuery,
   FetchProjectReportsQuery,
+  FetchProjectStatusReportAnswersQuery,
   FetchReportAnswersQuery,
   FetchReportQuestionsQuery,
 } from './__generated__/schema';
@@ -33,3 +34,8 @@ export type ReportAnswersResultType = Exclude<
 >;
 
 export type ProjectReportsResultType = PaginationItem<FetchProjectReportsQuery['reportList']>;
+
+export type ProjectReportAnswerType = Exclude<
+  FetchProjectStatusReportAnswersQuery['projectReportAnswers'],
+  undefined | null
+>[number];

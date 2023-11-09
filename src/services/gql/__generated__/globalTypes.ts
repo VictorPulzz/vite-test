@@ -192,8 +192,11 @@ export type DocumentTypePagination = {
 };
 
 export type EnvironmentCredentialsInput = {
+  id?: InputMaybe<Scalars['Int']>;
   login?: InputMaybe<Scalars['String']>;
   password?: InputMaybe<Scalars['String']>;
+  shortDescription?: InputMaybe<Scalars['String']>;
+  type: RepositoryTypeChoice;
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -201,6 +204,8 @@ export type EnvironmentCredentialsType = {
   id: Scalars['Int'];
   login?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+  shortDescription?: Maybe<Scalars['String']>;
+  type: RepositoryTypeChoice;
   url?: Maybe<Scalars['String']>;
 };
 
@@ -240,7 +245,7 @@ export type GitInitialUserSortFieldInput = {
 };
 
 export type GitInitialUserType = {
-  accessLevel: RepositoryAccessLevelChoice;
+  accessLevel?: Maybe<RepositoryAccessLevelChoice>;
   user: ProfileType;
 };
 
@@ -821,20 +826,22 @@ export enum ProjectEnvironmentChoice {
 }
 
 export type ProjectEnvironmentInput = {
-  backendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
-  frontendCredentials?: InputMaybe<EnvironmentCredentialsInput>;
+  credentials?: InputMaybe<Array<EnvironmentCredentialsInput>>;
   id?: InputMaybe<Scalars['Int']>;
   name: ProjectEnvironmentChoice;
+  notes?: InputMaybe<Scalars['String']>;
   projectId: Scalars['Int'];
+  showCredsToEveryContributors?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
 };
 
 export type ProjectEnvironmentType = {
-  backendCredentials?: Maybe<EnvironmentCredentialsType>;
-  frontendCredentials?: Maybe<EnvironmentCredentialsType>;
+  credentials?: Maybe<Array<EnvironmentCredentialsType>>;
   id: Scalars['Int'];
   name: ProjectEnvironmentChoice;
+  notes?: Maybe<Scalars['String']>;
   projectId: Scalars['Int'];
+  showCredsToEveryContributors?: Maybe<Scalars['Boolean']>;
   title?: Maybe<Scalars['String']>;
 };
 
@@ -966,6 +973,12 @@ export type ProjectPreviewType = {
   id: Scalars['Int'];
   inTeam: Scalars['Boolean'];
   name: Scalars['String'];
+};
+
+export type ProjectReportAnswerType = {
+  answer?: Maybe<ReportAnswerType>;
+  id: Scalars['Int'];
+  reportedBy?: Maybe<ReportedByType>;
 };
 
 export type ProjectRepositoryType = {
@@ -1127,6 +1140,10 @@ export type Query = {
   projectMemberList: ProjectMemberListType;
   /** Getting project preview by id */
   projectPreview: ProjectPreviewType;
+  /** Getting report answer by id */
+  projectReportAnswerById: ProjectReportAnswerType;
+  /** Getting project overview report */
+  projectReportAnswers: Array<ProjectReportAnswerType>;
   /** Getting repositories for project by id */
   projectRepositoryList: ProjectRepositoryType;
   /** Getting project statistics from Hubstaff */
@@ -1283,6 +1300,14 @@ export type QueryProjectPreviewArgs = {
   data: IdInput;
 };
 
+export type QueryProjectReportAnswerByIdArgs = {
+  data: IdInput;
+};
+
+export type QueryProjectReportAnswersArgs = {
+  data: IdInput;
+};
+
 export type QueryProjectRepositoryListArgs = {
   data: IdInput;
 };
@@ -1317,6 +1342,7 @@ export type QueryReportTemplateArgs = {
 
 export type QueryReportTemplateListArgs = {
   pagination?: InputMaybe<PaginationInput>;
+  search?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<ReportTemplateSortFieldInput>>;
 };
 
@@ -1402,7 +1428,7 @@ export type ReportAnswerType = {
   checkboxes?: Maybe<Array<ReportQuestionOptionType>>;
   checkboxesStr?: Maybe<Array<Scalars['String']>>;
   date?: Maybe<Scalars['Date']>;
-  question: ReportQuestionType;
+  question?: Maybe<ReportQuestionType>;
   singleChoice?: Maybe<ReportQuestionOptionType>;
   singleChoiceStr?: Maybe<Scalars['String']>;
   text?: Maybe<Scalars['String']>;
@@ -1551,6 +1577,11 @@ export type ReportTypePagination = {
   limit?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   results: Array<ReportType>;
+};
+
+export type ReportedByType = {
+  fullName: Scalars['String'];
+  id: Scalars['Int'];
 };
 
 export enum RepositoryAccessLevelChoice {

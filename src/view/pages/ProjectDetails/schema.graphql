@@ -156,14 +156,11 @@ query FetchProjectEnvironmentsList($data: IDInput!) {
     projectId
     name
     title
-    frontendCredentials {
+    notes
+    credentials {
       id
-      url
-      login
-      password
-    }
-    backendCredentials {
-      id
+      type
+      shortDescription
       url
       login
       password
@@ -177,18 +174,16 @@ query FetchProjectEnvironment($input: IDInput!) {
     projectId
     name
     title
-    frontendCredentials {
+    notes
+    credentials {
       id
+      type
+      shortDescription
       url
       login
       password
     }
-    backendCredentials {
-      id
-      url
-      login
-      password
-    }
+    showCredsToEveryContributors
   }
 }
 
@@ -439,5 +434,61 @@ mutation UpdateProjectReportTemplatesActivity($input: ProjectUpdateInput!) {
 query FetchNotSubmittedReportsCount($filters: ReportFilter) {
   reportList(filters: $filters) {
     count
+  }
+}
+
+query FetchProjectStatusReportAnswers($data: IDInput!) {
+  projectReportAnswers(data: $data) {
+    id
+    answer {
+      question {
+        id
+        type
+        questionText
+      }
+      text
+      yesNo
+      date
+      singleChoice {
+        id
+        text
+      }
+      checkboxes {
+        id
+        text
+      }
+    }
+    reportedBy {
+      id
+      fullName
+    }
+  }
+}
+
+query FetchProjectStatusReportAnswer($data: IDInput!) {
+  projectReportAnswerById(data: $data) {
+    id
+    answer {
+      question {
+        id
+        type
+        questionText
+      }
+      text
+      yesNo
+      date
+      singleChoice {
+        id
+        text
+      }
+      checkboxes {
+        id
+        text
+      }
+    }
+    reportedBy {
+      id
+      fullName
+    }
   }
 }

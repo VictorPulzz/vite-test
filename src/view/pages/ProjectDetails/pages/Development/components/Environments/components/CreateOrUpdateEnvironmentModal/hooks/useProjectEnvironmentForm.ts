@@ -1,11 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
-import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
+import { FieldPath, useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { z } from 'zod';
 
 import { formErrors } from '~/constants/form';
-import { ProjectEnvironmentChoice } from '~/services/gql/__generated__/globalTypes';
+import {
+  ProjectEnvironmentChoice,
+  RepositoryTypeChoice,
+} from '~/services/gql/__generated__/globalTypes';
 import { processGqlErrorResponse } from '~/services/gql/utils/processGqlErrorResponse';
 
 import {
@@ -16,24 +19,34 @@ import {
 import { transformProjectEnvironmentPrefilledData } from '../utils';
 
 const formSchema = z.object({
+  title: z.string(),
   environment: z
     .nativeEnum(ProjectEnvironmentChoice)
     .nullable()
     .refine(value => value !== null, formErrors.REQUIRED),
-  title: z.string(),
-  frontendCredentials: z.object({
-    url: z.string(),
-    login: z.string(),
-    password: z.string(),
-  }),
-  backendCredentials: z.object({
-    url: z.string(),
-    login: z.string(),
-    password: z.string(),
-  }),
+  notes: z.string(),
+  credentials: z
+    .object({
+      id: z.union([z.string(), z.number()]),
+      type: z
+        .nativeEnum(RepositoryTypeChoice)
+        .nullable()
+        .refine(value => value !== null, formErrors.REQUIRED),
+      shortDescription: z.string(),
+      url: z.string().min(1),
+      login: z.string(),
+      password: z.string(),
+      isNew: z.boolean(),
+    })
+    .array(),
+  showCredsToEveryContributors: z.boolean(),
 });
 
 export type ProjectEnvironmentFormValues = z.infer<typeof formSchema>;
+
+export type ProjectEnvironmentCredentials = FieldPath<
+  Pick<ProjectEnvironmentFormValues, 'credentials'>
+>[];
 
 interface UseProjectEnvironmentFormReturn {
   form: UseFormReturn<ProjectEnvironmentFormValues>;
@@ -47,18 +60,11 @@ interface UseProjectEnvironmentFormProps {
 }
 
 const defaultValues: ProjectEnvironmentFormValues = {
-  environment: null,
   title: '',
-  frontendCredentials: {
-    url: '',
-    login: '',
-    password: '',
-  },
-  backendCredentials: {
-    url: '',
-    login: '',
-    password: '',
-  },
+  environment: null,
+  notes: '',
+  credentials: [],
+  showCredsToEveryContributors: true,
 };
 
 export function useProjectEnvironmentForm({
@@ -86,24 +92,37 @@ export function useProjectEnvironmentForm({
               id: prefilledData?.id,
               name: values.environment as ProjectEnvironmentChoice,
               title: values.title,
-              frontendCredentials: {
-                url: values.frontendCredentials.url,
-                login: values.frontendCredentials.login,
-                password: values.frontendCredentials.password,
-              },
-              backendCredentials: {
-                url: values.backendCredentials.url,
-                login: values.backendCredentials.login,
-                password: values.backendCredentials.password,
-              },
+              notes: values.notes,
+              credentials: values.credentials.map(value => ({
+                id: value.isNew ? null : Number(value.id),
+                type: value.type as RepositoryTypeChoice,
+                shortDescription: value.shortDescription,
+                url: value.url,
+                login: value.login,
+                password: value.password,
+              })),
+              showCredsToEveryContributors: values.showCredsToEveryContributors,
             },
           },
           refetchQueries: [FetchProjectEnvironmentsListDocument],
         });
         onSubmitSuccessful?.();
       } catch (e) {
+        const prepareCredsError = (field: string) =>
+          values.credentials.map(
+            (_, index) => `credentials.${index}.${field}`,
+          ) as ProjectEnvironmentCredentials;
+
         processGqlErrorResponse<ProjectEnvironmentFormValues>(e, {
-          fields: ['environment', 'title', 'frontendCredentials.url', 'backendCredentials.url'],
+          fields: [
+            'environment',
+            'title',
+            'notes',
+            ...prepareCredsError('shortDescription'),
+            ...prepareCredsError('url'),
+            ...prepareCredsError('login'),
+            ...prepareCredsError('password'),
+          ],
           setFormError: form.setError,
         });
       }

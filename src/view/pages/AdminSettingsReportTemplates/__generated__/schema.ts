@@ -9,6 +9,7 @@ export type FetchReportTemplatesListQueryVariables = Types.Exact<{
   sort?: Types.InputMaybe<
     Array<Types.ReportTemplateSortFieldInput> | Types.ReportTemplateSortFieldInput
   >;
+  search?: Types.InputMaybe<Types.Scalars['String']>;
 }>;
 
 export type FetchReportTemplatesListQuery = {
@@ -66,8 +67,9 @@ export const FetchReportTemplatesListDocument = gql`
   query FetchReportTemplatesList(
     $pagination: PaginationInput
     $sort: [ReportTemplateSortFieldInput!]
+    $search: String
   ) {
-    reportTemplateList(pagination: $pagination, sort: $sort) {
+    reportTemplateList(pagination: $pagination, sort: $sort, search: $search) {
       results {
         id
         name
@@ -95,6 +97,7 @@ export const FetchReportTemplatesListDocument = gql`
  *   variables: {
  *      pagination: // value for 'pagination'
  *      sort: // value for 'sort'
+ *      search: // value for 'search'
  *   },
  * });
  */

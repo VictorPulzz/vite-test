@@ -7,6 +7,6 @@ export function transformGitInitialUserPrefilledData(
 ): GitInitialUserFormValues {
   return {
     userId: data.user.id,
-    accessLevel: data.accessLevel,
+    accessLevel: data.accessLevel || null,
   };
 }

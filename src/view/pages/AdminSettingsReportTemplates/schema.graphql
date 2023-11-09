@@ -1,8 +1,9 @@
 query FetchReportTemplatesList(
   $pagination: PaginationInput
   $sort: [ReportTemplateSortFieldInput!]
+  $search: String
 ) {
-  reportTemplateList(pagination: $pagination, sort: $sort) {
+  reportTemplateList(pagination: $pagination, sort: $sort, search: $search) {
     results {
       id
       name

@@ -188,8 +188,11 @@ type DocumentTypePagination {
 }
 
 input EnvironmentCredentialsInput {
+  id: Int = null
   login: String
   password: String
+  shortDescription: String
+  type: RepositoryTypeChoice!
   url: String
 }
 
@@ -197,6 +200,8 @@ type EnvironmentCredentialsType {
   id: Int!
   login: String
   password: String
+  shortDescription: String
+  type: RepositoryTypeChoice!
   url: String
 }
 
@@ -236,7 +241,7 @@ input GitInitialUserSortFieldInput {
 }
 
 type GitInitialUserType {
-  accessLevel: RepositoryAccessLevelChoice!
+  accessLevel: RepositoryAccessLevelChoice
   user: ProfileType!
 }
 
@@ -701,20 +706,22 @@ enum ProjectEnvironmentChoice {
 }
 
 input ProjectEnvironmentInput {
-  backendCredentials: EnvironmentCredentialsInput
-  frontendCredentials: EnvironmentCredentialsInput
+  credentials: [EnvironmentCredentialsInput!]
   id: Int = null
   name: ProjectEnvironmentChoice!
+  notes: String = null
   projectId: Int!
+  showCredsToEveryContributors: Boolean = null
   title: String = null
 }
 
 type ProjectEnvironmentType {
-  backendCredentials: EnvironmentCredentialsType
-  frontendCredentials: EnvironmentCredentialsType
+  credentials: [EnvironmentCredentialsType!]
   id: Int!
   name: ProjectEnvironmentChoice!
+  notes: String
   projectId: Int!
+  showCredsToEveryContributors: Boolean
   title: String
 }
 
@@ -846,6 +853,12 @@ type ProjectPreviewType {
   id: Int!
   inTeam: Boolean!
   name: String!
+}
+
+type ProjectReportAnswerType {
+  answer: ReportAnswerType
+  id: Int!
+  reportedBy: ReportedByType
 }
 
 type ProjectRepositoryType {
@@ -1098,6 +1111,14 @@ type Query {
   """
   projectPreview(data: IDInput!): ProjectPreviewType!
   """
+  Getting report answer by id
+  """
+  projectReportAnswerById(data: IDInput!): ProjectReportAnswerType!
+  """
+  Getting project overview report
+  """
+  projectReportAnswers(data: IDInput!): [ProjectReportAnswerType!]!
+  """
   Getting repositories for project by id
   """
   projectRepositoryList(data: IDInput!): ProjectRepositoryType!
@@ -1138,6 +1159,7 @@ type Query {
   """
   reportTemplateList(
     pagination: PaginationInput = null
+    search: String = null
     sort: [ReportTemplateSortFieldInput!] = null
   ): ReportTemplateTypePagination!
   """
@@ -1246,7 +1268,7 @@ type ReportAnswerType {
   checkboxes: [ReportQuestionOptionType!]
   checkboxesStr: [String!]
   date: Date
-  question: ReportQuestionType!
+  question: ReportQuestionType
   singleChoice: ReportQuestionOptionType
   singleChoiceStr: String
   text: String
@@ -1395,6 +1417,11 @@ type ReportTypePagination {
   limit: Int
   offset: Int!
   results: [ReportType!]!
+}
+
+type ReportedByType {
+  fullName: String!
+  id: Int!
 }
 
 enum RepositoryAccessLevelChoice {

@@ -42,8 +42,8 @@ export const UsersListItem: FC<Props> = ({
     <div className="flex items-center justify-between py-2">
       <div className="flex items-center gap-2">
         <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={32} />
-        <span className="text-p5">{user.fullName}</span>
-        <span className="text-p5 text-gray-2 break-all pr-4">{user.email}</span>
+        <span className="text-p5 break-all">{user.fullName}</span>
+        <span className="text-p5 text-gray-2 break-all pr-4 whitespace-nowrap">{user.email}</span>
       </div>
       {invitedUsersIds.includes(user.id) ? (
         <span className="text-green text-p5 pr-3">In channel</span>
@@ -52,7 +52,7 @@ export const UsersListItem: FC<Props> = ({
           variant={ButtonVariant.SECONDARY}
           size={ButtonSize.SMALL}
           label="Invite"
-          className="w-[80px]"
+          className="w-[80px] flex-shrink-0"
           onClick={() => inviteUserToSlack(user.id)}
           isLoading={isLoadingInviteToSlack}
         />

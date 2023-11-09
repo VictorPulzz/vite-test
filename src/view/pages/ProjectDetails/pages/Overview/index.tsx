@@ -3,15 +3,19 @@ import React, { FC, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useUserPermissions } from '~/view/hooks/useUserPermissions';
+import { useUserProfile } from '~/view/hooks/useUserProfile';
 
 import {
   useFetchProjectEstimatedHoursQuery,
   useFetchProjectStatsQuery,
+  useFetchProjectStatusReportAnswersQuery,
 } from '../../__generated__/schema';
 import { ProjectStatsSection } from './components/ProjectStatsSection';
+import { ProjectStatusSection } from './components/ProjectStatusSection';
 
 export const Overview: FC = () => {
   const { canReadProjectStatistics } = useUserPermissions();
+  const { isAdminOrPM } = useUserProfile();
 
   const params = useParams();
   const projectId = useMemo(() => (params?.id ? Number(params.id) : 0), [params]);
@@ -19,7 +23,7 @@ export const Overview: FC = () => {
   const {
     data: projectStatsData,
     loading: isLoadingProjectStats,
-    error,
+    error: projectStatsError,
   } = useFetchProjectStatsQuery({
     variables: {
       data: { id: projectId },
@@ -36,7 +40,17 @@ export const Overview: FC = () => {
       skip: !canReadProjectStatistics,
     });
 
-  const isLoading = isLoadingProjectStats || isLoadingProjectEstimatedHours;
+  const { data: projectStatus, loading: isLoadingProjectStatus } =
+    useFetchProjectStatusReportAnswersQuery({
+      variables: {
+        data: { id: projectId },
+      },
+      skip: !isAdminOrPM,
+      fetchPolicy: 'cache-and-network',
+    });
+
+  const isLoading =
+    isLoadingProjectStats || isLoadingProjectEstimatedHours || isLoadingProjectStatus;
 
   return (
     <>
@@ -45,18 +59,19 @@ export const Overview: FC = () => {
           <Loader full colorful />
         </div>
       )}
-      {(projectStatsData || error) && (
-        <div className="flex flex-col gap-5">
-          {canReadProjectStatistics && (
-            <ProjectStatsSection
-              projectStats={projectStatsData?.projectStats || {}}
-              projectId={projectId}
-              projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
-              error={error}
-            />
-          )}
-        </div>
-      )}
+      <div className="flex flex-col gap-5">
+        {(projectStatsData || projectStatsError) && canReadProjectStatistics && (
+          <ProjectStatsSection
+            projectStats={projectStatsData?.projectStats || {}}
+            projectId={projectId}
+            projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
+            error={projectStatsError}
+          />
+        )}
+        {isAdminOrPM && projectStatus && projectStatus.projectReportAnswers.length > 0 && (
+          <ProjectStatusSection projectStatus={projectStatus.projectReportAnswers} />
+        )}
+      </div>
     </>
   );
 };

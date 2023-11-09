@@ -67,7 +67,7 @@ export type FetchGitInitialUsersListQuery = {
   gitInitialUserList: {
     count: number;
     results: Array<{
-      accessLevel: Types.RepositoryAccessLevelChoice;
+      accessLevel?: Types.RepositoryAccessLevelChoice | null;
       user: {
         id: number;
         fullName: string;
@@ -84,7 +84,10 @@ export type FetchGitInitialUserDetailsQueryVariables = Types.Exact<{
 }>;
 
 export type FetchGitInitialUserDetailsQuery = {
-  gitInitialUserDetails: { accessLevel: Types.RepositoryAccessLevelChoice; user: { id: number } };
+  gitInitialUserDetails: {
+    accessLevel?: Types.RepositoryAccessLevelChoice | null;
+    user: { id: number };
+  };
 };
 
 export type CreateOrUpdateGitInitialUserMutationVariables = Types.Exact<{
@@ -92,7 +95,7 @@ export type CreateOrUpdateGitInitialUserMutationVariables = Types.Exact<{
 }>;
 
 export type CreateOrUpdateGitInitialUserMutation = {
-  gitInitialUserCreateUpdate: { accessLevel: Types.RepositoryAccessLevelChoice };
+  gitInitialUserCreateUpdate: { accessLevel?: Types.RepositoryAccessLevelChoice | null };
 };
 
 export type RemoveGitInitialUserMutationVariables = Types.Exact<{
