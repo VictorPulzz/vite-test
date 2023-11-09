@@ -9,7 +9,7 @@ import { generatePath, useNavigate } from 'react-router-dom';
 import { ROUTES } from '~/constants/routes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 
-import { PROJECT_STATS_TITLES, StatsTitlesType } from './consts';
+import { StatKey } from './consts';
 import { getProjectStatsTitle } from './utils';
 
 interface Props {
@@ -31,21 +31,15 @@ export const ProjectStatsSection: FC<Props> = ({
   const errorText = getGqlError(error?.graphQLErrors)?.explain?.non_field;
 
   const projectStatsData = useMemo(
-    () => (projectStats ? pick(projectStats, Object.keys(PROJECT_STATS_TITLES)) : null),
+    () => (projectStats ? pick(projectStats, Object.values(StatKey)) : null),
     [projectStats],
   );
 
   const statsData = useMemo(() => {
     return Object.entries(projectStatsData || {}).map(([key, value]) => ({
-      stat:
-        PROJECT_STATS_TITLES[key as keyof StatsTitlesType] ===
-        PROJECT_STATS_TITLES['estimatedHours']
-          ? projectEstimatedHours
-          : value || 0,
-      title: getProjectStatsTitle(key as keyof StatsTitlesType, projectStartData),
-      canChangeColor:
-        PROJECT_STATS_TITLES[key as keyof StatsTitlesType] ===
-        PROJECT_STATS_TITLES['remainingHours'],
+      stat: key === StatKey.ESTIMATED_HOURS ? projectEstimatedHours : value || 0,
+      title: getProjectStatsTitle(key as StatKey, projectStartData),
+      canChangeColor: key === StatKey.REMAINING_HOURS,
     }));
   }, [projectEstimatedHours, projectStartData, projectStatsData]);
 
