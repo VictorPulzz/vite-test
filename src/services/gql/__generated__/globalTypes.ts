@@ -1011,13 +1011,18 @@ export type ProjectSortFieldInput = {
   field: ProjectSort;
 };
 
-export type ProjectStatsType = {
+export type ProjectStatsHubstaffType = {
   daysWorkedTotal?: Maybe<Scalars['Int']>;
   estimatedDays?: Maybe<Scalars['Int']>;
   estimatedHours?: Maybe<Scalars['Int']>;
   hoursTrackedTotal?: Maybe<Scalars['Int']>;
   peopleWorkedTotal?: Maybe<Scalars['Int']>;
   remainingHours?: Maybe<Scalars['Int']>;
+};
+
+export type ProjectStatsType = {
+  startDate?: Maybe<Scalars['String']>;
+  stats?: Maybe<ProjectStatsHubstaffType>;
 };
 
 export type ProjectStatusType = {
@@ -1154,7 +1159,7 @@ export type Query = {
   projectsList: ProjectTypePagination;
   /** Getting report */
   report: ReportType;
-  /** Getting report */
+  /** Getting report list */
   reportList: ReportTypePagination;
   /** Getting report template */
   reportTemplate: ReportTemplateType;

@@ -300,12 +300,15 @@ query FetchCreatedProjectSlackChannels($data: IDInput!, $filters: ProjectIntegra
 
 query FetchProjectStats($data: IDInput!) {
   projectStats(data: $data) {
-    estimatedHours
-    peopleWorkedTotal
-    hoursTrackedTotal
-    daysWorkedTotal
-    remainingHours
-    estimatedDays
+    stats {
+      estimatedHours
+      hoursTrackedTotal
+      remainingHours
+      estimatedDays
+      daysWorkedTotal
+      peopleWorkedTotal
+    }
+    startDate
   }
 }
 

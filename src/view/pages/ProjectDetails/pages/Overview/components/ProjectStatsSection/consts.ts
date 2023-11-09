@@ -10,7 +10,7 @@ export type StatsTitlesType = Record<StatsKeys, string>;
 
 export const PROJECT_STATS_TITLES: StatsTitlesType = {
   estimatedHours: 'Total hours estimated (manually added)',
-  peopleWorkedTotal: 'Total team working on project',
+  peopleWorkedTotal: 'Team members worked on project in last 28 days',
   hoursTrackedTotal: 'Total hours tracked on HubStaff (updated just now)',
   daysWorkedTotal: 'Total days on the project',
   remainingHours: 'Total hours remaining',

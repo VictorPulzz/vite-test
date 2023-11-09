@@ -314,12 +314,15 @@ export type FetchProjectStatsQueryVariables = Types.Exact<{
 
 export type FetchProjectStatsQuery = {
   projectStats: {
-    estimatedHours?: number | null;
-    peopleWorkedTotal?: number | null;
-    hoursTrackedTotal?: number | null;
-    daysWorkedTotal?: number | null;
-    remainingHours?: number | null;
-    estimatedDays?: number | null;
+    startDate?: string | null;
+    stats?: {
+      estimatedHours?: number | null;
+      hoursTrackedTotal?: number | null;
+      remainingHours?: number | null;
+      estimatedDays?: number | null;
+      daysWorkedTotal?: number | null;
+      peopleWorkedTotal?: number | null;
+    } | null;
   };
 };
 
@@ -1796,12 +1799,15 @@ export type FetchCreatedProjectSlackChannelsQueryResult = Apollo.QueryResult<
 export const FetchProjectStatsDocument = gql`
   query FetchProjectStats($data: IDInput!) {
     projectStats(data: $data) {
-      estimatedHours
-      peopleWorkedTotal
-      hoursTrackedTotal
-      daysWorkedTotal
-      remainingHours
-      estimatedDays
+      stats {
+        estimatedHours
+        hoursTrackedTotal
+        remainingHours
+        estimatedDays
+        daysWorkedTotal
+        peopleWorkedTotal
+      }
+      startDate
     }
   }
 `;

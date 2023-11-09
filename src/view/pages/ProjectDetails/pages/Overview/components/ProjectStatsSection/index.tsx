@@ -10,9 +10,11 @@ import { ROUTES } from '~/constants/routes';
 import { SectionContainer } from '~/view/components/SectionContainer';
 
 import { PROJECT_STATS_TITLES, StatsTitlesType } from './consts';
+import { getProjectStatsTitle } from './utils';
 
 interface Props {
   projectStats: { [key: string]: Nullable<number> };
+  projectStartData: string;
   projectId: number;
   projectEstimatedHours: number;
   error?: ApolloError;
@@ -23,6 +25,7 @@ export const ProjectStatsSection: FC<Props> = ({
   error,
   projectId,
   projectEstimatedHours,
+  projectStartData,
 }) => {
   const navigate = useNavigate();
   const errorText = getGqlError(error?.graphQLErrors)?.explain?.non_field;
@@ -39,12 +42,12 @@ export const ProjectStatsSection: FC<Props> = ({
         PROJECT_STATS_TITLES['estimatedHours']
           ? projectEstimatedHours
           : value || 0,
-      title: PROJECT_STATS_TITLES[key as keyof StatsTitlesType],
+      title: getProjectStatsTitle(key as keyof StatsTitlesType, projectStartData),
       canChangeColor:
         PROJECT_STATS_TITLES[key as keyof StatsTitlesType] ===
         PROJECT_STATS_TITLES['remainingHours'],
     }));
-  }, [projectEstimatedHours, projectStatsData]);
+  }, [projectEstimatedHours, projectStartData, projectStatsData]);
 
   const isSmallPercentageOfRemainingHours = useMemo(
     () =>
