@@ -41,10 +41,10 @@ export const BitbucketTabElement: FC = () => {
 
   return (
     <SectionContainer
-      title="Initial users for every repository"
-      subTitle="These users will be added to every repository in every project"
-      titleClassName="leading-none"
       containerClassName="h-full"
+      subTitle="These users will be added to every repository in every project"
+      title="Initial users for every repository"
+      titleClassName="leading-none"
     >
       <div className="flex flex-col h-full pb-7">
         {loading && <TableLoader className="mt-3" />}
@@ -56,29 +56,29 @@ export const BitbucketTabElement: FC = () => {
         {!loading && data && data.gitInitialUserList.results.length > 0 && (
           <Table
             className="mt-3"
-            data={data.gitInitialUserList.results}
             columns={initialUsersTableColumns}
-            setOffset={setOffset}
+            data={data.gitInitialUserList.results}
             offset={offset}
-            onPageChange={gqlTableFetchMore(fetchMore)}
-            totalCount={data.gitInitialUserList.count}
-            sorting={tableSorting}
+            setOffset={setOffset}
             setSorting={setTableSorting}
+            sorting={tableSorting}
+            totalCount={data.gitInitialUserList.count}
+            onPageChange={gqlTableFetchMore(fetchMore)}
           />
         )}
         {!loading && (
           <Button
+            className="w-[150px] mt-3"
+            label="Add user to list"
             variant={ButtonVariant.SECONDARY}
             withIcon="plus"
-            label="Add user to list"
-            className="w-[150px] mt-3"
             onClick={openCreateOrUpdateGitInitialUserModal}
           />
         )}
       </div>
       <CreateOrUpdateGitInitialUserModal
-        isOpen={isCreateOrUpdateGitInitialUserModal}
         close={closeCreateOrUpdateGitInitialUserModal}
+        isOpen={isCreateOrUpdateGitInitialUserModal}
       />
     </SectionContainer>
   );

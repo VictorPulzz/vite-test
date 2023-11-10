@@ -52,9 +52,9 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
         </div>
         {isTruncatedAnswerText && (
           <button
+            className="text-accent text-p5 underline hover:no-underline"
             type="button"
             onClick={openReportAnswerModal}
-            className="text-accent text-p5 underline hover:no-underline"
           >
             view
           </button>
@@ -73,9 +73,9 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
             </p>
             {isTruncatedQuestionText && (
               <button
+                className="text-accent text-p5 underline hover:no-underline"
                 type="button"
                 onClick={openReportAnswerModal}
-                className="text-accent text-p5 underline hover:no-underline"
               >
                 view
               </button>
@@ -84,8 +84,8 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
           <div className="mt-1 text-p6 text-gray-2 flex items-center gap-1">
             <span>Reported by</span>
             <TextLink
-              to={generatePath(ROUTES.USER_DETAILS, { id: reportedBy?.id })}
               className="text-accent underline hover:no-underline"
+              to={generatePath(ROUTES.USER_DETAILS, { id: reportedBy?.id })}
             >
               {reportedBy?.fullName}
             </TextLink>
@@ -95,8 +95,8 @@ export const ProjectStatusReportAnswer: FC<Props> = ({ reportAnswer }) => {
       </div>
       {isReportAnswerModal && (
         <ReportAnswerModal
-          isOpen={isReportAnswerModal}
           close={closeReportAnswerModal}
+          isOpen={isReportAnswerModal}
           reportAnswerId={reportAnswer.id}
         />
       )}

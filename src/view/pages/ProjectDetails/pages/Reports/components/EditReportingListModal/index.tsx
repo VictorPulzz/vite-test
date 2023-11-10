@@ -143,9 +143,9 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[28.75rem]"
+      isOpen={isOpen}
       title="Edit reporting list"
       onAfterClose={resetForm}
     >
@@ -153,7 +153,7 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
         <div className="h-[300px] overflow-auto" ref={reportTemplatesListRef}>
           {isLoading && (
             <div className="flex items-center h-full">
-              <Loader full colorful />
+              <Loader colorful full />
             </div>
           )}
           {!isLoading &&
@@ -169,14 +169,14 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
               <div className="flex flex-col gap-4 ">
                 {reportTemplates.reportTemplateList.results.map(report => (
                   <div
-                    key={report.id}
                     className="flex items-center justify-between p-4 border border-solid border-gray-5 rounded-md"
+                    key={report.id}
                   >
                     {report && (
                       <div className="flex items-center gap-3">
                         <Checkbox
-                          value={report.id}
                           checked={reportsField.includes(report.id)}
+                          value={report.id}
                           onChange={handleChangeReportActivity}
                         />
                         <div className="flex flex-col">
@@ -203,10 +203,10 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
                       </div>
                     )}
                     <TextLink
+                      className="text-p5 text-blue hover:underline"
                       to={generatePath(ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_EDIT, {
                         id: report.id,
                       })}
-                      className="text-p5 text-blue hover:underline"
                     >
                       View Template
                     </TextLink>
@@ -214,7 +214,7 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
                 ))}
                 <div className="absolute left-[210px] bottom-[70px] h-[30px] flex items-center justify-center">
                   {isFetching && nextOffset !== reportTemplates.reportTemplateList.count && (
-                    <Loader full colorful dotSize={8} />
+                    <Loader colorful full dotSize={8} />
                   )}
                 </div>
               </div>
@@ -228,11 +228,11 @@ export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
             )}
           >
             <Button
-              variant={ButtonVariant.PRIMARY}
-              onClick={handleSubmit}
-              label="Save"
               className="w-40"
               isLoading={form.formState.isSubmitting}
+              label="Save"
+              variant={ButtonVariant.PRIMARY}
+              onClick={handleSubmit}
             />
           </div>
         )}

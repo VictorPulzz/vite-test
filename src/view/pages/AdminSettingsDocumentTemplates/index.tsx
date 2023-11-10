@@ -51,10 +51,10 @@ export const AdminSettingsDocumentTemplatesPage: FC = () => {
           </p>
         </div>
         <Button
-          label="New template"
-          withIcon="plus"
-          variant={ButtonVariant.PRIMARY}
           className="w-40"
+          label="New template"
+          variant={ButtonVariant.PRIMARY}
+          withIcon="plus"
           onClick={openCreateOrUpdateDocumentTemplateModal}
         />
       </div>
@@ -66,19 +66,19 @@ export const AdminSettingsDocumentTemplatesPage: FC = () => {
       {!loading && data && data.documentTemplateList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.documentTemplateList.results}
           columns={DOCUMENT_TEMPLATES_TABLE_COLUMNS}
-          setOffset={setOffset}
+          data={data.documentTemplateList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
-          totalCount={data.documentTemplateList.count}
-          sorting={tableSorting}
+          setOffset={setOffset}
           setSorting={setTableSorting}
+          sorting={tableSorting}
+          totalCount={data.documentTemplateList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
       <CreateOrUpdateDocumentTemplateModal
-        isOpen={isCreateOrUpdateDocumentTemplateModal}
         close={closeCreateOrUpdateDocumentTemplateModal}
+        isOpen={isCreateOrUpdateDocumentTemplateModal}
       />
     </SidebarLayout>
   );

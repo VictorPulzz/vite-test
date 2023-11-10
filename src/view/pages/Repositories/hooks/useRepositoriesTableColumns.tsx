@@ -27,7 +27,7 @@ export function useRepositoriesTableColumns() {
         return (
           <div>
             {name ? (
-              <TextLink to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })} className="underline">
+              <TextLink className="underline" to={generatePath(ROUTES.REPOSITORY_DETAILS, { id })}>
                 {ctx.getValue()}
               </TextLink>
             ) : (
@@ -44,8 +44,8 @@ export function useRepositoriesTableColumns() {
         const { project } = ctx.row.original;
         return (
           <TextLink
-            to={generatePath(ROUTES.PROJECT_DETAILS, { id: project.id })}
             className="underline"
+            to={generatePath(ROUTES.PROJECT_DETAILS, { id: project.id })}
           >
             {ctx.getValue()}
           </TextLink>
@@ -78,7 +78,7 @@ export function useRepositoriesTableColumns() {
         return (
           <div>
             {inParticipant && (
-              <TextLink external to={gitUrl ?? ''} className="underline">
+              <TextLink external className="underline" to={gitUrl ?? ''}>
                 {gitUrl}
               </TextLink>
             )}

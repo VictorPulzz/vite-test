@@ -91,7 +91,7 @@ export const UsersList: FC<Props> = ({ slackChannelId, searchValue, offset }) =>
     <div className="mt-3 h-[360px] overflow-auto" ref={usersListRef}>
       {isLoadingAllUsers && (
         <div className="flex items-center h-[320px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {allUsers && allUsers.userGlossaryList.results.length === 0 && (
@@ -104,16 +104,16 @@ export const UsersList: FC<Props> = ({ slackChannelId, searchValue, offset }) =>
         allUsers.userGlossaryList.results.length > 0 &&
         allUsers.userGlossaryList.results.map(user => (
           <UsersListItem
-            key={user.id}
-            user={user}
-            slackChannelId={slackChannelId}
             invitedUsersIds={invitedUsersIds}
+            key={user.id}
             setInvitedUsersIds={setInvitedUsersIds}
+            slackChannelId={slackChannelId}
+            user={user}
           />
         ))}
       <div className="absolute left-[230px] bottom-[5px] h-[30px] flex items-center justify-center">
         {isFetching && nextOffset !== allUsers?.userGlossaryList.count && (
-          <Loader full colorful dotSize={8} />
+          <Loader colorful full dotSize={8} />
         )}
       </div>
     </div>

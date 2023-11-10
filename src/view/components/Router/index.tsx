@@ -16,7 +16,7 @@ import { CreateOrUpdateUserPage } from '~/view/pages/CreateOrUpdateUser';
 import { CreateRepositoryPage } from '~/view/pages/CreateRepository';
 import { DocumentsPage } from '~/view/pages/Documents';
 import { ForgotPasswordPage } from '~/view/pages/ForgotPassword';
-import { HomePage } from '~/view/pages/Home';
+import { DashboardPage } from '~/view/pages/Home';
 import { NotFoundPage } from '~/view/pages/NotFound';
 import { ProjectDetailsPage } from '~/view/pages/ProjectDetails';
 import { Integrations } from '~/view/pages/ProjectDetails/pages/ Integrations';
@@ -84,7 +84,7 @@ export const Router: FC = () => {
   const protectedRoutes: RouteObject[] = [
     {
       path: ROUTES.HOME,
-      element: <HomePage />,
+      element: <DashboardPage />,
     },
     {
       path: ROUTES.DOCUMENTS,

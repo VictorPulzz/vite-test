@@ -44,9 +44,9 @@ export function useProjectTeamTableColumns(
         const { photoThumbnail, fullName, id } = ctx.row.original.user;
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={photoThumbnail?.url || photoPlaceholder} size={26} />
+            <Avatar size={26} uri={photoThumbnail?.url || photoPlaceholder} />
             {canReadUserDetails ? (
-              <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
+              <TextLink className="underline" to={generatePath(ROUTES.USER_DETAILS, { id })}>
                 {fullName}
               </TextLink>
             ) : (
@@ -85,14 +85,14 @@ export function useProjectTeamTableColumns(
         const teamMemberSlackUrl = ctx.row.original.user.slackUrl;
         return (
           <Button
-            variant={ButtonVariant.SECONDARY}
+            className="w-[100px]"
             label="Go to Slack"
+            variant={ButtonVariant.SECONDARY}
             onClick={() => {
               if (teamMemberSlackUrl) {
                 window.open(teamMemberSlackUrl, '_blank');
               }
             }}
-            className="w-[100px]"
           />
         );
       },
@@ -105,9 +105,9 @@ export function useProjectTeamTableColumns(
       enableHiding: !canWriteProjectTeam,
       cell: ctx => (
         <MoreCell
-          isCurrentTeam={type === TeamTableType.CURRENT_TEAM}
-          ctx={ctx}
           createdProjectSlackChannelsCount={data?.projectIntegrationPage.slackChannels?.length ?? 0}
+          ctx={ctx}
+          isCurrentTeam={type === TeamTableType.CURRENT_TEAM}
         />
       ),
       meta: {

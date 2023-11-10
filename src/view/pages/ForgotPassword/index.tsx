@@ -18,29 +18,29 @@ export const ForgotPasswordPage: FC = () => {
 
   return (
     <AuthLayout>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+      <form className="flex flex-col items-center" onSubmit={handleSubmit}>
         <h1 className="text-h2 text-center">Forgot password</h1>
         <p className="text-p3 text-center mt-1.5 text-gray-1">
           Enter your email you used to log in and we will send you a password reset link
         </p>
-        <TextLink to={ROUTES.SIGN_IN} className="text-p4 mt-1.5 text-accent mb-7">
+        <TextLink className="text-p4 mt-1.5 text-accent mb-7" to={ROUTES.SIGN_IN}>
           Back to log in
         </TextLink>
         <TextField
-          name="email"
+          autoFocus
           control={form.control}
           label="Email"
-          size={InputSize.LARGE}
+          name="email"
           placeholder="Enter email"
-          autoFocus
+          size={InputSize.LARGE}
         />
         <Button
+          className="mt-7"
+          isLoading={form.formState.isSubmitting}
           label="Proceed"
-          variant={ButtonVariant.PRIMARY}
           size={ButtonSize.LARGE}
           type="submit"
-          isLoading={form.formState.isSubmitting}
-          className="mt-7"
+          variant={ButtonVariant.PRIMARY}
         />
       </form>
     </AuthLayout>

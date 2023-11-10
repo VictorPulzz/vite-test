@@ -31,8 +31,8 @@ export const QuestionsTabElement: FC = () => {
         {questionsFields.map((field, index) => (
           <QuestionItem
             key={field.id}
-            questionType={field.type}
             questionIndex={index}
+            questionType={field.type}
             removeQuestion={removeQuestion}
           />
         ))}

@@ -62,9 +62,9 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[31.46rem]"
+      isOpen={isOpen}
       title={
         !isLoadingRequestDetails &&
         request && (
@@ -79,7 +79,7 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
     >
       {isLoadingRequestDetails && (
         <div className="flex items-center h-[500px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!isLoadingRequestDetails && request && (
@@ -88,8 +88,8 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
             <span className="text-p4 text-gray-2">Created by</span>
             <div className="flex gap-3 items-center">
               <Avatar
-                uri={request.requestDetails.createdBy?.photoThumbnail?.url || photoPlaceholder}
                 size={32}
+                uri={request.requestDetails.createdBy?.photoThumbnail?.url || photoPlaceholder}
               />
               <div className="flex flex-col">
                 <p className="text-p4">{request.requestDetails.createdBy?.fullName}</p>
@@ -98,17 +98,17 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
             </div>
           </div>
           <AssignedTo
-            variant={AssignedToVariant.FIELD}
             allUsers={allUsers?.userGlossaryList.results ?? []}
+            assignedTo={request.requestDetails.assignedTo}
             id={requestId}
             status={request.requestDetails.status}
-            assignedTo={request.requestDetails.assignedTo}
+            variant={AssignedToVariant.FIELD}
           />
           <DueDate
-            variant={DueDateVariant.FIELD}
-            id={requestId}
             dueDate={request.requestDetails.dueDate ?? ''}
+            id={requestId}
             status={request.requestDetails.status}
+            variant={DueDateVariant.FIELD}
           />
           {request.requestDetails.description && (
             <div className="flex flex-col py-5 border-solid border-y border-gray-5">
@@ -122,10 +122,10 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
             <div className="flex flex-col">
               <span className="text-p4 text-gray-2">Project</span>
               <TextLink
+                className="underline text-p3 text-black-2"
                 to={generatePath(ROUTES.PROJECT_DETAILS, {
                   id: request.requestDetails.project.id,
                 })}
-                className="underline text-p3 text-black-2"
               >
                 {request.requestDetails.project.name}
               </TextLink>
@@ -162,7 +162,7 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
                 <div>
                   {request.requestDetails.technologies.map(({ id, name }, index) => [
                     index > 0 && ', ',
-                    <span key={id} className="text-p3 leading-none">
+                    <span className="text-p3 leading-none" key={id}>
                       {name}
                     </span>,
                   ])}
@@ -174,10 +174,10 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
               <span className="text-p4 text-gray-2">Repository</span>
               {canReadRepoDetails ? (
                 <TextLink
+                  className="underline text-p3 text-black-2"
                   to={generatePath(ROUTES.REPOSITORY_DETAILS, {
                     id: request.requestDetails.repository.id,
                   })}
-                  className="underline text-p3 text-black-2"
                 >
                   {request.requestDetails.repository.name}
                 </TextLink>
@@ -198,12 +198,12 @@ export const RequestDetailsModal: FC<Props> = ({ isOpen, close, requestId }) => 
           )}
           <div className="flex justify-end">
             <Button
+              className="mt-6 w-[150px]"
+              disabled={isRequestResolved}
+              isLoading={isLoadingUpdateRequest}
+              label={isRequestResolved ? 'Resolved' : 'Resolve'}
               variant={ButtonVariant.PRIMARY}
               onClick={resolveRequest}
-              label={isRequestResolved ? 'Resolved' : 'Resolve'}
-              className="mt-6 w-[150px]"
-              isLoading={isLoadingUpdateRequest}
-              disabled={isRequestResolved}
             />
           </div>
         </div>

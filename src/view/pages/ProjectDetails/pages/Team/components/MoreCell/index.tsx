@@ -137,8 +137,8 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
   return (
     <>
       <Dropdown
-        items={isCurrentTeam ? currentTeamOptions : otherContributorsOptions}
         containerWidth="14.93rem"
+        items={isCurrentTeam ? currentTeamOptions : otherContributorsOptions}
       >
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
@@ -148,20 +148,20 @@ export const MoreCell: FC<Props> = ({ ctx, isCurrentTeam, createdProjectSlackCha
       </Dropdown>
       {isInviteUserToSlackModalOpen && (
         <InviteUserToSlackModal
-          isOpen={isInviteUserToSlackModalOpen}
           close={closeInviteUserToSlackModalModal}
-          user={user}
           isCurrentTeam={currentTeam}
+          isOpen={isInviteUserToSlackModalOpen}
           projectId={projectId}
+          user={user}
         />
       )}
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={user.fullName}
           action="remove"
+          close={closeConfirmActionModal}
           description="Do this if person was added by mistake only. Otherwise the data about his contributions to the project will be lost"
           isOpen={isConfirmActionModal}
-          close={closeConfirmActionModal}
+          name={user.fullName}
           onAccept={() => removeFromOtherContributors(user.id)}
         />
       )}

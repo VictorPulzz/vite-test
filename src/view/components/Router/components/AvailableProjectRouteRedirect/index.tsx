@@ -44,7 +44,7 @@ export const AvailableProjectRouteRedirect: FC = () => {
   );
 
   return availableProjectDetailsRoutes.length > 0 ? (
-    <Navigate to={generatePath(availableProjectDetailsRoutes[0], { id: projectId })} replace />
+    <Navigate replace to={generatePath(availableProjectDetailsRoutes[0], { id: projectId })} />
   ) : (
     <NoAccessMessage />
   );

@@ -38,12 +38,12 @@ export const Projects: FC = () => {
       {!loading && data && data.userProjects.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.userProjects.results}
           columns={USERS_PROJECTS_TABLE_COLUMNS}
-          setOffset={setOffset}
+          data={data.userProjects.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
+          setOffset={setOffset}
           totalCount={data.userProjects.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
     </>

@@ -56,8 +56,8 @@ export const History: FC = () => {
         <Select
           className="w-40"
           options={usersOptions}
-          value={filter?.createdById}
           placeholder="Filter by user"
+          value={filter?.createdById}
           onChange={value => setFilter({ createdById: value })}
         />
         {loading && <TableLoader className="mt-10" />}
@@ -69,12 +69,12 @@ export const History: FC = () => {
         {!loading && tableData && tableData.logList.results.length > 0 && (
           <Table
             className="mt-4"
-            data={tableData.logList.results}
             columns={historyTableColumns}
-            setOffset={setOffset}
+            data={tableData.logList.results}
             offset={offset}
-            onPageChange={gqlTableFetchMore(fetchMore)}
+            setOffset={setOffset}
             totalCount={tableData.logList.count}
+            onPageChange={gqlTableFetchMore(fetchMore)}
           />
         )}
       </SectionContainer>

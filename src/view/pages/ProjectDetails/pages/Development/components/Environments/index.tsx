@@ -46,22 +46,22 @@ export const DevelopmentEnvironments: FC<Props> = ({ environments, envsRequests,
           <EnvironmentsList environments={environments} envsRequests={envsRequests} />
         )}
         <Button
-          variant={ButtonVariant.SECONDARY}
-          label={`${canWriteProjectEnvs ? 'Create' : 'Request'} new environment`}
           className="mt-6 w-[190px]"
+          label={`${canWriteProjectEnvs ? 'Create' : 'Request'} new environment`}
+          variant={ButtonVariant.SECONDARY}
           onClick={canWriteProjectEnvs ? openCreateOrUpdateEnvironmentModal : openNewRequestModal}
         />
       </SectionContainer>
       <CreateOrUpdateEnvironmentModal
-        isOpen={isCreateOrUpdateEnvironmentModalOpen}
         close={closeCreateOrUpdateEnvironmentModal}
+        isOpen={isCreateOrUpdateEnvironmentModalOpen}
       />
       {isNewRequestModalOpen && (
         <NewRequestModal
-          isOpen={isNewRequestModalOpen}
           close={closeNewRequestModal}
-          requestType={RequestTypeChoice.CREATION_ENVIRONMENT}
+          isOpen={isNewRequestModalOpen}
           projectId={projectId}
+          requestType={RequestTypeChoice.CREATION_ENVIRONMENT}
         />
       )}
     </div>

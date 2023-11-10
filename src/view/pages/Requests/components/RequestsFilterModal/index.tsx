@@ -55,29 +55,29 @@ export const RequestsFilterModal: FC<RequestsFilterModalProps> = ({
   }, [resetForm, setFilter, close]);
 
   return (
-    <Modal isOpen={isOpen} close={close} title="Filter" contentClassName="w-[26rem]">
-      <form onSubmit={handleSubmit} onReset={handleReset}>
+    <Modal close={close} contentClassName="w-[26rem]" isOpen={isOpen} title="Filter">
+      <form onReset={handleReset} onSubmit={handleSubmit}>
         <SelectField
-          name="type"
-          options={requestTypesOptions}
           control={form.control}
           label="Type"
+          name="type"
+          options={requestTypesOptions}
         />
         <SelectField
-          name="createdBy"
-          options={usersOptions}
           control={form.control}
           label="Created By"
+          name="createdBy"
+          options={usersOptions}
         />
         <SelectField
-          name="assignedTo"
-          options={usersByRoleOptions}
           control={form.control}
           label="Assigned To"
+          name="assignedTo"
+          options={usersByRoleOptions}
         />
         <div className="flex mt-7 gap-4">
-          <Button variant={ButtonVariant.SECONDARY} label="Reset filters" type="reset" />
-          <Button variant={ButtonVariant.PRIMARY} label="Apply filter" type="submit" />
+          <Button label="Reset filters" type="reset" variant={ButtonVariant.SECONDARY} />
+          <Button label="Apply filter" type="submit" variant={ButtonVariant.PRIMARY} />
         </div>
       </form>
     </Modal>

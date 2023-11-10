@@ -37,30 +37,30 @@ export const DevelopmentRepositories: FC<Props> = ({ repositories, projectId }) 
           <EmptyState iconName="repositories" label="No repositories here yet" />
         )}
         {!!repositories?.length && (
-          <Table className="mt-3" data={repositories} columns={reposTableColumns} />
+          <Table className="mt-3" columns={reposTableColumns} data={repositories} />
         )}
         {canCreateRepository ? (
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Create new repo"
             className="mt-3 w-[140px]"
+            label="Create new repo"
             to={`${ROUTES.ADD_REPOSITORY}${makeQueryString({ projectId })}`}
+            variant={ButtonVariant.SECONDARY}
           />
         ) : (
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Request new repo"
             className="mt-3 w-[140px]"
+            label="Request new repo"
+            variant={ButtonVariant.SECONDARY}
             onClick={openNewRequestModal}
           />
         )}
       </SectionContainer>
       {isNewRequestModalOpen && (
         <NewRequestModal
-          isOpen={isNewRequestModalOpen}
           close={closeNewRequestModal}
-          requestType={RequestTypeChoice.CREATION_REPOSITORY}
+          isOpen={isNewRequestModalOpen}
           projectId={projectId}
+          requestType={RequestTypeChoice.CREATION_REPOSITORY}
         />
       )}
     </div>

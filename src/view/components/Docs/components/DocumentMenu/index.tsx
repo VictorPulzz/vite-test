@@ -86,7 +86,7 @@ export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, typ
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -95,10 +95,10 @@ export const DocumentMenu: FC<Props> = ({ fileUrl, documentId, documentName, typ
       </Dropdown>
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={documentName}
           action="delete"
-          isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
+          isOpen={isConfirmActionModal}
+          name={documentName}
           onAccept={removeCurrentDocument}
         />
       )}

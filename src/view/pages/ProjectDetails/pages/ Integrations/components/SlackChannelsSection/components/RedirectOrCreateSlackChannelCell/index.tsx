@@ -59,17 +59,17 @@ export const RedirectOrCreateSlackChannelCell: FC<Props> = ({ ctx }) => {
   return (
     <>
       <Button
-        onClick={channelId ? goToSlackChannel : openConfirmActionModal}
-        variant={channelId ? ButtonVariant.SECONDARY : ButtonVariant.PRIMARY}
         label={channelId ? 'Slack' : 'Create'}
+        variant={channelId ? ButtonVariant.SECONDARY : ButtonVariant.PRIMARY}
+        onClick={channelId ? goToSlackChannel : openConfirmActionModal}
       />
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={template?.label || templateName || ''}
-          icon="add"
           action="create"
-          isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
+          icon="add"
+          isOpen={isConfirmActionModal}
+          name={template?.label || templateName || ''}
           onAccept={сreateSlackChannel}
         />
       )}

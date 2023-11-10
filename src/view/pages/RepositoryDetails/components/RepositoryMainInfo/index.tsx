@@ -32,8 +32,8 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
       <div className="flex gap-2 mb-3 ">
         <h2 className="text-p1 font-bold">Info</h2>
         {canWriteRepository && (
-          <button type="button" className="hover:opacity-70" onClick={openUpdateRepositoryModal}>
-            <Icon name="pencil" size={14} className="text-blue " />
+          <button className="hover:opacity-70" type="button" onClick={openUpdateRepositoryModal}>
+            <Icon className="text-blue " name="pencil" size={14} />
           </button>
         )}
       </div>
@@ -55,7 +55,7 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
           <div>
             {technologies?.map(({ id, name }, index) => [
               index > 0 && ', ',
-              <span key={id} className="text-p3 leading-none">
+              <span className="text-p3 leading-none" key={id}>
                 {name}
               </span>,
             ])}
@@ -66,8 +66,8 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
             <span className="text-p5 text-gray-2">Git url</span>
             <TextLink
               external
-              to={gitUrl}
               className="text-p3 text-blue leading-none hover:underline"
+              to={gitUrl}
             >
               Git url
             </TextLink>
@@ -88,8 +88,8 @@ export const RepositoryMainInfo: FC<Props> = ({ repository }) => {
       </div>
       {isUpdateRepositoryModalOpen && (
         <UpdateRepositoryModal
-          isOpen={isUpdateRepositoryModalOpen}
           close={closeUpdateRepositoryModal}
+          isOpen={isUpdateRepositoryModalOpen}
           repository={repository}
         />
       )}

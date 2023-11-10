@@ -134,161 +134,161 @@ export const NewRequestModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[600px]"
+      isOpen={isOpen}
       title="New request"
       onAfterClose={resetForm}
     >
       {isLoading ? (
         <div className="flex items-center h-[340px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       ) : (
         <>
           <InlineFields>
             <SelectField
+              required
+              control={form.control}
+              disabled={!!requestType}
+              label="Request type"
               name="type"
               options={requestTypesOptions}
-              control={form.control}
-              label="Request type"
-              required
-              disabled={!!requestType}
             />
             <SelectField
-              name="assignedRoleId"
-              options={rolesOptions}
+              required
               control={form.control}
               label="Assigned to group"
-              required
+              name="assignedRoleId"
+              options={rolesOptions}
             />
           </InlineFields>
           <InlineFields>
             <SelectField
+              control={form.control}
+              disabled={!assignedRoleIdField}
+              label="Assigned to person"
               name="assignedToId"
               options={usersOptions}
-              control={form.control}
-              label="Assigned to person"
-              disabled={!assignedRoleIdField}
             />
             <DateField
-              name="dueDate"
-              control={form.control}
-              label="Due date"
               className="z-100"
+              control={form.control}
               disabledDate={date => isBefore(date, startOfToday())}
+              label="Due date"
+              name="dueDate"
             />
           </InlineFields>
           <TextAreaField
-            name="description"
+            className={clsx(typeField && 'border-solid border-b border-gray-5 pb-6')}
             control={form.control}
             label="Description"
+            name="description"
             placeholder="Short description"
-            className={clsx(typeField && 'border-solid border-b border-gray-5 pb-6')}
           />
           {typeField === RequestTypeChoice.ACCESS_PROJECT && (
             <SelectField
+              required
+              control={form.control}
+              disabled={!!projectId}
+              label="Project"
               name="projectId"
               options={projectsOptions}
-              control={form.control}
-              label="Project"
-              required
-              disabled={!!projectId}
             />
           )}
           {typeField === RequestTypeChoice.ACCESS_REPOSITORY && (
             <>
               <SelectField
+                required
+                control={form.control}
+                disabled={!!projectId}
+                label="Project"
                 name="projectId"
                 options={projectsOptions}
-                control={form.control}
-                label="Project"
-                required
-                disabled={!!projectId}
               />
               <SelectField
+                required
+                control={form.control}
+                disabled={!!repositoryId}
+                label="Repository"
                 name="repositoryId"
                 options={repositoriesOptions}
-                control={form.control}
-                label="Repository"
-                required
-                disabled={!!repositoryId}
               />
               <SelectField
-                name="accessLevel"
-                options={repositoryAccessLevelOptions}
+                required
                 control={form.control}
                 label="Access level"
-                required
+                name="accessLevel"
+                options={repositoryAccessLevelOptions}
               />
             </>
           )}
           {typeField === RequestTypeChoice.CREATION_REPOSITORY && (
             <>
               <SelectField
+                required
+                control={form.control}
+                disabled={!!projectId}
+                label="Project"
                 name="projectId"
                 options={projectsOptions}
-                control={form.control}
-                label="Project"
-                required
-                disabled={!!projectId}
               />
               <SelectField
-                name="repositoryType"
-                options={repositoryTypeOptions}
+                required
                 control={form.control}
                 label="Type"
-                required
+                name="repositoryType"
+                options={repositoryTypeOptions}
               />
               <SelectField
-                name="technologies"
-                options={technologiesOptions}
-                control={form.control}
-                label="Technologies"
                 isMulti
                 required
+                control={form.control}
+                label="Technologies"
+                name="technologies"
+                options={technologiesOptions}
               />
             </>
           )}
           {typeField === RequestTypeChoice.CREATION_ENVIRONMENT && (
             <>
               <SelectField
+                required
+                control={form.control}
+                disabled={!!projectId}
+                label="Project"
                 name="projectId"
                 options={projectsOptions}
-                control={form.control}
-                label="Project"
-                required
-                disabled={!!projectId}
               />
               <SelectField
-                name="environment"
-                options={environmentOptions}
+                required
                 control={form.control}
                 label="Environment"
-                required
+                name="environment"
+                options={environmentOptions}
               />
             </>
           )}
           {typeField === RequestTypeChoice.CREATION_INTEGRATION && (
             <>
               <SelectField
+                required
+                control={form.control}
+                disabled={!!projectId}
+                label="Project"
                 name="projectId"
                 options={projectsOptions}
-                control={form.control}
-                label="Project"
-                required
-                disabled={!!projectId}
               />
-              <TextField name="integrationName" control={form.control} label="Name" required />
+              <TextField required control={form.control} label="Name" name="integrationName" />
             </>
           )}
           <div className="flex justify-end">
             <Button
-              variant={ButtonVariant.PRIMARY}
-              onClick={handleSubmit}
-              label="Create request"
               className="mt-6 w-[150px]"
               isLoading={form.formState.isSubmitting}
+              label="Create request"
+              variant={ButtonVariant.PRIMARY}
+              onClick={handleSubmit}
             />
           </div>
         </>

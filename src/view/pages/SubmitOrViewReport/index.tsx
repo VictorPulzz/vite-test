@@ -59,10 +59,22 @@ export const SubmitOrViewReportPage: FC = () => {
   return (
     <FormProvider {...form}>
       <SidebarLayout>
-        {isLoading && <Loader full colorful />}
+        {isLoading && <Loader colorful full />}
         {!isLoading && (
           <DetailLayout
             contentClassName="my-4 mx-6 flex-auto"
+            rightHeaderElement={
+              isSubmitReportPage ? (
+                <Button
+                  className="w-36"
+                  isLoading={form.formState.isSubmitting}
+                  label="Sumbit"
+                  variant={ButtonVariant.PRIMARY}
+                  withIcon="check"
+                  onClick={handleSubmit}
+                />
+              ) : undefined
+            }
             title={
               <div className="flex flex-col w-[65vw]">
                 <h2 className="text-h4 font-bold break-words leading-6">
@@ -74,18 +86,6 @@ export const SubmitOrViewReportPage: FC = () => {
                     : reportAnswers?.report.project?.name}
                 </span>
               </div>
-            }
-            rightHeaderElement={
-              isSubmitReportPage ? (
-                <Button
-                  variant={ButtonVariant.PRIMARY}
-                  label="Sumbit"
-                  withIcon="check"
-                  className="w-36"
-                  onClick={handleSubmit}
-                  isLoading={form.formState.isSubmitting}
-                />
-              ) : undefined
             }
           >
             {isSubmitReportPage ? (

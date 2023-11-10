@@ -56,18 +56,18 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
     <SectionContainer title="General">
       <InlineFields>
         <InlineFields>
-          <TextField name="name" control={control} label="Project name" required />
-          <TextField name="hoursEstimated" control={control} label="Hours estimated" />
+          <TextField required control={control} label="Project name" name="name" />
+          <TextField control={control} label="Hours estimated" name="hoursEstimated" />
         </InlineFields>
         <InlineFields>
           <SelectField
-            name="platforms"
-            options={platformsOptions}
+            isMulti
             control={control}
             label="Platform"
-            isMulti
+            name="platforms"
+            options={platformsOptions}
           />
-          <SelectField name="status" options={statusesOptions} control={control} label="Status" />
+          <SelectField control={control} label="Status" name="status" options={statusesOptions} />
         </InlineFields>
       </InlineFields>
       {!!projectId && (
@@ -75,11 +75,11 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
           <InlineFields>
             <div>
               <InlineFields>
-                <DateField name="startDate" control={control} label="Start date" />
-                <DateField name="endDate" control={control} label="Estimated end date" />
+                <DateField control={control} label="Start date" name="startDate" />
+                <DateField control={control} label="Estimated end date" name="endDate" />
               </InlineFields>
               <div className="flex items-center gap-1 mt-2">
-                <Icon name="information" className="w-4 h-4 text-blue" />
+                <Icon className="w-4 h-4 text-blue" name="information" />
                 <span className="text-gray-1 text-p5">
                   Start date and Estimated end date will be used for calculating the Estimated days
                 </span>
@@ -87,37 +87,37 @@ export const GeneralSection: FC<Props> = ({ projectId }) => {
             </div>
             <InlineFields>
               <TextField
-                name="design"
                 control={control}
+                iconAfterElement={<Icon className="text-accent" name="copy" />}
                 label="Design link"
-                iconAfterElement={<Icon name="copy" className="text-accent" />}
+                name="design"
                 onIconAfterClick={copyTextValue}
               />
               <TextField
-                name="roadmap"
                 control={control}
+                iconAfterElement={<Icon className="text-accent" name="copy" />}
                 label="Roadmap link"
-                iconAfterElement={<Icon name="copy" className="text-accent" />}
+                name="roadmap"
                 onIconAfterClick={copyTextValue}
               />
             </InlineFields>
           </InlineFields>
           <InlineFields>
             <TextField
-              name="kanbanBoard"
               control={control}
+              iconAfterElement={<Icon className="text-accent" name="copy" />}
               label="Kanban board link"
-              iconAfterElement={<Icon name="copy" className="text-accent" />}
+              name="kanbanBoard"
               onIconAfterClick={copyTextValue}
             />
-            <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
+            <SelectField control={control} label="Phase" name="phase" options={phasesOptions} />
           </InlineFields>
         </>
       )}
       {!projectId && (
-        <SelectField name="phase" options={phasesOptions} control={control} label="Phase" />
+        <SelectField control={control} label="Phase" name="phase" options={phasesOptions} />
       )}
-      <TextAreaField name="notes" control={control} label="Notes" />
+      <TextAreaField control={control} label="Notes" name="notes" />
     </SectionContainer>
   );
 };

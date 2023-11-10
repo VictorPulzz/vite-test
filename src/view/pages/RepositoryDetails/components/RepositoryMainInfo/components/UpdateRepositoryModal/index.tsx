@@ -30,33 +30,33 @@ export const UpdateRepositoryModal: FC<Props> = ({ isOpen, close, repository }) 
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[450px]"
+      isOpen={isOpen}
       title="Repository info"
       onAfterClose={resetForm}
     >
       {isLoadingAllTechnologies ? (
         <div className="flex items-center h-[200px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       ) : (
         <>
-          <TextField name="name" control={form.control} label="Name" required />
+          <TextField required control={form.control} label="Name" name="name" />
           <SelectField
-            name="technologies"
-            options={technologiesOptions}
-            control={form.control}
-            label="Technologies"
             isMulti
             required
+            control={form.control}
+            label="Technologies"
+            name="technologies"
+            options={technologiesOptions}
           />
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label="Save"
             className="mt-6"
-            onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}
+            label="Save"
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         </>
       )}

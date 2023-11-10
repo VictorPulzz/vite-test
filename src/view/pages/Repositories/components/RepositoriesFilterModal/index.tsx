@@ -43,24 +43,24 @@ export const RepositoriesFilterModal: FC<RepositoriesFilterModalProps> = ({
   }, [resetForm, setFilter, close]);
 
   return (
-    <Modal isOpen={isOpen} close={close} title="Filter" contentClassName="w-[28rem]">
-      <form onSubmit={handleSubmit} onReset={handleReset}>
+    <Modal close={close} contentClassName="w-[28rem]" isOpen={isOpen} title="Filter">
+      <form onReset={handleReset} onSubmit={handleSubmit}>
         <SelectField
-          name="technologies"
-          options={technologiesOptions}
+          isMulti
           control={form.control}
           label="Technologies"
-          isMulti
+          name="technologies"
+          options={technologiesOptions}
         />
         <SelectField
-          name="type"
-          options={repositoryTypeOptions}
           control={form.control}
           label="Type"
+          name="type"
+          options={repositoryTypeOptions}
         />
         <div className="flex mt-7 gap-4">
-          <Button variant={ButtonVariant.SECONDARY} label="Reset filters" type="reset" />
-          <Button variant={ButtonVariant.PRIMARY} label="Apply filter" type="submit" />
+          <Button label="Reset filters" type="reset" variant={ButtonVariant.SECONDARY} />
+          <Button label="Apply filter" type="submit" variant={ButtonVariant.PRIMARY} />
         </div>
       </form>
     </Modal>

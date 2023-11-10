@@ -135,15 +135,15 @@ export const NotificationsList: FC<Props> = ({
       <div className="flex item-center p-4 justify-between border-solid border-b border-gray-5">
         <h2 className="text-p3font-medium">Notifications</h2>
         <button
+          className="text-p5 text-blue hover:underline"
           type="button"
           onClick={handleNotificationsFilter}
-          className="text-p5 text-blue hover:underline"
         >
           {`Show ${isShowUnreadNotifications ? 'all' : 'unread'}`}
         </button>
       </div>
       <div className={styles['triangle']} />
-      <div ref={notificationsListRef} className="flex flex-col h-[320px] overflow-auto">
+      <div className="flex flex-col h-[320px] overflow-auto" ref={notificationsListRef}>
         {notifications.length === 0 && (
           <div className="flex h-full items-center justify-center">
             <EmptyState iconName="notification" label="No unread notifications here yet" />
@@ -151,18 +151,18 @@ export const NotificationsList: FC<Props> = ({
         )}
         {notifications.map(notification => (
           <NotificationsListItem
-            key={notification.id}
-            notification={notification}
             addReadNotifications={addReadNotifications}
-            rootContainer={notificationsListRef.current}
             isNew={
               debouncedCurrentNotifications.includes(notification.id) ? false : notification.isNew
             }
+            key={notification.id}
+            notification={notification}
+            rootContainer={notificationsListRef.current}
           />
         ))}
       </div>
       <div className="absolute left-[170px] bottom-[5px] h-[15px] flex items-center justify-center">
-        {isFetching && <Loader full colorful dotSize={8} />}
+        {isFetching && <Loader colorful full dotSize={8} />}
       </div>
     </div>
   );

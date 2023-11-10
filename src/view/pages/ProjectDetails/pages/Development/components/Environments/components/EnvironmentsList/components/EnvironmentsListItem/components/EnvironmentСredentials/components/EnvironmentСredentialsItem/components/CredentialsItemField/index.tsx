@@ -42,13 +42,13 @@ export const CredentialsItemField: FC<Props> = ({ label, value, type }) => {
   const credentialsValue = useMemo((): React.ReactNode => {
     return (
       <button
-        type="button"
-        onClick={onClick}
         className={clsx(
           'text-p6 truncate text-left cursor-pointer',
           value !== '' && 'hover:underline',
           !isPasswordVisible && type === CredentialsItemFieldType.PASSWORD && 'hover:no-underline',
         )}
+        type="button"
+        onClick={onClick}
       >
         {credValue}
       </button>
@@ -63,9 +63,9 @@ export const CredentialsItemField: FC<Props> = ({ label, value, type }) => {
         {type === CredentialsItemFieldType.PASSWORD && value !== '' && (
           <button type="button" onClick={togglePasswordVisibility}>
             <Icon
+              className="flex-shrink-0 cursor-pointer"
               name={isPasswordVisible ? 'eye' : 'eye-crossed'}
               size={14}
-              className="flex-shrink-0 cursor-pointer"
             />
           </button>
         )}

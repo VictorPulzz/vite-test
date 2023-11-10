@@ -56,27 +56,27 @@ export const RepositoriesPage: FC = () => {
         </div>
         {canCreateRepository && (
           <Button
-            label="Add repository"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
             className="w-40"
+            label="Add repository"
             to={ROUTES.ADD_REPOSITORY}
+            variant={ButtonVariant.PRIMARY}
+            withIcon="plus"
           />
         )}
       </div>
       <div className="mt-5 flex gap-3 items-start">
         <SearchInput
-          defaultValue={searchValue}
-          onChange={setSearchValue}
-          placeholder="Search repositories"
           className="flex-1"
+          defaultValue={searchValue}
+          placeholder="Search repositories"
+          onChange={setSearchValue}
         />
         <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Filter"
           className="w-28"
-          onClick={openFilterModal}
           count={filtersCount || undefined}
+          label="Filter"
+          variant={ButtonVariant.SECONDARY}
+          onClick={openFilterModal}
         />
       </div>
       {loading && <TableLoader className="mt-10" />}
@@ -86,17 +86,17 @@ export const RepositoriesPage: FC = () => {
       {!loading && data && data.repositoryList.results?.length > 0 && (
         <Table
           className="mt-6"
-          data={data?.repositoryList.results}
           columns={repositoriesTableColumns}
-          setOffset={setOffset}
+          data={data?.repositoryList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
+          setOffset={setOffset}
           totalCount={data.repositoryList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
       <RepositoriesFilterModal
-        isOpen={isFilterModalOpen}
         close={closeFilterModal}
+        isOpen={isFilterModalOpen}
         setFilter={setFilter}
       />
     </SidebarLayout>

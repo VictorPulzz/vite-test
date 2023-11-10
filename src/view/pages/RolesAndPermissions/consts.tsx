@@ -20,7 +20,7 @@ export const ROLES_AND_PERMISSIONS_TABLE_COLUMNS = [
     header: 'Roles',
     cell: props => {
       const roles = props.getValue();
-      return <RolesList roles={roles ?? []} featureRow={props.row.original} />;
+      return <RolesList featureRow={props.row.original} roles={roles ?? []} />;
     },
   }),
 ];

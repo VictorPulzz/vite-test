@@ -26,10 +26,10 @@ export const ReportAnswerModal: FC<Props> = ({ isOpen, close, reportAnswerId }) 
   });
 
   return (
-    <Modal isOpen={isOpen} close={close} contentClassName="w-[500px]">
+    <Modal close={close} contentClassName="w-[500px]" isOpen={isOpen}>
       {loading && (
         <div className="flex items-center h-[310px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!loading && (
@@ -38,10 +38,10 @@ export const ReportAnswerModal: FC<Props> = ({ isOpen, close, reportAnswerId }) 
           <div className="mt-1 text-p6 text-gray-2 flex items-center gap-1">
             <span>Reported by</span>
             <TextLink
+              className="text-accent underline hover:no-underline"
               to={generatePath(ROUTES.USER_DETAILS, {
                 id: reportedBy?.id,
               })}
-              className="text-accent underline hover:no-underline"
             >
               {reportedBy?.fullName}
             </TextLink>

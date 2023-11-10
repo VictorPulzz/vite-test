@@ -19,7 +19,7 @@ export const ProgressBarWithSteps: FC<Props> = ({ currentStep }) => {
   return (
     <div className="flex items-center">
       {steps.map(({ count, stepTitle }) => (
-        <div key={count} className="flex flex-col gap-[5px]">
+        <div className="flex flex-col gap-[5px]" key={count}>
           <div className="flex items-center">
             {currentStep <= count && currentStep !== steps.length ? (
               <div
@@ -28,7 +28,7 @@ export const ProgressBarWithSteps: FC<Props> = ({ currentStep }) => {
                 })}
               />
             ) : (
-              <Icon color="#fff" name="check" size={14} className={styles['circle--completed']} />
+              <Icon className={styles['circle--completed']} color="#fff" name="check" size={14} />
             )}
             {count !== steps.length && (
               <div

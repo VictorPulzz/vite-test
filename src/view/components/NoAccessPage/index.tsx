@@ -18,10 +18,10 @@ export const NoAccessPage: FC<Props> = ({ className }) => {
     <div className={clsx('flex flex-col items-center justify-center h-full flex-auto', className)}>
       <NoAccessMessage />
       <Button
+        className="mt-6 w-[300px]"
+        label="Go to home page"
         variant={ButtonVariant.PRIMARY}
         onClick={() => navigate(ROUTES.HOME)}
-        label="Go to home page"
-        className="mt-6 w-[300px]"
       />
     </div>
   );

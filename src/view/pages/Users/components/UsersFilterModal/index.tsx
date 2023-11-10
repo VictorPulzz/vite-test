@@ -51,19 +51,19 @@ export const UsersFilterModal: FC<UsersFilterModalProps> = ({ isOpen, close, set
   }, [resetForm, setFilter, close]);
 
   return (
-    <Modal isOpen={isOpen} close={close} title="Filter" contentClassName="w-[26rem]">
-      <form onSubmit={handleSubmit} onReset={handleReset}>
-        <SelectField name="role" options={rolesOptions} control={form.control} label="Role" />
+    <Modal close={close} contentClassName="w-[26rem]" isOpen={isOpen} title="Filter">
+      <form onReset={handleReset} onSubmit={handleSubmit}>
+        <SelectField control={form.control} label="Role" name="role" options={rolesOptions} />
         <SelectField
-          name="department"
-          options={departmentsOptions}
           control={form.control}
           label="Department"
+          name="department"
+          options={departmentsOptions}
         />
-        <SelectField name="status" options={statusOptions} control={form.control} label="Status" />
+        <SelectField control={form.control} label="Status" name="status" options={statusOptions} />
         <div className="flex mt-7 gap-4">
-          <Button variant={ButtonVariant.SECONDARY} label="Reset filters" type="reset" />
-          <Button variant={ButtonVariant.PRIMARY} label="Apply filter" type="submit" />
+          <Button label="Reset filters" type="reset" variant={ButtonVariant.SECONDARY} />
+          <Button label="Apply filter" type="submit" variant={ButtonVariant.PRIMARY} />
         </div>
       </form>
     </Modal>

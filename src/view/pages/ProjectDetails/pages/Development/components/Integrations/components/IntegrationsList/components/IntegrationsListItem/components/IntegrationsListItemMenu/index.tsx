@@ -15,7 +15,7 @@ export const IntegrationsListItemMenu: FC = () => {
   ];
 
   return (
-    <Dropdown items={options} containerWidth="14.93rem">
+    <Dropdown containerWidth="14.93rem" items={options}>
       {({ onClick }) => (
         <button type="button" onClick={onClick}>
           <Icon name="menu" size={16} />

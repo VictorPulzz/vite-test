@@ -14,11 +14,11 @@ interface Props {
 
 export const ReportAnswers: FC<Props> = ({ title, answers }) => {
   return (
-    <SectionContainer title={title} containerClassName="my-[40px] w-[840px] mx-auto ">
+    <SectionContainer containerClassName="my-[40px] w-[840px] mx-auto " title={title}>
       {answers.map(answer => (
         <div
-          key={answer.question?.id}
           className="py-4 text-p5 border-solid border-b border-gray-7 last:border-b-0 flex flex-col gap-2"
+          key={answer.question?.id}
         >
           <span className="text-p4 font-bold">{answer.question?.questionText}</span>
           {answer.question?.type === ReportQuestionTypeChoice.FREE_TEXT && (

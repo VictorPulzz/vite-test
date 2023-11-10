@@ -33,63 +33,63 @@ export const SettingsGeneralPage: React.FC = () => {
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-h4">General</h1>
         <Button
+          className="w-40"
+          isLoading={form.formState.isSubmitting}
           label="Save changes"
           variant={ButtonVariant.PRIMARY}
-          className="w-40"
           onClick={handleSubmit}
-          isLoading={form.formState.isSubmitting}
         />
       </div>
-      <PhotoField name="photo" control={form.control} label="Profile picture" />
+      <PhotoField control={form.control} label="Profile picture" name="photo" />
       <InlineFields>
         <TextField
-          name="firstName"
+          required
           control={form.control}
           label="Name"
+          name="firstName"
           size={InputSize.LARGE}
-          required
         />
         <TextField
-          name="lastName"
+          required
           control={form.control}
           label="Last Name"
+          name="lastName"
           size={InputSize.LARGE}
-          required
         />
       </InlineFields>
       <InlineFields>
         <TextField
           disabled
-          name="email"
           control={form.control}
           label="Email"
+          name="email"
           size={InputSize.LARGE}
         />
         <TextField
-          name="phone"
+          required
           control={form.control}
           label="Phone"
+          name="phone"
           size={InputSize.LARGE}
-          required
         />
       </InlineFields>
       <InlineFields>
-        <TextField name="address" control={form.control} label="Address" size={InputSize.LARGE} />
+        <TextField control={form.control} label="Address" name="address" size={InputSize.LARGE} />
       </InlineFields>
       <div className="mt-7">
         <Button
-          onClick={openConfirmActionModal}
-          withIcon="logout"
           className="w-40"
-          variant={ButtonVariant.SECONDARY}
           label="Log out"
+          variant={ButtonVariant.SECONDARY}
+          withIcon="logout"
+          onClick={openConfirmActionModal}
         />
       </div>
       <ConfirmActionModal
-        icon="logout"
         action="log out"
-        isOpen={isConfirmActionModal}
         close={closeConfirmActionModal}
+        icon="logout"
+        isOpen={isConfirmActionModal}
         onAccept={() => dispatch(signOut())}
       />
     </SidebarLayout>

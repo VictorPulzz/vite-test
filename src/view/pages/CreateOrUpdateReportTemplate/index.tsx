@@ -58,8 +58,6 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
     () => (
       <Tabs
         contentClassName="bg-gray-7"
-        selected={selectedTab}
-        onSelect={setSelectedTab}
         items={[
           {
             title: 'Settings',
@@ -74,6 +72,8 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
             ),
           },
         ]}
+        selected={selectedTab}
+        onSelect={setSelectedTab}
       />
     ),
     [rolesList?.rolesList, selectedTab],
@@ -95,7 +95,7 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
   return (
     <FormProvider {...form}>
       <TabLayout tabs={!isLoading && reportTemplateTabsElement}>
-        {isLoading && <Loader full colorful />}
+        {isLoading && <Loader colorful full />}
         {!isLoading && (
           <div className="bg-white">
             <div className="flex items-center justify-between px-7 pt-7 gap-6">
@@ -118,11 +118,11 @@ export const CreateOrUpdateReportTemplatePage: FC = () => {
                 </div>
               </div>
               <Button
-                variant={ButtonVariant.PRIMARY}
-                label={`${isCreateReportPage ? 'Create' : 'Save'} template`}
                 className="w-36"
-                onClick={handleSubmit}
                 isLoading={form.formState.isSubmitting}
+                label={`${isCreateReportPage ? 'Create' : 'Save'} template`}
+                variant={ButtonVariant.PRIMARY}
+                onClick={handleSubmit}
               />
             </div>
           </div>

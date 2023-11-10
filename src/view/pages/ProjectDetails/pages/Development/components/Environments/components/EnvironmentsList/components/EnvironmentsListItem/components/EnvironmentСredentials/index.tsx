@@ -12,7 +12,7 @@ export const EnvironmentСredentials: FC<Props> = ({ data }) => {
   return (
     <div className="mt-2 max-h-[200px] overflow-auto pr-6">
       {data.map(credentials => (
-        <EnvironmentСredentialsItem key={credentials.id} credentials={credentials} />
+        <EnvironmentСredentialsItem credentials={credentials} key={credentials.id} />
       ))}
     </div>
   );

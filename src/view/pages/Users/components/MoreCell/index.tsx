@@ -52,12 +52,12 @@ export const MoreCell: FC<CellContext<UserResultType, unknown>> = ({ row }) => {
         {
           label: 'Active',
           onSelect: () => setActiveStatus(true),
-          iconAfter: isActive && <Icon name="check" className="text-green" size={18} />,
+          iconAfter: isActive && <Icon className="text-green" name="check" size={18} />,
         },
         {
           label: 'Inactive',
           onSelect: openConfirmActionModal,
-          iconAfter: !isActive && <Icon name="check" className="text-green" size={18} />,
+          iconAfter: !isActive && <Icon className="text-green" name="check" size={18} />,
         },
       ],
     },
@@ -65,7 +65,7 @@ export const MoreCell: FC<CellContext<UserResultType, unknown>> = ({ row }) => {
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -74,11 +74,11 @@ export const MoreCell: FC<CellContext<UserResultType, unknown>> = ({ row }) => {
       </Dropdown>
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={fullName}
           action="inactivate"
+          close={closeConfirmActionModal}
           description="This person will lose access to the app and all additional services!"
           isOpen={isConfirmActionModal}
-          close={closeConfirmActionModal}
+          name={fullName}
           onAccept={() => setActiveStatus(false)}
         />
       )}

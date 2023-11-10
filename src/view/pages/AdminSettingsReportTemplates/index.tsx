@@ -46,18 +46,18 @@ export const AdminSettingsReportTemplatesPage: FC = () => {
         </div>
 
         <Button
-          label="New template"
-          withIcon="plus"
-          variant={ButtonVariant.PRIMARY}
           className="w-40"
+          label="New template"
           to={ROUTES.ADMIN_SETTINGS_REPORT_TEMPLATES_ADD}
+          variant={ButtonVariant.PRIMARY}
+          withIcon="plus"
         />
       </div>
       <SearchInput
-        onChange={setSearchValue}
+        className="mt-4"
         defaultValue={searchValue}
         placeholder="Search report templates"
-        className="mt-4"
+        onChange={setSearchValue}
       />
       {loading && <TableLoader className="mt-6" />}
       {data && data.reportTemplateList.results.length === 0 && (
@@ -66,14 +66,14 @@ export const AdminSettingsReportTemplatesPage: FC = () => {
       {!loading && data && data.reportTemplateList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.reportTemplateList.results}
           columns={REPORT_TEMPLATES_TABLE_COLUMNS}
-          setOffset={setOffset}
+          data={data.reportTemplateList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
-          totalCount={data.reportTemplateList.count}
-          sorting={tableSorting}
+          setOffset={setOffset}
           setSorting={setTableSorting}
+          sorting={tableSorting}
+          totalCount={data.reportTemplateList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
     </SidebarLayout>

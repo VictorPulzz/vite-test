@@ -68,26 +68,26 @@ export const ProjectsPage: FC = () => {
         </div>
         {canCreateProject && (
           <Button
-            label="New project"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
             className="w-40"
+            label="New project"
             to={ROUTES.ADD_PROJECT}
+            variant={ButtonVariant.PRIMARY}
+            withIcon="plus"
           />
         )}
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput
-          defaultValue={searchValue}
-          onChange={setSearchValue}
-          placeholder="Search projects"
           className="flex-1"
+          defaultValue={searchValue}
+          placeholder="Search projects"
+          onChange={setSearchValue}
         />
         <Select
           className="w-40"
           options={statusOptions}
-          value={filter?.statusId}
           placeholder="Status"
+          value={filter?.statusId}
           onChange={value => setFilter({ statusId: value })}
         />
       </div>
@@ -98,14 +98,14 @@ export const ProjectsPage: FC = () => {
       {!loading && data && data.projectsList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.projectsList.results}
           columns={projectsListColumns}
-          setOffset={setOffset}
+          data={data.projectsList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
-          totalCount={data.projectsList.count}
-          sorting={tableSorting}
+          setOffset={setOffset}
           setSorting={setTableSorting}
+          sorting={tableSorting}
+          totalCount={data.projectsList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
     </SidebarLayout>

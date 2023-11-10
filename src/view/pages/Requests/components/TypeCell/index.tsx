@@ -17,13 +17,13 @@ export const TypeCell: FC<CellContext<RequestResultType, unknown>> = ({ row }) =
 
   return (
     <>
-      <button type="button" className="underline cursor-pointer" onClick={openAccessRequestModal}>
+      <button className="underline cursor-pointer" type="button" onClick={openAccessRequestModal}>
         {convertUppercaseToReadable(type ?? '')}
       </button>
       {isAccessRequestModalOpen && (
         <RequestDetailsModal
-          isOpen={isAccessRequestModalOpen}
           close={closeAccessRequestModal}
+          isOpen={isAccessRequestModalOpen}
           requestId={id}
         />
       )}

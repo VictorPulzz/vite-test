@@ -65,12 +65,12 @@ export const AddRolePopup: FC<Props> = ({ featureRow }) => {
   return (
     <div>
       {!!rolesOptions?.length && (
-        <Dropdown items={options} containerWidth="14.93rem" className={styles['dropdown']}>
+        <Dropdown className={styles['dropdown']} containerWidth="14.93rem" items={options}>
           {({ onClick }) => (
             <button
+              className="ml-1 bg-gray-7 flex justify-center items-center w-[25px] h-[25px] p-1 rounded-lg cursor-pointer"
               type="button"
               onClick={onClick}
-              className="ml-1 bg-gray-7 flex justify-center items-center w-[25px] h-[25px] p-1 rounded-lg cursor-pointer"
             >
               <Icon name="plus" size={12} />
             </button>

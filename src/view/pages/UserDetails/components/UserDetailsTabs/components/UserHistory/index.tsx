@@ -42,12 +42,12 @@ export const UserHistory: FC = () => {
       {!loading && data && data.logList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.logList.results}
           columns={USERS_HISTORY_TABLE_COLUMNS}
-          setOffset={setOffset}
+          data={data.logList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
+          setOffset={setOffset}
           totalCount={data.logList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
     </>

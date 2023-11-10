@@ -53,30 +53,30 @@ export const ProjectStatsSection: FC<Props> = ({
 
   return (
     <SectionContainer
-      title="Project overview"
       rightHeaderElement={
         <button
+          className="text-blue text-p2 hover:underline"
           type="button"
           onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
-          className="text-blue text-p2 hover:underline"
         >
           Edit estimated hours
         </button>
       }
+      title="Project overview"
     >
       {error && (
         <div className="flex items-center gap-2">
           <IconContainer
-            name="information"
             className="w-8 h-8 bg-red/10"
             iconClassName="w-4 h-4 text-red"
+            name="information"
           />
           <span className="text-red text-p4">{errorText}</span>
         </div>
       )}
       <div className="mt-4 grid gap-3 grid-cols-3">
         {statsData.map((item, index) => (
-          <div key={index} className="p-4 border-solid border border-gray-5 rounded-md">
+          <div className="p-4 border-solid border border-gray-5 rounded-md" key={index}>
             <h3
               className={clsx(
                 'text-h4 text-blue font-bold leading-none',

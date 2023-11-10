@@ -33,8 +33,8 @@ export function useHistoryTableColumns() {
           <div className="flex gap-3 items-center">
             {canReadUserDetails ? (
               <TextLink
-                to={generatePath(ROUTES.USER_DETAILS, { id: createdBy.id })}
                 className="underline"
+                to={generatePath(ROUTES.USER_DETAILS, { id: createdBy.id })}
               >
                 <span>{createdBy.fullName}</span>
               </TextLink>

@@ -56,44 +56,44 @@ export const AssignedTo: FC<Props> = ({ variant, allUsers, id, status, assignedT
   return (
     <div>
       {variant === AssignedToVariant.FIELD && (
-        <Dropdown items={options} containerWidth="14.93rem" className={styles['dropdown']}>
+        <Dropdown className={styles['dropdown']} containerWidth="14.93rem" items={options}>
           {({ onClick, isOpen }) => (
             <button
               className="flex items-center gap-[25px]"
+              disabled={isRequestResolved}
               type="button"
               onClick={onClick}
-              disabled={isRequestResolved}
             >
               <span className="text-p4 text-gray-2">Assigned to </span>
               <div className="flex gap-3 items-center">
-                <Avatar uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} size={32} />
+                <Avatar size={32} uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} />
                 <div className="flex flex-col text-left">
                   <p className="text-p4">{assignedTo?.fullName ?? 'No assignee'}</p>
                   <p className="text-p4 text-gray-1">{assignedTo?.email}</p>
                 </div>
               </div>
               {!isRequestResolved && (
-                <Icon name="down-arrow" className={clsx({ 'rotate-180': isOpen })} size={18} />
+                <Icon className={clsx({ 'rotate-180': isOpen })} name="down-arrow" size={18} />
               )}
             </button>
           )}
         </Dropdown>
       )}
       {variant === AssignedToVariant.CELL && (
-        <Dropdown items={options} containerWidth="14.93rem" className={styles['dropdown']}>
+        <Dropdown className={styles['dropdown']} containerWidth="14.93rem" items={options}>
           {({ onClick, isOpen }) => (
             <button
               className="flex items-center gap-2"
+              disabled={isRequestResolved}
               type="button"
               onClick={onClick}
-              disabled={isRequestResolved}
             >
               <div className="flex gap-3 items-center">
-                <Avatar uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} size={26} />
+                <Avatar size={26} uri={assignedTo?.photoThumbnail?.url || photoPlaceholder} />
                 <span>{assignedTo?.fullName ?? 'No assignee'}</span>
               </div>
               {!isRequestResolved && (
-                <Icon name="down-arrow" size={18} className={clsx({ 'rotate-180': isOpen })} />
+                <Icon className={clsx({ 'rotate-180': isOpen })} name="down-arrow" size={18} />
               )}
             </button>
           )}

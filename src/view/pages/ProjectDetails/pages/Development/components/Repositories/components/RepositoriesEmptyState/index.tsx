@@ -13,9 +13,9 @@ export const RepositoriesEmptyState: React.FC = () => {
   return (
     <SectionContainer containerClassName="flex items-center">
       <IconContainer
-        name="information"
         className="w-12 h-12 bg-blue/10 mr-[14px]"
         iconClassName="w-6 h-6"
+        name="information"
       />
       <div>
         <p className="text-h6 font-bold mb-[2px]">Repositories</p>
@@ -25,11 +25,11 @@ export const RepositoriesEmptyState: React.FC = () => {
         </p>
       </div>
       <Button
+        className="w-[142px] ml-auto"
+        label="Create"
+        to={generatePath(ROUTES.PROJECT_DETAILS_INTEGRATIONS, { id: projectId })}
         variant={ButtonVariant.PRIMARY}
         withIcon="cloudConnection"
-        label="Create"
-        className="w-[142px] ml-auto"
-        to={generatePath(ROUTES.PROJECT_DETAILS_INTEGRATIONS, { id: projectId })}
       />
     </SectionContainer>
   );

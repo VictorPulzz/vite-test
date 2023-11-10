@@ -96,7 +96,7 @@ export const Reports: FC = () => {
     <>
       {isLoading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!isLoading && reports && (
@@ -110,9 +110,9 @@ export const Reports: FC = () => {
             </div>
             {isAdminOrPM && (
               <button
+                className="text-blue text-p2 hover:underline"
                 type="button"
                 onClick={openEditReportingListModal}
-                className="text-blue text-p2 hover:underline"
               >
                 Edit reporting list
               </button>
@@ -121,25 +121,25 @@ export const Reports: FC = () => {
           <div className="flex items-center gap-3 mt-3">
             {isAdminOrPM && (
               <Select
+                className="w-[260px]"
                 options={usersOptions}
+                placeholder="Submitted by"
                 value={reportFilter.submittedBy}
                 onChange={value => setReportFilter({ ...reportFilter, submittedBy: value })}
-                className="w-[260px]"
-                placeholder="Submitted by"
               />
             )}
             <DateInput
               className="w-[260px]"
+              mode="range"
               placeholder="Date range"
               value={reportFilter.dateRange}
               onChange={value => setReportFilter({ ...reportFilter, dateRange: value })}
-              mode="range"
             />
           </div>
           <div className="flex-auto">
             {isLoading && (
               <div className="flex h-full items-center">
-                <Loader full colorful />
+                <Loader colorful full />
               </div>
             )}
             {reportListLenght === 0 && (
@@ -154,19 +154,19 @@ export const Reports: FC = () => {
           <div>
             {hasPagination && (
               <Pagination
+                itemsCount={reportListLenght}
+                offset={offset}
+                pageSize={PROJECT_REPORTS_PAGE_SIZE}
                 setOffset={setOffset}
                 totalCount={reports.reportList.count}
-                offset={offset}
-                itemsCount={reportListLenght}
                 onPageChange={gqlTableFetchMore(fetchMore)}
-                pageSize={PROJECT_REPORTS_PAGE_SIZE}
               />
             )}
           </div>
           {isEditReportingListModalOpen && (
             <EditReportingListModal
-              isOpen={isEditReportingListModalOpen}
               close={closeEditReportingListModal}
+              isOpen={isEditReportingListModalOpen}
             />
           )}
         </SectionContainer>

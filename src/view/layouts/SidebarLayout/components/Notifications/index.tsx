@@ -61,11 +61,11 @@ export const Notifications: FC = () => {
   }, [debouncedCurrentNotifications, isNotificationsOpen, readNotifications]);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div className="relative" ref={containerRef}>
       <button
+        className="bg-white/10 p-2 rounded text-white/50"
         type="button"
         onClick={toggleNotifications}
-        className="bg-white/10 p-2 rounded text-white/50"
       >
         <Icon name="notification" size={18} />
       </button>
@@ -74,15 +74,15 @@ export const Notifications: FC = () => {
       )}
       {isNotificationsOpen && data && (
         <NotificationsList
-          notifications={data?.notificationList.results}
           addReadNotifications={addReadNotifications}
-          onPageChange={fetchMore}
-          nextOffset={nextOffset}
-          setNextOffset={setNextOffset}
-          isShowUnreadNotifications={isShowUnreadNotifications}
-          setIsShowUnreadNotifications={setIsShowUnreadNotifications}
-          debouncedCurrentNotifications={debouncedCurrentNotifications}
           currentNotifications={currentNotifications}
+          debouncedCurrentNotifications={debouncedCurrentNotifications}
+          isShowUnreadNotifications={isShowUnreadNotifications}
+          nextOffset={nextOffset}
+          notifications={data?.notificationList.results}
+          setIsShowUnreadNotifications={setIsShowUnreadNotifications}
+          setNextOffset={setNextOffset}
+          onPageChange={fetchMore}
         />
       )}
     </div>

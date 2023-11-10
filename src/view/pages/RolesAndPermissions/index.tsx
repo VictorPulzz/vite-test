@@ -34,8 +34,8 @@ export const RolesAndPermissionsPage: FC = () => {
       {!loading && data && data.permissionsList.length > 0 && (
         <Table
           className="mt-6"
-          data={tableData as PermissionType[]}
           columns={ROLES_AND_PERMISSIONS_TABLE_COLUMNS}
+          data={tableData as PermissionType[]}
         />
       )}
     </SidebarLayout>

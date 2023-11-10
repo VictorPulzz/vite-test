@@ -50,20 +50,20 @@ export const MoreCell: FC<CellContext<ProjectResultType, unknown>> = ({ row }) =
         label: projectStatus.label,
         onSelect: () => setProjectStatus(projectStatus.value),
         iconAfter: projectStatus.value === status?.id && (
-          <Icon name="check" className="text-green" size={18} />
+          <Icon className="text-green" name="check" size={18} />
         ),
       })),
     },
   ];
 
   return (
-    <Dropdown items={options} containerWidth="14.93rem">
+    <Dropdown containerWidth="14.93rem" items={options}>
       {({ onClick }) => (
-        <button type="button" onClick={onClick} disabled={!inCurrentTeam}>
+        <button disabled={!inCurrentTeam} type="button" onClick={onClick}>
           <Icon
+            className={clsx(!inCurrentTeam && 'text-gray-3 cursor-not-allowed')}
             name="menu"
             size={16}
-            className={clsx(!inCurrentTeam && 'text-gray-3 cursor-not-allowed')}
           />
         </button>
       )}

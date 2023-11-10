@@ -41,16 +41,16 @@ export const CredentialsItem: FC<Props> = ({ index, removeCredentials }) => {
   return (
     <div className="grid grid-cols-[1fr,1fr,auto,1fr,1fr,1fr,auto] gap-[10px] items-baseline">
       <SelectField
-        name={`credentials.${index}.type`}
-        options={credentialsTypeOptions}
+        required
         control={control}
         label="Type"
-        required
+        name={`credentials.${index}.type`}
+        options={credentialsTypeOptions}
       />
       <TextField
-        name={`credentials.${index}.shortDescription`}
         control={control}
         label="Short description"
+        name={`credentials.${index}.shortDescription`}
       />
       <span
         className={clsx(
@@ -61,31 +61,31 @@ export const CredentialsItem: FC<Props> = ({ index, removeCredentials }) => {
       >
         •
       </span>
-      <TextField name={`credentials.${index}.url`} control={control} label="Link" required />
-      <TextField name={`credentials.${index}.login`} control={control} label="Login" />
+      <TextField required control={control} label="Link" name={`credentials.${index}.url`} />
+      <TextField control={control} label="Login" name={`credentials.${index}.login`} />
       <PasswordField
-        name={`credentials.${index}.password`}
+        autoComplete="new-password"
         control={control}
         label="Password"
-        autoComplete="new-password"
+        name={`credentials.${index}.password`}
       />
       <button
-        type="button"
         className={clsx(
           'hover:opacity-80 self-end pb-3',
           isOneLineErrorText && 'pb-[2.0625rem]',
           isMultipleLineErrorText && 'pb-[3.188rem]',
         )}
+        type="button"
         onClick={openConfirmActionModal}
       >
-        <Icon name="trash" size={18} className="flex-shrink-0 text-gray-1" />
+        <Icon className="flex-shrink-0 text-gray-1" name="trash" size={18} />
       </button>
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name="these creds"
           action="remove"
-          isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
+          isOpen={isConfirmActionModal}
+          name="these creds"
           onAccept={() => removeCredentials(index)}
         />
       )}

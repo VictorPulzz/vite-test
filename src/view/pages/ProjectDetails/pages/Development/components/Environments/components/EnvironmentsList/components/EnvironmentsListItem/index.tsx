@@ -33,7 +33,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
             )}
           >
             <div className="flex items-center gap-2">
-              <IconContainer name="code" className="w-9 h-9 bg-blue/10" iconClassName="w-5 h-5" />
+              <IconContainer className="w-9 h-9 bg-blue/10" iconClassName="w-5 h-5" name="code" />
               <div>
                 <h2 className="text-p4 font-medium leading-none">
                   {convertUppercaseToReadable(environment.name)}
@@ -60,7 +60,7 @@ export const EnvironmentsListItem: FC<Props> = ({ environment, envRequest, varia
         </div>
       )}
       {variant === CardVariant.REQUEST && (
-        <RequestCard title={envRequest?.environment ?? ''} icon="code" />
+        <RequestCard icon="code" title={envRequest?.environment ?? ''} />
       )}
     </>
   );

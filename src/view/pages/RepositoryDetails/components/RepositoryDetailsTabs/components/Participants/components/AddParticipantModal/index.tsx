@@ -45,27 +45,27 @@ export const AddParticipantModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
-      onAfterClose={resetForm}
       contentClassName="w-[22.18rem]"
+      isOpen={isOpen}
       title="Add participant"
+      onAfterClose={resetForm}
     >
       <div className="flex flex-col items-center">
-        <SelectField name="user" options={usersOptions} control={form.control} label="User" />
+        <SelectField control={form.control} label="User" name="user" options={usersOptions} />
         <SelectField
-          name="accessLevel"
-          options={accessLevelOptions}
           control={form.control}
           label="Access level"
+          name="accessLevel"
+          options={accessLevelOptions}
         />
       </div>
       <Button
-        variant={ButtonVariant.PRIMARY}
-        onClick={handleSubmit}
-        label="Add"
         className="mt-6"
         isLoading={form.formState.isSubmitting}
+        label="Add"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );
