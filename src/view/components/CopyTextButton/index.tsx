@@ -13,8 +13,8 @@ interface Props {
 export const CopyTextButton: React.FC<Props> = ({ size = 12, value, className }) => {
   return (
     <button
-      type="button"
       className={clsx('text-blue hover:opacity-70', className)}
+      type="button"
       onClick={() => copyTextValue(value)}
     >
       <Icon name="copy" size={size} />

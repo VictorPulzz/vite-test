@@ -28,7 +28,7 @@ export function useProjectsTableColumns() {
         const { id } = ctx.row.original;
         return (
           <div className="flex gap-3 items-center">
-            <TextLink to={generatePath(ROUTES.PROJECT_DETAILS, { id })} className="underline">
+            <TextLink className="underline" to={generatePath(ROUTES.PROJECT_DETAILS, { id })}>
               {ctx.getValue()}
             </TextLink>
           </div>
@@ -46,12 +46,12 @@ export function useProjectsTableColumns() {
         return (
           <div>
             {ctx.getValue()?.map(pm => (
-              <div key={pm.id} className="flex gap-3 items-center">
-                <Avatar uri={pm.photoThumbnail?.url || photoPlaceholder} size={26} />
+              <div className="flex gap-3 items-center" key={pm.id}>
+                <Avatar size={26} uri={pm.photoThumbnail?.url || photoPlaceholder} />
                 {canReadUserDetails ? (
                   <TextLink
-                    to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}
                     className="underline"
+                    to={generatePath(ROUTES.USER_DETAILS, { id: pm.id })}
                   >
                     {pm.fullName}
                   </TextLink>
@@ -92,7 +92,7 @@ export function useProjectsTableColumns() {
         return (
           <div className="flex gap-2">
             {platforms?.map(platform => (
-              <Badge key={platform.id} color={BadgeColor.BLUE}>
+              <Badge color={BadgeColor.BLUE} key={platform.id}>
                 {platform.name}
               </Badge>
             ))}

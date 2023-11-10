@@ -44,42 +44,42 @@ export const CreateOrUpdateDocumentTemplateModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[500px]"
+      isOpen={isOpen}
       title={`${documentTemplateId ? 'Edit' : 'Add'} template`}
       onAfterClose={resetForm}
     >
       {loading && (
         <div className="flex items-center h-[410px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!loading && (
         <>
-          <TextField name="name" control={control} label="Template name" required />
-          <TextField name="url" control={control} label="Document template link" required />
+          <TextField required control={control} label="Template name" name="name" />
+          <TextField required control={control} label="Document template link" name="url" />
           <TextAreaField
-            name="description"
+            className={clsx(!!fields.length && 'mt-2 border-solid border-b border-gray-5 pb-5')}
             control={control}
             label="Template description"
-            className={clsx(!!fields.length && 'mt-2 border-solid border-b border-gray-5 pb-5')}
+            name="description"
           />
           <div className="mt-4 max-h-[230px] overflow-auto">
             {fields.map((field, index) => (
-              <div key={`${index}-${field.name}`} className="mt-3 flex justify-between gap-3">
+              <div className="mt-3 flex justify-between gap-3" key={`${index}-${field.name}`}>
                 <div className="form__inline-fields form__field-row flex-auto">
                   <TextField
-                    name={`fields.${index}.name`}
+                    required
                     control={control}
                     label="Key name"
-                    required
+                    name={`fields.${index}.name`}
                   />
                   <TextField
-                    name={`fields.${index}.description`}
+                    required
                     control={control}
                     label="Key description"
-                    required
+                    name={`fields.${index}.description`}
                   />
                 </div>
                 <button
@@ -96,11 +96,11 @@ export const CreateOrUpdateDocumentTemplateModal: FC<Props> = ({
             <h2 className="mt-3 text-p2 text-blue hover:underline">+ Add key</h2>
           </button>
           <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={handleSubmit}
-            label={`${documentTemplateId ? 'Save' : 'Add'}`}
             className="mt-[30px]"
             isLoading={formState.isSubmitting}
+            label={`${documentTemplateId ? 'Save' : 'Add'}`}
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         </>
       )}

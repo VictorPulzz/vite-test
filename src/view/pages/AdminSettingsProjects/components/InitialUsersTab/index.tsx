@@ -46,10 +46,10 @@ export const InitialUsersTab: FC = () => {
 
   return (
     <SectionContainer
-      title="Initial users"
-      subTitle="These users will be added to every new project"
-      titleClassName="leading-none"
       containerClassName="h-full"
+      subTitle="These users will be added to every new project"
+      title="Initial users"
+      titleClassName="leading-none"
     >
       <div className="flex flex-col h-full pb-7">
         {loading && <TableLoader className="mt-3" />}
@@ -61,29 +61,29 @@ export const InitialUsersTab: FC = () => {
         {!loading && data && data.projectInitialUserList.results.length > 0 && (
           <Table
             className="mt-3"
-            data={data.projectInitialUserList.results}
             columns={initialUsersTableColumns}
-            setOffset={setOffset}
+            data={data.projectInitialUserList.results}
             offset={offset}
-            onPageChange={gqlTableFetchMore(fetchMore)}
-            totalCount={data.projectInitialUserList.count}
-            sorting={tableSorting}
+            setOffset={setOffset}
             setSorting={setTableSorting}
+            sorting={tableSorting}
+            totalCount={data.projectInitialUserList.count}
+            onPageChange={gqlTableFetchMore(fetchMore)}
           />
         )}
         {!loading && (
           <Button
+            className="w-[150px] mt-3"
+            label="Add user to list"
             variant={ButtonVariant.SECONDARY}
             withIcon="plus"
-            label="Add user to list"
-            className="w-[150px] mt-3"
             onClick={openCreateModal}
           />
         )}
       </div>
       <CreateProjectInitialUserModal
-        isOpen={isCreateModalOpen}
         close={closeCreateModal}
+        isOpen={isCreateModalOpen}
         projectInitialUsersIds={projectInitialUsersIds}
       />
     </SectionContainer>

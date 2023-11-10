@@ -69,7 +69,7 @@ export const Participants: FC = () => {
     <div className="flex flex-col h-full p-7">
       {loading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {data && data.repositoryParticipantList.results.length === 0 && (
@@ -82,11 +82,11 @@ export const Participants: FC = () => {
           <div className="grid grid-cols-3 gap-[20px]">
             {data?.repositoryParticipantList.results.map(({ user, accessLevel }) => (
               <div
-                key={user.id}
                 className="flex items-center justify-between gap-[20px] p-4 border border-solid border-gray-5 rounded-md"
+                key={user.id}
               >
                 <div className="flex gap-[15px] items-center">
-                  <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={36} />
+                  <Avatar size={36} uri={user.photoThumbnail?.url || photoPlaceholder} />
                   <div className="flex flex-col gap-[3px] ">
                     <span className="block text-p3 text-black break-words leading-4">
                       {user.fullName}
@@ -98,9 +98,9 @@ export const Participants: FC = () => {
                 </div>
                 {canWriteRepoParticipants && (
                   <ParticipantMenu
+                    accessLevel={accessLevel}
                     participant={user}
                     repositoryId={repositoryId}
-                    accessLevel={accessLevel}
                   />
                 )}
               </div>
@@ -111,26 +111,26 @@ export const Participants: FC = () => {
       <div>
         {hasPagination && data && (
           <Pagination
-            setOffset={setOffset}
-            totalCount={data.repositoryParticipantList.count}
+            itemsCount={data.repositoryParticipantList.results.length}
             offset={offset}
             pageSize={PAGE_SIZE}
-            itemsCount={data.repositoryParticipantList.results.length}
+            setOffset={setOffset}
+            totalCount={data.repositoryParticipantList.count}
             onPageChange={gqlTableFetchMore(fetchMore)}
           />
         )}
         {canWriteRepoParticipants && (
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Add participant"
             className="mt-6 w-[136px]"
+            label="Add participant"
+            variant={ButtonVariant.SECONDARY}
             onClick={openAddParticipantModal}
           />
         )}
       </div>
       <AddParticipantModal
-        isOpen={isAddParticipantModalOpen}
         close={closeAddParticipantModal}
+        isOpen={isAddParticipantModalOpen}
         repositoryId={repositoryId}
         repositoryParticipantsIds={repositoryParticipantsIds}
       />

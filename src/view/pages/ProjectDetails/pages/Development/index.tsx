@@ -109,12 +109,12 @@ export const Development: FC = () => {
     <div className="h-full">
       {isLoading ? (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       ) : (
         <div className="flex flex-col gap-5">
           {repositoriesList?.projectRepositoryList.projectInGit && (
-            <DevelopmentRepositories repositories={projectRepositories} projectId={projectId} />
+            <DevelopmentRepositories projectId={projectId} repositories={projectRepositories} />
           )}
           {!repositoriesList?.projectRepositoryList.projectInGit && <RepositoriesEmptyState />}
           <DevelopmentEnvironments

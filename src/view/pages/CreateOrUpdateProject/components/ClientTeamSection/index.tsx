@@ -30,21 +30,21 @@ export const ClientTeamSection: FC = () => {
       {!!clientTeamMembers.length && (
         <Table
           className="mt-3"
-          data={clientTeamMembers as ClientType[]}
           columns={CLIENT_TEAM_TABLE_COLUMNS}
+          data={clientTeamMembers as ClientType[]}
         />
       )}
       <Button
-        variant={ButtonVariant.SECONDARY}
-        label="Add team member"
-        withIcon="add"
         className="w-[170px] mt-3"
+        label="Add team member"
+        variant={ButtonVariant.SECONDARY}
+        withIcon="add"
         onClick={openAddOrEditModal}
       />
       <AddOrEditModal
-        isOpen={isAddOrEditModalOpen}
         close={closeAddOrEditModal}
         isEditMode={false}
+        isOpen={isAddOrEditModalOpen}
       />
     </SectionContainer>
   );

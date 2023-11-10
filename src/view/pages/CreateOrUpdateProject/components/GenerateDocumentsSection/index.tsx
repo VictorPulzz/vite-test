@@ -21,8 +21,8 @@ export const GenerateDocumentsSection: FC<Props> = ({ templates }) => {
         {templates.map((template, templateIndex) => (
           <Fragment key={templateIndex}>
             <Controller
-              name={`documentTemplate.${templateIndex}.isOpen`}
               control={control}
+              name={`documentTemplate.${templateIndex}.isOpen`}
               render={({ field: { value, onChange } }) => (
                 <Checkbox
                   label={template.name}
@@ -46,10 +46,10 @@ export const GenerateDocumentsSection: FC<Props> = ({ templates }) => {
                 {template?.fields?.map((field, fieldIndex) => (
                   <div key={fieldIndex}>
                     <TextField
-                      name={`documentTemplate.${templateIndex}.templateFields.${fieldIndex}.value`}
+                      required
                       control={control}
                       label={field.description ?? ''}
-                      required
+                      name={`documentTemplate.${templateIndex}.templateFields.${fieldIndex}.value`}
                     />
                   </div>
                 ))}

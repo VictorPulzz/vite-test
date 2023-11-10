@@ -41,21 +41,21 @@ export const CreateOrUpdateProject: FC = () => {
     <FormProvider {...form}>
       <SidebarLayout>
         <DetailLayout
-          title={`${projectId ? 'Edit' : 'New'} project`}
           contentClassName="my-4 mx-6 flex-auto"
           rightHeaderElement={
             <Button
-              variant={ButtonVariant.PRIMARY}
-              label={`${projectId ? 'Save' : 'Create'} project`}
               className="w-36"
-              onClick={handleSubmit}
               isLoading={isLoading}
+              label={`${projectId ? 'Save' : 'Create'} project`}
+              variant={ButtonVariant.PRIMARY}
+              onClick={handleSubmit}
             />
           }
+          title={`${projectId ? 'Edit' : 'New'} project`}
         >
           {loading && (
             <div className="flex h-full items-center">
-              <Loader full colorful />
+              <Loader colorful full />
             </div>
           )}
           {!loading && (

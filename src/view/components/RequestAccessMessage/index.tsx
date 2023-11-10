@@ -37,18 +37,18 @@ export const RequestAccessMessage: FC<Props> = ({
         <br /> your request is approved
       </p>
       <Button
+        className="mt-6 w-[300px]"
+        label="Request access"
         variant={ButtonVariant.PRIMARY}
         onClick={openNewRequestModal}
-        label="Request access"
-        className="mt-6 w-[300px]"
       />
       {isNewRequestModalOpen && (
         <NewRequestModal
-          isOpen={isNewRequestModalOpen}
           close={closeNewRequestModal}
-          requestType={requestType}
+          isOpen={isNewRequestModalOpen}
           projectId={projectId}
           repositoryId={repositoryId}
+          requestType={requestType}
         />
       )}
     </div>

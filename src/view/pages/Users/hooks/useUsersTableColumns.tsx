@@ -24,9 +24,9 @@ export function useUsersTableColumns() {
         const { photoThumbnail, fullName, id } = ctx.row.original;
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={photoThumbnail?.url || photoPlaceholder} size={26} />
+            <Avatar size={26} uri={photoThumbnail?.url || photoPlaceholder} />
             {canReadUserDetails ? (
-              <TextLink to={generatePath(ROUTES.USER_DETAILS, { id })} className="underline">
+              <TextLink className="underline" to={generatePath(ROUTES.USER_DETAILS, { id })}>
                 {fullName}
               </TextLink>
             ) : (

@@ -56,27 +56,27 @@ export const UsersPage: FC = () => {
         </div>
         {canCreateUser && (
           <Button
-            label="Add user"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
             className="w-40"
+            label="Add user"
             to={ROUTES.ADD_USER}
+            variant={ButtonVariant.PRIMARY}
+            withIcon="plus"
           />
         )}
       </div>
       <div className="mt-5 flex gap-3">
         <SearchInput
-          defaultValue={searchValue}
-          onChange={setSearchValue}
-          placeholder="Search users"
           className="flex-1"
+          defaultValue={searchValue}
+          placeholder="Search users"
+          onChange={setSearchValue}
         />
         <Button
-          variant={ButtonVariant.SECONDARY}
-          label="Filter"
           className="w-28"
-          onClick={openFilterModal}
           count={filtersCount || undefined}
+          label="Filter"
+          variant={ButtonVariant.SECONDARY}
+          onClick={openFilterModal}
         />
       </div>
       {loading && <TableLoader className="mt-10" />}
@@ -86,15 +86,15 @@ export const UsersPage: FC = () => {
       {!loading && data && data.usersList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.usersList.results}
           columns={usersTableColumns}
-          setOffset={setOffset}
+          data={data.usersList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
+          setOffset={setOffset}
           totalCount={data.usersList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
-      <UsersFilterModal isOpen={isFilterModalOpen} close={closeFilterModal} setFilter={setFilter} />
+      <UsersFilterModal close={closeFilterModal} isOpen={isFilterModalOpen} setFilter={setFilter} />
     </SidebarLayout>
   );
 };

@@ -20,7 +20,7 @@ export const USERS_PROJECTS_TABLE_COLUMNS = [
       } = props.row.original;
       return (
         <div className="flex gap-3 items-center">
-          <TextLink to={generatePath(ROUTES.PROJECT_DETAILS, { id })} className="underline">
+          <TextLink className="underline" to={generatePath(ROUTES.PROJECT_DETAILS, { id })}>
             {props.getValue()}
           </TextLink>
         </div>

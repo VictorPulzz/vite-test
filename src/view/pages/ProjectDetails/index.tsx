@@ -61,7 +61,7 @@ export const ProjectDetailsPage: FC = () => {
 
   return (
     <TabLayout tabs={!loading && data?.projectPreview.inTeam && projectTabsElement}>
-      {loading && <Loader full colorful />}
+      {loading && <Loader colorful full />}
       {!loading && data && data.projectPreview.inTeam && (
         <div className="bg-white">
           <div className="flex items-center justify-between px-7 pt-7 gap-6">
@@ -83,11 +83,11 @@ export const ProjectDetailsPage: FC = () => {
             </div>
             {canWriteProject && (
               <Button
-                variant={ButtonVariant.SECONDARY}
+                className="w-[140px]"
                 label="Edit project"
+                variant={ButtonVariant.SECONDARY}
                 withIcon="edit"
                 onClick={() => navigate(generatePath(ROUTES.EDIT_PROJECT, { id: projectId }))}
-                className="w-[140px]"
               />
             )}
           </div>
@@ -97,9 +97,9 @@ export const ProjectDetailsPage: FC = () => {
         <DetailLayout contentClassName="flex-auto">
           <RequestAccessMessage
             className="h-full"
-            title={data.projectPreview.name}
             projectId={data.projectPreview.id}
             requestType={RequestTypeChoice.ACCESS_PROJECT}
+            title={data.projectPreview.name}
           />
         </DetailLayout>
       )}

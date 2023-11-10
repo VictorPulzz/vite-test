@@ -60,7 +60,7 @@ export const Team: FC = () => {
     <>
       {loading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {data && (
@@ -69,18 +69,18 @@ export const Team: FC = () => {
             {data && !!data?.projectMemberList.currentTeam.length ? (
               <Table
                 className="mt-3"
-                data={data?.projectMemberList.currentTeam}
                 columns={currentTeamTableColumns}
+                data={data?.projectMemberList.currentTeam}
               />
             ) : (
               <EmptyState iconName="users" label="No contributors here yet" />
             )}
             {canWriteProjectTeam && (
               <Button
-                variant={ButtonVariant.SECONDARY}
-                label="Add new member"
-                withIcon="add"
                 className="mt-3 w-[170px]"
+                label="Add new member"
+                variant={ButtonVariant.SECONDARY}
+                withIcon="add"
                 onClick={() => handleAddNewMember(true)}
               />
             )}
@@ -89,18 +89,18 @@ export const Team: FC = () => {
             {data && !!data?.projectMemberList.otherContrubutors.length ? (
               <Table
                 className="mt-3"
-                data={data.projectMemberList.otherContrubutors}
                 columns={otherContributorsTableColumns}
+                data={data.projectMemberList.otherContrubutors}
               />
             ) : (
               <EmptyState iconName="users" label="No contributors here yet" />
             )}
             {canWriteProjectTeam && (
               <Button
-                variant={ButtonVariant.SECONDARY}
-                label="Add new member"
-                withIcon="add"
                 className="mt-3 w-[170px]"
+                label="Add new member"
+                variant={ButtonVariant.SECONDARY}
+                withIcon="add"
                 onClick={() => handleAddNewMember(false)}
               />
             )}
@@ -108,12 +108,12 @@ export const Team: FC = () => {
         </div>
       )}
       <AddNewMemberModal
-        isOpen={isAddNewMemberModalOpen}
+        canWriteProjectTeam={canWriteProjectTeam}
         close={closeAddNewMemberModalModal}
+        isCurrentTeam={isCurrentTeam}
+        isOpen={isAddNewMemberModalOpen}
         projectId={projectId}
         projectMembersListIds={projectMembersListIds}
-        canWriteProjectTeam={canWriteProjectTeam}
-        isCurrentTeam={isCurrentTeam}
       />
     </>
   );

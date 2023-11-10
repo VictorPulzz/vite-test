@@ -19,7 +19,7 @@ export const AvailableDocumentsRouteRedirect: FC = () => {
   );
 
   return availableDocumentsRoutes.length > 0 ? (
-    <Navigate to={availableDocumentsRoutes[0]} replace />
+    <Navigate replace to={availableDocumentsRoutes[0]} />
   ) : (
     <NoAccessMessage />
   );

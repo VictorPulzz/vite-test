@@ -231,10 +231,10 @@ export const Docs: FC<Props> = ({ type }) => {
             <p className="text-p5 text-gray-2">{docsData?.data?.count ?? 0} docs in total</p>
           </div>
           {type === DocsType.PROJECT && (
-            <NewDocumentButton type={type} projectId={projectId} userId={userId} />
+            <NewDocumentButton projectId={projectId} type={type} userId={userId} />
           )}
           {type === DocsType.USER && canWriteUserDocs && (
-            <NewDocumentButton type={type} projectId={projectId} userId={userId} />
+            <NewDocumentButton projectId={projectId} type={type} userId={userId} />
           )}
         </div>
       )}
@@ -245,10 +245,10 @@ export const Docs: FC<Props> = ({ type }) => {
         )}
       >
         <SearchInput
-          onChange={setSearchValue}
+          className="flex-auto"
           defaultValue={searchValue}
           placeholder="Search documents"
-          className="flex-auto"
+          onChange={setSearchValue}
         />
         {type !== DocsType.USER && (
           <div
@@ -262,27 +262,27 @@ export const Docs: FC<Props> = ({ type }) => {
             {type !== DocsType.PROJECT && type !== DocsType.INTERNAL && (
               <Select
                 options={projectsOptions}
+                placeholder="Project"
                 value={docsFilter.projectId}
                 onChange={value => setDocsFilter({ ...docsFilter, projectId: value })}
-                placeholder="Project"
               />
             )}
             <Select
               options={categoriesOptions}
+              placeholder="Category"
               value={docsFilter.categoryId}
               onChange={value => setDocsFilter({ ...docsFilter, categoryId: value })}
-              placeholder="Category"
             />
             <Select
               options={usersOptions}
+              placeholder="Added by"
               value={docsFilter.addedById}
               onChange={value => setDocsFilter({ ...docsFilter, addedById: value })}
-              placeholder="Added by"
             />
             <Select
               options={sortingOptions}
-              value={sortDirection}
               placeholder="Sort"
+              value={sortDirection}
               onChange={setSortDirection}
             />
           </div>
@@ -291,7 +291,7 @@ export const Docs: FC<Props> = ({ type }) => {
       <div className="flex-auto">
         {docsData?.loading && (
           <div className="flex h-full items-center">
-            <Loader full colorful />
+            <Loader colorful full />
           </div>
         )}
         {docsData && docsData.data?.results.length === 0 && (
@@ -301,8 +301,8 @@ export const Docs: FC<Props> = ({ type }) => {
         )}
         {!docsData?.loading && docsData?.data && docsData.data.results.length > 0 && (
           <DocsList
-            type={type}
             data={docsData.data}
+            type={type}
             onPageChange={gqlTableFetchMore(docsData.fetchMore)}
           />
         )}

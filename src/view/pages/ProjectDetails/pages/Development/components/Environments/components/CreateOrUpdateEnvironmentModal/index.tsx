@@ -65,9 +65,9 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
   return (
     <FormProvider {...form}>
       <Modal
-        isOpen={isOpen}
         close={close}
         contentClassName="w-[62.5rem]"
+        isOpen={isOpen}
         title={`${
           environmentId
             ? `Edit ${convertUppercaseToReadable(
@@ -79,7 +79,7 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
       >
         {loading && (
           <div className="flex items-center h-[36.125rem]">
-            <Loader full colorful />
+            <Loader colorful full />
           </div>
         )}
         {!loading && (
@@ -87,16 +87,16 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
             <div>
               <h2 className="text-h6 mb-2">Main</h2>
               <InlineFields>
-                <TextField name="title" control={form.control} label="Environment name" />
+                <TextField control={form.control} label="Environment name" name="title" />
                 <SelectField
-                  name="environment"
-                  options={projectEnvironmentsOptions}
+                  required
                   control={form.control}
                   label="Environment"
-                  required
+                  name="environment"
+                  options={projectEnvironmentsOptions}
                 />
               </InlineFields>
-              <TextAreaField name="notes" control={form.control} label="Notes" maxLength={500} />
+              <TextAreaField control={form.control} label="Notes" maxLength={500} name="notes" />
             </div>
             <div>
               <div className="flex items-baseline justify-between">
@@ -108,8 +108,8 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
               <div className="flex flex-col gap-4 h-[205px] overflow-auto pr-5">
                 {credentialsFields.map((field, index) => (
                   <CredentialsItem
-                    key={field.id}
                     index={index}
+                    key={field.id}
                     removeCredentials={removeCredentials}
                   />
                 ))}
@@ -121,11 +121,11 @@ export const CreateOrUpdateEnvironmentModal: FC<Props> = ({ isOpen, close, envir
                 {...form.register('showCredsToEveryContributors')}
               />
               <Button
-                variant={ButtonVariant.PRIMARY}
-                onClick={handleSubmit}
-                label={environmentId ? 'Save' : 'Create'}
                 className="w-[150px]"
                 isLoading={form.formState.isSubmitting}
+                label={environmentId ? 'Save' : 'Create'}
+                variant={ButtonVariant.PRIMARY}
+                onClick={handleSubmit}
               />
             </div>
           </div>

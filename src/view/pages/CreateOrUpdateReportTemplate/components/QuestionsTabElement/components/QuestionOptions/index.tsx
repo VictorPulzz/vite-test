@@ -39,18 +39,18 @@ export const QuestionOptions: FC<Props> = ({ questionIndex }) => {
   return (
     <div className="flex flex-col mt-4">
       {optionsFields.map((option, index) => (
-        <div key={option.id} className="flex items-center gap-3 justify-between">
+        <div className="flex items-center gap-3 justify-between" key={option.id}>
           <div className="flex items-baseline gap-2 flex-auto">
             <span className="text-p4 text-gray-1">{index + 1}.</span>
             <TextField
-              name={`questions.${questionIndex}.options.${index}.text`}
-              control={control}
-              placeholder="Option *"
               className={clsx(styles['input'])}
+              control={control}
+              name={`questions.${questionIndex}.options.${index}.text`}
+              placeholder="Option *"
             />
           </div>
-          <button type="button" className="hover:opacity-80" onClick={() => removeOption(index)}>
-            <Icon name="close" size={16} className="text-gray-1" />
+          <button className="hover:opacity-80" type="button" onClick={() => removeOption(index)}>
+            <Icon className="text-gray-1" name="close" size={16} />
           </button>
         </div>
       ))}

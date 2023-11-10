@@ -53,14 +53,14 @@ export const ReportQuestions: FC<Props> = ({ questions }) => {
         .filter(question => question.type === questionType)
         .map((item, index) => (
           <SectionContainer
-            key={item.id}
-            withHeader={false}
             containerClassName={clsx(
               (item.type === ReportQuestionTypeChoice.DATE ||
                 item.type === ReportQuestionTypeChoice.YES_OR_NO) &&
                 'flex items-start justify-between',
               checkError(questionType, index) && 'border border-solid border-red',
             )}
+            key={item.id}
+            withHeader={false}
           >
             <div>
               <h3 className="text-p5 text-gray-1">{REPORT_QUESTION_LABEL[item.type]}*</h3>
@@ -68,38 +68,38 @@ export const ReportQuestions: FC<Props> = ({ questions }) => {
             </div>
             {item.type === ReportQuestionTypeChoice.FREE_TEXT && (
               <TextAreaField
-                textAreaClassName="text-p5 mt-4"
-                name={`text.${index}.text`}
                 control={control}
-                placeholder="Your answer"
                 maxLength={500}
+                name={`text.${index}.text`}
+                placeholder="Your answer"
+                textAreaClassName="text-p5 mt-4"
               />
             )}
             {item.type === ReportQuestionTypeChoice.DATE && (
               <DateField
-                name={`date.${index}.date`}
-                control={control}
                 className="w-[180px] flex-shrink-0"
+                control={control}
+                name={`date.${index}.date`}
                 placeholder="Select"
               />
             )}
             {item.type === ReportQuestionTypeChoice.YES_OR_NO && (
               <SelectField
-                name={`yesNo.${index}.yesNo`}
-                control={control}
                 className="w-[180px] flex-shrink-0"
-                placeholder="Select"
+                control={control}
+                name={`yesNo.${index}.yesNo`}
                 options={yesOrNoChoiceOptions}
+                placeholder="Select"
               />
             )}
             {item.type === ReportQuestionTypeChoice.CHECKBOXES && (
               <>
                 <ChexboxGroupField
-                  name={`checkboxes.${index}.checkboxes`}
+                  inColumn
                   className="mt-4"
                   control={control}
                   items={item.options.map(option => ({ value: option.id, label: option.text }))}
-                  inColumn
+                  name={`checkboxes.${index}.checkboxes`}
                 />
                 {formState.errors.checkboxes && (
                   <FieldErrorMessage
@@ -112,10 +112,10 @@ export const ReportQuestions: FC<Props> = ({ questions }) => {
             {item.type === ReportQuestionTypeChoice.SINGLE_CHOICE && (
               <>
                 <RadioGroupField
-                  name={`singleChoice.${index}.singleChoiceId`}
                   className="mt-4"
                   control={control}
                   items={item.options.map(option => ({ value: option.id, label: option.text }))}
+                  name={`singleChoice.${index}.singleChoiceId`}
                 />
                 {formState.errors.singleChoice && (
                   <FieldErrorMessage

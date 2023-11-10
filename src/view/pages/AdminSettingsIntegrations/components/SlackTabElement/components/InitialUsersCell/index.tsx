@@ -52,7 +52,7 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
       hiddenUsers
         ? hiddenUsers?.map(user => ({
             label: `${user.fullName}`,
-            iconBefore: <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={24} />,
+            iconBefore: <Avatar size={24} uri={user.photoThumbnail?.url || photoPlaceholder} />,
             className: 'flex item-center gap-2',
             onSelect: () => showUserDetails(user.id),
           }))
@@ -64,15 +64,15 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
     <div className="flex ">
       {firstFourUsers?.map(user => (
         <div
-          key={user.id}
           className="group relative border-solid border-[3px] border-white rounded-[50%] ml-[-10px] cursor-pointer"
+          key={user.id}
         >
-          <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={32} />
+          <Avatar size={32} uri={user.photoThumbnail?.url || photoPlaceholder} />
           <UserNameTooltip userName={user?.fullName ?? ''} />
         </div>
       ))}
       {initialUsers && initialUsers.length > 4 && (
-        <Dropdown items={options} containerWidth="14.93rem" className={styles['dropdown']}>
+        <Dropdown className={styles['dropdown']} containerWidth="14.93rem" items={options}>
           {({ onClick, isOpen }) => (
             <div
               className={`flex items-center justify-center w-[38px] h-[38px] ${
@@ -80,9 +80,9 @@ export const InitialUsersCell: FC<CellContext<SlackChannelTemplateResultType, un
               } border-solid border-[3px] border-white rounded-[50%] ml-[-10px] cursor-pointer`}
             >
               <button
+                className={`${isOpen ? 'text-white' : 'text-blue '} text-p5 font-medium p-[5px]`}
                 type="button"
                 onClick={onClick}
-                className={`${isOpen ? 'text-white' : 'text-blue '} text-p5 font-medium p-[5px]`}
               >
                 +{hiddenUsersCount}
               </button>

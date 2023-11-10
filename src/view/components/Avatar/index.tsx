@@ -11,9 +11,9 @@ export const Avatar: React.FC<Props> = ({ uri, size = 34 }) => {
     <div className="flex-shrink-0">
       {uri ? (
         <img
-          src={uri}
           alt="avatar"
           className="rounded-full object-cover"
+          src={uri}
           style={{ width: size, height: size }}
         />
       ) : (

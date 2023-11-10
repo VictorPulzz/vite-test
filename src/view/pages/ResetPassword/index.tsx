@@ -30,29 +30,29 @@ export const ResetPasswordPage: FC = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="text-h2 text-center mb-7">Create a new password</h1>
         <PasswordField
-          name="newPassword"
-          control={form.control}
-          label="New password"
-          size={InputSize.LARGE}
-          placeholder="Enter password"
           autoFocus
           autoComplete="new-password"
+          control={form.control}
+          label="New password"
+          name="newPassword"
+          placeholder="Enter password"
+          size={InputSize.LARGE}
         />
         <PasswordField
-          name="confirmPassword"
+          autoComplete="new-password"
           control={form.control}
           label="Confirm new password"
-          size={InputSize.LARGE}
+          name="confirmPassword"
           placeholder="Confirm password"
-          autoComplete="new-password"
+          size={InputSize.LARGE}
         />
         <Button
+          className="mt-7"
+          isLoading={form.formState.isSubmitting}
           label="Change password"
-          variant={ButtonVariant.PRIMARY}
           size={ButtonSize.LARGE}
           type="submit"
-          isLoading={form.formState.isSubmitting}
-          className="mt-7"
+          variant={ButtonVariant.PRIMARY}
         />
       </form>
     </AuthLayout>

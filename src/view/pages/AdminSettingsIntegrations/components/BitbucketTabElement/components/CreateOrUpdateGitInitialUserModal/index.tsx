@@ -50,40 +50,40 @@ export const CreateOrUpdateGitInitialUserModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"
+      isOpen={isOpen}
       title={isEditMode ? 'Edit access level' : 'Add user'}
       onAfterClose={resetForm}
     >
       {isLoadingQueries && (
         <div className="flex items-center h-[200px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!isLoadingQueries && (
         <>
           <SelectField
+            required
+            control={form.control}
+            disabled={isEditMode && !!userIdField}
+            label="User"
             name="userId"
             options={usersOptions}
-            control={form.control}
-            label="User"
-            required
-            disabled={isEditMode && !!userIdField}
           />
           <SelectField
-            name="accessLevel"
-            options={repositoryAccessLevelOptions}
+            required
             control={form.control}
             label="Access level"
-            required
+            name="accessLevel"
+            options={repositoryAccessLevelOptions}
           />
           <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={handleSubmit}
-            label={`${isEditMode ? 'Save' : 'Add user'}`}
             className="mt-6"
             isLoading={isLoading}
+            label={`${isEditMode ? 'Save' : 'Add user'}`}
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         </>
       )}

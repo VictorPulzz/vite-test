@@ -26,11 +26,11 @@ export function useGitInitialUsersTableColumns() {
         const user = ctx.getValue();
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={user?.photoThumbnail?.url || photoPlaceholder} size={26} />
+            <Avatar size={26} uri={user?.photoThumbnail?.url || photoPlaceholder} />
             {canReadUserDetails ? (
               <TextLink
-                to={generatePath(ROUTES.USER_DETAILS, { id: user?.id })}
                 className="underline"
+                to={generatePath(ROUTES.USER_DETAILS, { id: user?.id })}
               >
                 {user?.fullName}
               </TextLink>

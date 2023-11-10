@@ -53,24 +53,24 @@ export const DevelopmentIntegrations: FC<Props> = ({
           />
         )}
         <Button
-          variant={ButtonVariant.SECONDARY}
-          label={`${canWriteProjectIntegrations ? 'Create' : 'Request'} new integration`}
           className="mt-6 w-[190px]"
+          label={`${canWriteProjectIntegrations ? 'Create' : 'Request'} new integration`}
+          variant={ButtonVariant.SECONDARY}
           onClick={
             canWriteProjectIntegrations ? openCreateNewIntegrationModal : openNewRequestModal
           }
         />
       </SectionContainer>
       <CreateNewIntegrationModal
-        isOpen={isCreateNewIntegrationModalOpen}
         close={closeCreateNewIntegrationModal}
+        isOpen={isCreateNewIntegrationModalOpen}
       />
       {isNewRequestModalOpen && (
         <NewRequestModal
-          isOpen={isNewRequestModalOpen}
           close={closeNewRequestModal}
-          requestType={RequestTypeChoice.CREATION_INTEGRATION}
+          isOpen={isNewRequestModalOpen}
           projectId={projectId}
+          requestType={RequestTypeChoice.CREATION_INTEGRATION}
         />
       )}
     </div>

@@ -73,16 +73,16 @@ export const AddNewMemberModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[450px]"
+      isOpen={isOpen}
       title="New member"
       onAfterClose={resetForm}
     >
-      <SelectField name="user" options={usersOptions} control={form.control} label="Select user" />
+      <SelectField control={form.control} label="Select user" name="user" options={usersOptions} />
       {loading && (
         <div className="mt-2 flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!loading &&
@@ -92,17 +92,17 @@ export const AddNewMemberModal: FC<Props> = ({
             <span className="text-p5 text-gray-1">Invite user to Slack channels</span>
             <div className="mt-3 flex flex-col gap-6">
               {data?.projectIntegrationPage.slackChannels.map(channel => (
-                <div key={channel.id} className="flex items-center justify-between">
+                <div className="flex items-center justify-between" key={channel.id}>
                   <div className="flex items-center gap-4">
-                    <Icon name="slack" size={24} raw />
+                    <Icon raw name="slack" size={24} />
                     <span className="text-p5">
                       {channel.template?.label ?? channel.templateName}
                     </span>
                   </div>
                   <Checkbox
-                    onChange={handleChangeSlackChannel}
-                    value={channel.id}
                     checked={slackChannels.includes(channel.id)}
+                    value={channel.id}
+                    onChange={handleChangeSlackChannel}
                   />
                 </div>
               ))}
@@ -110,11 +110,11 @@ export const AddNewMemberModal: FC<Props> = ({
           </div>
         )}
       <Button
-        variant={ButtonVariant.PRIMARY}
-        onClick={handleSubmit}
-        label="Add"
         className="mt-6"
         isLoading={form.formState.isSubmitting}
+        label="Add"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );

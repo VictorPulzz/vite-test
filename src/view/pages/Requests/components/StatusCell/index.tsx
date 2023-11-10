@@ -29,12 +29,12 @@ export const StatusCell: FC<CellContext<RequestResultType, unknown>> = ({ row })
         <Badge color={BadgeColor.GREEN}>{convertUppercaseToReadable(status)}</Badge>
       ) : (
         <Button
-          variant={ButtonVariant.SECONDARY}
-          size={ButtonSize.SMALL}
-          label="Resolve"
-          onClick={resolveRequest}
           className="w-[95px]"
           isLoading={loading}
+          label="Resolve"
+          size={ButtonSize.SMALL}
+          variant={ButtonVariant.SECONDARY}
+          onClick={resolveRequest}
         />
       )}
     </div>

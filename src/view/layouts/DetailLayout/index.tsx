@@ -21,10 +21,10 @@ export const DetailLayout: FC<Props> = ({
     <div className="flex flex-1 flex-col bg-gray-7">
       <header className="bg-white shadow-4 flex items-center px-5 py-3">
         <Button
+          className="mr-4"
           variant={ButtonVariant.SECONDARY}
           withIcon="left-arrow"
           onClick={() => navigate(-1)}
-          className="mr-4"
         />
         <h1 className="text-p3 font-semibold">{title}</h1>
         {rightHeaderElement && <div className="ml-auto">{rightHeaderElement}</div>}

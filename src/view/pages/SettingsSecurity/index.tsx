@@ -16,40 +16,40 @@ export const SettingsSecurityPage: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <InlineFields>
           <PasswordField
-            name="oldPassword"
+            autoComplete="new-password"
             control={form.control}
             label="Old password"
-            size={InputSize.LARGE}
+            name="oldPassword"
             placeholder="Old password"
-            autoComplete="new-password"
+            size={InputSize.LARGE}
           />
           <PasswordField
-            name="newPassword"
+            autoComplete="new-password"
             control={form.control}
             label="New password"
-            size={InputSize.LARGE}
+            name="newPassword"
             placeholder="New password"
-            autoComplete="new-password"
+            size={InputSize.LARGE}
           />
         </InlineFields>
         <InlineFields>
           <PasswordField
-            name="confirmPassword"
-            control={form.control}
-            label="Confirm new password"
-            size={InputSize.LARGE}
-            placeholder="New password"
             autoComplete="new-password"
             className="mb-4"
+            control={form.control}
+            label="Confirm new password"
+            name="confirmPassword"
+            placeholder="New password"
+            size={InputSize.LARGE}
           />
         </InlineFields>
         <Button
-          isLoading={form.formState.isSubmitting}
-          disabled={!form.formState.isValid}
-          onClick={handleSubmit}
-          variant={ButtonVariant.SECONDARY}
           className="w-40"
+          disabled={!form.formState.isValid}
+          isLoading={form.formState.isSubmitting}
           label="Change password"
+          variant={ButtonVariant.SECONDARY}
+          onClick={handleSubmit}
         />
       </form>
     </SidebarLayout>

@@ -24,7 +24,7 @@
   "dependencies": {
     "@apollo/client": "^3.7.17",
     "@appello/common": "^1.0.33",
-    "@appello/web": "0.1.8",
+    "@appello/web-kit": "^1.0.0",
     "@appello/web-ui": "^0.0.31",
     "@hookform/resolvers": "3.1.0",
     "@redux-devtools/extension": "3.2.5",
@@ -57,7 +57,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@appello/eslint-config": "~0.1.12",
+    "@appello/eslint-config": "~0.1.15",
     "@babel/core": "7.21.4",
     "@graphql-codegen/add": "^4.0.1",
     "@graphql-codegen/cli": "^3.3.1",

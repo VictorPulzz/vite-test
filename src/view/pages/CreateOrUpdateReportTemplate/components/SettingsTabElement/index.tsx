@@ -64,62 +64,62 @@ export const SettingsTabElement: FC<Props> = ({ roles }) => {
   return (
     <div className="mt-7 mb-20 w-[700px] m-auto flex flex-col gap-4">
       <SectionContainer title="About">
-        <TextField name="name" control={control} label="Report name" required />
+        <TextField required control={control} label="Report name" name="name" />
         <TextAreaField
-          name="description"
           control={control}
           label="Report description"
           maxLength={500}
+          name="description"
         />
       </SectionContainer>
       <SectionContainer title="Reporting rules">
         <SelectField
-          name="filledById"
-          options={rolesOptions}
+          required
           control={control}
           label="To be filled by"
-          required
+          name="filledById"
+          options={rolesOptions}
         />
         <InlineFields>
           <SelectField
-            name="reportDay"
-            options={daysOptions}
+            required
             control={control}
             label="Report day"
-            required
+            name="reportDay"
+            options={daysOptions}
           />
           <TimeField
-            name="time"
+            required
             control={control}
             label="Time"
-            required
-            step={60}
             labelFormat={TimeFormat.TIME_FORMAT}
+            name="time"
+            step={60}
           />
         </InlineFields>
         <InlineFields>
           <SelectField
-            name="repeat"
-            options={repeatOptions}
+            required
             control={control}
             label="Repeat"
-            required
+            name="repeat"
+            options={repeatOptions}
           />
           <SelectField
-            name="emailNotification"
-            options={emailNotificationsOptions}
+            required
             control={control}
             label="Email notification"
-            required
+            name="emailNotification"
+            options={emailNotificationsOptions}
           />
         </InlineFields>
         <SelectField
+          isMulti
+          control={control}
+          disabled={isLoadingUsersList}
+          label="Send submitted report to email"
           name="sendTo"
           options={usersOptions}
-          control={control}
-          label="Send submitted report to email"
-          isMulti
-          disabled={isLoadingUsersList}
         />
         <div className="flex flex-col">
           <Checkbox

@@ -53,11 +53,11 @@ export function useRequestsTableColumns() {
         const { id, status, assignedTo } = ctx.row.original;
         return (
           <AssignedTo
-            variant={AssignedToVariant.CELL}
             allUsers={allUsers?.userGlossaryList.results ?? []}
+            assignedTo={assignedTo}
             id={id}
             status={status}
-            assignedTo={assignedTo}
+            variant={AssignedToVariant.CELL}
           />
         );
       },
@@ -69,11 +69,11 @@ export function useRequestsTableColumns() {
         const createdBy = ctx.getValue();
         return (
           <div className="flex gap-3 items-center">
-            <Avatar uri={createdBy?.photoThumbnail?.url || photoPlaceholder} size={26} />
+            <Avatar size={26} uri={createdBy?.photoThumbnail?.url || photoPlaceholder} />
             {canReadUserDetails ? (
               <TextLink
-                to={generatePath(ROUTES.USER_DETAILS, { id: createdBy?.id })}
                 className="underline"
+                to={generatePath(ROUTES.USER_DETAILS, { id: createdBy?.id })}
               >
                 {createdBy?.fullName}
               </TextLink>
@@ -95,7 +95,7 @@ export function useRequestsTableColumns() {
       cell: ctx => {
         const { id, dueDate, status } = ctx.row.original;
         return (
-          <DueDate variant={DueDateVariant.CELL} id={id} dueDate={dueDate ?? ''} status={status} />
+          <DueDate dueDate={dueDate ?? ''} id={id} status={status} variant={DueDateVariant.CELL} />
         );
       },
     }),

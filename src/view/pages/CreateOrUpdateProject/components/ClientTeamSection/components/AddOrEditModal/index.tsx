@@ -23,28 +23,28 @@ export const AddOrEditModal: FC<Props> = ({ isOpen, close, isEditMode, clientTea
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-5/9"
+      isOpen={isOpen}
       title={`${isEditMode ? 'Edit' : 'Add'} client team member`}
       onAfterClose={resetForm}
     >
       <InlineFields>
-        <TextField name="fullName" control={form.control} label="Name" required />
-        <TextField name="email" control={form.control} label="Email" required />
+        <TextField required control={form.control} label="Name" name="fullName" />
+        <TextField required control={form.control} label="Email" name="email" />
       </InlineFields>
       <InlineFields>
-        <TextField name="phone" control={form.control} label="Phone" />
-        <TextField name="position" control={form.control} label="Position" />
+        <TextField control={form.control} label="Phone" name="phone" />
+        <TextField control={form.control} label="Position" name="position" />
       </InlineFields>
-      <TextAreaField name="notes" control={form.control} label="Notes" />
+      <TextAreaField control={form.control} label="Notes" name="notes" />
 
       <Button
-        variant={ButtonVariant.PRIMARY}
-        onClick={handleSubmit}
-        label={`${isEditMode ? 'Save' : 'Add'}`}
         className="mt-6"
         isLoading={form.formState.isSubmitting}
+        label={`${isEditMode ? 'Save' : 'Add'}`}
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );

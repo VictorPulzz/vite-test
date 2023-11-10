@@ -14,7 +14,7 @@ export const EnvironmentСredentialsItem: FC<Props> = ({ credentials }) => {
   return (
     <div className="grid grid-cols-4 gap-x-10 border-solid border-b last:border-b-0 border-gray-5 py-3">
       <div className="flex items-center gap-1">
-        <Icon name="circleCode" size={18} color="#91919E" className="flex-shrink-0" />
+        <Icon className="flex-shrink-0" color="#91919E" name="circleCode" size={18} />
         <h2 className="text-p5 font-medium">
           {convertUppercaseToReadable(credentials.type)}
           {credentials.shortDescription && <span> • {credentials.shortDescription}</span>}
@@ -22,18 +22,18 @@ export const EnvironmentСredentialsItem: FC<Props> = ({ credentials }) => {
       </div>
       <CredentialsItemField
         label="Link"
-        value={credentials.url || ''}
         type={CredentialsItemFieldType.URL}
+        value={credentials.url || ''}
       />
       <CredentialsItemField
         label="Login"
-        value={credentials.login || ''}
         type={CredentialsItemFieldType.LOGIN}
+        value={credentials.login || ''}
       />
       <CredentialsItemField
         label="Password"
-        value={credentials.password || ''}
         type={CredentialsItemFieldType.PASSWORD}
+        value={credentials.password || ''}
       />
     </div>
   );

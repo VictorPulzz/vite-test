@@ -19,16 +19,16 @@ export const EnvironmentsList: FC<Props> = ({ environments, envsRequests }) => {
       <div className="flex flex-col gap-5 mt-2">
         {environments.map(environment => (
           <EnvironmentsListItem
+            environment={environment}
             key={environment.id}
             variant={CardVariant.DEFAULT}
-            environment={environment}
           />
         ))}
         {envsRequests.map(environment => (
           <EnvironmentsListItem
+            envRequest={environment}
             key={environment.id}
             variant={CardVariant.REQUEST}
-            envRequest={environment}
           />
         ))}
       </div>

@@ -43,12 +43,12 @@ export const RepositoryDetailsPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={isHasAccessToRepository ? 'Repository details' : ''}
         contentClassName="flex-auto"
+        title={isHasAccessToRepository ? 'Repository details' : ''}
       >
         {isLoading && (
           <div className="flex h-full items-center">
-            <Loader full colorful />
+            <Loader colorful full />
           </div>
         )}
         {!isLoading && repositoryDetails && isHasAccessToRepository && (
@@ -60,10 +60,10 @@ export const RepositoryDetailsPage: FC = () => {
         {!isLoading && repositoryPreview && !isHasAccessToRepository && (
           <RequestAccessMessage
             className="h-full"
-            title={repositoryPreview.repositoryPreview.name}
-            requestType={RequestTypeChoice.ACCESS_REPOSITORY}
             projectId={repositoryPreview.repositoryPreview.projectId}
             repositoryId={repositoryId}
+            requestType={RequestTypeChoice.ACCESS_REPOSITORY}
+            title={repositoryPreview.repositoryPreview.name}
           />
         )}
       </DetailLayout>

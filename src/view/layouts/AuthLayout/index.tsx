@@ -12,7 +12,7 @@ export const AuthLayout: FC<Props> = ({ children }) => {
   return (
     <div className="flex flex-1">
       <div className={styles['aside']}>
-        <img src={logo} alt="Logo" className={styles['aside__logo']} />
+        <img alt="Logo" className={styles['aside__logo']} src={logo} />
       </div>
       <div className="flex-center flex-1 flex-col">
         <div className={styles['children']}>{children}</div>

@@ -79,11 +79,11 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name, title }) => {
   return (
     <>
       <Tippy
-        content={<Dropdown ref={dropdownRef} items={options} containerWidth="14.93rem" />}
         interactive
+        content={<Dropdown containerWidth="14.93rem" items={options} ref={dropdownRef} />}
+        placement="left-start"
         visible={visible}
         onClickOutside={hideDropdown}
-        placement="left-start"
       >
         <button type="button" onClick={visible ? hideDropdown : showDropdown}>
           <Icon name="menu" size={16} />
@@ -91,19 +91,19 @@ export const EnvironmentsListItemMenu: FC<Props> = ({ id, name, title }) => {
       </Tippy>
       {isCreateOrUpdateEnvironmentModalOpen && (
         <CreateOrUpdateEnvironmentModal
-          isOpen={isCreateOrUpdateEnvironmentModalOpen}
           close={closeCreateOrUpdateEnvironmentModal}
           environmentId={id}
+          isOpen={isCreateOrUpdateEnvironmentModalOpen}
         />
       )}
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={`${convertUppercaseToReadable(name)} • ${title}`}
           action="delete"
-          isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
-          onAccept={removeCurrentEnvironment}
           description="You will not be able to recover it"
+          isOpen={isConfirmActionModal}
+          name={`${convertUppercaseToReadable(name)} • ${title}`}
+          onAccept={removeCurrentEnvironment}
         />
       )}
     </>

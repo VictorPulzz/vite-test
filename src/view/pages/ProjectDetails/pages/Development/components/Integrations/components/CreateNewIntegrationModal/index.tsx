@@ -36,35 +36,35 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-5/9"
+      isOpen={isOpen}
       title="Create new integration"
       onAfterClose={resetForm}
     >
       <div className="flex flex-col">
         <InlineFields>
-          <TextField name="name" control={control} label="Integration name" />
+          <TextField control={control} label="Integration name" name="name" />
           <SelectField
-            name="environment"
-            options={projectEnvironmentsOptions}
             control={control}
             label="Environment"
+            name="environment"
+            options={projectEnvironmentsOptions}
           />
         </InlineFields>
         <InlineFields>
-          <TextField name="credential.login" control={control} label="Login" />
-          <TextField name="credential.password" control={control} label="Password" />
+          <TextField control={control} label="Login" name="credential.login" />
+          <TextField control={control} label="Password" name="credential.password" />
         </InlineFields>
-        <TextField name="credential.url" control={control} label="Account url" />
+        <TextField control={control} label="Account url" name="credential.url" />
       </div>
       {!!fields.length && <div className="mt-2 border-solid border-b border-gray-5 pb-5" />}
       <div className="mt-4 ">
         {fields.map((_, index) => (
-          <div key={nanoid()} className="mt-3 flex justify-between gap-3">
+          <div className="mt-3 flex justify-between gap-3" key={nanoid()}>
             <div className="form__inline-fields form__field-row flex-auto">
-              <TextField name={`keys.${index}.title`} control={control} label="Key title" />
-              <TextField name={`keys.${index}.value`} control={control} label="Key value" />
+              <TextField control={control} label="Key title" name={`keys.${index}.title`} />
+              <TextField control={control} label="Key value" name={`keys.${index}.value`} />
             </div>
             <button
               className={clsx('w-[20px] mt-4', {
@@ -82,11 +82,11 @@ export const CreateNewIntegrationModal: FC<Props> = ({ isOpen, close }) => {
         <h2 className="mt-3 text-p2 text-blue hover:underline">+ Add key</h2>
       </button>
       <Button
-        variant={ButtonVariant.PRIMARY}
-        onClick={handleSubmit}
-        label="Send"
         className="mt-6"
         isLoading={formState.isSubmitting}
+        label="Send"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );
