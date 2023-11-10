@@ -13,14 +13,14 @@ interface Props {
 
 export const SlackChannelsSection: FC<Props> = ({ slackChannels }) => {
   return (
-    <SectionContainer title="Slack channels" containerClassName="h-full">
+    <SectionContainer containerClassName="h-full" title="Slack channels">
       {slackChannels?.length === 0 && (
         <div className="flex h-full items-center justify-center">
           <EmptyState iconName="list" label="No slack channels here yet" />
         </div>
       )}
       {slackChannels && slackChannels?.length > 0 && (
-        <Table className="mt-2" data={slackChannels} columns={SLACK_CHANNELS_TABLE_COLUMNS} />
+        <Table className="mt-2" columns={SLACK_CHANNELS_TABLE_COLUMNS} data={slackChannels} />
       )}
     </SectionContainer>
   );

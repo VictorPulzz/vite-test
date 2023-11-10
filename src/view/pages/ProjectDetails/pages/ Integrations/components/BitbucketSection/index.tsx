@@ -46,9 +46,9 @@ export const BitbucketSection: FC<Props> = ({ gitGroupId, projectId }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <img
-            src={bitbucket}
             alt="bitbucket"
             className="w-[46px] h-[46px] bg-blue/10 p-3 rounded-full"
+            src={bitbucket}
           />
           <div className="flex flex-col">
             <span className="text-p1 font-bold">Bitbucket</span>
@@ -58,15 +58,15 @@ export const BitbucketSection: FC<Props> = ({ gitGroupId, projectId }) => {
           </div>
         </div>
         {gitGroupId ? (
-          <Icon name="check" className="text-green" size={24} />
+          <Icon className="text-green" name="check" size={24} />
         ) : (
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label="Connect"
-            withIcon="cloudConnection"
-            onClick={() => connectProjectToGit(projectId)}
             className="w-[140px]"
             isLoading={loading}
+            label="Connect"
+            variant={ButtonVariant.PRIMARY}
+            withIcon="cloudConnection"
+            onClick={() => connectProjectToGit(projectId)}
           />
         )}
       </div>

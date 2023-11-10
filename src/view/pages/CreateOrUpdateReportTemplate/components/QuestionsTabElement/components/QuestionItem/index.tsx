@@ -37,24 +37,24 @@ export const QuestionItem: FC<Props> = ({ questionType, questionIndex, removeQue
       <div className="grid grid-cols-[1fr,auto] gap-2 items-start">
         <InlineFields>
           <TextField
-            name={`questions.${questionIndex}.questionText`}
             control={control}
+            name={`questions.${questionIndex}.questionText`}
             placeholder="Question *"
           />
           <SelectField
+            control={control}
             name={`questions.${questionIndex}.type`}
             options={reportQuestionTypesOptions}
-            control={control}
             placeholder="Select *"
           />
         </InlineFields>
         {questionsFields.length >= 2 && (
           <button
-            type="button"
             className="mt-3 hover:opacity-80"
+            type="button"
             onClick={() => removeQuestion(questionIndex)}
           >
-            <Icon name="trash" size={18} className="text-gray-1" />
+            <Icon className="text-gray-1" name="trash" size={18} />
           </button>
         )}
       </div>
@@ -62,8 +62,8 @@ export const QuestionItem: FC<Props> = ({ questionType, questionIndex, removeQue
       <div className="flex justify-end border-solid border-t border-gray-5 mt-5">
         <Checkbox
           {...register(`questions.${questionIndex}.showOnOverview`)}
-          label="Show on Project Overview page"
           className="mt-5 text-gray-1 "
+          label="Show on Project Overview page"
         />
       </div>
     </SectionContainer>

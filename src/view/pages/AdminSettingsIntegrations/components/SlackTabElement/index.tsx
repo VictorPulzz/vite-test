@@ -21,7 +21,7 @@ export const SlackTabElement: FC = () => {
   const { data, loading } = useFetchSlackTemplatesListQuery({ fetchPolicy: 'cache-and-network' });
 
   return (
-    <SectionContainer title="Channel templates" containerClassName="h-full">
+    <SectionContainer containerClassName="h-full" title="Channel templates">
       <div className="flex flex-col h-full pb-7">
         {loading && <TableLoader className="mt-2" />}
         {data && data.slackTemplateList.length === 0 && (
@@ -32,22 +32,22 @@ export const SlackTabElement: FC = () => {
         {!loading && data && data.slackTemplateList.length > 0 && (
           <Table
             className="mt-2"
-            data={data.slackTemplateList}
             columns={CHANNEL_TEMPLATES_TABLE_COLUMNS}
+            data={data.slackTemplateList}
           />
         )}
         {!loading && (
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Add custom template"
             className="w-[170px] mt-3"
+            label="Add custom template"
+            variant={ButtonVariant.SECONDARY}
             onClick={openCreateOrUpdateChannelTemplateModal}
           />
         )}
       </div>
       <CreateOrUpdateChannelTemplateModal
-        isOpen={isCreateOrUpdateChannelTemplateModal}
         close={closeCreateOrUpdateChannelTemplateModal}
+        isOpen={isCreateOrUpdateChannelTemplateModal}
       />
     </SectionContainer>
   );

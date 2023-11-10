@@ -35,32 +35,32 @@ export const CreateProjectInitialUserModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"
+      isOpen={isOpen}
       title="Add user"
       onAfterClose={resetForm}
     >
       {isLoadingAllUsers && (
         <div className="flex items-center h-[200px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!isLoadingAllUsers && (
         <>
           <SelectField
-            name="userId"
-            options={usersOptions}
+            required
             control={form.control}
             label="User"
-            required
+            name="userId"
+            options={usersOptions}
           />
           <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={handleSubmit}
-            label="Add user"
             className="mt-6"
             isLoading={isLoading}
+            label="Add user"
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         </>
       )}

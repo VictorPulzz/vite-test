@@ -50,41 +50,41 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[470px]"
+      isOpen={isOpen}
       title={`${isEditMode ? 'Edit' : 'Add'} Custom template`}
       onAfterClose={resetForm}
     >
       {isLoadingQueries && (
         <div className="flex items-center h-[410px]">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!isLoadingQueries && (
         <>
           <div className="flex flex-col">
             <TextField
-              name="label"
+              required
               control={form.control}
               label="Name"
+              name="label"
               placeholder="Template name"
-              required
             />
             <TextField
-              name="prefix"
-              control={form.control}
-              label="Prefix (You’ll not be able to change prefix later)"
-              placeholder="Channel prefix"
               required
+              control={form.control}
               disabled={isEditMode}
+              label="Prefix (You’ll not be able to change prefix later)"
+              name="prefix"
+              placeholder="Channel prefix"
             />
             <SelectField
-              name="initialUsers"
-              options={usersOptions}
+              isMulti
               control={form.control}
               label="Initial users"
-              isMulti
+              name="initialUsers"
+              options={usersOptions}
             />
             <div className="flex flex-col gap-1">
               <Checkbox
@@ -99,11 +99,11 @@ export const CreateOrUpdateChannelTemplateModal: FC<Props> = ({
             </div>
           </div>
           <Button
-            variant={ButtonVariant.PRIMARY}
-            onClick={handleSubmit}
-            label={`${isEditMode ? 'Save' : 'Create template'}`}
             className="mt-[120px]"
             isLoading={isLoading}
+            label={`${isEditMode ? 'Save' : 'Create template'}`}
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         </>
       )}

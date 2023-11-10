@@ -34,8 +34,8 @@ export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
         >
           {data.results.map(document => (
             <div
-              key={document.id}
               className="flex justify-between items-center gap-3 font-medium p-4 border border-solid border-gray-5 rounded-md"
+              key={document.id}
             >
               <div className="flex gap-3 items-center min-w-0">
                 <div className="bg-blue/10 p-3 text-blue text-p5 rounded-md w-10 h-10 flex items-center justify-center">
@@ -56,9 +56,9 @@ export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
                 </div>
               </div>
               <DocumentMenu
-                fileUrl={document.file.url}
                 documentId={document.id}
                 documentName={document.name}
+                fileUrl={document.file.url}
                 type={type}
               />
             </div>
@@ -68,12 +68,12 @@ export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
       <div>
         {hasPagination && (
           <Pagination
+            itemsCount={data.results.length}
+            offset={offset}
+            pageSize={PAGE_SIZE}
             setOffset={setOffset}
             totalCount={data.count}
-            offset={offset}
-            itemsCount={data.results.length}
             onPageChange={onPageChange}
-            pageSize={PAGE_SIZE}
           />
         )}
       </div>

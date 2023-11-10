@@ -39,30 +39,30 @@ export const NewDocumentButton: FC<Props> = ({ projectId, userId, type }) => {
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label="New document"
-            withIcon="plus"
             className="w-36"
+            label="New document"
+            variant={ButtonVariant.PRIMARY}
+            withIcon="plus"
             onClick={onClick}
           />
         )}
       </Dropdown>
       <UploadDocumentModal
-        isOpen={isUploadDocumentModalOpen}
         close={closeUploadDocumentModal}
+        isOpen={isUploadDocumentModalOpen}
         projectId={projectId as number}
-        userId={userId as number}
         type={type}
+        userId={userId as number}
       />
       <GenerateDocumentModal
-        isOpen={isGenerateDocumentModalOpen}
         close={closeGenerateDocumentModal}
+        isOpen={isGenerateDocumentModalOpen}
         projectId={projectId as number}
-        userId={userId as number}
         type={type}
+        userId={userId as number}
       />
     </>
   );

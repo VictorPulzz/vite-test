@@ -61,7 +61,7 @@ export const Info: FC = () => {
     <>
       {loading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {data && (
@@ -80,7 +80,7 @@ export const Info: FC = () => {
                   <div>
                     {platforms.map(({ id, name }, index) => [
                       index > 0 && ', ',
-                      <span key={id} className="text-p3 leading-none">
+                      <span className="text-p3 leading-none" key={id}>
                         {name}
                       </span>,
                     ])}
@@ -117,10 +117,10 @@ export const Info: FC = () => {
                   <span className="text-p5 text-gray-2">Design link</span>
                   <TextLink
                     external
-                    to={design ?? ''}
                     className={clsx('text-p3 text-blue leading-none hover:underline', {
                       'pointer-events-none': !isValidHttpUrl(design ?? ''),
                     })}
+                    to={design ?? ''}
                   >
                     Design link
                   </TextLink>
@@ -131,10 +131,10 @@ export const Info: FC = () => {
                   <span className="text-p5 text-gray-2">Roadmap</span>
                   <TextLink
                     external
-                    to={roadmap}
                     className={`text-p3 text-blue leading-none hover:underline ${
                       !isValidHttpUrl(roadmap) && 'pointer-events-none'
                     }`}
+                    to={roadmap}
                   >
                     Roadmap link
                   </TextLink>
@@ -145,10 +145,10 @@ export const Info: FC = () => {
                   <span className="text-p5 text-gray-2">Kanban board</span>
                   <TextLink
                     external
-                    to={kanbanBoard}
                     className={`text-p3 text-blue leading-none hover:underline ${
                       !isValidHttpUrl(kanbanBoard) && 'pointer-events-none'
                     }`}
+                    to={kanbanBoard}
                   >
                     Kanban board link
                   </TextLink>
@@ -170,7 +170,7 @@ export const Info: FC = () => {
           </SectionContainer>
           <SectionContainer title="Client team">
             {clientTeam && !!clientTeam.length ? (
-              <Table className="mt-3" data={clientTeam} columns={CLIENT_TEAM_TABLE_COLUMNS} />
+              <Table className="mt-3" columns={CLIENT_TEAM_TABLE_COLUMNS} data={clientTeam} />
             ) : (
               <EmptyState iconName="users" label="No client team members here yet" />
             )}

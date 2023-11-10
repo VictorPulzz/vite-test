@@ -65,7 +65,7 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
   return (
     <div className="flex flex-col gap-3 w-[382px] min-w-[382px]">
       <SectionContainer containerClassName="flex items-center gap-3 border-b-[1px] border-solid text-gray-6 pb-7">
-        <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={50} />
+        <Avatar size={50} uri={user.photoThumbnail?.url || photoPlaceholder} />
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-3">
             <h2 className="text-p1 text-primary font-bold leading-none break-all">
@@ -73,7 +73,7 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
             </h2>
             {!user.inviteAccepted && (
               <div className="whitespace-nowrap">
-                <Badge color={BadgeColor.GRAY} filled>
+                <Badge filled color={BadgeColor.GRAY}>
                   Not in SB2
                 </Badge>
               </div>
@@ -87,17 +87,17 @@ export const UserMainInfo: FC<Props> = ({ user }) => {
         <div className="flex items-center gap-3 mt-3">
           {!user.inviteAccepted && (
             <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Resend invite"
-              onClick={handleResendInvite}
               isLoading={isLoadingResendInvite}
+              label="Resend invite"
+              variant={ButtonVariant.SECONDARY}
+              onClick={handleResendInvite}
             />
           )}
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Connect to Bitbucket"
-            onClick={handleConnectUserToBitbucket}
             isLoading={isLoadingConnectUserToBitbucket}
+            label="Connect to Bitbucket"
+            variant={ButtonVariant.SECONDARY}
+            onClick={handleConnectUserToBitbucket}
           />
         </div>
       </SectionContainer>

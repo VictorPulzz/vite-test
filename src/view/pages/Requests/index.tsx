@@ -73,17 +73,17 @@ export const RequestsPage: FC = () => {
         </div>
         <div className="flex items-center gap-3">
           <Button
-            variant={ButtonVariant.SECONDARY}
-            label="Filter"
             className="w-40"
-            onClick={openRequestsFilterModal}
             count={filtersCount || undefined}
+            label="Filter"
+            variant={ButtonVariant.SECONDARY}
+            onClick={openRequestsFilterModal}
           />
           <Button
-            label="New request"
-            withIcon="plus"
-            variant={ButtonVariant.PRIMARY}
             className="w-40"
+            label="New request"
+            variant={ButtonVariant.PRIMARY}
+            withIcon="plus"
             onClick={openNewRequestModal}
           />
         </div>
@@ -96,22 +96,22 @@ export const RequestsPage: FC = () => {
       {!loading && data && data.requestList.results.length > 0 && (
         <Table
           className="mt-6"
-          data={data.requestList.results}
           columns={requestsTableColumns}
-          setOffset={setOffset}
+          data={data.requestList.results}
           offset={offset}
-          onPageChange={gqlTableFetchMore(fetchMore)}
-          totalCount={data.requestList.count}
-          sorting={tableSorting}
+          setOffset={setOffset}
           setSorting={setTableSorting}
+          sorting={tableSorting}
+          totalCount={data.requestList.count}
+          onPageChange={gqlTableFetchMore(fetchMore)}
         />
       )}
-      <NewRequestModal isOpen={isNewRequestModalOpen} close={closeNewRequestModal} />
+      <NewRequestModal close={closeNewRequestModal} isOpen={isNewRequestModalOpen} />
       <RequestsFilterModal
-        isOpen={isRequestsFilterModalOpen}
-        close={closeRequestsFilterModal}
-        setFilter={setFilter}
         allUsers={allUsers?.userGlossaryList.results ?? []}
+        close={closeRequestsFilterModal}
+        isOpen={isRequestsFilterModalOpen}
+        setFilter={setFilter}
         usersByRole={usersByRole?.userGlossaryList.results ?? []}
       />
     </SidebarLayout>

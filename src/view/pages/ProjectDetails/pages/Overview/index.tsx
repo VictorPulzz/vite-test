@@ -56,17 +56,17 @@ export const Overview: FC = () => {
     <>
       {isLoading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       <div className="flex flex-col gap-5">
         {(projectStatsData || projectStatsError) && canReadProjectStatistics && (
           <ProjectStatsSection
-            projectStats={projectStatsData?.projectStats.stats || {}}
-            projectStartData={projectStatsData?.projectStats.startDate || ''}
-            projectId={projectId}
-            projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
             error={projectStatsError}
+            projectEstimatedHours={projectEstimatedHours?.project.hoursEstimated || 0}
+            projectId={projectId}
+            projectStartData={projectStatsData?.projectStats.startDate || ''}
+            projectStats={projectStatsData?.projectStats.stats || {}}
           />
         )}
         {isAdminOrPM && projectStatus && projectStatus.projectReportAnswers.length > 0 && (

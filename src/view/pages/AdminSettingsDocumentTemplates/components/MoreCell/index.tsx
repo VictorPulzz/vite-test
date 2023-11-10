@@ -67,7 +67,7 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -76,17 +76,17 @@ export const MoreCell: FC<CellContext<DocumentTemplatesResultType, unknown>> = (
       </Dropdown>
       {isCreateOrUpdateDocumentTemplateModal && (
         <CreateOrUpdateDocumentTemplateModal
-          isOpen={isCreateOrUpdateDocumentTemplateModal}
           close={closeCreateOrUpdateDocumentTemplateModal}
           documentTemplateId={id}
+          isOpen={isCreateOrUpdateDocumentTemplateModal}
         />
       )}
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={name}
           action="delete"
-          isOpen={isConfirmActionModal}
           close={closeConfirmActionModal}
+          isOpen={isConfirmActionModal}
+          name={name}
           onAccept={removeCurrentDocumentTemplate}
         />
       )}

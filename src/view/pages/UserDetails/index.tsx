@@ -28,23 +28,23 @@ export const UserDetailsPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title="User details"
+        contentClassName="flex-auto"
         rightHeaderElement={
           canWriteUser && (
             <Button
-              variant={ButtonVariant.SECONDARY}
-              label="Edit user"
               className="w-36"
+              label="Edit user"
+              variant={ButtonVariant.SECONDARY}
               withIcon="edit"
               onClick={() => navigate(generatePath(ROUTES.EDIT_USER, { id: userId }))}
             />
           )
         }
-        contentClassName="flex-auto"
+        title="User details"
       >
         {loading && (
           <div className="flex h-full items-center">
-            <Loader full colorful />
+            <Loader colorful full />
           </div>
         )}
         {data && (

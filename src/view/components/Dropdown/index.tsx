@@ -135,11 +135,11 @@ const DropdownBase = <TValue,>(
       {dropdownIsOpen && (
         <ul
           className={`rnd__root-menu rnd__menu ${menuPositionClassName}`}
-          style={{ width: containerWidth }}
           ref={rootMenuRef}
+          style={{ width: containerWidth }}
         >
           {items.map((item, index) => (
-            <Option key={index} option={item} onSelect={handleSelect} renderOption={renderOption} />
+            <Option key={index} option={item} renderOption={renderOption} onSelect={handleSelect} />
           ))}
         </ul>
       )}
@@ -209,8 +209,8 @@ const Option = <TValue,>({
         'rnd__option--disabled': option.disabled,
         'rnd__option--with-menu': hasSubmenu,
       })}
-      onMouseDown={handleClick}
       onKeyUp={handleClick}
+      onMouseDown={handleClick}
     >
       {hasSubmenu && (
         <ul
@@ -221,7 +221,7 @@ const Option = <TValue,>({
           style={{ width: itemsContainerWidth }}
         >
           {items.map((item, index) => (
-            <Option key={index} option={item} onSelect={onSelect} renderOption={renderOption} />
+            <Option key={index} option={item} renderOption={renderOption} onSelect={onSelect} />
           ))}
         </ul>
       )}

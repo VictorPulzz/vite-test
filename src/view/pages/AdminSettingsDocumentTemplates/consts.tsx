@@ -24,7 +24,7 @@ export const DOCUMENT_TEMPLATES_TABLE_COLUMNS = [
     header: 'Url',
     cell: ctx => {
       return (
-        <TextLink external to={ctx.getValue() ?? ''} className="underline">
+        <TextLink external className="underline" to={ctx.getValue() ?? ''}>
           {ctx.getValue()}
         </TextLink>
       );

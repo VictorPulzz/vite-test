@@ -16,17 +16,17 @@ export const ErrorBoundaryPage: React.FC = () => {
         </p>
         <div className="mt-6 flex gap-3">
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label="Refresh page"
-            onClick={() => window.location.reload()}
             className="!w-48"
+            label="Refresh page"
+            variant={ButtonVariant.PRIMARY}
+            onClick={() => window.location.reload()}
           />
           <Button
-            variant={ButtonVariant.PRIMARY}
+            className="!w-48"
             label="Log out"
+            variant={ButtonVariant.PRIMARY}
             withIcon="logout"
             onClick={() => dispatch(signOut())}
-            className="!w-48"
           />
         </div>
       </div>

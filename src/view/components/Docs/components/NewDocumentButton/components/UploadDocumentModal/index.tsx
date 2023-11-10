@@ -48,21 +48,21 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-1/3"
+      isOpen={isOpen}
       title="Upload document"
       onAfterClose={resetForm}
     >
       <SelectField
-        name="categoryId"
-        options={documentCategoriesOptions}
         control={control}
         label="Category"
+        name="categoryId"
+        options={documentCategoriesOptions}
       />
       <Controller
-        name="document"
         control={control}
+        name="document"
         render={({ field: { onChange }, fieldState: { error } }) => (
           <>
             {fileName && (
@@ -73,22 +73,22 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
                   </div>
                   <span className="text-p3 text-black truncate">{fileName}</span>
                 </div>
-                <button type="button" onClick={removeFile} className="flex items-center">
+                <button className="flex items-center" type="button" onClick={removeFile}>
                   <Icon name="close" size={18} />
                 </button>
               </div>
             )}
             {!fileName && (
               <>
-                <FileUpload onUpload={onChange} accept={UPLOAD_DOCUMENT_ACCEPT}>
+                <FileUpload accept={UPLOAD_DOCUMENT_ACCEPT} onUpload={onChange}>
                   {({ onClick }) => (
                     <Button
-                      onClick={onClick}
-                      variant={error ? ButtonVariant.NEGATIVE : ButtonVariant.SECONDARY}
-                      size={ButtonSize.MEDIUM}
-                      label="Upload"
-                      withIcon="upload"
                       className="mt-5"
+                      label="Upload"
+                      size={ButtonSize.MEDIUM}
+                      variant={error ? ButtonVariant.NEGATIVE : ButtonVariant.SECONDARY}
+                      withIcon="upload"
+                      onClick={onClick}
                     />
                   )}
                 </FileUpload>
@@ -99,11 +99,11 @@ export const UploadDocumentModal: FC<Props> = ({ isOpen, close, projectId, userI
         )}
       />
       <Button
-        variant={ButtonVariant.PRIMARY}
-        label="Save"
         className="mt-6"
-        onClick={handleSubmit}
         isLoading={formState.isSubmitting}
+        label="Save"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );

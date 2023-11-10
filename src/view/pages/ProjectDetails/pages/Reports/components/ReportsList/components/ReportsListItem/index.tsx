@@ -26,8 +26,10 @@ export const ReportsListItem: FC<Props> = ({ report }) => {
 
     return (
       <Button
-        variant={report.submittedAt ? ButtonVariant.SECONDARY : defaultVariant}
+        className="w-[120px]"
+        disabled={!isAssignedToUser && !report.submittedAt}
         label={report.submittedAt ? 'View' : defaultLabel}
+        variant={report.submittedAt ? ButtonVariant.SECONDARY : defaultVariant}
         onClick={() =>
           navigate(
             generatePath(
@@ -41,8 +43,6 @@ export const ReportsListItem: FC<Props> = ({ report }) => {
             ),
           )
         }
-        disabled={!isAssignedToUser && !report.submittedAt}
-        className="w-[120px]"
       />
     );
   }, [navigate, profile.id, projectId, report.id, report.submittedAt, report.submittedBy?.id]);

@@ -21,7 +21,7 @@ export const Integrations: FC = () => {
     <div className="h-full">
       {loading && (
         <div className="flex h-full items-center">
-          <Loader full colorful />
+          <Loader colorful full />
         </div>
       )}
       {!loading && (

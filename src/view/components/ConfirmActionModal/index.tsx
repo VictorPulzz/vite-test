@@ -33,10 +33,10 @@ export const ConfirmActionModal: FC<Props> = ({
   }, [close, onAccept]);
 
   return (
-    <Modal withCloseButton={false} isOpen={isOpen} close={close} contentClassName="w-[22.18rem]">
+    <Modal close={close} contentClassName="w-[22.18rem]" isOpen={isOpen} withCloseButton={false}>
       <div className="flex flex-col items-center">
         <div className="p-10 rounded-full bg-gray-7 mb-2">
-          <Icon name={icon} size={31} className="text-primary m-auto" />
+          <Icon className="text-primary m-auto" name={icon} size={31} />
         </div>
         <h1 className="text-h4 mb-4 text-center">
           Are you sure you want to {action} <span className="break-all">{name}</span>?
@@ -47,16 +47,16 @@ export const ConfirmActionModal: FC<Props> = ({
 
         <div className="flex w-full gap-4">
           <Button
+            className="text-red"
+            label="No"
             variant={ButtonVariant.SECONDARY}
             onClick={close}
-            label="No"
-            className="text-red"
           />
           <Button
+            isLoading={isSubmitting}
+            label="Yes"
             variant={ButtonVariant.PRIMARY}
             onClick={handleConfirmAction}
-            label="Yes"
-            isLoading={isSubmitting}
           />
         </div>
       </div>

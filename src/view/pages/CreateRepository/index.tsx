@@ -1,9 +1,13 @@
-import { useSearchParams } from '@appello/web/lib/hooks/useSearchParams';
-import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
-import { TextField } from '@appello/web-ui';
-import { Checkbox } from '@appello/web-ui';
-import { InlineFields } from '@appello/web-ui';
+import { useSearchParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  Checkbox,
+  InlineFields,
+  SelectField,
+  TextField,
+  useSelectOptions,
+} from '@appello/web-ui';
 import React, { FC, useEffect } from 'react';
 import { useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -70,46 +74,46 @@ export const CreateRepositoryPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title="Add repository"
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label="Create repository"
             className="w-36"
-            onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}
+            label="Create repository"
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         }
+        title="Add repository"
       >
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>Repository info</h2>
           <InlineFields>
-            <TextField name="name" control={form.control} label="Name" required />
+            <TextField required control={form.control} label="Name" name="name" />
             <SelectField
+              required
+              control={form.control}
+              disabled={!!searchParams.projectId}
+              label="Project"
               name="projectId"
               options={projectsOptions}
-              control={form.control}
-              label="Project"
-              required
-              disabled={!!searchParams.projectId}
             />
           </InlineFields>
           <InlineFields>
             <SelectField
-              name="type"
-              options={repositoryTypeOptions}
+              required
               control={form.control}
               label="Type"
-              required
+              name="type"
+              options={repositoryTypeOptions}
             />
             <SelectField
-              name="technologies"
-              options={technologiesOptions}
-              control={form.control}
-              label="Technologies"
               isMulti
               required
+              control={form.control}
+              label="Technologies"
+              name="technologies"
+              options={technologiesOptions}
             />
           </InlineFields>
         </section>
@@ -117,21 +121,21 @@ export const CreateRepositoryPage: FC = () => {
           <h2 className={styles['section__heading']}>Git</h2>
           <Checkbox
             {...form.register('withExistingRepo')}
-            label="Add existing repository"
             className="mb-4"
+            label="Add existing repository"
           />
           <div className="mt-2 form__inline-fields form__field-row grid-cols-3">
             {!withExistingRepo && (
               <SelectField
-                name="boilerplateId"
-                options={boilerplatesOptions}
                 control={form.control}
                 label="Boilerplate"
+                name="boilerplateId"
+                options={boilerplatesOptions}
               />
             )}
             {withExistingRepo && (
               <>
-                <TextField name="gitRepoId" control={form.control} label="Git repo id" />
+                <TextField control={form.control} label="Git repo id" name="gitRepoId" />
                 {/* TODO: research if we really need this in UI <TextField name="gitSlug" control={form.control} label="Git slug" /> */}
               </>
             )}

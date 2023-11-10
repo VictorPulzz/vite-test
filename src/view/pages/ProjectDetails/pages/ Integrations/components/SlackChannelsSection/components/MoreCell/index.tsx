@@ -28,7 +28,7 @@ export const MoreCell: FC<CellContext<ProjectSlackChannelResultType, unknown>> =
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -37,8 +37,8 @@ export const MoreCell: FC<CellContext<ProjectSlackChannelResultType, unknown>> =
       </Dropdown>
       {isInviteUsersToSlackModalOpen && (
         <InviteUsersToSlackModal
-          isOpen={isInviteUsersToSlackModalOpen}
           close={closeInviteUsersToSlackModalModal}
+          isOpen={isInviteUsersToSlackModalOpen}
           slackChannelId={id}
           // TODO template?.label ?? channelName
           templateLabel={template?.label ?? ''}

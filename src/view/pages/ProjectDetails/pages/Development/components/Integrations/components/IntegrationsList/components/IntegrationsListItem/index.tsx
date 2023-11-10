@@ -57,9 +57,9 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
           >
             <div className="flex items-center gap-2">
               <IconContainer
-                name="cloudConnection"
                 className="w-10 h-10 bg-blue/10"
                 iconClassName="w-5 h-5"
+                name="cloudConnection"
               />
               <div>
                 <h2 className="text-p4 font-medium break-all">
@@ -78,17 +78,17 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
                 <span className="text-p5 text-gray-1">Main</span>
                 <div className="mt-2 flex flex-col gap-3">
                   {Object.entries(mainIntegrationCredentialsData || {})?.map(([key, value]) => (
-                    <div key={key} className="flex items-center gap-1">
+                    <div className="flex items-center gap-1" key={key}>
                       <Icon
+                        className="flex-shrink-0"
+                        color="#6F6F75"
                         name={iconsByCredentialField[key]}
                         size={18}
-                        color="#6F6F75"
-                        className="flex-shrink-0"
                       />
                       <button
+                        className="text-p5 truncate hover:underline cursor-pointer"
                         type="button"
                         onClick={() => copyTextValue(value ?? '')}
-                        className="text-p5 truncate hover:underline cursor-pointer"
                       >
                         {value || '-'}
                       </button>
@@ -102,7 +102,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
                 <span className="text-p5 text-gray-1">Keys</span>
                 <div className="mt-2 flex flex-col  gap-3">
                   {integration?.keys?.map(value => (
-                    <div key={value.id} className="flex items-center gap-2">
+                    <div className="flex items-center gap-2" key={value.id}>
                       <span className="text-p5 truncate">{value.title}</span>
                       <CopyTextButton value={value.value} />
                     </div>
@@ -114,7 +114,7 @@ export const IntegrationsListItem: FC<Props> = ({ integration, integrationReques
         </div>
       )}
       {variant === CardVariant.REQUEST && (
-        <RequestCard title={integrationRequest?.integrationName ?? ''} icon="cloudConnection" />
+        <RequestCard icon="cloudConnection" title={integrationRequest?.integrationName ?? ''} />
       )}
     </>
   );

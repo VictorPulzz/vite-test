@@ -23,30 +23,30 @@ export const SignInPage: FC = () => {
       <form onSubmit={handleSubmit}>
         <h1 className="text-h2 mb-4 text-center">Log in</h1>
         <TextField
-          name="email"
+          autoFocus
           control={form.control}
           label="Email"
-          size={InputSize.LARGE}
+          name="email"
           placeholder="Enter email"
-          autoFocus
+          size={InputSize.LARGE}
         />
         <PasswordField
-          name="password"
           control={form.control}
           label="Password"
-          size={InputSize.LARGE}
+          name="password"
           placeholder="Enter password"
+          size={InputSize.LARGE}
         />
-        <TextLink to={ROUTES.FORGOT_PASSWORD} className="text-p2 mt-2 underline text-gray-1">
+        <TextLink className="text-p2 mt-2 underline text-gray-1" to={ROUTES.FORGOT_PASSWORD}>
           Forgot password?
         </TextLink>
         <Button
+          className="mt-7"
+          isLoading={form.formState.isSubmitting}
           label="Log in"
-          variant={ButtonVariant.PRIMARY}
           size={ButtonSize.LARGE}
           type="submit"
-          isLoading={form.formState.isSubmitting}
-          className="mt-7"
+          variant={ButtonVariant.PRIMARY}
         />
       </form>
     </AuthLayout>

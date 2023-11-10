@@ -49,19 +49,19 @@ export const RolesList: FC<Props> = ({ roles, featureRow }) => {
     <div className="flex flex-wrap items-center gap-3">
       {roles.map(({ id, name, color }) => (
         <div
-          key={id}
           className={clsx(
             `group relative px-3 py-1 rounded-lg cursor-pointer whitespace-nowrap`,
             !color && 'border-gray-7',
           )}
+          key={id}
           style={{ backgroundColor: color ?? undefined }}
         >
           <span className=" text-p5 font-medium">{name}</span>
           {name !== ADMIN_ROLE && (
             <button
+              className="absolute right-[-5px] top-[-5px] bg-gray-6 p-1 rounded-xl hidden group-hover:block"
               type="button"
               onClick={() => removeRole(featureRow.id, id)}
-              className="absolute right-[-5px] top-[-5px] bg-gray-6 p-1 rounded-xl hidden group-hover:block"
             >
               <Icon name="close" size={10} />
             </button>

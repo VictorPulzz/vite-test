@@ -60,54 +60,54 @@ export const CreateOrUpdateUserPage: FC = () => {
   return (
     <SidebarLayout>
       <DetailLayout
-        title={`${userId ? 'Edit' : 'New'} user`}
         contentClassName="my-4 mx-6 shadow-4 rounded-md bg-white p-7"
         rightHeaderElement={
           <Button
-            variant={ButtonVariant.PRIMARY}
-            label={`${userId ? 'Save' : 'Create'} user`}
             className="w-36"
-            onClick={handleSubmit}
             isLoading={form.formState.isSubmitting}
+            label={`${userId ? 'Save' : 'Create'} user`}
+            variant={ButtonVariant.PRIMARY}
+            onClick={handleSubmit}
           />
         }
+        title={`${userId ? 'Edit' : 'New'} user`}
       >
         <section className={styles['section']}>
           <h2 className={styles['section__heading']}>User info</h2>
-          <PhotoField name="photo" control={form.control} label="Photo" />
+          <PhotoField control={form.control} label="Photo" name="photo" />
           <InlineFields>
-            <TextField name="firstName" control={form.control} label="First name" required />
-            <TextField name="lastName" control={form.control} label="Last name" required />
+            <TextField required control={form.control} label="First name" name="firstName" />
+            <TextField required control={form.control} label="Last name" name="lastName" />
           </InlineFields>
           <InlineFields>
-            <TextField name="email" control={form.control} label="Email" required />
+            <TextField required control={form.control} label="Email" name="email" />
             <SelectField
-              name="department"
-              options={departmentsOptions}
+              required
               control={form.control}
               label="Department"
-              required
+              name="department"
+              options={departmentsOptions}
             />
           </InlineFields>
           <InlineFields>
             <SelectField
-              name="role"
-              options={rolesOptions}
+              required
               control={form.control}
               label="Role"
-              required
+              name="role"
+              options={rolesOptions}
             />
-            <TextField name="address" control={form.control} label="Address" />
+            <TextField control={form.control} label="Address" name="address" />
           </InlineFields>
           <InlineFields>
             <SelectField
-              name="contractType"
-              options={contractTypeOptions}
+              required
               control={form.control}
               label="Contract type"
-              required
+              name="contractType"
+              options={contractTypeOptions}
             />
-            <DateField name="birthDate" control={form.control} label="Birth date" required />
+            <DateField required control={form.control} label="Birth date" name="birthDate" />
           </InlineFields>
           <InlineFields>
             <Checkbox label="Active" {...form.register('isActive')} className="mt-4" />

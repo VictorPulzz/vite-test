@@ -47,11 +47,11 @@ export const NotificationsListItem: FC<Props> = ({
 
   return (
     <div
-      ref={notificationRef}
       className={clsx(
         'flex items-center gap-3 p-4 border-solid border-b border-gray-5 last:border-b-0',
         isNew ? 'bg-gray-1/5' : 'bg-white',
       )}
+      ref={notificationRef}
     >
       {isNew && <div className="w-[7px] h-[7px] bg-red rounded shrink-0" />}
       <div className={clsx('flex flex-col gap-1', !isNew && 'ml-[19px]')}>

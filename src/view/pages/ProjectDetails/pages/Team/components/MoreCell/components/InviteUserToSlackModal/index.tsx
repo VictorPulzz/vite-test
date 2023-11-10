@@ -53,39 +53,39 @@ export const InviteUserToSlackModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[450px]"
+      isOpen={isOpen}
       title={`Invite ${user.fullName} to Slack`}
       onAfterClose={resetForm}
     >
       <div className="mt-4 flex flex-col gap-6">
         {loading && (
           <div className="mt-2 flex h-full items-center">
-            <Loader full colorful />
+            <Loader colorful full />
           </div>
         )}
         {!loading &&
           data?.projectIntegrationPage.slackChannels?.map(channel => (
-            <div key={channel.id} className="flex items-center justify-between">
+            <div className="flex items-center justify-between" key={channel.id}>
               <div className="flex items-center gap-4">
-                <Icon name="slack" size={24} raw />
+                <Icon raw name="slack" size={24} />
                 <span className="text-p5">{channel.template?.label ?? channel.templateName}</span>
               </div>
               <Checkbox
-                onChange={handleChangeSlackChannel}
-                value={channel.id}
                 checked={slackChannels.includes(channel.id)}
+                value={channel.id}
+                onChange={handleChangeSlackChannel}
               />
             </div>
           ))}
       </div>
       <Button
-        variant={ButtonVariant.PRIMARY}
-        onClick={handleSubmit}
-        label="Invite"
         className="mt-6"
         isLoading={form.formState.isSubmitting}
+        label="Invite"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );

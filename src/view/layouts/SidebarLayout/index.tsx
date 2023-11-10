@@ -33,9 +33,9 @@ export const SidebarLayout: FC<Props> = ({ children, contentClassName }) => {
       <Sidebar
         items={navItems}
         logo={logo}
-        user={user}
-        smallLogo={smallLogo}
         rightHeaderElement={<Notifications />}
+        smallLogo={smallLogo}
+        user={user}
       />
       <div className={clsx('flex flex-1 flex-col', contentClassName)}>{children}</div>
     </div>

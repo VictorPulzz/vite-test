@@ -59,11 +59,11 @@ export const ChexboxGroupField = <TFormValues extends FieldValues>({
       <div className={clsx('chexbox-group', inColumn && 'chexbox-group--column')}>
         {items.map((item, index) => (
           <Checkbox
-            key={index}
             checked={fieldValues.includes(item.value)}
-            onChange={handleOnChange}
-            value={item.value}
+            key={index}
             label={item.label}
+            value={item.value}
+            onChange={handleOnChange}
           />
         ))}
       </div>

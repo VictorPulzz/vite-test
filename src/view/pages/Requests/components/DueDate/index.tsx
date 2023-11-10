@@ -54,19 +54,19 @@ export const DueDate: FC<Props> = ({ variant, id, dueDate, status }) => {
         </span>
       ) : (
         <DatePicker
-          onChange={handleDateChange}
           defaultValue={dueDate ? new Date(dueDate) : undefined}
-          placeholder="Due date"
           disabledDate={isPast}
           leftIconElement={
             variant === DueDateVariant.FIELD ? (
               <IconContainer
-                name="calendar"
                 className="w-[32px] h-[32px] bg-gray/10"
                 iconClassName="w-[18px] h-[18px] text-gray-1"
+                name="calendar"
               />
             ) : undefined
           }
+          placeholder="Due date"
+          onChange={handleDateChange}
         />
       )}
     </div>

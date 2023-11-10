@@ -67,7 +67,7 @@ export const MoreCell: FC<CellContext<SlackChannelTemplateResultType, unknown>> 
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -76,18 +76,18 @@ export const MoreCell: FC<CellContext<SlackChannelTemplateResultType, unknown>> 
       </Dropdown>
       {isCreateOrUpdateChannelTemplateModal && (
         <CreateOrUpdateChannelTemplateModal
-          isOpen={isCreateOrUpdateChannelTemplateModal}
-          close={closeCreateOrUpdateChannelTemplateModal}
           channelTemplateId={id}
+          close={closeCreateOrUpdateChannelTemplateModal}
+          isOpen={isCreateOrUpdateChannelTemplateModal}
         />
       )}
       {isConfirmActionModal && (
         <ConfirmActionModal
-          name={label ?? ''}
           action="delete"
+          close={closeConfirmActionModal}
           description="All created channels will remain but no one will be able to create new channels with this template"
           isOpen={isConfirmActionModal}
-          close={closeConfirmActionModal}
+          name={label ?? ''}
           onAccept={removeSlackTemplateDelete}
         />
       )}

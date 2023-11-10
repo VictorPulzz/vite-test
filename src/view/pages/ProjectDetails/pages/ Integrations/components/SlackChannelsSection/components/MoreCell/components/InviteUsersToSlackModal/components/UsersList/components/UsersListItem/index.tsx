@@ -41,7 +41,7 @@ export const UsersListItem: FC<Props> = ({
   return (
     <div className="flex items-center justify-between py-2">
       <div className="flex items-center gap-2">
-        <Avatar uri={user.photoThumbnail?.url || photoPlaceholder} size={32} />
+        <Avatar size={32} uri={user.photoThumbnail?.url || photoPlaceholder} />
         <span className="text-p5 break-all">{user.fullName}</span>
         <span className="text-p5 text-gray-2 break-all pr-4 whitespace-nowrap">{user.email}</span>
       </div>
@@ -49,12 +49,12 @@ export const UsersListItem: FC<Props> = ({
         <span className="text-green text-p5 pr-3">In channel</span>
       ) : (
         <Button
-          variant={ButtonVariant.SECONDARY}
-          size={ButtonSize.SMALL}
-          label="Invite"
           className="w-[80px] flex-shrink-0"
-          onClick={() => inviteUserToSlack(user.id)}
           isLoading={isLoadingInviteToSlack}
+          label="Invite"
+          size={ButtonSize.SMALL}
+          variant={ButtonVariant.SECONDARY}
+          onClick={() => inviteUserToSlack(user.id)}
         />
       )}
     </div>

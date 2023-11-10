@@ -68,24 +68,24 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-1/3"
+      isOpen={isOpen}
       title="Generate document"
       onAfterClose={resetForm}
     >
       <InlineFields>
         <SelectField
-          name="templateId"
-          options={documentTemplatesOptions}
           control={control}
           label="Template"
+          name="templateId"
+          options={documentTemplatesOptions}
         />
         <SelectField
-          name="categoryId"
-          options={documentCategoriesOptions}
           control={control}
           label="Category"
+          name="categoryId"
+          options={documentCategoriesOptions}
         />
       </InlineFields>
       {!!selectedTemplate?.fields?.length && (
@@ -95,18 +95,18 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
           <InlineFields>
             {selectedTemplate.fields.map((field, fieldIndex) => (
               <Controller
+                control={control}
                 key={fieldIndex}
                 name={`templateFields.${fieldIndex}.value`}
-                control={control}
                 render={({ field: { value, onChange }, fieldState: { error } }) => (
-                  <Field label={field.description ?? ''} error={error} required>
+                  <Field required error={error} label={field.description ?? ''}>
                     <TextInput
-                      value={value || ''}
-                      label={field.description ?? ''}
-                      onChange={onChange}
-                      placeholder={field.description ?? ''}
-                      error={!!error}
                       required
+                      error={!!error}
+                      label={field.description ?? ''}
+                      placeholder={field.description ?? ''}
+                      value={value || ''}
+                      onChange={onChange}
                     />
                   </Field>
                 )}
@@ -116,11 +116,11 @@ export const GenerateDocumentModal: FC<Props> = ({ isOpen, close, projectId, use
         </>
       )}
       <Button
-        variant={ButtonVariant.PRIMARY}
-        label="Save"
         className="mt-6"
-        onClick={handleSubmit}
         isLoading={formState.isSubmitting}
+        label="Save"
+        variant={ButtonVariant.PRIMARY}
+        onClick={handleSubmit}
       />
     </Modal>
   );

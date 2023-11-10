@@ -14,9 +14,9 @@ export const RequestCard: FC<Props> = ({ title, icon }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <IconContainer
-            name={icon}
             className="w-10 h-10 bg-red/10"
             iconClassName="w-5 h-5 text-red"
+            name={icon}
           />
           <div>
             <h2 className="text-p4 font-medium">{convertUppercaseToReadable(title)}</h2>

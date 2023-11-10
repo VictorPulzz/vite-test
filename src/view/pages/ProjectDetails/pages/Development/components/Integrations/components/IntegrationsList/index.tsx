@@ -18,16 +18,16 @@ export const IntegrationsList: FC<Props> = ({ integrations, integrationsRequests
     <div className="grid grid-cols-2 gap-5 mt-2">
       {integrations.map(integration => (
         <IntegrationsListItem
+          integration={integration}
           key={integration.id}
           variant={CardVariant.DEFAULT}
-          integration={integration}
         />
       ))}
       {integrationsRequests.map(integration => (
         <IntegrationsListItem
+          integrationRequest={integration}
           key={integration.id}
           variant={CardVariant.REQUEST}
-          integrationRequest={integration}
         />
       ))}
     </div>

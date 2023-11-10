@@ -50,9 +50,9 @@ export const DocumentsPage: FC = () => {
   const tabsElement = useMemo(
     () => (
       <Tabs
+        items={docsTabs.filter((tab): tab is Tab => !!tab)}
         selected={selectedTab}
         onSelect={setSelectedTab}
-        items={docsTabs.filter((tab): tab is Tab => !!tab)}
       />
     ),
     [docsTabs, selectedTab],

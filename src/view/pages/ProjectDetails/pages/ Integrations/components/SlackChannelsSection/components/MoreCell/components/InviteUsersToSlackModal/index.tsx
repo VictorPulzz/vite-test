@@ -20,19 +20,19 @@ export const InviteUsersToSlackModal: FC<Props> = ({
 
   return (
     <Modal
-      isOpen={isOpen}
       close={close}
       contentClassName="w-[500px]"
-      title="Invite users"
       description={templateLabel}
+      isOpen={isOpen}
+      title="Invite users"
     >
       <SearchInput
-        onChange={setSearchValue}
+        className="mt-3"
         defaultValue={searchValue}
         placeholder="Search users"
-        className="mt-3"
+        onChange={setSearchValue}
       />
-      <UsersList slackChannelId={slackChannelId} searchValue={searchValue} offset={offset} />
+      <UsersList offset={offset} searchValue={searchValue} slackChannelId={slackChannelId} />
     </Modal>
   );
 };

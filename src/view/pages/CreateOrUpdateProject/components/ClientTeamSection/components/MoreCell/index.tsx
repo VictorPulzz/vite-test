@@ -52,7 +52,7 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
 
   return (
     <>
-      <Dropdown items={options} containerWidth="14.93rem">
+      <Dropdown containerWidth="14.93rem" items={options}>
         {({ onClick }) => (
           <button type="button" onClick={onClick}>
             <Icon name="menu" size={16} />
@@ -60,10 +60,10 @@ export const MoreCell: FC<CellContext<ClientType, unknown>> = ({ row }) => {
         )}
       </Dropdown>
       <AddOrEditModal
-        isOpen={isAddOrEditClientTeamMemberModalOpen}
-        close={closeAddOrEditClientTeamMemberModal}
-        clientTeamMemberRow={row}
         isEditMode
+        clientTeamMemberRow={row}
+        close={closeAddOrEditClientTeamMemberModal}
+        isOpen={isAddOrEditClientTeamMemberModalOpen}
       />
     </>
   );
