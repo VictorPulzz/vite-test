@@ -1,4 +1,4 @@
-import { pick } from '@appello/common/lib/utils/object/pick';
+import { pick } from '@appello/common';
 import { Icon } from '@appello/web-ui';
 import { IconContainer } from '@appello/web-ui';
 import clsx from 'clsx';

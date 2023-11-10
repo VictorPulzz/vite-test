@@ -1,9 +1,13 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  Table,
+  TableLoader,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -21,11 +25,12 @@ import { useRequestsTableColumns } from './hooks/useRequestsTableColumns';
 
 export const RequestsPage: FC = () => {
   const roleId = useAppSelector(state => state.user.profile?.role?.id);
+  const { pageSize } = useAppelloKit();
 
   const { sorting, tableSorting, setTableSorting } = useSortingState<RequestSort>();
 
   const { offset, setOffset, filter, setFilter, filtersCount } =
-    useListQueryParams<RequestFilter>();
+    useListQueryParams<RequestFilter>(pageSize);
 
   const requestsTableColumns = useRequestsTableColumns();
 

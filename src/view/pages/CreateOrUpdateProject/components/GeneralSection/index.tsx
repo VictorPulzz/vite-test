@@ -1,9 +1,12 @@
-import { DateField, Icon } from '@appello/web-ui';
-import { InlineFields } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
-import { TextAreaField } from '@appello/web-ui';
-import { TextField } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import {
+  DateField,
+  Icon,
+  InlineFields,
+  SelectField,
+  TextAreaField,
+  TextField,
+} from '@appello/web-ui';
 import React, { FC, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 

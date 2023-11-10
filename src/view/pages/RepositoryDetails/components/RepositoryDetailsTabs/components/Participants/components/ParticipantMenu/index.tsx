@@ -1,5 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { getGqlError } from '@appello/common/lib/services/gql/utils/getGqlError';
+import { getGqlError, useSwitchValue } from '@appello/common';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';

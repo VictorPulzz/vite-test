@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import { Loader } from '@appello/web-ui';

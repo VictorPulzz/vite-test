@@ -1,4 +1,4 @@
-import { createProcessGqlErrorResponse } from '@appello/common/lib/services/gql/utils';
+import { createProcessGqlErrorResponse } from '@appello/common';
 import React from 'react';
 import { toast } from 'react-hot-toast';
 

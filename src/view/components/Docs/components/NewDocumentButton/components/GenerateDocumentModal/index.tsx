@@ -1,10 +1,14 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { Modal, ModalProps } from '@appello/web-ui';
-import { Field } from '@appello/web-ui';
-import { InlineFields } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
-import { TextInput } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import {
+  Button,
+  ButtonVariant,
+  Field,
+  InlineFields,
+  Modal,
+  ModalProps,
+  SelectField,
+  TextInput,
+} from '@appello/web-ui';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 

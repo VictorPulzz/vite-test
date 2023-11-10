@@ -1,4 +1,4 @@
-import { isString } from '@appello/common/lib/utils/string/isString';
+import { isString } from '@appello/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO, isPast } from 'date-fns';
 import { useCallback, useMemo } from 'react';

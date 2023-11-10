@@ -1,7 +1,6 @@
-import { EmptyState, Table, useSelectOptions } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { Select } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import { EmptyState, Select, Table, TableLoader, useAppelloKit } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -16,12 +15,13 @@ import { useFetchHistoryLogsQuery } from '~/view/pages/ProjectDetails/__generate
 import { useHistoryTableColumns } from './hooks/useHistoryTableColumns';
 
 export const History: FC = () => {
+  const { pageSize } = useAppelloKit();
   const params = useParams();
   const projectId = params.id ? Number(params.id) : 0;
 
   const historyTableColumns = useHistoryTableColumns();
 
-  const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>();
+  const { offset, setOffset, filter, setFilter } = useListQueryParams<LogFilter>(pageSize);
 
   const { data: allUsers } = useFetchUserGlossaryListQuery({
     fetchPolicy: 'cache-and-network',

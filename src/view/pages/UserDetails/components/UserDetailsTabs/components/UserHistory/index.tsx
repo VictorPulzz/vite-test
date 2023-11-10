@@ -1,7 +1,5 @@
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-kit';
+import { EmptyState, Table, TableLoader, useAppelloKit } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -13,7 +11,8 @@ import { useFetchUserHistoryListQuery } from '../../../../__generated__/schema';
 import { USERS_HISTORY_TABLE_COLUMNS } from './consts';
 
 export const UserHistory: FC = () => {
-  const { offset, setOffset } = useListQueryParams<LogFilter>();
+  const { pageSize } = useAppelloKit();
+  const { offset, setOffset } = useListQueryParams<LogFilter>(pageSize);
   const params = useParams();
   const userId = Number(params.id);
 

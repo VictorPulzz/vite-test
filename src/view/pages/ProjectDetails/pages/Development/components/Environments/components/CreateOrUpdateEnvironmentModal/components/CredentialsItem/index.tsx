@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
 import { Icon, PasswordField } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';

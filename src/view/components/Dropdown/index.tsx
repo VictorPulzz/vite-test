@@ -1,4 +1,4 @@
-import { useClickAway } from '@appello/web-ui';
+import { useClickAway } from '@appello/web-kit';
 import clsx from 'clsx';
 import React, {
   forwardRef,
@@ -59,7 +59,6 @@ const DropdownBase = <TValue,>(
   }: DropdownProps<TValue>,
   ref?: React.ForwardedRef<DropdownPropsRef>,
 ): React.ReactElement => {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [menuPositionClassName, setMenuPositionClassName] = useState<string>('');
   const [dropdownIsOpen, setDropdownOpen] = useState<boolean>(defaultVisible);
 
@@ -91,7 +90,7 @@ const DropdownBase = <TValue,>(
     [closeDropdown, onSelect],
   );
 
-  useClickAway(containerRef, () => {
+  const { ref: containerRef } = useClickAway<HTMLDivElement>(() => {
     if (!defaultVisible) {
       closeDropdown();
     }

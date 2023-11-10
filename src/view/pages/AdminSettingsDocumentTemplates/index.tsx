@@ -1,11 +1,12 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
 import {
   Button,
   ButtonVariant,
   EmptyState,
   Table,
   TableLoader,
-  useListQueryParams,
+  useAppelloKit,
 } from '@appello/web-ui';
 import React, { FC } from 'react';
 
@@ -20,9 +21,11 @@ import { CreateOrUpdateDocumentTemplateModal } from './components/CreateOrUpdate
 import { DOCUMENT_TEMPLATES_TABLE_COLUMNS } from './consts';
 
 export const AdminSettingsDocumentTemplatesPage: FC = () => {
+  const { pageSize } = useAppelloKit();
+
   const { sorting, tableSorting, setTableSorting } = useSortingState<DocumentTemplateSort>();
 
-  const { offset, setOffset } = useListQueryParams();
+  const { offset, setOffset } = useListQueryParams(pageSize);
 
   const {
     value: isCreateOrUpdateDocumentTemplateModal,

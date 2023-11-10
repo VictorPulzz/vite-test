@@ -1,4 +1,5 @@
-import { Button, ButtonVariant, Loader, SelectField, useSelectOptions } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import { Button, ButtonVariant, Loader, SelectField } from '@appello/web-ui';
 import { TextField } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import React, { FC } from 'react';

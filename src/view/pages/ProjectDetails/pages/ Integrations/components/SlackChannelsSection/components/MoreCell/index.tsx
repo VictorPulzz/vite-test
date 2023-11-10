@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';

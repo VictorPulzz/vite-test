@@ -1,6 +1,7 @@
-import { EmptyState, Loader, SearchInput, useSelectOptions } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import { EmptyState, Loader, SearchInput, useAppelloKit } from '@appello/web-ui';
 import { Select } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export const Docs: FC<Props> = ({ type }) => {
+  const { pageSize } = useAppelloKit();
   const params = useParams();
 
   const projectId = params.id && type === DocsType.PROJECT ? Number(params.id) : undefined;
@@ -43,7 +45,7 @@ export const Docs: FC<Props> = ({ type }) => {
 
   const { canWriteUserDocs } = useUserPermissions();
 
-  const { searchValue, setSearchValue, offset } = useListQueryParams<DocumentFilter>();
+  const { searchValue, setSearchValue, offset } = useListQueryParams<DocumentFilter>(pageSize);
 
   const [docsFilter, setDocsFilter] = useState<DocumentFilter>({
     addedById: undefined,

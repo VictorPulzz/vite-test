@@ -1,10 +1,14 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { SearchInput } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  SearchInput,
+  Table,
+  TableLoader,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -20,11 +24,12 @@ import { useUsersTableColumns } from './hooks/useUsersTableColumns';
 
 export const UsersPage: FC = () => {
   const { canReadUsersList, canCreateUser } = useUserPermissions();
+  const { pageSize } = useAppelloKit();
 
   const usersTableColumns = useUsersTableColumns();
 
   const { searchValue, setSearchValue, offset, setOffset, setFilter, filter, filtersCount } =
-    useListQueryParams<UserFilter>();
+    useListQueryParams<UserFilter>(pageSize);
 
   const {
     value: isFilterModalOpen,

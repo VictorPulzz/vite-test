@@ -1,9 +1,13 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { Loader } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
-import { Pagination } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  Loader,
+  Pagination,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -20,8 +24,9 @@ import { ParticipantMenu } from './components/ParticipantMenu';
 
 export const Participants: FC = () => {
   const { canWriteRepoParticipants } = useUserPermissions();
+  const { pageSize } = useAppelloKit();
 
-  const { offset, setOffset } = useListQueryParams();
+  const { offset, setOffset } = useListQueryParams(pageSize);
 
   const {
     value: isAddParticipantModalOpen,

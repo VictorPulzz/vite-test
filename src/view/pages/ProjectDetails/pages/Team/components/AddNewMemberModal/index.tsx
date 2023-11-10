@@ -1,7 +1,7 @@
+import { useSelectOptions } from '@appello/common';
 import { Button, ButtonVariant, Checkbox, Icon, Loader } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import { SelectField } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
 import React, { FC, useCallback, useMemo } from 'react';
 
 import { useFetchUserGlossaryListQuery } from '~/services/gql/__generated__/schema';

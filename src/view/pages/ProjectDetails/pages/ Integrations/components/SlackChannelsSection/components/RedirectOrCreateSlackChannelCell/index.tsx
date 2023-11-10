@@ -1,5 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { getGqlError, useSwitchValue } from '@appello/common';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
 import React, { FC, useCallback, useMemo } from 'react';

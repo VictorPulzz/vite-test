@@ -1,3 +1,4 @@
+import { useListQueryParams } from '@appello/web-kit';
 import {
   Button,
   ButtonVariant,
@@ -5,7 +6,7 @@ import {
   EmptyState,
   Loader,
   TextLink,
-  useListQueryParams,
+  useAppelloKit,
 } from '@appello/web-ui';
 import { Modal, ModalProps } from '@appello/web-ui';
 import clsx from 'clsx';
@@ -27,8 +28,8 @@ interface Props extends Pick<ModalProps, 'close' | 'isOpen'> {}
 
 export const EditReportingListModal: FC<Props> = ({ isOpen, close }) => {
   const reportTemplatesListRef = useRef<HTMLDivElement>(null);
-
-  const { offset } = useListQueryParams();
+  const { pageSize } = useAppelloKit();
+  const { offset } = useListQueryParams(pageSize);
 
   const [nextOffset, setNextOffset] = useState<number>(0);
   const [isFetching, setFetching] = useState<boolean>(false);

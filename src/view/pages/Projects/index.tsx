@@ -1,11 +1,15 @@
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { SearchInput } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { Select } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  SearchInput,
+  Select,
+  Table,
+  TableLoader,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -22,6 +26,8 @@ import { useFetchProjectsQuery } from './__generated__/schema';
 import { useProjectsTableColumns } from './hooks/useProjectsTableColumns';
 
 export const ProjectsPage: FC = () => {
+  const { pageSize } = useAppelloKit();
+
   const { canReadProjectsList, canCreateProject } = useUserPermissions();
 
   const projectsListColumns = useProjectsTableColumns();
@@ -29,7 +35,7 @@ export const ProjectsPage: FC = () => {
   const { sorting, tableSorting, setTableSorting } = useSortingState<ProjectSort>();
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter } =
-    useListQueryParams<ProjectFilter>();
+    useListQueryParams<ProjectFilter>(pageSize);
 
   const { data, loading, fetchMore } = useFetchProjectsQuery({
     variables: {

@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { useSwitchValue } from '@appello/common';
 import { CellContext } from '@tanstack/table-core';
 import React, { FC } from 'react';
 

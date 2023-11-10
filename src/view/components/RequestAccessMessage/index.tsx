@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { Nullable, useSwitchValue } from '@appello/common';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC } from 'react';

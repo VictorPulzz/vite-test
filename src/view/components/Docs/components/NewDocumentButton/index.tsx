@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { useSwitchValue } from '@appello/common';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Button, ButtonVariant } from '@appello/web-ui';
 import React, { FC } from 'react';

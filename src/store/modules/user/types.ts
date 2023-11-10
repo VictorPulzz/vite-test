@@ -1,4 +1,4 @@
-import { UserAuth } from '@appello/common/lib/types';
+import { Nullable, UserAuth } from '@appello/common';
 
 import { UserProfileModel } from '~/models/user';
 

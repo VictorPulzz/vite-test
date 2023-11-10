@@ -1,10 +1,15 @@
-import { Button, ButtonSize, ButtonVariant } from '@appello/web-ui';
-import { FileUpload } from '@appello/web-ui';
-import { Icon } from '@appello/web-ui';
-import { Modal, ModalProps } from '@appello/web-ui';
-import { FieldErrorMessage } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import {
+  Button,
+  ButtonSize,
+  ButtonVariant,
+  FieldErrorMessage,
+  FileUpload,
+  Icon,
+  Modal,
+  ModalProps,
+  SelectField,
+} from '@appello/web-ui';
 import React, { FC, useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 

@@ -1,5 +1,5 @@
-import { useListQueryParams } from '@appello/web-ui';
-import { Pagination } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-kit';
+import { Pagination, useAppelloKit } from '@appello/web-ui';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { FC } from 'react';
@@ -19,7 +19,8 @@ interface Props {
 }
 
 export const DocsList: FC<Props> = ({ type, data, onPageChange }) => {
-  const { offset, setOffset } = useListQueryParams<DocumentFilter>();
+  const { pageSize } = useAppelloKit();
+  const { offset, setOffset } = useListQueryParams<DocumentFilter>(pageSize);
 
   const hasPagination = data.count > PAGE_SIZE;
 

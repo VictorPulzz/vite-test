@@ -1,4 +1,4 @@
-import { getGqlError } from '@appello/common/lib/services/gql/utils';
+import { getGqlError } from '@appello/common';
 import { Button, ButtonVariant, Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useCallback } from 'react';

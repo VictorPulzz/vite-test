@@ -1,4 +1,5 @@
-import { Modal, ModalProps, SearchInput, useListQueryParams } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-kit';
+import { Modal, ModalProps, SearchInput, useAppelloKit } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { UserFilter } from '~/services/gql/__generated__/globalTypes';
@@ -16,7 +17,8 @@ export const InviteUsersToSlackModal: FC<Props> = ({
   slackChannelId,
   templateLabel,
 }) => {
-  const { searchValue, setSearchValue, offset } = useListQueryParams<UserFilter>();
+  const { pageSize } = useAppelloKit();
+  const { searchValue, setSearchValue, offset } = useListQueryParams<UserFilter>(pageSize);
 
   return (
     <Modal

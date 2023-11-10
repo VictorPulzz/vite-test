@@ -1,6 +1,6 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { Nullable, useSelectOptions } from '@appello/common';
+import { useSwitchValue } from '@appello/common';
 import { DateInput, EmptyState, Loader, Pagination, Select } from '@appello/web-ui';
-import { useSelectOptions } from '@appello/web-ui';
 import { formatISO } from 'date-fns';
 import React, { FC, useMemo, useState } from 'react';
 import { DateRange } from 'react-day-picker';
@@ -18,7 +18,7 @@ import { ReportsList } from './components/ReportsList';
 import { PROJECT_REPORTS_PAGE_SIZE } from './consts';
 
 export type ReportFilter = {
-  submittedBy: Nullable<number> | undefined;
+  submittedBy?: Nullable<number>;
   dateRange: Nullable<DateRange>;
 };
 

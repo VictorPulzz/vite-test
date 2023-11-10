@@ -1,6 +1,5 @@
-import { Button, ButtonVariant, Loader, useSelectOptions } from '@appello/web-ui';
-import { Modal, ModalProps } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import { Button, ButtonVariant, Loader, Modal, ModalProps, SelectField } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { RepositoryAccessLevelChoice } from '~/services/gql/__generated__/globalTypes';

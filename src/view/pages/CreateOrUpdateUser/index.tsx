@@ -1,10 +1,14 @@
-import { Button, ButtonVariant, useSelectOptions } from '@appello/web-ui';
-import { InlineFields } from '@appello/web-ui';
-import { SelectField } from '@appello/web-ui';
-import { TextField } from '@appello/web-ui';
-import { Checkbox } from '@appello/web-ui';
-import { DateField } from '@appello/web-ui';
-import { PhotoField } from '@appello/web-ui';
+import { useSelectOptions } from '@appello/common';
+import {
+  Button,
+  ButtonVariant,
+  Checkbox,
+  DateField,
+  InlineFields,
+  PhotoField,
+  SelectField,
+  TextField,
+} from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { ExtractRouteParams } from 'react-router';
 import { useNavigate, useParams } from 'react-router-dom';

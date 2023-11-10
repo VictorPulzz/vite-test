@@ -1,5 +1,6 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant, useListQueryParams } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import { Button, ButtonVariant, useAppelloKit } from '@appello/web-ui';
 import { EmptyState } from '@appello/web-ui';
 import { Table } from '@appello/web-ui';
 import { TableLoader } from '@appello/web-ui';
@@ -16,6 +17,8 @@ import { CreateOrUpdateGitInitialUserModal } from './components/CreateOrUpdateGi
 import { useGitInitialUsersTableColumns } from './hooks/useGitInitialUsersTableColumns';
 
 export const BitbucketTabElement: FC = () => {
+  const { pageSize } = useAppelloKit();
+
   const {
     value: isCreateOrUpdateGitInitialUserModal,
     on: openCreateOrUpdateGitInitialUserModal,
@@ -24,7 +27,7 @@ export const BitbucketTabElement: FC = () => {
 
   const { sorting, tableSorting, setTableSorting } = useSortingState<GitInitialUserSort>();
 
-  const { offset, setOffset } = useListQueryParams();
+  const { offset, setOffset } = useListQueryParams(pageSize);
 
   const initialUsersTableColumns = useGitInitialUsersTableColumns();
 

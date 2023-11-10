@@ -1,4 +1,4 @@
-import { useMountEffect } from '@appello/common/lib/hooks';
+import { Nullable, useMountEffect } from '@appello/common';
 import clsx from 'clsx';
 import { format } from 'date-fns';
 import React, { FC, useRef } from 'react';

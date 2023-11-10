@@ -1,4 +1,4 @@
-import { isNil } from '@appello/common/lib/utils/isNil';
+import { isNil } from '@appello/common';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useMemo } from 'react';
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';

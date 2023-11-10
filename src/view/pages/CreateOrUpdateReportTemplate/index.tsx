@@ -1,4 +1,4 @@
-import { omit } from '@appello/common/lib/utils/object/omit';
+import { omit } from '@appello/common';
 import { Button, ButtonVariant, Loader, Tabs } from '@appello/web-ui';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { FormProvider } from 'react-hook-form';

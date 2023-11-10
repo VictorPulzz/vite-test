@@ -1,4 +1,4 @@
-import { useMountEffect } from '@appello/common/lib/hooks';
+import { useMountEffect } from '@appello/common';
 import { Toaster } from '@appello/web-ui';
 import React, { useLayoutEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';

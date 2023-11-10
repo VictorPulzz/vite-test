@@ -1,9 +1,12 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { InlineFields } from '@appello/web-ui';
-import { PhotoField } from '@appello/web-ui';
-import { TextField } from '@appello/web-ui';
-import { InputSize } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import {
+  Button,
+  ButtonVariant,
+  InlineFields,
+  InputSize,
+  PhotoField,
+  TextField,
+} from '@appello/web-ui';
 import React from 'react';
 
 import { useAppDispatch } from '~/store/hooks';

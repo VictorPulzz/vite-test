@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
 import { TextLink } from '@appello/web-ui';
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { generatePath } from 'react-router-dom';

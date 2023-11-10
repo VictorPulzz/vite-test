@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
+import { useSwitchValue } from '@appello/common';
 import { Icon } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useCallback, useMemo } from 'react';

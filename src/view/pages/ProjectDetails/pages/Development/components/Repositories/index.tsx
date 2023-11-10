@@ -1,8 +1,5 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { makeQueryString } from '@appello/common/lib/utils';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
+import { makeQueryString, useSwitchValue } from '@appello/common';
+import { Button, ButtonVariant, EmptyState, Table } from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { ROUTES } from '~/constants/routes';

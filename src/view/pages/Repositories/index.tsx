@@ -1,10 +1,14 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
-import { Button, ButtonVariant } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { SearchInput } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  SearchInput,
+  Table,
+  TableLoader,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -19,10 +23,11 @@ import { RepositoriesFilterModal } from './components/RepositoriesFilterModal';
 import { useRepositoriesTableColumns } from './hooks/useRepositoriesTableColumns';
 
 export const RepositoriesPage: FC = () => {
+  const { pageSize } = useAppelloKit();
   const { canReadReposList, canCreateRepository } = useUserPermissions();
 
   const { searchValue, setSearchValue, offset, setOffset, filter, setFilter, filtersCount } =
-    useListQueryParams<RepositoryFilter>();
+    useListQueryParams<RepositoryFilter>(pageSize);
 
   const repositoriesTableColumns = useRepositoriesTableColumns();
 

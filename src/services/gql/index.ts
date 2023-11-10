@@ -1,4 +1,4 @@
-import { createGqlClient, GqlClientContext } from '@appello/common/lib/services/gql';
+import { createGqlClient, GqlClientContext } from '@appello/common';
 import { toast } from 'react-hot-toast';
 
 import { API_URL } from '~/constants/env';

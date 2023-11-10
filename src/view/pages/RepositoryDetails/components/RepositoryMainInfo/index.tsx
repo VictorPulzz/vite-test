@@ -1,4 +1,4 @@
-import { useSwitchValue } from '@appello/common/lib/hooks/useSwitchValue';
+import { useSwitchValue } from '@appello/common';
 import { Icon } from '@appello/web-ui';
 import { TextLink } from '@appello/web-ui';
 import { format } from 'date-fns';

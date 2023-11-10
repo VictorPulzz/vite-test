@@ -1,3 +1,4 @@
+import { useListQueryParams } from '@appello/web-kit';
 import {
   Button,
   ButtonVariant,
@@ -5,7 +6,7 @@ import {
   SearchInput,
   Table,
   TableLoader,
-  useListQueryParams,
+  useAppelloKit,
 } from '@appello/web-ui';
 import React, { FC } from 'react';
 
@@ -20,8 +21,9 @@ import { useFetchReportTemplatesListQuery } from './__generated__/schema';
 import { REPORT_TEMPLATES_TABLE_COLUMNS } from './consts';
 
 export const AdminSettingsReportTemplatesPage: FC = () => {
+  const { pageSize } = useAppelloKit();
   const { sorting, tableSorting, setTableSorting } = useSortingState<ReportTemplateSort>();
-  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams();
+  const { searchValue, setSearchValue, offset, setOffset } = useListQueryParams(pageSize);
 
   const { data, loading, fetchMore } = useFetchReportTemplatesListQuery({
     variables: {

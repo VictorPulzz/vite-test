@@ -1,6 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { getGqlError } from '@appello/common/lib/services/gql/utils';
-import { pick } from '@appello/common/lib/utils/object/pick';
+import { getGqlError, Nullable, pick } from '@appello/common';
 import { IconContainer } from '@appello/web-ui';
 import clsx from 'clsx';
 import React, { FC, useMemo } from 'react';

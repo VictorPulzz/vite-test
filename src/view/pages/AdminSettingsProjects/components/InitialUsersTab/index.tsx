@@ -1,8 +1,13 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Button, ButtonVariant, useListQueryParams } from '@appello/web-ui';
-import { EmptyState } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
+import { useSwitchValue } from '@appello/common';
+import { useListQueryParams } from '@appello/web-kit';
+import {
+  Button,
+  ButtonVariant,
+  EmptyState,
+  Table,
+  TableLoader,
+  useAppelloKit,
+} from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 
 import { PAGE_SIZE } from '~/constants/pagination';
@@ -16,6 +21,8 @@ import { CreateProjectInitialUserModal } from './components/CreateProjectInitial
 import { useProjectInitialUsersTableColumns } from './hooks/useProjectInitialUsersTableColumns';
 
 export const InitialUsersTab: FC = () => {
+  const { pageSize } = useAppelloKit();
+
   const {
     value: isCreateModalOpen,
     on: openCreateModal,
@@ -24,7 +31,7 @@ export const InitialUsersTab: FC = () => {
 
   const { sorting, tableSorting, setTableSorting } = useSortingState<ProjectInitialUserSort>();
 
-  const { offset, setOffset } = useListQueryParams();
+  const { offset, setOffset } = useListQueryParams(pageSize);
 
   const initialUsersTableColumns = useProjectInitialUsersTableColumns();
 

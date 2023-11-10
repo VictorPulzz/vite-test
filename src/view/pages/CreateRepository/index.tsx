@@ -1,3 +1,4 @@
+import { useSelectOptions } from '@appello/common';
 import { useSearchParams } from '@appello/web-kit';
 import {
   Button,
@@ -6,7 +7,6 @@ import {
   InlineFields,
   SelectField,
   TextField,
-  useSelectOptions,
 } from '@appello/web-ui';
 import React, { FC, useEffect } from 'react';
 import { useWatch } from 'react-hook-form';

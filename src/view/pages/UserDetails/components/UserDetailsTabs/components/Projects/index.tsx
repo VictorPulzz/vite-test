@@ -1,7 +1,5 @@
-import { EmptyState } from '@appello/web-ui';
-import { Table } from '@appello/web-ui';
-import { TableLoader } from '@appello/web-ui';
-import { useListQueryParams } from '@appello/web-ui';
+import { useListQueryParams } from '@appello/web-kit';
+import { EmptyState, Table, TableLoader, useAppelloKit } from '@appello/web-ui';
 import React, { FC } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -12,7 +10,9 @@ import { useFetchUserProjectsListQuery } from '../../../../__generated__/schema'
 import { USERS_PROJECTS_TABLE_COLUMNS } from './consts';
 
 export const Projects: FC = () => {
-  const { offset, setOffset } = useListQueryParams();
+  const { pageSize } = useAppelloKit();
+
+  const { offset, setOffset } = useListQueryParams(pageSize);
   const params = useParams();
   const userId = params.id ? Number(params.id) : 0;
 

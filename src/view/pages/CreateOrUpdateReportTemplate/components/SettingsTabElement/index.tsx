@@ -1,3 +1,4 @@
+import { useSelectOptions } from '@appello/common';
 import {
   Checkbox,
   InlineFields,
@@ -5,7 +6,6 @@ import {
   TextAreaField,
   TextField,
   TimeField,
-  useSelectOptions,
 } from '@appello/web-ui';
 import React, { FC, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';

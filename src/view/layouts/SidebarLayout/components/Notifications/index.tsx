@@ -1,6 +1,7 @@
-import { useSwitchValue } from '@appello/common/lib/hooks';
-import { Icon, useClickAway } from '@appello/web-ui';
-import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useSwitchValue } from '@appello/common';
+import { useClickAway } from '@appello/web-kit';
+import { Icon } from '@appello/web-ui';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'use-debounce';
 
 import { NOTIFICATIONS_PAGE_SIZE } from '~/constants/pagination';
@@ -18,9 +19,7 @@ export const Notifications: FC = () => {
     toggle: toggleNotifications,
   } = useSwitchValue(false);
 
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useClickAway(containerRef, closeNotifications);
+  const { ref: containerRef } = useClickAway<HTMLDivElement>(closeNotifications);
 
   const [isShowUnreadNotifications, setIsShowUnreadNotifications] = useState<boolean>(false);
   const [nextOffset, setNextOffset] = useState<number>(0);
