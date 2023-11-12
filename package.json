@@ -23,9 +23,10 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.17",
-    "@appello/common": "^2.0.4",
-    "@appello/web-kit": "^1.0.0",
-    "@appello/web-ui": "^0.1.0",
+    "@appello/common": "^2.0.8",
+    "@appello/services": "^0.0.9",
+    "@appello/web-kit": "^1.1.8",
+    "@appello/web-ui": "^0.1.4",
     "@hookform/resolvers": "3.1.0",
     "@redux-devtools/extension": "3.2.5",
     "@reduxjs/toolkit": "1.9.5",

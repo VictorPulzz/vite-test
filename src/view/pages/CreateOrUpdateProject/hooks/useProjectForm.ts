@@ -1,4 +1,5 @@
-import { getGqlError, isNil } from '@appello/common';
+import { isNil } from '@appello/common';
+import { getGqlError } from '@appello/services';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO } from 'date-fns';
 import { useCallback, useEffect, useMemo } from 'react';
