@@ -1,5 +1,5 @@
 import { isNil } from '@appello/common';
-import { getGqlError } from '@appello/services';
+import { getGqlError } from '@appello/services/dist/gql';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { formatISO } from 'date-fns';
 import { useCallback, useEffect, useMemo } from 'react';

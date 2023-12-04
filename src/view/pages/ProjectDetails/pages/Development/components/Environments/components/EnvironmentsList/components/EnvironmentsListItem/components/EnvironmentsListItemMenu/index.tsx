@@ -1,5 +1,5 @@
 import { useSwitchValue } from '@appello/common';
-import { getGqlError } from '@appello/services';
+import { getGqlError } from '@appello/services/dist/gql';
 import { Icon } from '@appello/web-ui';
 import Tippy from '@tippyjs/react';
 import React, { FC, useCallback, useRef, useState } from 'react';

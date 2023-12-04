@@ -1,4 +1,4 @@
-import { getGqlError } from '@appello/services';
+import { getGqlError } from '@appello/services/dist/gql';
 import { Badge, BadgeColor, Button, ButtonVariant } from '@appello/web-ui';
 import { format } from 'date-fns';
 import React, { FC, useCallback } from 'react';

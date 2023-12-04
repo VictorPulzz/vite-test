@@ -23,7 +23,7 @@
       "@root/*": ["./*"],
       "@ui/*": ["./src/view/ui/*"]
     },
-    "types": ["node", "webpack-env"]
+    "types": ["node"]
   },
   "include": ["src/**/*"]
 }

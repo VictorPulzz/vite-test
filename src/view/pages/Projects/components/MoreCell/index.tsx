@@ -1,4 +1,4 @@
-import { getGqlError } from '@appello/services';
+import { getGqlError } from '@appello/services/dist/gql';
 import { Dropdown, DropdownItem } from '@appello/web-ui';
 import { Icon } from '@appello/web-ui';
 import { CellContext } from '@tanstack/table-core';
